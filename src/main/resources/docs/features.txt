@@ -1,0 +1,169 @@
+===INFORMATION===
+
+You can find the features we have to work on below:
+
+---------------------------------------------------------
+
+To Do:
+----------
+- /title [player] [title] [message]
+    > Sends a title to the player
+    > /title all (sends to all players on server)
+
+- /friend
+    > Disables PVP with friend
+    > /friend location (shows friend's location)
+    > /friend add (add friend)
+    > /friend remove (remove friend)
+    > /friend gift hand (gifts the friend the item in hand)
+
+- /announce [title] [message]
+    > Creates and announcement for whole server in an instance
+
+- /message [Player name] [message]
+    > Private message system
+    > /reply to respond to the last messaged player
+    > If player is inactive, can be prompted to mail them
+
+- /ignore [Player name]
+    > Blocks all messages from the mentioned player for the user
+
+> /mute [Player name]
+
+- /mail [Player name] [Message]
+    > /mail view (check's unread mails)
+    > /mail history (shows your sent/received history of your last 10 mails)
+
+- /playtime [Player name]
+    > Shows your or a player's playtime
+
+- /back
+    > Teleports a player back to their last death location
+    > Has cooldown
+
+- /sethome
+    > Sets home at the location of entity
+    > /home [home name] to teleport to home location
+
+- /trash cmd
+    > Opens a HUD where if you place items and close, they are deleted
+    > Aliases:
+- /extinguish [target] cmd
+    > Extinguishes fire if player is on fire
+    > Aliases:
+- /anvil (Level can vary)
+    > Portable Blacksmith anvil
+    > Aliases:
+- /alchemy (Level can vary)
+    > Portable Alchemist's workbench
+    > Aliases:
+- /armor (Level can vary)
+    > Portable Armorer's Workbench
+
+- /stove
+    > Portable Chef's stove
+
+- /farm (Level can vary)
+    > Portable Farmer's Workbench
+
+- /workbench (Level can vary)
+    > Portable Workbench
+
+- /furniture
+    > Portable Furniture Workbench
+
+- /smelt
+    > Smelts all item in hand
+    > Has cooldown
+    > Aliases:
+
+- /backpack
+    > Opens personal backpack menu
+    > Can have multiple rows and pages
+
+- /freeze
+    > Freezes a player in place they cannot move or look around
+    > unfreezes them if run on them again
+
+- /repair
+    > Repairs the item in hand
+    > Has cooldown
+
+- /kit (shows all available kits)
+    > /kit [name] (gives the kit if user has access)
+    > /createkit [name]
+    > Has cooldown
+
+- /nick
+    > Change one's nickname with color code functions
+
+- /clearchat
+    > /clearchat all (purges whole chat)
+    > /clearchat [int] (purges last X message)
+
+- /maintenance
+    > Turns on whitelist mode for the server and kicks all players besides staff members
+    > run again to turn off maintenance
+
+- /itemrename [name]
+    > Renames item held in hand (supports color code)
+
+- /itemlore [lore]
+    > Sets the item lore
+
+- /antidote [player]
+    > Cures poison and provides immunity
+    > Has cooldown
+
+- /autosmelt
+    > Smelts ores as you mine them
+    > Works as a potion effect for X minutes (unless turned on infinitely)
+    > Has cooldown
+
+- /pinfo
+    > Shows a player's information
+        - Playtime (Last seen if inactive)
+        - Total Deaths
+        - Blocks Mined
+        - Player Kills
+        - Mob Kills
+        - Online/Offline status
+        Additional for admins:
+        - UUID
+        - Location
+        - Health
+        - Stamina
+        - Gamemode
+
+- /vanish
+    > Hides self or unhides self
+    > Admin command
+
+- Rank System
+    > /rank list
+    > /rankset [player] [rank name]
+    > /rankup [player] (promotes player to next rank)
+    > /derank [player] (deranks player to last rank)
+- Economy System
+    > /pay [player] [amount]
+    > /balance [player] [amount]
+    > /baltop (Shows leaderboard of balance)
+
+- Perform Commands
+    > On server join
+    > On first server join
+    > On quit server
+    > On player death
+    > On player Respawn
+    > On player teleport
+    > On player world change
+    > On player kick
+
+- Custom GUI System
+    > Add any custom GUI to the server
+
+- Schedulers
+    > Add schedulers to server that runs commands after X time
+
+Completed:
+----------

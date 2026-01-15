@@ -1,0 +1,43 @@
+########################################################################################################################
+** This log is only to be used by Abdullah Tanvir
+** The log is to be updated after everytime you work and make any sort of minor changes.
+
+How to use:
+    1. Note down every change you make
+    2. Node down any new files you create or files you remove
+    3. Mention specific bug fixes
+    4. Mention variable name changes
+    5. If there are any experimental feature use [EXP] before the log entry
+    6. If there are any untested feature use [UT] before the log entry
+    7. Make sure you write the date correctly for the specific day you're writing the changes for
+    8. Make sure you write context and goal before log entries
+    9. Never push to a "master" branch (Learn GitHub to know about "master" branch)
+
+Example of how to write a devlog:
+
+=========
+07/06/25:
+=========
+** Context: Working on the realm generation algorithm-1. Testing and doing changes/tweaks as required after testing.
+** Goal: Add versatility to the walking algorithm
+
+> Shuffle for partSpawn is moved for per Part instead of each part
+> Dead-ends can now be created once per walk from coordinate to target
+  and size can be 3 to (RealmSize, if realmSize is 7 then max is 7)
+> Method: Nearest Part from coordinate
+> canWalkTo now accepts parameter: List of free keys (string)
+> Obstructed Coordinate used to move a coordinate from X to Y
+  now introduced a new method: movePartAtNewCoord
+  for the same approach that can be re-used elsewhere
+> Minor bug fix for large part non-main section being termed as crucial if it is
+> Minor fixes and changes
+
+
+** START devlog from below
+
+########################################################################################################################
+
+
+=========
+06/01/26:
+=========

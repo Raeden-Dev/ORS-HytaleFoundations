@@ -12,6 +12,14 @@ public class HytaleEssentials extends JavaPlugin {
 
     @Override
     protected void setup() {
-        
+
+    }
+
+    private void registerEvents() {
+
+    }
+
+    private void registerCommands() {
+
     }
 }
