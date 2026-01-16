@@ -144,10 +144,18 @@ To Do:
     > /rankset [player] [rank name]
     > /rankup [player] (promotes player to next rank)
     > /derank [player] (deranks player to last rank)
+
 - Economy System
     > /pay [player] [amount]
     > /balance [player] [amount]
     > /baltop (Shows leaderboard of balance)
+
+- Chat Control
+    > Remove Cuss words
+    > Remove Links
+    > Add prefix/suffix to players
+        > /suffix [player] [text]
+        > /prefix [player] [text]
 
 - Perform Commands
     > On server join
@@ -161,6 +169,7 @@ To Do:
 
 - Custom GUI System
     > Add any custom GUI to the server
+    > /ui
 
 - Schedulers
     > Add schedulers to server that runs commands after X time

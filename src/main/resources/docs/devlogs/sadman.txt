@@ -10,3 +10,6 @@
 =========
 - Testing various functionalities and learning about hytale modding and plugin development
 - Tried out commands, title, chat editing, etc.
+- Tried creating a pinfo command (player info)
+    > Conclusions:
+        - We need to store and manage information about player deaths, playtime etc.
