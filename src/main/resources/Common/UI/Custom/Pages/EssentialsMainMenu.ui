@@ -1,0 +1,12 @@
+Group {
+    Anchor: (Width: 400, Height: 250);
+    Background: #1a1a2e(0.95);
+    LayoutMode: Top;
+    Padding: (Full: 20);
+
+    Label #Title {
+        Text: "Essentials Menu";
+        Anchor: (Height: 40);
+        Style: (FontSize: 16, TextColor: #FFFFFF, Alignment: Center);
+    }
+}
