@@ -10,8 +10,10 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
+import static com.raeden.hytale.HytaleEssentials.GSON;
+import static com.raeden.hytale.HytaleEssentials.myLogger;
+
 public class ConfigManager {
-    private final HytaleLogger logger;
     private final HytaleEssentials hytaleEssentials;
 
     private final String CONFIG_FILE = "config.json";
@@ -24,28 +26,29 @@ public class ConfigManager {
     private defaultConfig defaultConfig;
 
     private final Path dataDir;
-    private final Gson gson;
 
-    public ConfigManager(HytaleEssentials hytaleEssentials, HytaleLogger logger) {
+    public ConfigManager(HytaleEssentials hytaleEssentials) {
         this.hytaleEssentials = hytaleEssentials;
         dataDir = hytaleEssentials.getDataDirectory();
-        gson = new GsonBuilder().setPrettyPrinting().create();
-        this.logger = logger;
     }
 
-    public void loadConfig() {
+    public void loadConfigs() {
         try {
             if(!Files.exists(dataDir)) {
                 Files.createDirectories(dataDir);
-                logger.atInfo().log("Created data folder: " + dataDir);
+                myLogger.atInfo().log("Created data folder: " + dataDir);
             }
 
             this.defaultConfig = loadConfigData();
 
         } catch (IOException e) {
-            logger.atSevere().log("Failed to create config.json in data directory!");
+            myLogger.atSevere().log("Failed to create config.json in data directory!");
             this.defaultConfig = createDefaultConfig();
         }
+
+        // Other Modules
+        hytaleEssentials.getLangManager().loadLangFile();
+
     }
 
     private defaultConfig loadConfigData() {
@@ -53,15 +56,15 @@ public class ConfigManager {
         if(Files.exists(configFile)) {
             try {
                 String readConfig = Files.readString(configFile, StandardCharsets.UTF_8);
-                defaultConfig config = gson.fromJson(readConfig, this.defaultConfig.getClass());
+                defaultConfig config = GSON.fromJson(readConfig, this.defaultConfig.getClass());
 
                 if(config == null) {
-                    logger.atSevere().log("Failed to read config.json from data directory!");
+                    myLogger.atSevere().log("Failed to read config.json from data directory!");
                 } else {
                     return config;
                 }
             } catch (IOException e) {
-                logger.atSevere().log("Failed to read config.json from data directory!");
+                myLogger.atSevere().log("Failed to read config.json from data directory!");
             }
         }
 
@@ -72,11 +75,11 @@ public class ConfigManager {
 
     private void saveConfigFile(defaultConfig config) {
         Path savePath = dataDir.resolve("config.json");
-        String toJson = gson.toJson(config);
+        String toJson = GSON.toJson(config);
         try {
             Files.writeString(savePath, toJson, StandardCharsets.UTF_8);
         } catch (IOException e) {
-            logger.atSevere().log("Failed to save config.json to data directory!");
+            myLogger.atSevere().log("Failed to save config.json to data directory!");
         }
     }
 
@@ -84,21 +87,30 @@ public class ConfigManager {
         defaultConfig config = new defaultConfig();
 
         config.LANG = "en-us.json";
+        config.DATA_STORAGE_TYPE = "json";
+        config.TOGGLE_DEBUG = true;
         config.TOGGLE_ADMIN_MODULE = true;
         config.TOGGLE_CHAT_MODULE = true;
         config.TOGGLE_PARTY_MODULE = true;
         config.TOOGLE_ECONOMY_MODULE = true;
         config.TOGGLE_ANALYTICS_MODULE = true;
+        config.TOGGLE_DISCORD_MODULE = true;
+        config.PLAYER_DATA_SAVE_INTERVAL = "LOGOUT";
 
         return config;
     }
 
     private static class defaultConfig {
+        private String DATA_STORAGE_TYPE;
+        private boolean TOGGLE_DEBUG;
         private boolean TOGGLE_ADMIN_MODULE;
         private boolean TOGGLE_CHAT_MODULE;
         private boolean TOGGLE_PARTY_MODULE;
         private boolean TOOGLE_ECONOMY_MODULE;
         private boolean TOGGLE_ANALYTICS_MODULE;
+        private boolean TOGGLE_DISCORD_MODULE;
         private String LANG;
+        // LOGOUT, 5M, 10M, 30M, 1H
+        private String PLAYER_DATA_SAVE_INTERVAL;
     }
 }

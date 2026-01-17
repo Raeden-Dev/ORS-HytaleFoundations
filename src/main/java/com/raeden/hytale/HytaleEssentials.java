@@ -1,10 +1,13 @@
 package com.raeden.hytale;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.hypixel.hytale.logger.HytaleLogger;
 import com.hypixel.hytale.server.core.plugin.JavaPlugin;
 import com.hypixel.hytale.server.core.plugin.JavaPluginInit;
 import com.raeden.hytale.core.commands.EssentialsCommand;
 import com.raeden.hytale.core.config.ConfigManager;
+import com.raeden.hytale.core.data.PlayerDataManager;
 import com.raeden.hytale.lang.LangManager;
 import com.raeden.hytale.modules.admin.commands.AnnounceCommand;
 import com.raeden.hytale.modules.admin.commands.TitleCommand;
@@ -16,9 +19,14 @@ import javax.annotation.Nonnull;
 
 public class HytaleEssentials extends JavaPlugin {
     public static final HytaleLogger myLogger = HytaleLogger.forEnclosingClass();
+    public static final Gson GSON = new GsonBuilder()
+            .setPrettyPrinting()
+            .disableHtmlEscaping()
+            .create();
 
     private ConfigManager configManager;
     private LangManager langManager;
+    private PlayerDataManager playerDataManager;
 
     public HytaleEssentials(@Nonnull JavaPluginInit init) {
         super(init);
@@ -27,15 +35,17 @@ public class HytaleEssentials extends JavaPlugin {
     @Override
     protected void setup() {
         myLogger.atInfo().log("[One Raid Studio] Hytale Essentials loaded!");
+
         registerCommands();
         registerEvents();
         registerManagers();
     }
 
     private void registerManagers() {
-        configManager = new ConfigManager(this, myLogger);
-        configManager.loadConfig();
+        configManager = new ConfigManager(this);
+        configManager.loadConfigs();
         langManager = new LangManager(this);
+
     }
 
     private void registerEvents() {
@@ -52,4 +62,5 @@ public class HytaleEssentials extends JavaPlugin {
     }
 
     public ConfigManager getConfigManager() {return configManager;}
+    public LangManager getLangManager() {return langManager;}
 }
