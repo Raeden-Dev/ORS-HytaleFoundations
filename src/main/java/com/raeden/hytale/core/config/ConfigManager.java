@@ -1,8 +1,5 @@
 package com.raeden.hytale.core.config;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.hypixel.hytale.logger.HytaleLogger;
 import com.raeden.hytale.HytaleEssentials;
 
 import java.io.IOException;
@@ -23,7 +20,7 @@ public class ConfigManager {
     private final String ECONOMY_CONFIG = "economy.json";
     private final String CHAT_CONFIG = "chat.json";
 
-    private defaultConfig defaultConfig;
+    private DefaultConfig defaultConfig;
 
     private final Path dataDir;
 
@@ -51,12 +48,12 @@ public class ConfigManager {
 
     }
 
-    private defaultConfig loadConfigData() {
+    private DefaultConfig loadConfigData() {
         Path configFile = dataDir.resolve(CONFIG_FILE);
         if(Files.exists(configFile)) {
             try {
                 String readConfig = Files.readString(configFile, StandardCharsets.UTF_8);
-                defaultConfig config = GSON.fromJson(readConfig, this.defaultConfig.getClass());
+                DefaultConfig config = GSON.fromJson(readConfig, DefaultConfig.class);
 
                 if(config == null) {
                     myLogger.atSevere().log("Failed to read config.json from data directory!");
@@ -68,12 +65,12 @@ public class ConfigManager {
             }
         }
 
-        defaultConfig defConfig = createDefaultConfig();
+        DefaultConfig defConfig = createDefaultConfig();
         saveConfigFile(defConfig);
         return defConfig;
     }
 
-    private void saveConfigFile(defaultConfig config) {
+    private void saveConfigFile(DefaultConfig config) {
         Path savePath = dataDir.resolve("config.json");
         String toJson = GSON.toJson(config);
         try {
@@ -83,8 +80,8 @@ public class ConfigManager {
         }
     }
 
-    private defaultConfig createDefaultConfig() {
-        defaultConfig config = new defaultConfig();
+    private DefaultConfig createDefaultConfig() {
+        DefaultConfig config = new DefaultConfig();
 
         config.LANG = "en-us.json";
         config.DATA_STORAGE_TYPE = "json";
@@ -92,7 +89,7 @@ public class ConfigManager {
         config.TOGGLE_ADMIN_MODULE = true;
         config.TOGGLE_CHAT_MODULE = true;
         config.TOGGLE_PARTY_MODULE = true;
-        config.TOOGLE_ECONOMY_MODULE = true;
+        config.TOGGLE_ECONOMY_MODULE = true;
         config.TOGGLE_ANALYTICS_MODULE = true;
         config.TOGGLE_DISCORD_MODULE = true;
         config.PLAYER_DATA_SAVE_INTERVAL = "LOGOUT";
@@ -100,17 +97,46 @@ public class ConfigManager {
         return config;
     }
 
-    private static class defaultConfig {
+    private static class DefaultConfig {
+        private String LANG;
         private String DATA_STORAGE_TYPE;
+        private String PLAYER_DATA_SAVE_INTERVAL; // LOGOUT, 5M, 10M, 30M, 1H
         private boolean TOGGLE_DEBUG;
         private boolean TOGGLE_ADMIN_MODULE;
         private boolean TOGGLE_CHAT_MODULE;
         private boolean TOGGLE_PARTY_MODULE;
-        private boolean TOOGLE_ECONOMY_MODULE;
+        private boolean TOGGLE_ECONOMY_MODULE;
         private boolean TOGGLE_ANALYTICS_MODULE;
         private boolean TOGGLE_DISCORD_MODULE;
-        private String LANG;
-        // LOGOUT, 5M, 10M, 30M, 1H
-        private String PLAYER_DATA_SAVE_INTERVAL;
+
+        public String getLANG() {return LANG;}
+        public void setLANG(String LANG) {this.LANG = LANG;}
+
+        public String getDATA_STORAGE_TYPE() {return DATA_STORAGE_TYPE;}
+        public void setDATA_STORAGE_TYPE(String DATA_STORAGE_TYPE) {this.DATA_STORAGE_TYPE = DATA_STORAGE_TYPE;}
+
+        public String getPLAYER_DATA_SAVE_INTERVAL() {return PLAYER_DATA_SAVE_INTERVAL;}
+        public void setPLAYER_DATA_SAVE_INTERVAL(String PLAYER_DATA_SAVE_INTERVAL) {this.PLAYER_DATA_SAVE_INTERVAL = PLAYER_DATA_SAVE_INTERVAL;}
+
+        public boolean isTOGGLE_DEBUG() {return TOGGLE_DEBUG;}
+        public void setTOGGLE_DEBUG(boolean TOGGLE_DEBUG) {this.TOGGLE_DEBUG = TOGGLE_DEBUG;}
+
+        public boolean isTOGGLE_ADMIN_MODULE() {return TOGGLE_ADMIN_MODULE;}
+        public void setTOGGLE_ADMIN_MODULE(boolean TOGGLE_ADMIN_MODULE) {this.TOGGLE_ADMIN_MODULE = TOGGLE_ADMIN_MODULE;}
+
+        public boolean isTOGGLE_CHAT_MODULE() {return TOGGLE_CHAT_MODULE;}
+        public void setTOGGLE_CHAT_MODULE(boolean TOGGLE_CHAT_MODULE) {this.TOGGLE_CHAT_MODULE = TOGGLE_CHAT_MODULE;}
+
+        public boolean isTOGGLE_PARTY_MODULE() {return TOGGLE_PARTY_MODULE;}
+        public void setTOGGLE_PARTY_MODULE(boolean TOGGLE_PARTY_MODULE) {this.TOGGLE_PARTY_MODULE = TOGGLE_PARTY_MODULE;}
+
+        public boolean isTOGGLE_ECONOMY_MODULE() {return TOGGLE_ECONOMY_MODULE;}
+        public void setTOGGLE_ECONOMY_MODULE(boolean TOGGLE_ECONOMY_MODULE) {this.TOGGLE_ECONOMY_MODULE = TOGGLE_ECONOMY_MODULE;}
+
+        public boolean isTOGGLE_ANALYTICS_MODULE() {return TOGGLE_ANALYTICS_MODULE;}
+        public void setTOGGLE_ANALYTICS_MODULE(boolean TOGGLE_ANALYTICS_MODULE) {this.TOGGLE_ANALYTICS_MODULE = TOGGLE_ANALYTICS_MODULE;}
+
+        public boolean isTOGGLE_DISCORD_MODULE() {return TOGGLE_DISCORD_MODULE;}
+        public void setTOGGLE_DISCORD_MODULE(boolean TOGGLE_DISCORD_MODULE) {this.TOGGLE_DISCORD_MODULE = TOGGLE_DISCORD_MODULE;}
     }
 }

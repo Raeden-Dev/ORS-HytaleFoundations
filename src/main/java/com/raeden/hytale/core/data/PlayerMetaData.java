@@ -4,24 +4,26 @@ import com.hypixel.hytale.math.vector.Location;
 import com.hypixel.hytale.server.core.entity.UUIDComponent;
 import com.raeden.hytale.modules.admin.PlayerOffence;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class PlayerMetaData {
-    private UUIDComponent UUID;
-    private List<String> username;
+    private UUID UUID;
+    private List<String> username = new ArrayList<>();
     private String nickname;
 
     private long firstJoined;
     private long lastJoined;
     private long playTimeMillis;
 
+    private transient long sessionStart = 0;
+
     private HashMap<String, Double> balances = new HashMap<>();
 
     private int totalDeaths;
     private int playerKills;
     private int mobKills;
+    private int damageTaken;
+    private int damageGiven;
     private int blocksBroken;
     private int blocksPlaced;
     private double distanceWalked;
@@ -35,11 +37,11 @@ public class PlayerMetaData {
 
     private final Map<String, Location> homes = new HashMap<>();
     private boolean isMuted;
-    private List<PlayerOffence> offences;
+    private List<PlayerOffence> offences = new ArrayList<>();
 
 
-    public UUIDComponent getUUID() {return UUID;}
-    public void setUUID(UUIDComponent UUID) {this.UUID = UUID;}
+    public UUID getUUID() {return UUID;}
+    public void setUUID(UUID UUID) {this.UUID = UUID;}
 
     public List<String> getUsername() {return username;}
     public void addUsername(String name) {username.add(name);}
@@ -55,6 +57,8 @@ public class PlayerMetaData {
     public long getPlayTimeMillis() {return playTimeMillis;}
     public void setPlayTimeMillis(long playTimeMillis) {this.playTimeMillis = playTimeMillis;}
 
+    public long getSessionStart() {return sessionStart;}
+    public void setSessionStart(long sessionStart) {this.sessionStart = sessionStart;}
 
     public double getCurrencyBalance(String currency) {return balances.get(currency);}
     public HashMap<String, Double> getBalances() {return balances;}
@@ -111,4 +115,11 @@ public class PlayerMetaData {
     public List<PlayerOffence> getOffences() {return offences;}
     public void addOffence(PlayerOffence offence) {offences.add(offence);}
     public void setOffences(List<PlayerOffence> offences) {this.offences = offences;}
+
+    public int getDamageTaken() {return damageTaken;}
+    public void setDamageTaken(int damageTaken) {this.damageTaken = damageTaken;}
+    public int getDamageGiven() {return damageGiven;}
+    public void setDamageGiven(int damageGiven) {this.damageGiven = damageGiven;}
+
+
 }

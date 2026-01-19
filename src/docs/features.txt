@@ -156,6 +156,7 @@ To Do:
     > Add prefix/suffix to players
         > /suffix [player] [text]
         > /prefix [player] [text]
+    > Player report system
 
 - Perform Commands
     > On server join
