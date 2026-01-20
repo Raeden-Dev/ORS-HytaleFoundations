@@ -39,7 +39,7 @@ public class HytaleEssentials extends JavaPlugin {
 
     @Override
     protected void setup() {
-        myLogger.atInfo().log("[One Raid Studio] Hytale Essentials loaded!");
+        myLogger.atInfo().log("Hytale Essentials loaded!");
 
         registerCommands();
         registerEvents();

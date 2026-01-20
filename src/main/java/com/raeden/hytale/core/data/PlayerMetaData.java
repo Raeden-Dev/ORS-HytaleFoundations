@@ -9,6 +9,7 @@ import java.util.*;
 public class PlayerMetaData {
     private UUID UUID;
     private List<String> username = new ArrayList<>();
+    private String language;
     private String nickname;
 
     private long firstJoined;
@@ -42,6 +43,9 @@ public class PlayerMetaData {
 
     public UUID getUUID() {return UUID;}
     public void setUUID(UUID UUID) {this.UUID = UUID;}
+
+    public String getLanguage() {return language;}
+    public void setLanguage(String language) {this.language = language;}
 
     public List<String> getUsername() {return username;}
     public void addUsername(String name) {username.add(name);}
@@ -120,6 +124,4 @@ public class PlayerMetaData {
     public void setDamageTaken(int damageTaken) {this.damageTaken = damageTaken;}
     public int getDamageGiven() {return damageGiven;}
     public void setDamageGiven(int damageGiven) {this.damageGiven = damageGiven;}
-
-
 }

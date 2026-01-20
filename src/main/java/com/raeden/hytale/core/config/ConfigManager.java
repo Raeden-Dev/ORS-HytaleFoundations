@@ -1,6 +1,8 @@
 package com.raeden.hytale.core.config;
 
 import com.raeden.hytale.HytaleEssentials;
+import com.raeden.hytale.lang.LangKey;
+import com.raeden.hytale.lang.LangManager;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -12,6 +14,7 @@ import static com.raeden.hytale.HytaleEssentials.myLogger;
 
 public class ConfigManager {
     private final HytaleEssentials hytaleEssentials;
+    private final LangManager langManager;
 
     private final String CONFIG_FILE = "config.json";
     private final String LANG_FILE = "en-us.json";
@@ -26,6 +29,7 @@ public class ConfigManager {
 
     public ConfigManager(HytaleEssentials hytaleEssentials) {
         this.hytaleEssentials = hytaleEssentials;
+        this.langManager = hytaleEssentials.getLangManager();
         dataDir = hytaleEssentials.getDataDirectory();
     }
 
@@ -33,19 +37,15 @@ public class ConfigManager {
         try {
             if(!Files.exists(dataDir)) {
                 Files.createDirectories(dataDir);
-                myLogger.atInfo().log("Created data folder: " + dataDir);
+                myLogger.atInfo().log(langManager.getMessage(null, LangKey.CREATE_DIRECTORY_W_LOC, "data directory", dataDir.toString()).toString());
             }
 
             this.defaultConfig = loadConfigData();
 
         } catch (IOException e) {
-            myLogger.atSevere().log("Failed to create config.json in data directory!");
+            myLogger.atSevere().log(langManager.getMessage(null, LangKey.CREATE_DIRECTORY_FAIL, "data directory").toString());
             this.defaultConfig = createDefaultConfig();
         }
-
-        // Other Modules
-        hytaleEssentials.getLangManager().loadLangFile();
-
     }
 
     private DefaultConfig loadConfigData() {
@@ -56,12 +56,12 @@ public class ConfigManager {
                 DefaultConfig config = GSON.fromJson(readConfig, DefaultConfig.class);
 
                 if(config == null) {
-                    myLogger.atSevere().log("Failed to read config.json from data directory!");
+                    myLogger.atSevere().log(langManager.getMessage(null, LangKey.READ_FAILURE_W_LOC, "config.json", "data directory").toString());
                 } else {
                     return config;
                 }
             } catch (IOException e) {
-                myLogger.atSevere().log("Failed to read config.json from data directory!");
+                myLogger.atSevere().log(langManager.getMessage(null, LangKey.READ_FAILURE_W_LOC, "config.json", dataDir.toString()).toString());
             }
         }
 
@@ -97,7 +97,10 @@ public class ConfigManager {
         return config;
     }
 
-    private static class DefaultConfig {
+    public DefaultConfig getDefaultConfig() {return defaultConfig;}
+    public void setDefaultConfig(DefaultConfig defaultConfig) {this.defaultConfig = defaultConfig;}
+
+    public static class DefaultConfig {
         private String LANG;
         private String DATA_STORAGE_TYPE;
         private String PLAYER_DATA_SAVE_INTERVAL; // LOGOUT, 5M, 10M, 30M, 1H

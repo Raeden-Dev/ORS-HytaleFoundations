@@ -4,7 +4,7 @@ public enum colors {
     BLACK("000000"),
     WHITE("FFFFFF"),
     MC_DARK_BLUE("0000AA"),
-    MC_MC_DARK_GREEN("00AA00"),
+    MC_DARK_GREEN("00AA00"),
     MC_DARK_AQUA("00AAAA"),
     MC_DARK_RED("AA0000"),
     MC_DARK_PURPLE("AA00AA"),
@@ -30,11 +30,6 @@ public enum colors {
     LIGHT_ORANGE("FFAF6E");
 
     private final String hex;
-    colors(String hex) {
-        this.hex =hex;
-    }
-
-    public String getHex() {
-        return hex;
-    }
+    colors(String hex) {this.hex = hex;}
+    public String getHex() {return hex;}
 }

@@ -100,6 +100,7 @@ public class PlayerDataManager {
         String username = playerRef.getUsername();
 
         data.setNickname("");
+        data.setLanguage("en-us");
         data.setFirstJoined(0);
         data.setLastJoined(0);
         data.setPlayTimeMillis(0);
