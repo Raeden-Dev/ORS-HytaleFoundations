@@ -9,12 +9,10 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-import static com.raeden.hytale.HytaleEssentials.GSON;
-import static com.raeden.hytale.HytaleEssentials.myLogger;
+import static com.raeden.hytale.HytaleEssentials.*;
 
 public class ConfigManager {
     private final HytaleEssentials hytaleEssentials;
-    private final LangManager langManager;
 
     private final String CONFIG_FILE = "config.json";
     private final String LANG_FILE = "en-us.json";
@@ -29,13 +27,12 @@ public class ConfigManager {
 
     public ConfigManager(HytaleEssentials hytaleEssentials) {
         this.hytaleEssentials = hytaleEssentials;
-        this.langManager = hytaleEssentials.getLangManager();
         dataDir = hytaleEssentials.getDataDirectory();
     }
 
     public void loadConfigs() {
         try {
-            if(!Files.exists(dataDir)) {
+            if (!Files.exists(dataDir)) {
                 Files.createDirectories(dataDir);
                 myLogger.atInfo().log(langManager.getMessage(null, LangKey.CREATE_DIRECTORY_W_LOC, "data directory", dataDir.toString()).toString());
             }
@@ -50,12 +47,12 @@ public class ConfigManager {
 
     private DefaultConfig loadConfigData() {
         Path configFile = dataDir.resolve(CONFIG_FILE);
-        if(Files.exists(configFile)) {
+        if (Files.exists(configFile)) {
             try {
                 String readConfig = Files.readString(configFile, StandardCharsets.UTF_8);
                 DefaultConfig config = GSON.fromJson(readConfig, DefaultConfig.class);
 
-                if(config == null) {
+                if (config == null) {
                     myLogger.atSevere().log(langManager.getMessage(null, LangKey.READ_FAILURE_W_LOC, "config.json", "data directory").toString());
                 } else {
                     return config;
@@ -76,7 +73,7 @@ public class ConfigManager {
         try {
             Files.writeString(savePath, toJson, StandardCharsets.UTF_8);
         } catch (IOException e) {
-            myLogger.atSevere().log("Failed to save config.json to data directory!");
+            myLogger.atSevere().log(langManager.getMessage(null, LangKey.SAVE_FAILURE_W_LOC, "config.json", "data directory").toString());
         }
     }
 
@@ -97,8 +94,13 @@ public class ConfigManager {
         return config;
     }
 
-    public DefaultConfig getDefaultConfig() {return defaultConfig;}
-    public void setDefaultConfig(DefaultConfig defaultConfig) {this.defaultConfig = defaultConfig;}
+    public DefaultConfig getDefaultConfig() {
+        return defaultConfig;
+    }
+
+    public void setDefaultConfig(DefaultConfig defaultConfig) {
+        this.defaultConfig = defaultConfig;
+    }
 
     public static class DefaultConfig {
         private String LANG;
@@ -112,34 +114,40 @@ public class ConfigManager {
         private boolean TOGGLE_ANALYTICS_MODULE;
         private boolean TOGGLE_DISCORD_MODULE;
 
-        public String getLANG() {return LANG;}
-        public void setLANG(String LANG) {this.LANG = LANG;}
+        private boolean SAVE_CHAT_LOG;
 
-        public String getDATA_STORAGE_TYPE() {return DATA_STORAGE_TYPE;}
-        public void setDATA_STORAGE_TYPE(String DATA_STORAGE_TYPE) {this.DATA_STORAGE_TYPE = DATA_STORAGE_TYPE;}
+        public String getLang() {return LANG;}
+        public void setLang(String lang) {this.LANG = lang;}
 
-        public String getPLAYER_DATA_SAVE_INTERVAL() {return PLAYER_DATA_SAVE_INTERVAL;}
-        public void setPLAYER_DATA_SAVE_INTERVAL(String PLAYER_DATA_SAVE_INTERVAL) {this.PLAYER_DATA_SAVE_INTERVAL = PLAYER_DATA_SAVE_INTERVAL;}
+        public String getDataStorageType() {return DATA_STORAGE_TYPE;}
+        public void setDataStorageType(String dataStorageType) {this.DATA_STORAGE_TYPE = dataStorageType;}
 
-        public boolean isTOGGLE_DEBUG() {return TOGGLE_DEBUG;}
-        public void setTOGGLE_DEBUG(boolean TOGGLE_DEBUG) {this.TOGGLE_DEBUG = TOGGLE_DEBUG;}
+        public String getPlayerDataSaveInterval() {return PLAYER_DATA_SAVE_INTERVAL;}
+        public void setPlayerDataSaveInterval(String playerDataSaveInterval) {this.PLAYER_DATA_SAVE_INTERVAL = playerDataSaveInterval;}
 
-        public boolean isTOGGLE_ADMIN_MODULE() {return TOGGLE_ADMIN_MODULE;}
-        public void setTOGGLE_ADMIN_MODULE(boolean TOGGLE_ADMIN_MODULE) {this.TOGGLE_ADMIN_MODULE = TOGGLE_ADMIN_MODULE;}
+        public boolean isToggleDebug() {return TOGGLE_DEBUG;}
+        public void setToggleDebug(boolean toggleDebug) {this.TOGGLE_DEBUG = toggleDebug;}
 
-        public boolean isTOGGLE_CHAT_MODULE() {return TOGGLE_CHAT_MODULE;}
-        public void setTOGGLE_CHAT_MODULE(boolean TOGGLE_CHAT_MODULE) {this.TOGGLE_CHAT_MODULE = TOGGLE_CHAT_MODULE;}
+        public boolean isToggleAdminModule() {return TOGGLE_ADMIN_MODULE;}
+        public void setToggleAdminModule(boolean toggleAdminModule) {this.TOGGLE_ADMIN_MODULE = toggleAdminModule;}
 
-        public boolean isTOGGLE_PARTY_MODULE() {return TOGGLE_PARTY_MODULE;}
-        public void setTOGGLE_PARTY_MODULE(boolean TOGGLE_PARTY_MODULE) {this.TOGGLE_PARTY_MODULE = TOGGLE_PARTY_MODULE;}
+        public boolean isToggleChatModule() {return TOGGLE_CHAT_MODULE;}
+        public void setToggleChatModule(boolean toggleChatModule) {this.TOGGLE_CHAT_MODULE = toggleChatModule;}
 
-        public boolean isTOGGLE_ECONOMY_MODULE() {return TOGGLE_ECONOMY_MODULE;}
-        public void setTOGGLE_ECONOMY_MODULE(boolean TOGGLE_ECONOMY_MODULE) {this.TOGGLE_ECONOMY_MODULE = TOGGLE_ECONOMY_MODULE;}
+        public boolean isTogglePartyModule() {return TOGGLE_PARTY_MODULE;}
+        public void setTogglePartyModule(boolean togglePartyModule) {this.TOGGLE_PARTY_MODULE = togglePartyModule;}
 
-        public boolean isTOGGLE_ANALYTICS_MODULE() {return TOGGLE_ANALYTICS_MODULE;}
-        public void setTOGGLE_ANALYTICS_MODULE(boolean TOGGLE_ANALYTICS_MODULE) {this.TOGGLE_ANALYTICS_MODULE = TOGGLE_ANALYTICS_MODULE;}
+        public boolean isToggleEconomyModule() {return TOGGLE_ECONOMY_MODULE;}
+        public void setToggleEconomyModule(boolean toggleEconomyModule) {this.TOGGLE_ECONOMY_MODULE = toggleEconomyModule;}
 
-        public boolean isTOGGLE_DISCORD_MODULE() {return TOGGLE_DISCORD_MODULE;}
-        public void setTOGGLE_DISCORD_MODULE(boolean TOGGLE_DISCORD_MODULE) {this.TOGGLE_DISCORD_MODULE = TOGGLE_DISCORD_MODULE;}
+        public boolean isToggleAnalyticsModule() {return TOGGLE_ANALYTICS_MODULE;}
+        public void setToggleAnalyticsModule(boolean toggleAnalyticsModule) {this.TOGGLE_ANALYTICS_MODULE = toggleAnalyticsModule;}
+
+        public boolean isToggleDiscordModule() {return TOGGLE_DISCORD_MODULE;}
+        public void setToggleDiscordModule(boolean toggleDiscordModule) {this.TOGGLE_DISCORD_MODULE = toggleDiscordModule;}
+
+        public boolean isSAVE_CHAT_LOG() {return SAVE_CHAT_LOG;}
+        public void setSAVE_CHAT_LOG(boolean SAVE_CHAT_LOG) {this.SAVE_CHAT_LOG = SAVE_CHAT_LOG;}
     }
 }
+

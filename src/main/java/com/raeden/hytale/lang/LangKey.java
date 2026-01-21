@@ -20,8 +20,15 @@ public enum LangKey {
     READ_FAILURE_W_LOC("Failed to read {0} at {1}"),
     USERNAME_FIND_FAILURE("Failed to find player with username {0}"),
     USER_ONLINE_CHECK_FAILURE("Failed to check if player {0} is online!"),
-    INV_SLOT_CHECK_ERROR("Failed to check inventory slots for player {0}");
+    INV_SLOT_CHECK_ERROR("Failed to check inventory slots for player {0}"),
 
+    PLAYER_MUTED("You cannot send message to {0} because you are muted!", colors.MC_RED, true),
+    RECEIVER_NOT_ONLINE("{0} is not online!", colors.MC_RED, true),
+    RECEIVER_IS_MUTED("{0} is muted, they cannot reply to your message!", colors.MC_RED, true),
+    PLAYER_SELF_MSG("You cannot send a private message to yourself!", colors.MC_RED, true),
+    PLAYER_NO_RECEIVER("You have no one to reply to! /msg [player] first.", colors.MC_RED, true),
+    PRIVATE_MSG_FORMAT("{0} -> {1}: {2}"),
+    PRIVATE_MSG_FORMAT_ADMIN("[PVT MSG] {0} -> {1}: {2}");
 
 
     private final colors startColor;

@@ -36,3 +36,7 @@ build/
 
 ### Mac OS ###
 .DS_Store
+pom.xml
+.idea/misc.xml
+libs/HytaleServer.jar
+pom.xml

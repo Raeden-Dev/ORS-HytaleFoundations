@@ -17,7 +17,7 @@ import com.raeden.hytale.lang.LangManager;
 import com.raeden.hytale.modules.admin.commands.AnnounceCommand;
 import com.raeden.hytale.modules.admin.commands.TitleCommand;
 import com.raeden.hytale.modules.admin.commands.VanishCommand;
-import com.raeden.hytale.modules.chatcontrol.commands.ClearChatCommand;
+import com.raeden.hytale.modules.chat.commands.ClearChatCommand;
 import com.raeden.hytale.modules.utility.commands.PlayerInfoCommand;
 
 import javax.annotation.Nonnull;
@@ -30,7 +30,7 @@ public class HytaleEssentials extends JavaPlugin {
             .create();
 
     private ConfigManager configManager;
-    private LangManager langManager;
+    public static LangManager langManager;
     private PlayerDataManager playerDataManager;
 
     public HytaleEssentials(@Nonnull JavaPluginInit init) {

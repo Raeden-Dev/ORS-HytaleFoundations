@@ -9,8 +9,10 @@ import com.hypixel.hytale.server.core.inventory.container.ItemContainer;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.Universe;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
+import com.raeden.hytale.lang.LangKey;
 
 import static com.hypixel.hytale.server.core.entity.entities.Player.*;
+import static com.raeden.hytale.HytaleEssentials.langManager;
 import static com.raeden.hytale.HytaleEssentials.myLogger;
 
 public class generalUtils {
@@ -48,7 +50,7 @@ public class generalUtils {
                 return false;
             }
         }  catch (Exception e) {
-            myLogger.atWarning().log("Error checking inventory slots for player " + playerRef.getUsername(), e);
+            myLogger.atWarning().log(langManager.getMessage(null, LangKey.INV_SLOT_CHECK_ERROR).toString());
             return false;
         }
     }

@@ -1,4 +1,4 @@
-package com.raeden.hytale.modules.chatcontrol.commands;
+package com.raeden.hytale.modules.chat.commands;
 
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
