@@ -4,10 +4,8 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.hypixel.hytale.server.core.Message;
 import com.raeden.hytale.HytaleEssentials;
-import com.raeden.hytale.core.data.PlayerMetaData;
-import com.raeden.hytale.utils.colors;
+import com.raeden.hytale.core.data.PlayerData;
 
-import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -15,7 +13,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
-import java.util.Map;
 import java.util.Objects;
 
 import static com.raeden.hytale.HytaleEssentials.GSON;
@@ -33,7 +30,7 @@ public class LangManager {
     public LangManager(HytaleEssentials hytaleEssentials) {
         this.hytaleEssentials = hytaleEssentials;
         langDir = hytaleEssentials.getDataDirectory().resolve("lang");
-        CONFIG_LANGUAGE = hytaleEssentials.getConfigManager().getDefaultConfig().getLANG();
+        CONFIG_LANGUAGE = hytaleEssentials.getConfigManager().getDefaultConfig().getLang();
         langCache = new HashMap<>();
         verify();
     }
@@ -102,6 +99,9 @@ public class LangManager {
     public Message getMessage(LangKey key) {
         return getMessage(null, key, (String[]) null);
     }
+    public Message getMessage(LangKey key, String... args) {
+        return getMessage(null, key, (String[]) null);
+    }
 
     public Message getMessage(String username, LangKey key) {
         return getMessage(username, key, (String[]) null);
@@ -132,7 +132,7 @@ public class LangManager {
         String setLanguage = CONFIG_LANGUAGE;
 
         if(username != null) {
-            PlayerMetaData meta = hytaleEssentials.getPlayerDataManager().getPlayerMetaData(username);
+            PlayerData meta = hytaleEssentials.getPlayerDataManager().getPlayerMetaData(username);
             if (meta != null && meta.getLanguage() != null) {
                 setLanguage = meta.getLanguage();
             }
@@ -163,9 +163,6 @@ public class LangManager {
             return null;
         }
     }
-
-    public JsonObject getLanguage(String languageName) { return langCache.get(languageName);}
-    public HashMap<String, JsonObject> getLangCache() {return langCache;}
 
     private static class LangEntry {
         String text;

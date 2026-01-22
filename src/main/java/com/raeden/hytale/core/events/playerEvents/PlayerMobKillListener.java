@@ -1,4 +1,4 @@
 package com.raeden.hytale.core.events.playerEvents;
 
-public class playerBlockBreakEvent {
+public class PlayerMobKillListener {
 }

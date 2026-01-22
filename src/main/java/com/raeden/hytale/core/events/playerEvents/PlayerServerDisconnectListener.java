@@ -1,21 +1,18 @@
 package com.raeden.hytale.core.events.playerEvents;
 
-import com.hypixel.hytale.server.core.entity.entities.Player;
 import com.hypixel.hytale.server.core.event.events.player.PlayerDisconnectEvent;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.raeden.hytale.HytaleEssentials;
 import com.raeden.hytale.core.data.PlayerDataManager;
-import com.raeden.hytale.core.data.PlayerMetaData;
+import com.raeden.hytale.core.data.PlayerData;
 
-import static com.raeden.hytale.HytaleEssentials.myLogger;
-
-public class playerServerDisconnectEvent {
+public class PlayerServerDisconnectListener {
     public static void onPlayerDisconnect(PlayerDisconnectEvent e, HytaleEssentials hytaleEssentials) {
         PlayerRef playerRef = e.getPlayerRef();
         String username = playerRef.getUsername();
 
         PlayerDataManager dataManager = hytaleEssentials.getPlayerDataManager();
-        PlayerMetaData data = dataManager.getPlayerMetaData(username);
+        PlayerData data = dataManager.getPlayerMetaData(username);
 
         if(data == null) return;
 
@@ -24,18 +21,18 @@ public class playerServerDisconnectEvent {
         dataManager.removeActivePlayer(username);
     }
 
-    private static void disconnectActions(PlayerRef playerRef, PlayerDataManager playerDataManager, PlayerMetaData playerMetaData) {
-        savePlayTime(playerDataManager, playerMetaData);
+    private static void disconnectActions(PlayerRef playerRef, PlayerDataManager playerDataManager, PlayerData playerData) {
+        savePlayTime(playerDataManager, playerData);
     }
 
-    private static void savePlayTime(PlayerDataManager dataManager, PlayerMetaData playerMetaData) {
+    private static void savePlayTime(PlayerDataManager dataManager, PlayerData playerData) {
         long timeNow = System.currentTimeMillis();
-        long sessionDuration = timeNow -  playerMetaData.getSessionStart();
+        long sessionDuration = timeNow -  playerData.getSessionStart();
 
         if(sessionDuration > 0) {
-            playerMetaData.setPlayTimeMillis(playerMetaData.getPlayTimeMillis() + sessionDuration);
+            playerData.setPlayTimeMillis(playerData.getPlayTimeMillis() + sessionDuration);
         }
 
-        playerMetaData.setSessionStart(System.currentTimeMillis());
+        playerData.setSessionStart(System.currentTimeMillis());
     }
 }

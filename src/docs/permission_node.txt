@@ -1,0 +1,17 @@
+admin:
+ors.essentials.admin
+
+analytics:
+ors.essentials.analytics
+
+chatcontrol:
+ors.essentials.chatcontrol
+
+economy:
+ors.essentials.economy
+
+rank:
+ors.essentials.rank
+
+socials:
+ors.essentials.socials

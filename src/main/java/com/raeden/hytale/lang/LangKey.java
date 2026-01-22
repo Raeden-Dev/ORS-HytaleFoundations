@@ -22,13 +22,28 @@ public enum LangKey {
     USER_ONLINE_CHECK_FAILURE("Failed to check if player {0} is online!"),
     INV_SLOT_CHECK_ERROR("Failed to check inventory slots for player {0}"),
 
-    PLAYER_MUTED("You cannot send message to {0} because you are muted!", colors.MC_RED, true),
+    // Chat
+    PRIVATE_MSG_FORMAT_SENDER("You -> {0}: {1}"),
+    PRIVATE_MSG_FORMAT_RECEIVER("{0} -> You: {1}"),
+    PRIVATE_MSG_FORMAT_ADMIN("[PVT MSG] {0} -> {1}: {2}"),
+    PLAYER_BLOCKED_SENDER("Cannot send message to {0}, they have blocked you!"),
+    PLAYER_MUTED("You cannot send message because you are muted!", colors.MC_RED, true),
+    PLAYER_MUTED_W_TIME("You cannot send message because you are muted! (Time Remaining: {0})", colors.MC_RED, true),
+    PLAYER_MUTED_PM("You cannot send message to {0} because you are muted!", colors.MC_RED, true),
+    PLAYER_MUTED_PM_W_TIME("You cannot send message to {0} because you are muted! (Time Remaining: {1})", colors.MC_RED, true),
     RECEIVER_NOT_ONLINE("{0} is not online!", colors.MC_RED, true),
     RECEIVER_IS_MUTED("{0} is muted, they cannot reply to your message!", colors.MC_RED, true),
     PLAYER_SELF_MSG("You cannot send a private message to yourself!", colors.MC_RED, true),
     PLAYER_NO_RECEIVER("You have no one to reply to! /msg [player] first.", colors.MC_RED, true),
-    PRIVATE_MSG_FORMAT("{0} -> {1}: {2}"),
-    PRIVATE_MSG_FORMAT_ADMIN("[PVT MSG] {0} -> {1}: {2}");
+    CHAT_LOG_EXPORTED("Successfully exported chat log ({0}) at {1}"),
+    CHAT_LOG_EXPORT_FAIL("Failed to export chat log {0}"),
+
+    // Plugin Actions
+    PA_CLEAR_CHAT("Whole chat messages were purged."),
+    PA_CLEAR_CHAT_AMOUNT("{0} previous chat messages"),
+    PA_CHAT_LOG_EXPORTED("[{0}] » Exported Chat Log."),
+    PA_CHAT_LOG_EXPORT_FAIL("[{0}] » Failed to export chat Log."),
+    PA_CLEAR_ACTIVE_MESSENGER_CACHE("[{0}] » Cleared active private messenger cache...");
 
 
     private final colors startColor;

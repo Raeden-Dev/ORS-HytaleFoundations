@@ -16,13 +16,13 @@ import java.util.Objects;
 
 import static com.raeden.hytale.HytaleEssentials.GSON;
 import static com.raeden.hytale.HytaleEssentials.myLogger;
-import static com.raeden.hytale.utils.generalUtils.findPlayerByName;
+import static com.raeden.hytale.utils.GeneralUtils.findPlayerByName;
 
 public class PlayerDataManager {
     private final HytaleEssentials hytaleEssentials;
     private final Path playerDataPath;
 
-    private final LinkedHashMap<String, PlayerMetaData> activePlayers;
+    private final LinkedHashMap<String, PlayerData> activePlayers;
 
     public PlayerDataManager(HytaleEssentials hytaleEssentials) {
         this.hytaleEssentials = hytaleEssentials;
@@ -42,11 +42,11 @@ public class PlayerDataManager {
         }
     }
 
-    public PlayerMetaData getPlayerMetaData(String username) {
+    public PlayerData getPlayerMetaData(String username) {
         return activePlayers.get(username);
     }
 
-    public void addNewActivePlayer(String username, PlayerMetaData metaData) {
+    public void addNewActivePlayer(String username, PlayerData metaData) {
         activePlayers.put(username, metaData);
     }
 
@@ -54,11 +54,11 @@ public class PlayerDataManager {
         activePlayers.remove(username);
     }
 
-    public LinkedHashMap<String, PlayerMetaData> getActivePlayers() {
+    public LinkedHashMap<String, PlayerData> getActivePlayers() {
         return activePlayers;
     }
 
-    public void savePlayerMetaData(String username, PlayerMetaData metaData) {
+    public void savePlayerMetaData(String username, PlayerData metaData) {
         Path savePath = playerDataPath.resolve(username + ".json");
         String toJson = GSON.toJson(metaData);
         try {
@@ -73,7 +73,7 @@ public class PlayerDataManager {
         if(Files.exists(dataFile)) {
             try {
                 String readPlayerData = Files.readString(dataFile, StandardCharsets.UTF_8);
-                PlayerMetaData metaData = GSON.fromJson(readPlayerData, PlayerMetaData.class);
+                PlayerData metaData = GSON.fromJson(readPlayerData, PlayerData.class);
 
                 if(metaData == null) {
                     myLogger.atWarning().log("No data found for player: " + username);
@@ -96,14 +96,22 @@ public class PlayerDataManager {
             return;
         }
 
-        PlayerMetaData data = new PlayerMetaData();
+        PlayerData data = new PlayerData();
         String username = playerRef.getUsername();
 
-        data.setNickname("");
+        Ref<EntityStore> ref = playerRef.getReference();
+        Store<EntityStore> store = Objects.requireNonNull(ref).getStore();
+        UUIDComponent uuidComponent = store.getComponent(ref, UUIDComponent.getComponentType());
+
+        data.setUUID(Objects.requireNonNull(uuidComponent).getUuid());
+        data.addUsername(username);
         data.setLanguage("en-us");
+        data.setNickname("");
+
         data.setFirstJoined(0);
         data.setLastJoined(0);
         data.setPlayTimeMillis(0);
+
         data.setTotalDeaths(0);
         data.setPlayerKills(0);
         data.setMobKills(0);
@@ -112,23 +120,21 @@ public class PlayerDataManager {
         data.setBlocksBroken(0);
         data.setBlocksPlaced(0);
         data.setDistanceWalked(0);
+
         data.setItemsCrafted(0);
         data.setItemsBroken(0);
+
         data.setGodModeEnabled(false);
         data.setVanished(false);
         data.setFlying(false);
+
+        data.setSendingPvtMsg(false);
+        data.setTotalMessagesSent(0);
         data.setMuted(false);
-
-        Ref<EntityStore> ref = playerRef.getReference();
-        Store<EntityStore> store = Objects.requireNonNull(ref).getStore();
-        UUIDComponent uuidComponent = store.getComponent(ref, UUIDComponent.getComponentType());
-
-        data.setUUID(Objects.requireNonNull(uuidComponent).getUuid());
-        data.addUsername(username);
+        data.setSilenced(false);
 
         addNewActivePlayer(username, data);
         savePlayerMetaData(username, data);
-
     }
 
 

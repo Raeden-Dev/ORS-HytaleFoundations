@@ -1,25 +1,24 @@
 package com.raeden.hytale.core.data;
 
 import com.hypixel.hytale.math.vector.Location;
-import com.hypixel.hytale.server.core.entity.UUIDComponent;
 import com.raeden.hytale.modules.admin.PlayerOffence;
 
 import java.util.*;
 
-public class PlayerMetaData {
+public class PlayerData {
+    // general
     private UUID UUID;
     private List<String> username = new ArrayList<>();
     private String language;
     private String nickname;
 
+    // playtime
     private long firstJoined;
     private long lastJoined;
     private long playTimeMillis;
-
     private transient long sessionStart = 0;
 
-    private HashMap<String, Double> balances = new HashMap<>();
-
+    // Stats
     private int totalDeaths;
     private int playerKills;
     private int mobKills;
@@ -32,14 +31,25 @@ public class PlayerMetaData {
     private int itemsCrafted;
     private int itemsBroken;
 
+    // Admin
     private boolean godModeEnabled;
     private boolean isVanished;
     private boolean isFlying;
-
-    private final Map<String, Location> homes = new HashMap<>();
-    private boolean isMuted;
     private List<PlayerOffence> offences = new ArrayList<>();
 
+    // Convenience
+    private final Map<String, Location> homes = new HashMap<>();
+
+    // Economy
+    private HashMap<String, Long> balances = new HashMap<>();
+
+    // Chat
+    private boolean sendingPvtMsg;
+    private long totalMessagesSent;
+    private boolean isMuted;
+    private long muteDuration;
+    private boolean isSilenced;
+    private List<String> blockedPlayers = new ArrayList<>();
 
     public UUID getUUID() {return UUID;}
     public void setUUID(UUID UUID) {this.UUID = UUID;}
@@ -64,10 +74,10 @@ public class PlayerMetaData {
     public long getSessionStart() {return sessionStart;}
     public void setSessionStart(long sessionStart) {this.sessionStart = sessionStart;}
 
-    public double getCurrencyBalance(String currency) {return balances.get(currency);}
-    public HashMap<String, Double> getBalances() {return balances;}
-    public void setCurrencyBalance(String currency, double balance) {this.balances.put(currency, balance);}
-    public void setBalances(HashMap<String, Double> balances) {this.balances = balances;}
+    public long getCurrencyBalance(String currency) {return balances.getOrDefault(currency, 0L);}
+    public HashMap<String, Long> getBalances() {return balances;}
+    public void setCurrencyBalance(String currency, long balance) {this.balances.put(currency, balance);}
+    public void setBalances(HashMap<String, Long> balances) {this.balances = balances;}
 
     public int getTotalDeaths() {return totalDeaths;}
     public void addDeath() { this.totalDeaths++;}
@@ -124,4 +134,21 @@ public class PlayerMetaData {
     public void setDamageTaken(int damageTaken) {this.damageTaken = damageTaken;}
     public int getDamageGiven() {return damageGiven;}
     public void setDamageGiven(int damageGiven) {this.damageGiven = damageGiven;}
+
+    public long getTotalMessagesSent() {return totalMessagesSent;}
+    public void increaseMessageSent() {totalMessagesSent++;}
+    public void setTotalMessagesSent(long totalMessagesSent) {this.totalMessagesSent = totalMessagesSent;}
+
+    public boolean isSilenced() {return isSilenced;}
+    public void setSilenced(boolean silenced) {isSilenced = silenced;}
+
+    public List<String> getBlockedPlayers() {return blockedPlayers;}
+    public void addNewBlockedPlayer(String username) { blockedPlayers.add(username);}
+    public void setBlockedPlayers(List<String> blockedPlayers) {this.blockedPlayers = blockedPlayers;}
+
+    public boolean isSendingPvtMsg() {return sendingPvtMsg;}
+    public void setSendingPvtMsg(boolean sendingPvtMsg) {this.sendingPvtMsg = sendingPvtMsg;}
+
+    public long getMuteDuration() {return muteDuration;}
+    public void setMuteDuration(long muteDuration) {this.muteDuration = muteDuration;}
 }

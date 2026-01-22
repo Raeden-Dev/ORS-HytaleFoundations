@@ -5,9 +5,9 @@ import com.hypixel.hytale.server.core.entity.entities.Player;
 import com.hypixel.hytale.server.core.event.events.player.PlayerReadyEvent;
 import com.raeden.hytale.HytaleEssentials;
 import com.raeden.hytale.core.data.PlayerDataManager;
-import com.raeden.hytale.core.data.PlayerMetaData;
+import com.raeden.hytale.core.data.PlayerData;
 
-public class playerServerJoinEvent {
+public class PlayerServerJoinListener {
     public static void onPlayerJoin(PlayerReadyEvent e, HytaleEssentials hytaleEssentials) {
         Player player = e.getPlayer();
         String username = e.getPlayer().getDisplayName();
@@ -15,7 +15,7 @@ public class playerServerJoinEvent {
         PlayerDataManager dataManager = hytaleEssentials.getPlayerDataManager();
         dataManager.loadPlayerMetaData(username);
 
-        PlayerMetaData data = dataManager.getPlayerMetaData(username);
+        PlayerData data = dataManager.getPlayerMetaData(username);
 
         if(data.getPlayTimeMillis() == 0) {
             player.sendMessage(Message.raw("Welcome " + player.getDisplayName() + " to the server!"));
