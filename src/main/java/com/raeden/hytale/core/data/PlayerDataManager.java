@@ -6,6 +6,7 @@ import com.hypixel.hytale.server.core.entity.UUIDComponent;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import com.raeden.hytale.HytaleEssentials;
+import com.raeden.hytale.lang.LangKey;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -14,8 +15,7 @@ import java.nio.file.Path;
 import java.util.LinkedHashMap;
 import java.util.Objects;
 
-import static com.raeden.hytale.HytaleEssentials.GSON;
-import static com.raeden.hytale.HytaleEssentials.myLogger;
+import static com.raeden.hytale.HytaleEssentials.*;
 import static com.raeden.hytale.utils.GeneralUtils.findPlayerByName;
 
 public class PlayerDataManager {
@@ -35,10 +35,10 @@ public class PlayerDataManager {
         try {
             if(!Files.exists(playerDataPath)) {
                 Files.createDirectories(playerDataPath);
-                myLogger.atInfo().log("Created data folder: " + playerDataPath);
+                myLogger.atInfo().log(langManager.getMessage(LangKey.CREATE_DIRECTORY_W_LOC, "player data", playerDataPath.toString()).getAnsiMessage());
             }
         } catch (IOException e) {
-            myLogger.atWarning().log("Failed to create data folder: " + playerDataPath);
+            myLogger.atWarning().log(langManager.getMessage(LangKey.CREATE_DIRECTORY_FAIL_W_LOC, "player data", playerDataPath.toString()).getAnsiMessage());
         }
     }
 
@@ -64,7 +64,7 @@ public class PlayerDataManager {
         try {
             Files.writeString(savePath, toJson, StandardCharsets.UTF_8);
         } catch (IOException e) {
-            myLogger.atSevere().log("Failed to save player metadata for player: " + username);
+            myLogger.atSevere().log(langManager.getMessage(LangKey.SAVE_FAILURE, "player data for player: ", username).getAnsiMessage());
         }
     }
 
@@ -76,14 +76,14 @@ public class PlayerDataManager {
                 PlayerData metaData = GSON.fromJson(readPlayerData, PlayerData.class);
 
                 if(metaData == null) {
-                    myLogger.atWarning().log("No data found for player: " + username);
+                    myLogger.atSevere().log(langManager.getMessage(LangKey.LOAD_FAILURE, "player data of: ", username).getAnsiMessage());
                 } else {
                     addNewActivePlayer(username, metaData);
                     return;
                 }
 
             } catch (IOException e) {
-                myLogger.atSevere().log("Failed to load player metadata for player: " + username);
+                myLogger.atSevere().log(langManager.getMessage(LangKey.LOAD_FAILURE, "player data of: ", username).getAnsiMessage());
             }
         }
 
@@ -92,7 +92,7 @@ public class PlayerDataManager {
 
     public void createDefaultPlayerData(PlayerRef playerRef) {
         if(playerRef == null) {
-            myLogger.atSevere().log("Failed to create MetaData for a player!");
+            myLogger.atSevere().log(langManager.getMessage(LangKey.CREATE_FAILURE, "player data!").getAnsiMessage());
             return;
         }
 

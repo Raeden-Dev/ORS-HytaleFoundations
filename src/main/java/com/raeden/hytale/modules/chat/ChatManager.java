@@ -45,9 +45,9 @@ public class ChatManager {
         if(!Files.exists(chatLogDir)) {
             try {
                 Files.createDirectories(chatLogDir);
-                myLogger.atInfo().log(langManager.getMessage(LangKey.CREATE_DIRECTORY_W_LOC, "chat", chatLogDir.toString()).toString());
+                myLogger.atInfo().log(langManager.getMessage(LangKey.CREATE_DIRECTORY_W_LOC, "chat", chatLogDir.toString()).getAnsiMessage());
             } catch (IOException e) {
-                myLogger.atWarning().log(langManager.getMessage(LangKey.CREATE_DIRECTORY_FAIL_W_LOC,"chat", chatLogDir.toString()).toString());
+                myLogger.atWarning().log(langManager.getMessage(LangKey.CREATE_DIRECTORY_FAIL_W_LOC,"chat", chatLogDir.toString()).getAnsiMessage());
             }
         }
     }
@@ -79,9 +79,9 @@ public class ChatManager {
                 writer.newLine();
             }
             writer.write("---- END ----");
-            myLogger.atInfo().log(langManager.getMessage(LangKey.CHAT_LOG_EXPORTED, fileName, chatLogDir.toString()).toString());
+            myLogger.atInfo().log(langManager.getMessage(LangKey.CHAT_LOG_EXPORTED, fileName, chatLogDir.toString()).getAnsiMessage());
         } catch (IOException e) {
-            myLogger.atSevere().log(langManager.getMessage(LangKey.CHAT_LOG_EXPORT_FAIL, fileName).toString());
+            myLogger.atSevere().log(langManager.getMessage(LangKey.CHAT_LOG_EXPORT_FAIL, fileName).getAnsiMessage());
         }
     }
 

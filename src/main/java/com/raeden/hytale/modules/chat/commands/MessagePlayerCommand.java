@@ -17,6 +17,7 @@ import com.raeden.hytale.modules.chat.ChatManager;
 import javax.annotation.Nonnull;
 
 import static com.raeden.hytale.HytaleEssentials.langManager;
+import static com.raeden.hytale.core.utils.Permissions.isPlayerAdmin;
 import static com.raeden.hytale.utils.GeneralUtils.findPlayerByName;
 
 public class MessagePlayerCommand extends AbstractPlayerCommand {
@@ -28,15 +29,20 @@ public class MessagePlayerCommand extends AbstractPlayerCommand {
         super("message", "Send a private message to a player");
         this.hytaleEssentials = hytaleEssentials;
         this.addAliases("msg");
+        this.setAllowsExtraArguments(true);
 
         receiver = withRequiredArg("player", "The message receiver", ArgTypes.STRING);
         message = withRequiredArg("message", "Message to send the receiver", ArgTypes.STRING);
     }
     @Override
     protected void execute(@Nonnull CommandContext commandContext, @Nonnull Store<EntityStore> store, @Nonnull Ref<EntityStore> ref, @Nonnull PlayerRef sender, @Nonnull World world) {
+        boolean isAdmin = isPlayerAdmin(commandContext.sender());
         String senderUsername = commandContext.sender().getDisplayName();
-        String receiverUsername = receiver.toString();
-        PlayerRef receiver = findPlayerByName(String.valueOf(this.receiver));
+        String receiverUsername = commandContext.get(this.receiver);
+        String[] rawMessage = commandContext.getInputString().split("\\s+", 3);
+        String messageContent = rawMessage[2];
+
+        PlayerRef receiver = findPlayerByName("MessageCommand", receiverUsername);
         if(receiver == null) {
             commandContext.sender().sendMessage(langManager.getMessage(senderUsername, LangKey.RECEIVER_NOT_ONLINE, receiverUsername));
             return;
@@ -46,26 +52,30 @@ public class MessagePlayerCommand extends AbstractPlayerCommand {
         PlayerData senderData = hytaleEssentials.getPlayerDataManager().getPlayerMetaData(sender.getUsername());
         PlayerData receiverData = hytaleEssentials.getPlayerDataManager().getPlayerMetaData(receiver.getUsername());
 
-        if(senderData.isMuted()) {
+        if(senderData.isMuted() && !isAdmin) {
             commandContext.sender().sendMessage(langManager.getMessage(senderUsername, LangKey.PLAYER_MUTED_PM, receiverUsername));
             return;
         }
-        if(receiverData.isMuted()) {
+        if(receiverData.isMuted() && !isAdmin) {
             commandContext.sender().sendMessage(langManager.getMessage(senderUsername, LangKey.RECEIVER_IS_MUTED, receiverUsername));
             return;
         }
 
-        if(receiverData.getBlockedPlayers().contains(senderUsername)) {
+        if(receiverData.getBlockedPlayers().contains(senderUsername) && !isAdmin) {
             commandContext.sender().sendMessage(langManager.getMessage(senderUsername, LangKey.PLAYER_BLOCKED_SENDER, receiverUsername));
             return;
         }
 
-        senderData.setSendingPvtMsg(true);
-        receiver.sendMessage(langManager.getMessage(receiverUsername, LangKey.PRIVATE_MSG_FORMAT_RECEIVER, senderUsername, message.toString()));
-        sender.sendMessage(langManager.getMessage(senderUsername, LangKey.PRIVATE_MSG_FORMAT_SENDER, receiverUsername, message.toString()));
+        if(receiverUsername.equals(senderUsername) && !isAdmin) {
+            commandContext.sender().sendMessage(langManager.getMessage(senderUsername, LangKey.PLAYER_SELF_MSG));
+            return;
+        }
+
+        receiver.sendMessage(langManager.getMessage(receiverUsername, LangKey.PRIVATE_MSG_FORMAT_RECEIVER, senderUsername, messageContent));
+        sender.sendMessage(langManager.getMessage(senderUsername, LangKey.PRIVATE_MSG_FORMAT_SENDER, receiverUsername, messageContent));
 
         // Need to add for admins
-        senderData.setSendingPvtMsg(false);
+        senderData.increaseMessageSent();
         chatManager.addActiveMessengers(senderUsername, receiverUsername);
 
     }

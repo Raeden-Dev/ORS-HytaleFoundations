@@ -44,7 +44,6 @@ public class PlayerData {
     private HashMap<String, Long> balances = new HashMap<>();
 
     // Chat
-    private boolean sendingPvtMsg;
     private long totalMessagesSent;
     private boolean isMuted;
     private long muteDuration;
@@ -145,9 +144,6 @@ public class PlayerData {
     public List<String> getBlockedPlayers() {return blockedPlayers;}
     public void addNewBlockedPlayer(String username) { blockedPlayers.add(username);}
     public void setBlockedPlayers(List<String> blockedPlayers) {this.blockedPlayers = blockedPlayers;}
-
-    public boolean isSendingPvtMsg() {return sendingPvtMsg;}
-    public void setSendingPvtMsg(boolean sendingPvtMsg) {this.sendingPvtMsg = sendingPvtMsg;}
 
     public long getMuteDuration() {return muteDuration;}
     public void setMuteDuration(long muteDuration) {this.muteDuration = muteDuration;}

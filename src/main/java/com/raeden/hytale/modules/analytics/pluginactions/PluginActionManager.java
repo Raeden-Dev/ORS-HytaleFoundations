@@ -32,9 +32,9 @@ public class PluginActionManager {
         if(!Files.exists(pluginActionPath)) {
             try {
                 Files.createDirectories(pluginActionPath);
-                myLogger.atInfo().log(langManager.getMessage(LangKey.CREATE_DIRECTORY_W_LOC, "action_logs", pluginActionPath.toString()).toString());
+                myLogger.atInfo().log(langManager.getMessage(LangKey.CREATE_DIRECTORY_W_LOC, "action_logs", pluginActionPath.toString()).getAnsiMessage());
             } catch (IOException e) {
-                myLogger.atWarning().log(langManager.getMessage(LangKey.CREATE_DIRECTORY_FAIL_W_LOC,"action_logs", pluginActionPath.toString()).toString());
+                myLogger.atWarning().log(langManager.getMessage(LangKey.CREATE_DIRECTORY_FAIL_W_LOC,"action_logs", pluginActionPath.toString()).getAnsiMessage());
             }
         }
 

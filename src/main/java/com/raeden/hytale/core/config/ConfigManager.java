@@ -28,19 +28,20 @@ public class ConfigManager {
     public ConfigManager(HytaleEssentials hytaleEssentials) {
         this.hytaleEssentials = hytaleEssentials;
         dataDir = hytaleEssentials.getDataDirectory();
+        loadConfigs();
     }
 
     public void loadConfigs() {
         try {
             if (!Files.exists(dataDir)) {
                 Files.createDirectories(dataDir);
-                myLogger.atInfo().log(langManager.getMessage(null, LangKey.CREATE_DIRECTORY_W_LOC, "data directory", dataDir.toString()).toString());
+                myLogger.atInfo().log(langManager.getMessage(null, LangKey.CREATE_DIRECTORY_W_LOC, "data directory", dataDir.toString()).getAnsiMessage());
             }
 
             defaultConfig = loadConfigData();
 
         } catch (IOException e) {
-            myLogger.atSevere().log(langManager.getMessage(null, LangKey.CREATE_DIRECTORY_FAIL, "data directory").toString());
+            myLogger.atSevere().log(langManager.getMessage(null, LangKey.CREATE_DIRECTORY_FAIL, "data directory").getAnsiMessage());
             this.defaultConfig = createDefaultConfig();
         }
     }
@@ -53,12 +54,12 @@ public class ConfigManager {
                 Config config = GSON.fromJson(readConfig, Config.class);
 
                 if (config == null) {
-                    myLogger.atSevere().log(langManager.getMessage(null, LangKey.READ_FAILURE_W_LOC, "config.json", "data directory").toString());
+                    myLogger.atSevere().log(langManager.getMessage(null, LangKey.READ_FAILURE_W_LOC, "config.json", "data directory").getAnsiMessage());
                 } else {
                     return config;
                 }
             } catch (IOException e) {
-                myLogger.atSevere().log(langManager.getMessage(null, LangKey.READ_FAILURE_W_LOC, "config.json", dataDir.toString()).toString());
+                myLogger.atSevere().log(langManager.getMessage(null, LangKey.READ_FAILURE_W_LOC, "config.json", dataDir.toString()).getAnsiMessage());
             }
         }
 
@@ -73,7 +74,7 @@ public class ConfigManager {
         try {
             Files.writeString(savePath, toJson, StandardCharsets.UTF_8);
         } catch (IOException e) {
-            myLogger.atSevere().log(langManager.getMessage(null, LangKey.SAVE_FAILURE_W_LOC, "config.json", "data directory").toString());
+            myLogger.atSevere().log(langManager.getMessage(null, LangKey.SAVE_FAILURE_W_LOC, "config.json", "data directory").getAnsiMessage());
         }
     }
 

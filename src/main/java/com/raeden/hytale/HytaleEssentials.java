@@ -65,12 +65,13 @@ public class HytaleEssentials extends JavaPlugin {
     }
 
     private void registerManagers() {
+        langManager = new LangManager(this);
+        configManager = new ConfigManager(this);
+        langManager.setDefaultLanguage();
+
         scheduler = new Scheduler(this);
         pluginActionManager = new PluginActionManager(this);
 
-        langManager = new LangManager(this);
-        configManager = new ConfigManager(this);
-        configManager.loadConfigs();
         playerDataManager = new PlayerDataManager(this);
         chatManager = new ChatManager(this, scheduler);
     }

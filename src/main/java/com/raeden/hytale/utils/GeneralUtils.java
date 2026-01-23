@@ -16,6 +16,9 @@ import static com.raeden.hytale.HytaleEssentials.myLogger;
 
 public class GeneralUtils {
     public static boolean playerHasInventorySpace(PlayerRef playerRef, int slots) {
+        return playerHasInventorySpace(null, playerRef, slots);
+    }
+    public static boolean playerHasInventorySpace(String caller, PlayerRef playerRef, int slots) {
         if(slots <= 0) {
             return true;
         }
@@ -49,12 +52,17 @@ public class GeneralUtils {
                 return false;
             }
         }  catch (Exception e) {
-            myLogger.atWarning().log(langManager.getMessage(null, LangKey.INV_SLOT_CHECK_ERROR).toString());
+            myLogger.atWarning().log((caller == null ? "" : "[Called by: " + caller + "]") +
+                    langManager.getMessage(LangKey.INV_SLOT_CHECK_ERROR).getAnsiMessage());
             return false;
         }
     }
 
     public static PlayerRef findPlayerByName(String username) {
+        return findPlayerByName(null, username);
+    }
+
+    public static PlayerRef findPlayerByName(String caller, String username) {
         try {
             Universe universe = Universe.get();
             if(universe == null) {
@@ -62,23 +70,31 @@ public class GeneralUtils {
             } else {
                 PlayerRef player = universe.getPlayerByUsername(username, NameMatching.EXACT);
                 if(player == null) {
-                    myLogger.atWarning().log("Failed to find player with username: " + username);
+                    myLogger.atWarning().log((caller == null ? "" : "[Called by: " + caller + "]") +
+                            langManager.getMessage(LangKey.USERNAME_FIND_FAILURE, username).getAnsiMessage()
+                    );
                 }
 
                 return player;
             }
         } catch (Exception e) {
-            myLogger.atWarning().log("Failed to find player with username: " + username + " - " + e.getMessage());
+            myLogger.atWarning().log((caller == null ? "" : "[Called by: " + caller + "]") +
+                    langManager.getMessage(LangKey.USERNAME_FIND_FAILURE, username).getAnsiMessage() + e.getMessage());
             return null;
         }
     }
 
     public static boolean isPlayerOnline(String username) {
+        return isPlayerOnline(null, username);
+    }
+
+    public static boolean isPlayerOnline(String caller, String username) {
         try {
             PlayerRef playerRef = findPlayerByName(username);
             return playerRef != null && playerRef.getReference() != null && playerRef.getReference().isValid();
         } catch (Exception e) {
-            myLogger.atWarning().log("Error checking if player is online: " + username + " - " + e.getMessage());
+            myLogger.atWarning().log((caller == null ? "" : "[Called by: " + caller + "]") +
+                    langManager.getMessage(LangKey.USER_ONLINE_CHECK_FAILURE, username).getAnsiMessage() + " - " + e.getMessage());
             return false;
         }
     }

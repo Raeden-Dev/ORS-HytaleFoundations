@@ -1,24 +1,25 @@
 package com.raeden.hytale.utils;
 
 import com.raeden.hytale.HytaleEssentials;
+import com.raeden.hytale.lang.LangKey;
 
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.concurrent.*;
 
+import static com.raeden.hytale.HytaleEssentials.langManager;
 import static com.raeden.hytale.HytaleEssentials.myLogger;
 
 public class Scheduler {
     private final HytaleEssentials hytaleEssentials;
     private final ScheduledExecutorService scheduler;
     private final LinkedHashMap<String, ScheduledFuture<?>> activeSchedulers;
-    private final boolean debugMode;
+    private boolean debugMode;
 
     public Scheduler(HytaleEssentials hytaleEssentials) {
         this.hytaleEssentials = hytaleEssentials;
         this.scheduler = Executors.newScheduledThreadPool(2);
         activeSchedulers = new LinkedHashMap<>();
-
         debugMode = hytaleEssentials.getConfigManager().getDefaultConfig().isToggleDebug();
     }
 
@@ -39,7 +40,7 @@ public class Scheduler {
             }
         }, delay, unit);
         activeSchedulers.put(taskName, future);
-        if (debugMode) myLogger.atInfo().log("Created runTaskLater: " + taskName);
+        if (debugMode) myLogger.atInfo().log(langManager.getMessage(LangKey.CREATE_SUCCESS, "runTaskLater: " + taskName).getAnsiMessage());
         return future;
     }
 
@@ -48,7 +49,7 @@ public class Scheduler {
         shutdownScheduler(taskName);
         ScheduledFuture<?> future = scheduler.scheduleAtFixedRate(task, initialDelay, period, unit);
         activeSchedulers.put(taskName, future);
-        if (debugMode) myLogger.atInfo().log("Created runTaskTimer: " + taskName);
+        if (debugMode) myLogger.atInfo().log(langManager.getMessage(LangKey.CREATE_SUCCESS, "runTaskTimer: " + taskName).getAnsiMessage());
         return future;
     }
 
@@ -74,7 +75,7 @@ public class Scheduler {
         if (scheduledTask != null) {
             scheduledTask.cancel(true);
             if(debugMode) {
-                myLogger.atInfo().log("Stopped active scheduler: " + scheduleName);
+                myLogger.atInfo().log(langManager.getMessage(LangKey.STOP_SUCCESS, "active scheduler " + scheduleName).getAnsiMessage());
             }
         }
     }

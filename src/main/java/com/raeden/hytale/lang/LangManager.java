@@ -15,14 +15,13 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Objects;
 
-import static com.raeden.hytale.HytaleEssentials.GSON;
-import static com.raeden.hytale.HytaleEssentials.myLogger;
+import static com.raeden.hytale.HytaleEssentials.*;
 import static com.raeden.hytale.utils.ColorUtils.color;
 import static com.raeden.hytale.utils.ColorUtils.gradient;
 
 public class LangManager {
     private final HytaleEssentials hytaleEssentials;
-    private final String CONFIG_LANGUAGE;
+    private String CONFIG_LANGUAGE;
     private final String DEFAULT_LANGUAGE = "en-us";
     private final Path langDir;
     private final HashMap<String, JsonObject> langCache;
@@ -30,7 +29,6 @@ public class LangManager {
     public LangManager(HytaleEssentials hytaleEssentials) {
         this.hytaleEssentials = hytaleEssentials;
         langDir = hytaleEssentials.getDataDirectory().resolve("lang");
-        CONFIG_LANGUAGE = hytaleEssentials.getConfigManager().getDefaultConfig().getLang();
         langCache = new HashMap<>();
         verify();
     }
@@ -39,9 +37,9 @@ public class LangManager {
         if(!Files.exists(langDir)) {
             try {
                 Files.createDirectories(langDir);
-                myLogger.atInfo().log("Created language directory.");
+                myLogger.atInfo().log(getMessage(LangKey.CREATE_DIRECTORY_W_LOC, "language", langDir.toString()).getAnsiMessage());
             } catch (IOException e) {
-                myLogger.atWarning().log("Failed to create language directory! " + e);
+                myLogger.atWarning().log(getMessage(LangKey.CREATE_DIRECTORY_FAIL_W_LOC, "language", langDir.toString()).getAnsiMessage() + e);
             }
         }
 
@@ -51,6 +49,10 @@ public class LangManager {
         }
 
         reloadLanguages();
+    }
+
+    public void setDefaultLanguage() {
+        CONFIG_LANGUAGE = hytaleEssentials.getConfigManager().getDefaultConfig().getLang();
     }
 
     private void saveDefaultLangFile(Path path) {
@@ -68,9 +70,9 @@ public class LangManager {
         String jsonString = GSON.toJson(defaultMap);
         try {
             Files.writeString(path, jsonString, StandardCharsets.UTF_8);
-            myLogger.atInfo().log("Saved en-us.json at lang directory!");
+            myLogger.atInfo().log(getMessage(LangKey.SAVE_W_LOC, "en-us.json", langDir.toString()).getAnsiMessage());
         } catch (IOException e) {
-            myLogger.atSevere().log("Failed to save en-us.json at lang directory!" + e);
+            myLogger.atSevere().log(getMessage(LangKey.SAVE_FAILURE_W_LOC, "en-us.json", langDir.toString()).getAnsiMessage() + e);
         }
     }
 
@@ -89,9 +91,9 @@ public class LangManager {
                 String jsonString = Files.readString(file.toPath());
                 JsonObject jsonObject = JsonParser.parseString(jsonString).getAsJsonObject();
                 langCache.put(langKey, jsonObject);
-                myLogger.atInfo().log("Loaded language: " + fileName);
+                myLogger.atInfo().log(getMessage(LangKey.LOAD_FILE, "language: " + fileName).getAnsiMessage());
             } catch (IOException e) {
-                myLogger.atWarning().log("Failed to load language file: " + fileName);
+                myLogger.atWarning().log(getMessage(LangKey.LOAD_FAILURE, "language: " + fileName).getAnsiMessage());
             }
         }
     }
@@ -100,9 +102,8 @@ public class LangManager {
         return getMessage(null, key, (String[]) null);
     }
     public Message getMessage(LangKey key, String... args) {
-        return getMessage(null, key, (String[]) null);
+        return getMessage(null, key, args);
     }
-
     public Message getMessage(String username, LangKey key) {
         return getMessage(username, key, (String[]) null);
     }
@@ -130,6 +131,8 @@ public class LangManager {
     private LangEntry getLangEntry(String username, LangKey key) {
         String jsonKey = key.getKey();
         String setLanguage = CONFIG_LANGUAGE;
+
+        if(setLanguage == null) setLanguage = DEFAULT_LANGUAGE;
 
         if(username != null) {
             PlayerData meta = hytaleEssentials.getPlayerDataManager().getPlayerMetaData(username);
@@ -159,7 +162,7 @@ public class LangManager {
         try {
             return GSON.fromJson(jsonObject.get(key), LangEntry.class);
         } catch (Exception e) {
-            myLogger.atWarning().log("Error parsing key '" + key + "' in " + language);
+            myLogger.atWarning().log(getMessage(LangKey.READ_FAILURE, "key '" + key + "' in " + language).getAnsiMessage());
             return null;
         }
     }
