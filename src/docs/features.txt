@@ -33,6 +33,11 @@ To Do:
 - /mail [Player name] [Message]
     > /mail view (check's unread mails)
     > /mail history (shows your sent/received history of your last 10 mails)
+    > Has a max limit per day
+
+- /gift [player]
+    > Give an item to a player as a gift
+    > Has a max limit per day
 
 - /playtime [Player name]
     > Shows your or a player's playtime

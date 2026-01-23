@@ -42,15 +42,15 @@ public class MessagePlayerCommand extends AbstractPlayerCommand {
         String[] rawMessage = commandContext.getInputString().split("\\s+", 3);
         String messageContent = rawMessage[2];
 
-        PlayerRef receiver = findPlayerByName("MessageCommand", receiverUsername);
+        PlayerRef receiver = findPlayerByName("Message Command", receiverUsername);
         if(receiver == null) {
             commandContext.sender().sendMessage(langManager.getMessage(senderUsername, LangKey.RECEIVER_NOT_ONLINE, receiverUsername));
             return;
         }
 
         ChatManager chatManager = hytaleEssentials.getChatManager();
-        PlayerData senderData = hytaleEssentials.getPlayerDataManager().getPlayerMetaData(sender.getUsername());
-        PlayerData receiverData = hytaleEssentials.getPlayerDataManager().getPlayerMetaData(receiver.getUsername());
+        PlayerData senderData = hytaleEssentials.getPlayerDataManager().getPlayerMetaData(senderUsername);
+        PlayerData receiverData = hytaleEssentials.getPlayerDataManager().getPlayerMetaData(receiverUsername);
 
         if(senderData.isMuted() && !isAdmin) {
             commandContext.sender().sendMessage(langManager.getMessage(senderUsername, LangKey.PLAYER_MUTED_PM, receiverUsername));
@@ -77,6 +77,5 @@ public class MessagePlayerCommand extends AbstractPlayerCommand {
         // Need to add for admins
         senderData.increaseMessageSent();
         chatManager.addActiveMessengers(senderUsername, receiverUsername);
-
     }
 }
