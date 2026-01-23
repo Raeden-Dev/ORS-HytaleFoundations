@@ -128,7 +128,6 @@ public class PlayerDataManager {
         data.setVanished(false);
         data.setFlying(false);
 
-        data.setSendingPvtMsg(false);
         data.setTotalMessagesSent(0);
         data.setMuted(false);
         data.setSilenced(false);
