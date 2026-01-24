@@ -8,6 +8,8 @@ import com.hypixel.hytale.server.core.event.events.player.PlayerDisconnectEvent;
 import com.hypixel.hytale.server.core.event.events.player.PlayerReadyEvent;
 import com.hypixel.hytale.server.core.plugin.JavaPlugin;
 import com.hypixel.hytale.server.core.plugin.JavaPluginInit;
+
+
 import com.raeden.hytale.core.commands.EssentialsCommand;
 import com.raeden.hytale.core.config.ConfigManager;
 import com.raeden.hytale.core.data.PlayerDataManager;
@@ -16,7 +18,6 @@ import com.raeden.hytale.core.events.playerEvents.PlayerServerDisconnectListener
 import com.raeden.hytale.core.events.playerEvents.PlayerServerJoinListener;
 import com.raeden.hytale.lang.LangManager;
 import com.raeden.hytale.modules.admin.commands.AnnounceCommand;
-import com.raeden.hytale.modules.admin.commands.TitleCommand;
 import com.raeden.hytale.modules.admin.commands.VanishCommand;
 import com.raeden.hytale.modules.analytics.pluginactions.PluginActionManager;
 import com.raeden.hytale.modules.chat.ChatManager;
@@ -24,7 +25,12 @@ import com.raeden.hytale.modules.chat.commands.ClearChatCommand;
 import com.raeden.hytale.modules.chat.commands.MessagePlayerCommand;
 import com.raeden.hytale.modules.chat.commands.ReplyPlayerCommand;
 import com.raeden.hytale.modules.chat.events.PlayerChatListener;
+
+
 import com.raeden.hytale.modules.utility.commands.PlayerInfoCommand;
+import com.raeden.hytale.modules.utility.commands.TitleCommand;
+import com.raeden.hytale.modules.utility.commands.PlaytimeCommand;
+
 import com.raeden.hytale.utils.Scheduler;
 
 import javax.annotation.Nonnull;
@@ -51,9 +57,11 @@ public class HytaleEssentials extends JavaPlugin {
     @Override
     protected void setup() {
         myLogger.atInfo().log("Hytale Essentials loaded!");
-        registerCommands();
-        registerListeners();
+
+        // Managers MUST load first so Data and Configs are ready for commands
         registerManagers();
+        registerListeners();
+        registerCommands();
     }
 
     protected void shutdown() {
@@ -87,20 +95,31 @@ public class HytaleEssentials extends JavaPlugin {
             PlayerChatListener.onPlayerChat(playerChatEvent, this);
         });
 
-        PlayerDeathListener PlayerDeathListener = new PlayerDeathListener(this);
+        // Registering PlayerDeathListener
+        PlayerDeathListener playerDeathListener = new PlayerDeathListener(this);
     }
 
     private void registerCommands() {
+        // Admin & Chat Commands
         this.getCommandRegistry().registerCommand(new EssentialsCommand(this));
-        this.getCommandRegistry().registerCommand(new PlayerInfoCommand());
         this.getCommandRegistry().registerCommand(new AnnounceCommand(this));
-        this.getCommandRegistry().registerCommand(new TitleCommand(this));
         this.getCommandRegistry().registerCommand(new ClearChatCommand(this));
         this.getCommandRegistry().registerCommand(new VanishCommand(this));
-        this.getCommandRegistry().registerCommand(new ClearChatCommand(this));
         this.getCommandRegistry().registerCommand(new MessagePlayerCommand(this));
         this.getCommandRegistry().registerCommand(new ReplyPlayerCommand(this));
+
+        // Utility Commands
+        this.getCommandRegistry().registerCommand(new PlayerInfoCommand());
+
+
+        this.getCommandRegistry().registerCommand(new TitleCommand(this));
+
+
+        this.getCommandRegistry().registerCommand(new PlaytimeCommand(this));
+
+        this.getCommandRegistry().registerCommand(new AnvilCommand());
     }
+
 
     public ConfigManager getConfigManager() {return configManager;}
     public LangManager getLangManager() {return langManager;}

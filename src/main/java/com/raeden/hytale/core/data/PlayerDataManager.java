@@ -138,4 +138,8 @@ public class PlayerDataManager {
 
 
     public Path getPlayerDataPath() {return playerDataPath;}
+
+    public Object getPlayerData(Ref<EntityStore> targetPlayer) {
+        return null;
+    }
 }

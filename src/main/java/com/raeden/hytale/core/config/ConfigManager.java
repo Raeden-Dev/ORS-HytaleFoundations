@@ -95,6 +95,10 @@ public class ConfigManager {
         config.setSaveChatLog(true);
         config.setChatLogSaveInterval(10);
 
+        config.setTitleDefaultFadeIn(10);
+        config.setTitleDefaultStay(70);
+        config.setTitleDefaultFadeOut(20);
+
         return config;
     }
 

@@ -39,5 +39,25 @@ Example of how to write a devlog:
 
 
 =========
-06/01/26:
+24/01/26:
 =========
+** Context: Working on the /title, /playtime, /anvil
+** Goal: to get these features up and running
+
+>Dynamic Title System: Refactored TitleCommand to support custom hex and legacy color codes using a colorize helper, moving away from hardcoded color constants.
+
+>Config Integration: Integrated TitleCommand with the ConfigManager. The command now pulls default fadeIn, stay, and fadeOut values directly from config.json via the Config POJO.
+
+>Argument Expansion: Added optional arguments to the /title command, allowing admins to override default durations on the fly (e.g., /title all "Hello" "World" 20 100 20).
+
+>HytaleEssentials Registry: Updated the main plugin class to pass the plugin instance to utility commands, ensuring they have full access to the server's configuration and manager ecosystem.
+
+>Robust Target Handling: Improved the target argument logic to distinguish between the "all" keyword for global broadcasts and specific PlayerRef lookups.
+
+>Permission Guarding: Implemented explicit permission node checks (essentials.command.title) within the command constructor to prepare for rank-based access control.
+
+>Implemented the /playtime [name] command, integrating with PlayerDataManager and the modern Hytale API to track, cast, and format player session history into readable time.
+
+>Implemented the /anvil command with player-type validation and native UI triggers to provide portable anvil access via the essentials.command.anvil permission.
+
+>failed to fix some tiny bugs which Sir Sakib shall look and fix kindly record while doing so.

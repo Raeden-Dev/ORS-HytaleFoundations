@@ -54,4 +54,17 @@ public class Config {
 
     public int getPvtMsgClearInterval() {return PVT_MSG_CACHE_CLEAR_INTERVAL;}
     public void setPvtMsgClearInterval(int PvtMsgClearInterval) {this.PVT_MSG_CACHE_CLEAR_INTERVAL = PvtMsgClearInterval;}
+
+   private int titleDefaultFadeIn;
+   private int titleDefaultStay;
+   private int titleDefaultFadeOut;
+
+  public int getTitleDefaultFadeIn() { return titleDefaultFadeIn; }
+  public void setTitleDefaultFadeIn(int titleDefaultFadeIn) { this.titleDefaultFadeIn = titleDefaultFadeIn; }
+
+  public int getTitleDefaultStay() { return titleDefaultStay; }
+  public void setTitleDefaultStay(int titleDefaultStay) { this.titleDefaultStay = titleDefaultStay; }
+
+  public int getTitleDefaultFadeOut() { return titleDefaultFadeOut; }
+    public void setTitleDefaultFadeOut(int titleDefaultFadeOut) { this.titleDefaultFadeOut = titleDefaultFadeOut; }
 }

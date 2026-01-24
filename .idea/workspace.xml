@@ -5,18 +5,17 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="24500026-cdfe-4eb7-b260-df31ea3f1bca" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/raeden/hytale/modules/chat/MailManager.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/raeden/hytale/modules/chat/commands/BlockPlayerCommand.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/raeden/hytale/modules/chat/commands/IngorePlayerCommand.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/raeden/hytale/modules/chat/commands/MailCommand.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/raeden/hytale/modules/chat/commands/MutePlayerCommand.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/raeden/hytale/modules/chat/commands/SilencePlayerCommand.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/raeden/hytale/modules/chat/commands/UnblockPlayerCommand.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/raeden/hytale/modules/chat/commands/UnmutePlayerCommand.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/raeden/hytale/modules/utility/commands/AnvilCommand.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/raeden/hytale/modules/utility/commands/PlaytimeCommand.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/raeden/hytale/modules/utility/commands/TitleCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/docs/features.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/docs/features.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/raeden/hytale/modules/chat/commands/MessagePlayerCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/raeden/hytale/modules/chat/commands/MessagePlayerCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/raeden/hytale/modules/chat/commands/ReplyPlayerCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/raeden/hytale/modules/chat/commands/ReplyPlayerCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/docs/devlogs/nafees.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/docs/devlogs/nafees.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/raeden/hytale/HytaleEssentials.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/raeden/hytale/HytaleEssentials.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/raeden/hytale/core/config/Config.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/raeden/hytale/core/config/Config.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/raeden/hytale/core/config/ConfigManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/raeden/hytale/core/config/ConfigManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/raeden/hytale/core/data/PlayerDataManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/raeden/hytale/core/data/PlayerDataManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/raeden/hytale/modules/utility/commands/PlayerInfoCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/raeden/hytale/modules/utility/commands/PlayerInfoCommand.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -42,7 +41,7 @@
   <component name="GithubPullRequestsUISettings">{
   &quot;selectedUrlAndAccountId&quot;: {
     &quot;url&quot;: &quot;https://github.com/Raeden-Dev/ORS-HytaleEssentials.git&quot;,
-    &quot;accountId&quot;: &quot;c5f39ba4-4799-425d-aa5c-69b1b24299ab&quot;
+    &quot;accountId&quot;: &quot;fa71051d-dda1-443e-9e0a-f3c159693166&quot;
   }
 }</component>
   <component name="ProjectColorInfo">{
@@ -62,9 +61,15 @@
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
     &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
     &quot;last_opened_file_path&quot;: &quot;F:/#one_raid_studios/!hytale/projects_plugin/ORS-HytaleEssentials&quot;
   }
 }</component>
+  <component name="RecentsManager">
+    <key name="CreateClassDialog.RecentsKey">
+      <recent name="com.raeden.hytale" />
+    </key>
+  </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
       <changelist id="24500026-cdfe-4eb7-b260-df31ea3f1bca" name="Changes" comment="" />
