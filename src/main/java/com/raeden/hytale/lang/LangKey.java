@@ -4,6 +4,7 @@ import com.raeden.hytale.utils.colors;
 
 public enum LangKey {
     // General
+    NO_PERMISSION("You don't have permission to run that command!", colors.MC_RED, true),
     CREATE_SUCCESS("[INFO] Created {0}"),
     CREATE_FAILURE("[ERROR] Failed to create {0}"),
     CREATE_DIRECTORY("[DIR] Created {0} directory"),
@@ -26,25 +27,40 @@ public enum LangKey {
     USERNAME_FIND_FAILURE("[ERROR] Failed to find player with username {0}"),
     USER_ONLINE_CHECK_FAILURE("[ERROR] Failed to check if player {0} is online!"),
     INV_SLOT_CHECK_ERROR("[ERROR] Failed to check inventory slots for player {0}"),
-
+    INCORRECT_TIME_FORMAT("Time format is incorrect! Correct format: (d|h|m|s eg. 1d8h5m33s)", colors.PALE_RED, true),
+    PLAYER_NEVER_JOINED("Player with username {0} was not found!", colors.PALE_RED, true),
     // Chat
     PRIVATE_MSG_FORMAT_SENDER("You » {0}: {1}", true),
     PRIVATE_MSG_FORMAT_RECEIVER("{0} » You: {1}", true),
     PRIVATE_MSG_FORMAT_ADMIN("[PEEKING] {0} » {1}: {2}",  colors.LIGHT_CRIMSON, true),
     PLAYER_BLOCKED_SENDER("Cannot send message to {0}, they have blocked you!"),
-    PLAYER_MUTED("You cannot send message because you are muted!", colors.MC_RED, true),
-    PLAYER_MUTED_W_TIME("You cannot send message because you are muted! (Time Remaining: {0})", colors.MC_RED, true),
-    PLAYER_MUTED_PM("You cannot send message to {0} because you are muted!", colors.MC_RED, true),
-    PLAYER_MUTED_PM_W_TIME("You cannot send message to {0} because you are muted! (Time Remaining: {1})", colors.MC_RED, true),
     RECEIVER_NOT_ONLINE("{0} is not online!", colors.MC_RED, true),
     RECEIVER_IS_MUTED("{0} is muted, they cannot reply to your message!", colors.MC_RED, true),
     PLAYER_SELF_MSG("You cannot send a private message to yourself!", colors.MC_RED, true),
     PLAYER_NO_RECEIVER("You have no one to reply to! /msg [player] first.", colors.MC_RED, true),
     CHAT_LOG_EXPORTED("Successfully exported chat log ({0}) at {1}"),
     CHAT_LOG_EXPORT_FAIL("Failed to export chat log {0}"),
+    BLOCKED_PLAYER("You've blocked {0}!", colors.MC_RED, true),
+    BLOCKED_PLAYER_ALREADY("{0} is already blocked by you!", colors.MC_RED, true),
+    UNBLOCKED_PLAYER("You've unblocked {0}!", colors.MC_RED, true),
+    NOT_BLOCKED_PLAYER("{0} is not in your blocklist!", colors.MC_RED, true),
+
+    // Mute Command
+    PLAYER_MUTED("You cannot send message because you are muted!", colors.MC_RED, true),
+    PLAYER_MUTED_W_TIME("You cannot send message because you are muted! (Time Remaining: {0})", colors.MC_RED, true),
+    PLAYER_MUTED_PM("You cannot send message to {0} because you are muted!", colors.MC_RED, true),
+    PLAYER_MUTED_PM_W_TIME("You cannot send message to {0} because you are muted! (Time Remaining: {1})", colors.MC_RED, true),
+    MUTE_PLAYER("Muted {0} for {1}", colors.LIME, true),
+    PLAYER_MUTE_MSG("You have been muted by {0} for {1}.", colors.MC_RED, true),
+    UNMUTED_PLAYER("{0} has been unmuted!", colors.LIME, true),
+    PLAYER_UNMUTE_MSG("You have been unmuted by {0}!", colors.LIME, true),
+    MUTE_DURATION_INCREASE("{0} was already muted, increased their duration from {1} to {2}.", colors.LIME, true),
+    PLAYER_MSG_MUTE_DURATION_INCREASE("Your mute duration was increased to {0} by {1}.", colors.MC_RED, true),
+    NOT_MUTED("{0} is not muted!", colors.LIGHT_CRIMSON, true),
 
     // Plugin Actions
     PA_CLEAR_CHAT("Whole chat messages were purged."),
+    PA_CREATED_SCHEDULER("Created scheduler {0} called by {1}"),
     PA_CLEAR_CHAT_AMOUNT("{0} previous chat messages"),
     PA_CHAT_LOG_EXPORTED("[{0}] » Exported Chat Log."),
     PA_CHAT_LOG_EXPORT_FAIL("[{0}] » Failed to export chat Log."),

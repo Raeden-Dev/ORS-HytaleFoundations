@@ -8,7 +8,7 @@ import java.util.*;
 public class PlayerData {
     // general
     private UUID UUID;
-    private List<String> username = new ArrayList<>();
+    private final List<String> username = new ArrayList<>();
     private String language;
     private String nickname;
 
@@ -35,20 +35,20 @@ public class PlayerData {
     private boolean godModeEnabled;
     private boolean isVanished;
     private boolean isFlying;
-    private List<PlayerOffence> offences = new ArrayList<>();
+    private final List<PlayerOffence> offences = new ArrayList<>();
 
     // Convenience
     private final Map<String, Location> homes = new HashMap<>();
 
     // Economy
-    private HashMap<String, Long> balances = new HashMap<>();
+    private final HashMap<String, Long> balances = new HashMap<>();
 
     // Chat
     private long totalMessagesSent;
     private boolean isMuted;
     private long muteDuration;
     private boolean isSilenced;
-    private List<String> blockedPlayers = new ArrayList<>();
+    private final List<String> blockedPlayers = new ArrayList<>();
 
     public UUID getUUID() {return UUID;}
     public void setUUID(UUID UUID) {this.UUID = UUID;}
@@ -58,7 +58,6 @@ public class PlayerData {
 
     public List<String> getUsername() {return username;}
     public void addUsername(String name) {username.add(name);}
-    public void setUsername(List<String> username) {this.username = username;}
 
     public String getNickname() {return nickname;}
     public void setNickname(String nickname) {this.nickname = nickname;}
@@ -76,7 +75,6 @@ public class PlayerData {
     public long getCurrencyBalance(String currency) {return balances.getOrDefault(currency, 0L);}
     public HashMap<String, Long> getBalances() {return balances;}
     public void setCurrencyBalance(String currency, long balance) {this.balances.put(currency, balance);}
-    public void setBalances(HashMap<String, Long> balances) {this.balances = balances;}
 
     public int getTotalDeaths() {return totalDeaths;}
     public void addDeath() { this.totalDeaths++;}
@@ -119,6 +117,7 @@ public class PlayerData {
 
     public void addHome(String name, Location location) {homes.put(name, location);}
     public void removeHome(String name) {homes.remove(name);}
+    public void removeAllHome() {homes.clear();}
     public Map<String, Location> getHomes() {return homes;}
 
     public boolean isMuted() {return isMuted;}
@@ -127,7 +126,7 @@ public class PlayerData {
 
     public List<PlayerOffence> getOffences() {return offences;}
     public void addOffence(PlayerOffence offence) {offences.add(offence);}
-    public void setOffences(List<PlayerOffence> offences) {this.offences = offences;}
+    public void clearOffences() { offences.clear();}
 
     public int getDamageTaken() {return damageTaken;}
     public void setDamageTaken(int damageTaken) {this.damageTaken = damageTaken;}
@@ -143,7 +142,8 @@ public class PlayerData {
 
     public List<String> getBlockedPlayers() {return blockedPlayers;}
     public void addNewBlockedPlayer(String username) { blockedPlayers.add(username);}
-    public void setBlockedPlayers(List<String> blockedPlayers) {this.blockedPlayers = blockedPlayers;}
+    public void removeBlockedPlayer(String username) { blockedPlayers.remove(username);}
+    public void clearBlockList() {blockedPlayers.clear();}
 
     public long getMuteDuration() {return muteDuration;}
     public void setMuteDuration(long muteDuration) {this.muteDuration = muteDuration;}

@@ -8,6 +8,7 @@ import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import com.raeden.hytale.HytaleEssentials;
 import com.raeden.hytale.lang.LangKey;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -19,13 +20,13 @@ import static com.raeden.hytale.HytaleEssentials.*;
 import static com.raeden.hytale.utils.GeneralUtils.findPlayerByName;
 
 public class PlayerDataManager {
-    private final HytaleEssentials hytaleEssentials;
+    //private final HytaleEssentials hytaleEssentials;
     private final Path playerDataPath;
 
     private final LinkedHashMap<String, PlayerData> activePlayers;
 
     public PlayerDataManager(HytaleEssentials hytaleEssentials) {
-        this.hytaleEssentials = hytaleEssentials;
+        //this.hytaleEssentials = hytaleEssentials;
         playerDataPath = hytaleEssentials.getDataDirectory().resolve("data").resolve("players");
         activePlayers = new LinkedHashMap<>();
         verifyPath();
@@ -42,12 +43,37 @@ public class PlayerDataManager {
         }
     }
 
-    public PlayerData getPlayerMetaData(String username) {
+    public boolean doesPlayerDataExist(String username) {
+        File playerDataFile = playerDataPath.resolve(username + ".json").toFile();
+        return playerDataFile.exists();
+    }
+
+    public PlayerData getPlayerDataFromFile(String username) {
+        Path dataFile = playerDataPath.resolve(username + ".json");
+        if(Files.exists(dataFile)) {
+            try {
+                String readPlayerData = Files.readString(dataFile, StandardCharsets.UTF_8);
+                PlayerData playerData = GSON.fromJson(readPlayerData, PlayerData.class);
+
+                if(playerData == null) {
+                    myLogger.atSevere().log(langManager.getMessage(LangKey.LOAD_FAILURE, "player data of: ", username).getAnsiMessage());
+                } else {
+                    return playerData;
+                }
+
+            } catch (IOException e) {
+                myLogger.atSevere().log(langManager.getMessage(LangKey.LOAD_FAILURE, "player data of: ", username).getAnsiMessage());
+            }
+        }
+        return null;
+    }
+
+    public PlayerData getPlayerData(String username) {
         return activePlayers.get(username);
     }
 
-    public void addNewActivePlayer(String username, PlayerData metaData) {
-        activePlayers.put(username, metaData);
+    public void addNewActivePlayer(String username, PlayerData playerData) {
+        activePlayers.put(username, playerData);
     }
 
     public void removeActivePlayer(String username) {
@@ -58,9 +84,9 @@ public class PlayerDataManager {
         return activePlayers;
     }
 
-    public void savePlayerMetaData(String username, PlayerData metaData) {
+    public void savePlayerData(String username, PlayerData playerData) {
         Path savePath = playerDataPath.resolve(username + ".json");
-        String toJson = GSON.toJson(metaData);
+        String toJson = GSON.toJson(playerData);
         try {
             Files.writeString(savePath, toJson, StandardCharsets.UTF_8);
         } catch (IOException e) {
@@ -68,7 +94,7 @@ public class PlayerDataManager {
         }
     }
 
-    public void loadPlayerMetaData(String username) {
+    public void loadPlayerData(String username) {
         Path dataFile = playerDataPath.resolve(username + ".json");
         if(Files.exists(dataFile)) {
             try {
@@ -133,7 +159,7 @@ public class PlayerDataManager {
         data.setSilenced(false);
 
         addNewActivePlayer(username, data);
-        savePlayerMetaData(username, data);
+        savePlayerData(username, data);
     }
 
 

@@ -12,12 +12,12 @@ public class PlayerServerDisconnectListener {
         String username = playerRef.getUsername();
 
         PlayerDataManager dataManager = hytaleEssentials.getPlayerDataManager();
-        PlayerData data = dataManager.getPlayerMetaData(username);
+        PlayerData data = dataManager.getPlayerData(username);
 
         if(data == null) return;
 
         disconnectActions(playerRef, dataManager, data);
-        dataManager.savePlayerMetaData(username, data);
+        dataManager.savePlayerData(username, data);
         dataManager.removeActivePlayer(username);
     }
 

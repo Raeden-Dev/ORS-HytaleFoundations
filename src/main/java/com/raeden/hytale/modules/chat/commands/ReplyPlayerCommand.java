@@ -45,8 +45,8 @@ public class ReplyPlayerCommand extends AbstractPlayerCommand {
             return;
         }
 
-        PlayerData senderData = hytaleEssentials.getPlayerDataManager().getPlayerMetaData(sender.getUsername());
-        PlayerData receiverData = hytaleEssentials.getPlayerDataManager().getPlayerMetaData(receiverUsername);
+        PlayerData senderData = hytaleEssentials.getPlayerDataManager().getPlayerData(sender.getUsername());
+        PlayerData receiverData = hytaleEssentials.getPlayerDataManager().getPlayerData(receiverUsername);
 
         String[] rawMessage = commandContext.getInputString().split("\\s+", 2);
         String messageContent = rawMessage[1];

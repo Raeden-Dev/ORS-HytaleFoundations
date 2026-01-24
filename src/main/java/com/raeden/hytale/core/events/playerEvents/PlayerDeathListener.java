@@ -36,7 +36,7 @@ public class PlayerDeathListener extends DeathSystems.OnDeathSystem {
         assert playerComponent != null;
 
         PlayerDataManager dataManager = hytaleEssentials.getPlayerDataManager();
-        PlayerData data = dataManager.getPlayerMetaData(playerComponent.getDisplayName());
+        PlayerData data = dataManager.getPlayerData(playerComponent.getDisplayName());
 
         if(deathComponent.getDeathInfo() != null) {
             data.setDamageTaken((int) deathComponent.getDeathInfo().getAmount());

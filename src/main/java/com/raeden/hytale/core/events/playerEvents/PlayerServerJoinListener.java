@@ -15,7 +15,7 @@ public class PlayerServerJoinListener {
         PlayerDataManager dataManager = hytaleEssentials.getPlayerDataManager();
         dataManager.loadPlayerMetaData(username);
 
-        PlayerData data = dataManager.getPlayerMetaData(username);
+        PlayerData data = dataManager.getPlayerData(username);
 
         if(data.getPlayTimeMillis() == 0) {
             player.sendMessage(Message.raw("Welcome " + player.getDisplayName() + " to the server!"));

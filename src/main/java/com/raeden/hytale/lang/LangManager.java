@@ -135,7 +135,7 @@ public class LangManager {
         if(setLanguage == null) setLanguage = DEFAULT_LANGUAGE;
 
         if(username != null) {
-            PlayerData meta = hytaleEssentials.getPlayerDataManager().getPlayerMetaData(username);
+            PlayerData meta = hytaleEssentials.getPlayerDataManager().getPlayerData(username);
             if (meta != null && meta.getLanguage() != null) {
                 setLanguage = meta.getLanguage();
             }

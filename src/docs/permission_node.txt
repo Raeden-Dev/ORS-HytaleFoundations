@@ -6,6 +6,10 @@ ors.essentials.analytics
 
 chatcontrol:
 ors.essentials.chatcontrol
+ors.essentials.block
+ors.essentials.mute
+ors.essentials.silence
+ors.essentials.clearchat
 
 economy:
 ors.essentials.economy

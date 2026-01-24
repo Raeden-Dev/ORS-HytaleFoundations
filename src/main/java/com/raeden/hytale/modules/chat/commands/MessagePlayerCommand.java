@@ -49,8 +49,8 @@ public class MessagePlayerCommand extends AbstractPlayerCommand {
         }
 
         ChatManager chatManager = hytaleEssentials.getChatManager();
-        PlayerData senderData = hytaleEssentials.getPlayerDataManager().getPlayerMetaData(senderUsername);
-        PlayerData receiverData = hytaleEssentials.getPlayerDataManager().getPlayerMetaData(receiverUsername);
+        PlayerData senderData = hytaleEssentials.getPlayerDataManager().getPlayerData(senderUsername);
+        PlayerData receiverData = hytaleEssentials.getPlayerDataManager().getPlayerData(receiverUsername);
 
         if(senderData.isMuted() && !isAdmin) {
             commandContext.sender().sendMessage(langManager.getMessage(senderUsername, LangKey.PLAYER_MUTED_PM, receiverUsername));

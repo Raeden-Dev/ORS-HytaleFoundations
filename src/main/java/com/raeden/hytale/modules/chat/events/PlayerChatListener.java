@@ -17,7 +17,7 @@ public class PlayerChatListener {
         PlayerRef playerRef = e.getSender();
         String playerUsername = playerRef.getUsername();
 
-        PlayerData senderData = hytaleEssentials.getPlayerDataManager().getPlayerMetaData(playerUsername);
+        PlayerData senderData = hytaleEssentials.getPlayerDataManager().getPlayerData(playerUsername);
         if(senderData == null) return;
 
         if(senderData.isMuted()) {

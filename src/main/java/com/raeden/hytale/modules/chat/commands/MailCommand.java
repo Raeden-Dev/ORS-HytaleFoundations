@@ -20,7 +20,7 @@ public class MailCommand extends AbstractPlayerCommand {
     private final RequiredArg<String> message;
 
     public MailCommand(HytaleEssentials hytaleEssentials) {
-        super("block", "Unblocks a player so they can interact with you again.");
+        super("mail", "Send a mail to a player.");
         this.hytaleEssentials = hytaleEssentials;
         targetPlayer = withRequiredArg("Player", "Player to send the mail.", ArgTypes.STRING);
         message = withRequiredArg("Message", "Message to send the player.", ArgTypes.STRING);
