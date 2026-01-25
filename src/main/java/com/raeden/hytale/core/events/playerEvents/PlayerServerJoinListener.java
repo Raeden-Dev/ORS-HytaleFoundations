@@ -13,7 +13,7 @@ public class PlayerServerJoinListener {
         String username = e.getPlayer().getDisplayName();
 
         PlayerDataManager dataManager = hytaleEssentials.getPlayerDataManager();
-        dataManager.loadPlayerMetaData(username);
+        dataManager.loadPlayerData(username);
 
         PlayerData data = dataManager.getPlayerData(username);
 

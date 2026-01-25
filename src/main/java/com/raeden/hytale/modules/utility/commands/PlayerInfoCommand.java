@@ -82,35 +82,6 @@ public class PlayerInfoCommand extends AbstractPlayerCommand {
         Ref<EntityStore> targetRef = targetPlayerRef.getReference();
 
 
-
-//        if(targetRef != null && targetRef.isValid()) {
-
-//            Store<EntityStore> targetStore = targetRef.getStore();
-
-//            World targetWorld = targetStore.getExternalData().getWorld();
-
-//            targetWorld.execute(() -> {
-
-//                Player targetPlayerComponent = targetStore.getComponent(targetRef, Player.getComponentType());
-
-//                if(targetPlayerComponent == null) {
-
-//                    commandContext.sendMessage(Message.raw("Failed to run command! Target Player not found!").color(colors.MC_RED.getHex()));
-
-//                } else {
-
-//                    targetPlayerComponent.
-
-//                }
-
-//            });
-
-//
-
-//        }
-
-
-
     }
 
 }

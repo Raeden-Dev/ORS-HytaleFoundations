@@ -22,17 +22,6 @@ public class PlayerServerDisconnectListener {
     }
 
     private static void disconnectActions(PlayerRef playerRef, PlayerDataManager playerDataManager, PlayerData playerData) {
-        savePlayTime(playerDataManager, playerData);
-    }
-
-    private static void savePlayTime(PlayerDataManager dataManager, PlayerData playerData) {
-        long timeNow = System.currentTimeMillis();
-        long sessionDuration = timeNow -  playerData.getSessionStart();
-
-        if(sessionDuration > 0) {
-            playerData.setPlayTimeMillis(playerData.getPlayTimeMillis() + sessionDuration);
-        }
-
-        playerData.setSessionStart(System.currentTimeMillis());
+        playerDataManager.savePlayTime(playerData);
     }
 }

@@ -12,7 +12,6 @@ import static com.raeden.hytale.HytaleEssentials.langManager;
 
 public class PlayerChatListener {
     public static void onPlayerChat(PlayerChatEvent e, HytaleEssentials hytaleEssentials) {
-        System.out.println("PLAYER CHAT EVENT");
         ChatManager chatManager = hytaleEssentials.getChatManager();
         PlayerRef playerRef = e.getSender();
         String playerUsername = playerRef.getUsername();

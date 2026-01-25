@@ -162,6 +162,15 @@ public class PlayerDataManager {
         savePlayerData(username, data);
     }
 
+    public void savePlayTime(PlayerData playerData) {
+        long timeNow = System.currentTimeMillis();
+        long sessionDuration = timeNow -  playerData.getSessionStart();
+        if(sessionDuration > 0) {
+            playerData.setPlayTimeMillis(playerData.getPlayTimeMillis() + sessionDuration);
+        }
+        playerData.setSessionStart(System.currentTimeMillis());
+    }
+
 
     public Path getPlayerDataPath() {return playerDataPath;}
 

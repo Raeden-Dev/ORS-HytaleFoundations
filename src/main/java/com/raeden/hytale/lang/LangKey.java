@@ -58,6 +58,9 @@ public enum LangKey {
     PLAYER_MSG_MUTE_DURATION_INCREASE("Your mute duration was increased to {0} by {1}.", colors.MC_RED, true),
     NOT_MUTED("{0} is not muted!", colors.LIGHT_CRIMSON, true),
 
+    // Utility
+    PLAYER_PLAYTIME("» Total playtime of {0}: {1}", colors.MC_YELLOW, true),
+
     // Plugin Actions
     PA_CLEAR_CHAT("Whole chat messages were purged."),
     PA_CREATED_SCHEDULER("Created scheduler {0} called by {1}"),
