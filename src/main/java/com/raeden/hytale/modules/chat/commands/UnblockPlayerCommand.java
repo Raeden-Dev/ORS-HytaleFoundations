@@ -50,10 +50,10 @@ public class UnblockPlayerCommand extends AbstractPlayerCommand {
 
         List<String> blockedPlayers = senderData.getBlockedPlayers();
         if(blockedPlayers.contains(targetUsername)) {
-            commandContext.sender().sendMessage(langManager.getMessage(senderUsername, LangKey.NOT_BLOCKED_PLAYER, targetUsername));
-        } else {
             senderData.removeBlockedPlayer(targetUsername);
             commandContext.sender().sendMessage(langManager.getMessage(senderUsername, LangKey.UNBLOCKED_PLAYER, targetUsername));
+        } else {
+            commandContext.sender().sendMessage(langManager.getMessage(senderUsername, LangKey.NOT_BLOCKED_PLAYER, targetUsername));
         }
     }
 }
