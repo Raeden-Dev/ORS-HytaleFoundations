@@ -29,6 +29,7 @@ public enum LangKey {
     INV_SLOT_CHECK_ERROR("[ERROR] Failed to check inventory slots for player {0}"),
     INCORRECT_TIME_FORMAT("Time format is incorrect! Correct format: (d|h|m|s eg. 1d8h5m33s)", colors.PALE_RED, true),
     PLAYER_NEVER_JOINED("Player with username {0} was not found!", colors.PALE_RED, true),
+    MISMATCH_FOUND("Mismatch found for {0}"),
     // Chat
     PRIVATE_MSG_FORMAT_SENDER("You » {0}: {1}", true),
     PRIVATE_MSG_FORMAT_RECEIVER("{0} » You: {1}", true),

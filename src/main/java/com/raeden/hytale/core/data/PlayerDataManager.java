@@ -1,38 +1,53 @@
 package com.raeden.hytale.core.data;
 
+import com.google.gson.reflect.TypeToken;
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
+import com.hypixel.hytale.server.core.Message;
 import com.hypixel.hytale.server.core.entity.UUIDComponent;
+import com.hypixel.hytale.server.core.entity.entities.Player;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import com.raeden.hytale.HytaleFoundations;
 import com.raeden.hytale.lang.LangKey;
+import com.raeden.hytale.modules.chat.MailManager;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Type;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.LinkedHashMap;
-import java.util.Objects;
+import java.nio.file.StandardOpenOption;
+import java.util.*;
 
 import static com.raeden.hytale.HytaleFoundations.*;
 import static com.raeden.hytale.utils.GeneralUtils.findPlayerByName;
+import static com.raeden.hytale.utils.GeneralUtils.getPlayerUUID;
 
 public class PlayerDataManager {
     //private final HytaleFoundations hytaleFoundations;
+    private final String USERMAP_JSON = "usermap.json";
+    private final String PROFILE_JSON = "profile.json";
+    private final String STATS_JSON = "stats.json";
+    private final String MAIL_JSON = "mailbox.json";
+    private final String HISTORY_JSON = "history.json";
     private final Path playerDataPath;
 
-    private final LinkedHashMap<String, PlayerData> activePlayers;
+    private final LinkedHashMap<String, PlayerProfile> playerProfiles;
+    private final LinkedHashMap<String, PlayerStats> playerStats;
 
     public PlayerDataManager(HytaleFoundations hytaleFoundations) {
         //this.hytaleFoundations = hytaleFoundations;
         playerDataPath = hytaleFoundations.getDataDirectory().resolve("data").resolve("players");
-        activePlayers = new LinkedHashMap<>();
-        verifyPath();
+
+        playerProfiles = new LinkedHashMap<>();
+        playerStats = new LinkedHashMap<>();
+        verifyDataPath();
+        createUserMap();
     }
 
-    private void verifyPath() {
+    private void verifyDataPath() {
         try {
             if(!Files.exists(playerDataPath)) {
                 Files.createDirectories(playerDataPath);
@@ -43,138 +58,286 @@ public class PlayerDataManager {
         }
     }
 
-    public boolean doesPlayerDataExist(String username) {
-        File playerDataFile = playerDataPath.resolve(username + ".json").toFile();
-        return playerDataFile.exists();
-    }
+    // User Map
+    private void createUserMap() {
+        Path userMapPath = playerDataPath.resolve(USERMAP_JSON);
+        LinkedHashMap<UUID, String> users = new LinkedHashMap<>();
+        String toJson = GSON.toJson(users);
 
-    public PlayerData getPlayerDataFromFile(String username) {
-        Path dataFile = playerDataPath.resolve(username + ".json");
-        if(Files.exists(dataFile)) {
+        if(!Files.exists(userMapPath)) {
             try {
-                String readPlayerData = Files.readString(dataFile, StandardCharsets.UTF_8);
-                PlayerData playerData = GSON.fromJson(readPlayerData, PlayerData.class);
-
-                if(playerData == null) {
-                    myLogger.atSevere().log(langManager.getMessage(LangKey.LOAD_FAILURE, "player data of: ", username).getAnsiMessage());
-                } else {
-                    return playerData;
-                }
-
+                Files.writeString(userMapPath, toJson, StandardCharsets.UTF_8);
+                myLogger.atInfo().log(langManager.getMessage(LangKey.CREATE_SUCCESS, USERMAP_JSON).getAnsiMessage());
             } catch (IOException e) {
-                myLogger.atSevere().log(langManager.getMessage(LangKey.LOAD_FAILURE, "player data of: ", username).getAnsiMessage());
+                myLogger.atWarning().log(langManager.getMessage(LangKey.CREATE_FAILURE, USERMAP_JSON).getAnsiMessage());
             }
         }
+    }
+
+    private LinkedHashMap<UUID, String> loadUserMap() {
+        Path userMapPath = playerDataPath.resolve(USERMAP_JSON);
+        if(Files.exists(userMapPath)) {
+            try {
+                String userMap = Files.readString(userMapPath, StandardCharsets.UTF_8);
+                Type type = new TypeToken<LinkedHashMap<UUID, String>>(){}.getType();
+                return GSON.fromJson(userMap, type);
+            } catch (IOException e) {
+                myLogger.atSevere().log(langManager.getMessage(LangKey.LOAD_FAILURE, USERMAP_JSON).getAnsiMessage());
+                return null;
+            }
+        }
+
         return null;
     }
 
-    public PlayerData getPlayerData(String username) {
-        return activePlayers.get(username);
-    }
+    private void updateUserMap(UUID id, String username) {
+        LinkedHashMap<UUID, String> users = loadUserMap();
+        if(users == null) users = new LinkedHashMap<>();
+        String oldUsername = users.get(id);
+        users.put(id, username);
 
-    public void addNewActivePlayer(String username, PlayerData playerData) {
-        activePlayers.put(username, playerData);
-    }
-
-    public void removeActivePlayer(String username) {
-        activePlayers.remove(username);
-    }
-
-    public LinkedHashMap<String, PlayerData> getActivePlayers() {
-        return activePlayers;
-    }
-
-    public void savePlayerData(String username, PlayerData playerData) {
-        Path savePath = playerDataPath.resolve(username + ".json");
-        String toJson = GSON.toJson(playerData);
+        Path userMapPath = playerDataPath.resolve(USERMAP_JSON);
+        String toJson = GSON.toJson(users);
         try {
+            Files.writeString(userMapPath, toJson, StandardCharsets.UTF_8,
+                    StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
+        } catch (IOException e) {
+            myLogger.atWarning().log(langManager.getMessage(LangKey.SAVE_FAILURE, USERMAP_JSON).getAnsiMessage());
+        }
+
+        if (oldUsername != null && !oldUsername.equals(username)) {
+            Path oldDataPath = playerDataPath.resolve(oldUsername);
+            Path newDataPath = playerDataPath.resolve(username);
+
+            if (Files.exists(oldDataPath)) {
+                try {
+                    Files.move(oldDataPath, newDataPath);
+                    Files.delete(oldDataPath);
+                } catch (IOException e) {
+                    myLogger.atSevere().log(e.getMessage());
+                }
+            }
+        }
+    }
+
+    private void verifyUserID(String username) {
+        LinkedHashMap<UUID, String> users = loadUserMap();
+        if(users == null) return;
+
+        UUID playerID = getPlayerUUID(username);
+        boolean mismatch = false;
+
+        for(Map.Entry<UUID, String> entry : users.entrySet()) {
+            if(playerID.equals(entry.getKey())) {
+                if(!entry.getValue().equals(username)) {
+                    myLogger.atWarning().log(langManager.getMessage(LangKey.MISMATCH_FOUND, USERMAP_JSON + " |" + playerID + ", " + entry.getValue() + "[EXPECTED: " + username + "]").getAnsiMessage());
+                    mismatch = true;
+                    break;
+                }
+                break;
+            }
+        }
+        if(mismatch) updateUserMap(playerID, username);
+    }
+
+    // Saving, Loading and Creating Player Data
+    public <T> void savePlayerData(String username, String jsonName, T data) {
+        if (!jsonName.endsWith(".json")) {
+            jsonName += ".json";
+        }
+        Path playerFolder = playerDataPath.resolve(username);
+        Path savePath = playerFolder.resolve(jsonName);
+        String toJson = GSON.toJson(data);
+        try {
+            if (!Files.exists(playerFolder)) {
+                Files.createDirectories(playerFolder);
+            }
             Files.writeString(savePath, toJson, StandardCharsets.UTF_8);
         } catch (IOException e) {
-            myLogger.atSevere().log(langManager.getMessage(LangKey.SAVE_FAILURE, "player data for player: ", username).getAnsiMessage());
+            myLogger.atSevere().log(langManager.getMessage(LangKey.SAVE_FAILURE, jsonName + ".json for player: ", username).getAnsiMessage());
         }
+    }
+
+    public PlayerHistory getPlayerHistory(String username) {
+        Path historyJsonPath = playerDataPath.resolve(username).resolve(HISTORY_JSON);
+        if(Files.exists(historyJsonPath)) {
+            try {
+                String history = Files.readString(historyJsonPath, StandardCharsets.UTF_8);
+                return GSON.fromJson(history, PlayerHistory.class);
+            } catch (IOException e) {
+                myLogger.atSevere().log(langManager.getMessage(LangKey.LOAD_FAILURE, HISTORY_JSON + ": ", username).getAnsiMessage());
+            }
+        }
+        myLogger.atSevere().log(langManager.getMessage(LangKey.LOAD_FAILURE, HISTORY_JSON + ": ", username).getAnsiMessage());
+        return null;
+    }
+
+    public PlayerMailbox getPlayerMailbox(String username) {
+        Path mailJsonPath = playerDataPath.resolve(username).resolve(MAIL_JSON);
+        if(Files.exists(mailJsonPath)) {
+            try {
+                String mails = Files.readString(mailJsonPath, StandardCharsets.UTF_8);
+                return GSON.fromJson(mails, PlayerMailbox.class);
+            } catch (IOException e) {
+                myLogger.atSevere().log(langManager.getMessage(LangKey.LOAD_FAILURE, MAIL_JSON + ": ", username).getAnsiMessage());
+            }
+        }
+        myLogger.atSevere().log(langManager.getMessage(LangKey.LOAD_FAILURE, MAIL_JSON + ": ", username).getAnsiMessage());
+        return null;
     }
 
     public void loadPlayerData(String username) {
-        Path dataFile = playerDataPath.resolve(username + ".json");
-        if(Files.exists(dataFile)) {
+        verifyUserID(username);
+
+        Path dataFolder = playerDataPath.resolve(username);
+        if(!Files.exists(dataFolder)) {
+            createDefaultPlayerData(findPlayerByName(username));
+            return;
+        }
+        // Player Profile
+        Path profileJson = dataFolder.resolve(PROFILE_JSON);
+        if(Files.exists(profileJson)) {
             try {
-                String readPlayerData = Files.readString(dataFile, StandardCharsets.UTF_8);
-                PlayerData metaData = GSON.fromJson(readPlayerData, PlayerData.class);
-
-                if(metaData == null) {
-                    myLogger.atSevere().log(langManager.getMessage(LangKey.LOAD_FAILURE, "player data of: ", username).getAnsiMessage());
-                } else {
-                    addNewActivePlayer(username, metaData);
-                    return;
-                }
-
+                String playerProfile = Files.readString(profileJson, StandardCharsets.UTF_8);
+                PlayerProfile profile = GSON.fromJson(playerProfile, PlayerProfile.class);
+                addPlayerProfile(username, profile);
             } catch (IOException e) {
-                myLogger.atSevere().log(langManager.getMessage(LangKey.LOAD_FAILURE, "player data of: ", username).getAnsiMessage());
+                myLogger.atSevere().log(langManager.getMessage(LangKey.LOAD_FAILURE, PROFILE_JSON + ": ", username).getAnsiMessage());
+            }
+        }
+        // Player Stats
+        Path statsJson = dataFolder.resolve(STATS_JSON);
+        if(Files.exists(statsJson)) {
+            try {
+                String playerStats = Files.readString(statsJson, StandardCharsets.UTF_8);
+                PlayerStats stats = GSON.fromJson(playerStats, PlayerStats.class);
+                addPlayerStats(username, stats);
+            } catch (IOException e) {
+                myLogger.atSevere().log(langManager.getMessage(LangKey.LOAD_FAILURE, STATS_JSON + ": ", username).getAnsiMessage());
             }
         }
 
-        createDefaultPlayerData(findPlayerByName(username));
+
     }
 
-    public void createDefaultPlayerData(PlayerRef playerRef) {
+    private PlayerProfile createPlayerProfile(PlayerRef playerRef) {
+        String username = playerRef.getUsername();
+        UUID playerID = getPlayerUUID(playerRef);
+
+        PlayerProfile profile = new PlayerProfile();
+        profile.setUUID(playerID);
+        profile.addUsername(username);
+        profile.setLanguage("en-us");
+        profile.setNickname("");
+        profile.setGodModeEnabled(false);
+        profile.setVanished(false);
+        profile.setFlying(false);
+        profile.setMuted(false);
+        profile.setMuteDuration(0);
+        profile.setSilenced(false);
+
+        return profile;
+    }
+
+    private PlayerStats createPlayerStats() {
+        PlayerStats stats = new PlayerStats();
+        stats.setFirstJoined(0);
+        stats.setLastJoined(0);
+        stats.setPlayTimeMillis(0);
+        stats.setTotalDeaths(0);
+        stats.setPlayerKills(0);
+        stats.setMobKills(0);
+        stats.setDamageGiven(0);
+        stats.setDamageTaken(0);
+        stats.setBlocksBroken(0);
+        stats.setBlocksPlaced(0);
+        stats.setDistanceWalked(0);
+        stats.setItemsCrafted(0);
+        stats.setItemsBroken(0);
+        stats.setTotalMessagesSent(0);
+
+        return stats;
+    }
+
+    private void createDefaultPlayerData(PlayerRef playerRef) {
         if(playerRef == null) {
             myLogger.atSevere().log(langManager.getMessage(LangKey.CREATE_FAILURE, "player data!").getAnsiMessage());
             return;
         }
 
-        PlayerData data = new PlayerData();
         String username = playerRef.getUsername();
+        UUID id = getPlayerUUID(username);
 
-        Ref<EntityStore> ref = playerRef.getReference();
-        Store<EntityStore> store = Objects.requireNonNull(ref).getStore();
-        UUIDComponent uuidComponent = store.getComponent(ref, UUIDComponent.getComponentType());
+        PlayerProfile profile = createPlayerProfile(playerRef);
+        PlayerStats stats = createPlayerStats();
+        PlayerMailbox mailbox = new PlayerMailbox();
+        PlayerHistory history = new PlayerHistory();
 
-        data.setUUID(Objects.requireNonNull(uuidComponent).getUuid());
-        data.addUsername(username);
-        data.setLanguage("en-us");
-        data.setNickname("");
+        addPlayerProfile(username, profile);
+        addPlayerStats(username, stats);
 
-        data.setFirstJoined(0);
-        data.setLastJoined(0);
-        data.setPlayTimeMillis(0);
+        savePlayerData(username, PROFILE_JSON, profile);
+        savePlayerData(username, STATS_JSON, stats);
+        savePlayerData(username, MAIL_JSON, mailbox);
+        savePlayerData(username, HISTORY_JSON, history);
 
-        data.setTotalDeaths(0);
-        data.setPlayerKills(0);
-        data.setMobKills(0);
-        data.setDamageGiven(0);
-        data.setDamageTaken(0);
-        data.setBlocksBroken(0);
-        data.setBlocksPlaced(0);
-        data.setDistanceWalked(0);
-
-        data.setItemsCrafted(0);
-        data.setItemsBroken(0);
-
-        data.setGodModeEnabled(false);
-        data.setVanished(false);
-        data.setFlying(false);
-
-        data.setTotalMessagesSent(0);
-        data.setMuted(false);
-        data.setSilenced(false);
-
-        addNewActivePlayer(username, data);
-        savePlayerData(username, data);
+        updateUserMap(id, username);
     }
 
-    public void savePlayTime(PlayerData playerData) {
+    public void savePlayTime(String username) {
+        PlayerStats stats = getPlayerStats(username);
+        PlayerProfile profile = getPlayerProfile(username);
+
         long timeNow = System.currentTimeMillis();
-        long sessionDuration = timeNow -  playerData.getSessionStart();
+        long sessionDuration = timeNow -  profile.getSessionStart();
         if(sessionDuration > 0) {
-            playerData.setPlayTimeMillis(playerData.getPlayTimeMillis() + sessionDuration);
+            stats.setPlayTimeMillis(stats.getPlayTimeMillis() + sessionDuration);
         }
-        playerData.setSessionStart(System.currentTimeMillis());
+        profile.setSessionStart(System.currentTimeMillis());
     }
 
+    // Login / Logout used by Events
+    public void playerLogin(Player player) {
+        String username = player.getDisplayName();
 
-    public Path getPlayerDataPath() {return playerDataPath;}
+        loadPlayerData(username);
 
-    public Object getPlayerData(Ref<EntityStore> targetPlayer) {
-        return null;
+        PlayerStats stats = getPlayerStats(username);
+        PlayerProfile profile = getPlayerProfile(username);
+
+        if(stats.getPlayTimeMillis() == 0) {
+            player.sendMessage(Message.raw("Welcome " + player.getDisplayName() + " to the server!"));
+            stats.setFirstJoined(System.currentTimeMillis());
+        }
+
+        stats.setLastJoined(System.currentTimeMillis());
+        profile.setSessionStart(System.currentTimeMillis());
     }
+
+    public void playerLogout(PlayerRef playerRef) {
+        String username = playerRef.getUsername();
+        savePlayTime(username);
+        savePlayerData(username, PROFILE_JSON, getPlayerProfile(username));
+        savePlayerData(username, STATS_JSON, getPlayerStats(username));
+
+        removePlayerStats(username);
+        removePlayerProfile(username);
+    }
+
+    // Management and getters
+    public boolean doesPlayerDataExist(String username) {
+        File playerDataFile = playerDataPath.resolve(username).toFile();
+        return playerDataFile.exists();
+    }
+
+    public PlayerProfile getPlayerProfile(String username) { return playerProfiles.get(username);}
+    public void addPlayerProfile(String username, PlayerProfile profile) {playerProfiles.put(username, profile);}
+    public void removePlayerProfile(String username) { playerProfiles.remove(username);}
+    public LinkedHashMap<String, PlayerProfile> getPlayerProfiles(){return playerProfiles;}
+
+    public PlayerStats getPlayerStats(String username) { return playerStats.get(username);}
+    public void addPlayerStats(String username, PlayerStats stats) {playerStats.put(username, stats);}
+    public void removePlayerStats(String username) { playerStats.remove(username);}
+    public LinkedHashMap<String, PlayerStats> getPlayerStats(){return playerStats;}
+
 }

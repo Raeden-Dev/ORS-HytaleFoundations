@@ -3,6 +3,7 @@ package com.raeden.hytale.utils;
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
 import com.hypixel.hytale.server.core.NameMatching;
+import com.hypixel.hytale.server.core.entity.UUIDComponent;
 import com.hypixel.hytale.server.core.entity.entities.Player;
 import com.hypixel.hytale.server.core.inventory.ItemStack;
 import com.hypixel.hytale.server.core.inventory.container.ItemContainer;
@@ -11,10 +12,28 @@ import com.hypixel.hytale.server.core.universe.Universe;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import com.raeden.hytale.lang.LangKey;
 
+import java.util.Objects;
+import java.util.UUID;
+
 import static com.raeden.hytale.HytaleFoundations.langManager;
 import static com.raeden.hytale.HytaleFoundations.myLogger;
 
 public class GeneralUtils {
+    public static UUID getPlayerUUID(String username) {
+        return getPlayerUUID(findPlayerByName(username));
+    }
+    public static UUID getPlayerUUID(PlayerRef playerRef) {
+        Ref<EntityStore> ref = playerRef.getReference();
+        Store<EntityStore> store = Objects.requireNonNull(ref).getStore();
+        UUIDComponent uuidComponent = store.getComponent(ref, UUIDComponent.getComponentType());
+
+        if (uuidComponent != null) {
+            return uuidComponent.getUuid();
+        }
+
+        return null;
+    }
+
     public static boolean playerHasInventorySpace(PlayerRef playerRef, int slots) {
         return playerHasInventorySpace(null, playerRef, slots);
     }

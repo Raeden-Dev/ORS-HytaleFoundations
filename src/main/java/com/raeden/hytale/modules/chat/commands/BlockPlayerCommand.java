@@ -11,6 +11,7 @@ import com.hypixel.hytale.server.core.universe.world.World;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import com.raeden.hytale.HytaleFoundations;
 import com.raeden.hytale.core.data.PlayerData;
+import com.raeden.hytale.core.data.PlayerProfile;
 import com.raeden.hytale.lang.LangKey;
 
 import javax.annotation.Nonnull;
@@ -47,13 +48,13 @@ public class BlockPlayerCommand extends AbstractPlayerCommand {
             return;
         }
 
-        PlayerData senderData = hytaleFoundations.getPlayerDataManager().getPlayerData(senderUsername);
+        PlayerProfile profile = hytaleFoundations.getPlayerDataManager().getPlayerProfile(senderUsername);
 
-        List<String> blockedPlayers = senderData.getBlockedPlayers();
+        List<String> blockedPlayers = profile.getBlockedPlayers();
         if(blockedPlayers.contains(targetUsername)) {
             commandContext.sender().sendMessage(langManager.getMessage(senderUsername, LangKey.BLOCKED_PLAYER_ALREADY, targetUsername));
         } else {
-            senderData.addNewBlockedPlayer(targetUsername);
+            profile.addNewBlockedPlayer(targetUsername);
             commandContext.sender().sendMessage(langManager.getMessage(senderUsername, LangKey.BLOCKED_PLAYER, targetUsername));
         }
     }

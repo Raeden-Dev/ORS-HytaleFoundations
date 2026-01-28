@@ -5,6 +5,7 @@ import com.google.gson.JsonParser;
 import com.hypixel.hytale.server.core.Message;
 import com.raeden.hytale.HytaleFoundations;
 import com.raeden.hytale.core.data.PlayerData;
+import com.raeden.hytale.core.data.PlayerProfile;
 
 import java.io.File;
 import java.io.IOException;
@@ -135,9 +136,9 @@ public class LangManager {
         if(setLanguage == null) setLanguage = DEFAULT_LANGUAGE;
 
         if(username != null) {
-            PlayerData meta = hytaleFoundations.getPlayerDataManager().getPlayerData(username);
-            if (meta != null && meta.getLanguage() != null) {
-                setLanguage = meta.getLanguage();
+            PlayerProfile profile = hytaleFoundations.getPlayerDataManager().getPlayerProfile(username);
+            if (profile != null && profile.getLanguage() != null) {
+                setLanguage = profile.getLanguage();
             }
         }
 

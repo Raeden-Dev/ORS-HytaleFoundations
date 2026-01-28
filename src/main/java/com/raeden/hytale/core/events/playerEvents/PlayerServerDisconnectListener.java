@@ -12,16 +12,6 @@ public class PlayerServerDisconnectListener {
         String username = playerRef.getUsername();
 
         PlayerDataManager dataManager = hytaleFoundations.getPlayerDataManager();
-        PlayerData data = dataManager.getPlayerData(username);
-
-        if(data == null) return;
-
-        disconnectActions(playerRef, dataManager, data);
-        dataManager.savePlayerData(username, data);
-        dataManager.removeActivePlayer(username);
-    }
-
-    private static void disconnectActions(PlayerRef playerRef, PlayerDataManager playerDataManager, PlayerData playerData) {
-        playerDataManager.savePlayTime(playerData);
+        dataManager.playerLogout(playerRef);
     }
 }

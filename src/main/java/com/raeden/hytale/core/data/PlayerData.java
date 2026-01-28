@@ -121,7 +121,6 @@ public class PlayerData {
     public Map<String, Location> getHomes() {return homes;}
 
     public boolean isMuted() {return isMuted;}
-
     public void setMuted(boolean muted) {isMuted = muted;}
 
     public List<PlayerOffence> getOffences() {return offences;}
@@ -147,4 +146,5 @@ public class PlayerData {
 
     public long getMuteDuration() {return muteDuration;}
     public void setMuteDuration(long muteDuration) {this.muteDuration = muteDuration;}
+
 }

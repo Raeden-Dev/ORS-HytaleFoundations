@@ -34,15 +34,6 @@ public class PlayerDeathListener extends DeathSystems.OnDeathSystem {
         myLogger.atInfo().log("Player just died!");
         Player playerComponent = (Player) store.getComponent(ref, Player.getComponentType());
         assert playerComponent != null;
-
-        PlayerDataManager dataManager = hytaleFoundations.getPlayerDataManager();
-        PlayerData data = dataManager.getPlayerData(playerComponent.getDisplayName());
-
-        if(deathComponent.getDeathInfo() != null) {
-            data.setDamageTaken((int) deathComponent.getDeathInfo().getAmount());
-        }
-
-        data.addDeath();
     }
 
 
