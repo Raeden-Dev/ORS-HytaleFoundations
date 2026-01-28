@@ -8,19 +8,19 @@ import com.hypixel.hytale.server.core.entity.entities.Player;
 import com.hypixel.hytale.server.core.modules.entity.damage.DeathComponent;
 import com.hypixel.hytale.server.core.modules.entity.damage.DeathSystems;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
-import com.raeden.hytale.HytaleEssentials;
+import com.raeden.hytale.HytaleFoundations;
 import com.raeden.hytale.core.data.PlayerDataManager;
 import com.raeden.hytale.core.data.PlayerData;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import static com.raeden.hytale.HytaleEssentials.myLogger;
+import static com.raeden.hytale.HytaleFoundations.myLogger;
 
 public class PlayerDeathListener extends DeathSystems.OnDeathSystem {
-    private final HytaleEssentials hytaleEssentials;
-    public PlayerDeathListener(HytaleEssentials hytaleEssentials) {
-        this.hytaleEssentials = hytaleEssentials;
+    private final HytaleFoundations hytaleFoundations;
+    public PlayerDeathListener(HytaleFoundations hytaleFoundations) {
+        this.hytaleFoundations = hytaleFoundations;
     }
 
     @Nullable
@@ -35,7 +35,7 @@ public class PlayerDeathListener extends DeathSystems.OnDeathSystem {
         Player playerComponent = (Player) store.getComponent(ref, Player.getComponentType());
         assert playerComponent != null;
 
-        PlayerDataManager dataManager = hytaleEssentials.getPlayerDataManager();
+        PlayerDataManager dataManager = hytaleFoundations.getPlayerDataManager();
         PlayerData data = dataManager.getPlayerData(playerComponent.getDisplayName());
 
         if(deathComponent.getDeathInfo() != null) {

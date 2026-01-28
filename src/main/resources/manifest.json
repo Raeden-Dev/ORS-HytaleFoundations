@@ -1,8 +1,8 @@
 {
   "Group": "ORS",
-  "Name": "HytaleEssentials",
+  "Name": "HytaleFoundations",
   "Version": "1.0.0",
-  "Description": "One Raid Studio's Hytale Essentials for Servers.",
+  "Description": "One Raid Studio's Hytale Foundations for Servers.",
   "Authors": [
     {
       "Name": "Raeden",
@@ -16,5 +16,5 @@
   "OptionalDependencies": {},
   "DisabledByDefault": false,
   "IncludesAssetPack": true,
-  "Main": "com.raeden.hytale.HytaleEssentials"
+  "Main": "com.raeden.hytale.HytaleFoundations"
 }

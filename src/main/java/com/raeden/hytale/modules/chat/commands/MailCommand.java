@@ -9,19 +9,18 @@ import com.hypixel.hytale.server.core.command.system.basecommands.AbstractPlayer
 import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.world.World;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
-import com.raeden.hytale.HytaleEssentials;
-import org.bouncycastle.cert.ocsp.Req;
+import com.raeden.hytale.HytaleFoundations;
 
 import javax.annotation.Nonnull;
 
 public class MailCommand extends AbstractPlayerCommand {
-    private final HytaleEssentials hytaleEssentials;
+    private final HytaleFoundations hytaleFoundations;
     private final RequiredArg<String> targetPlayer;
     private final RequiredArg<String> message;
 
-    public MailCommand(HytaleEssentials hytaleEssentials) {
+    public MailCommand(HytaleFoundations hytaleFoundations) {
         super("mail", "Send a mail to a player.");
-        this.hytaleEssentials = hytaleEssentials;
+        this.hytaleFoundations = hytaleFoundations;
         targetPlayer = withRequiredArg("Player", "Player to send the mail.", ArgTypes.STRING);
         message = withRequiredArg("Message", "Message to send the player.", ArgTypes.STRING);
     }

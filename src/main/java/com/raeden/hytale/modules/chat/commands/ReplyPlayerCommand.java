@@ -9,24 +9,24 @@ import com.hypixel.hytale.server.core.command.system.basecommands.AbstractPlayer
 import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.world.World;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
-import com.raeden.hytale.HytaleEssentials;
+import com.raeden.hytale.HytaleFoundations;
 import com.raeden.hytale.core.data.PlayerData;
 import com.raeden.hytale.lang.LangKey;
 import com.raeden.hytale.modules.chat.ChatManager;
 
 import javax.annotation.Nonnull;
 
-import static com.raeden.hytale.HytaleEssentials.langManager;
+import static com.raeden.hytale.HytaleFoundations.langManager;
 import static com.raeden.hytale.core.utils.Permissions.isPlayerAdmin;
 import static com.raeden.hytale.utils.GeneralUtils.findPlayerByName;
 
 public class ReplyPlayerCommand extends AbstractPlayerCommand {
-    private final HytaleEssentials hytaleEssentials;
+    private final HytaleFoundations hytaleFoundations;
     private final RequiredArg<String> message;
 
-    public ReplyPlayerCommand(HytaleEssentials hytaleEssentials) {
+    public ReplyPlayerCommand(HytaleFoundations hytaleFoundations) {
         super("reply", "Reply to your active private messenger.");
-        this.hytaleEssentials = hytaleEssentials;
+        this.hytaleFoundations = hytaleFoundations;
         this.addAliases("r", "re");
         this.setAllowsExtraArguments(true);
 
@@ -34,7 +34,7 @@ public class ReplyPlayerCommand extends AbstractPlayerCommand {
     }
     @Override
     protected void execute(@Nonnull CommandContext commandContext, @Nonnull Store<EntityStore> store, @Nonnull Ref<EntityStore> ref, @Nonnull PlayerRef sender, @Nonnull World world) {
-        ChatManager chatManager = hytaleEssentials.getChatManager();
+        ChatManager chatManager = hytaleFoundations.getChatManager();
 
         boolean isAdmin = isPlayerAdmin(commandContext.sender());
         String senderUsername = commandContext.sender().getDisplayName();
@@ -45,8 +45,8 @@ public class ReplyPlayerCommand extends AbstractPlayerCommand {
             return;
         }
 
-        PlayerData senderData = hytaleEssentials.getPlayerDataManager().getPlayerData(sender.getUsername());
-        PlayerData receiverData = hytaleEssentials.getPlayerDataManager().getPlayerData(receiverUsername);
+        PlayerData senderData = hytaleFoundations.getPlayerDataManager().getPlayerData(sender.getUsername());
+        PlayerData receiverData = hytaleFoundations.getPlayerDataManager().getPlayerData(receiverUsername);
 
         String[] rawMessage = commandContext.getInputString().split("\\s+", 2);
         String messageContent = rawMessage[1];

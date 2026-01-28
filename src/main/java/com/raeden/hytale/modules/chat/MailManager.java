@@ -1,12 +1,12 @@
 package com.raeden.hytale.modules.chat;
 
-import com.raeden.hytale.HytaleEssentials;
+import com.raeden.hytale.HytaleFoundations;
 
 public class MailManager {
-    private final HytaleEssentials hytaleEssentials;
+    private final HytaleFoundations hytaleFoundations;
 
-    public MailManager(HytaleEssentials hytaleEssentials) {
-        this.hytaleEssentials = hytaleEssentials;
+    public MailManager(HytaleFoundations hytaleFoundations) {
+        this.hytaleFoundations = hytaleFoundations;
     }
 
     public static class Mail {

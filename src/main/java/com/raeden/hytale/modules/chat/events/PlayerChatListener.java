@@ -2,21 +2,21 @@ package com.raeden.hytale.modules.chat.events;
 
 import com.hypixel.hytale.server.core.event.events.player.PlayerChatEvent;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
-import com.raeden.hytale.HytaleEssentials;
+import com.raeden.hytale.HytaleFoundations;
 import com.raeden.hytale.core.data.PlayerData;
 import com.raeden.hytale.lang.LangKey;
 import com.raeden.hytale.modules.chat.ChatManager;
 import com.raeden.hytale.utils.TimeUtils;
 
-import static com.raeden.hytale.HytaleEssentials.langManager;
+import static com.raeden.hytale.HytaleFoundations.langManager;
 
 public class PlayerChatListener {
-    public static void onPlayerChat(PlayerChatEvent e, HytaleEssentials hytaleEssentials) {
-        ChatManager chatManager = hytaleEssentials.getChatManager();
+    public static void onPlayerChat(PlayerChatEvent e, HytaleFoundations hytaleFoundations) {
+        ChatManager chatManager = hytaleFoundations.getChatManager();
         PlayerRef playerRef = e.getSender();
         String playerUsername = playerRef.getUsername();
 
-        PlayerData senderData = hytaleEssentials.getPlayerDataManager().getPlayerData(playerUsername);
+        PlayerData senderData = hytaleFoundations.getPlayerDataManager().getPlayerData(playerUsername);
         if(senderData == null) return;
 
         if(senderData.isMuted()) {

@@ -5,7 +5,7 @@ Group {
     Padding: (Full: 20);
 
     Label #Title {
-        Text: "Essentials Menu";
+        Text: "Hytale Foundations Menu";
         Anchor: (Height: 40);
         Style: (FontSize: 16, TextColor: #FFFFFF, Alignment: Center);
     }

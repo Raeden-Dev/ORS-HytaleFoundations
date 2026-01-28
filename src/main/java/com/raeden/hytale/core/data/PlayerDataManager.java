@@ -5,7 +5,7 @@ import com.hypixel.hytale.component.Store;
 import com.hypixel.hytale.server.core.entity.UUIDComponent;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
-import com.raeden.hytale.HytaleEssentials;
+import com.raeden.hytale.HytaleFoundations;
 import com.raeden.hytale.lang.LangKey;
 
 import java.io.File;
@@ -16,18 +16,18 @@ import java.nio.file.Path;
 import java.util.LinkedHashMap;
 import java.util.Objects;
 
-import static com.raeden.hytale.HytaleEssentials.*;
+import static com.raeden.hytale.HytaleFoundations.*;
 import static com.raeden.hytale.utils.GeneralUtils.findPlayerByName;
 
 public class PlayerDataManager {
-    //private final HytaleEssentials hytaleEssentials;
+    //private final HytaleFoundations hytaleFoundations;
     private final Path playerDataPath;
 
     private final LinkedHashMap<String, PlayerData> activePlayers;
 
-    public PlayerDataManager(HytaleEssentials hytaleEssentials) {
-        //this.hytaleEssentials = hytaleEssentials;
-        playerDataPath = hytaleEssentials.getDataDirectory().resolve("data").resolve("players");
+    public PlayerDataManager(HytaleFoundations hytaleFoundations) {
+        //this.hytaleFoundations = hytaleFoundations;
+        playerDataPath = hytaleFoundations.getDataDirectory().resolve("data").resolve("players");
         activePlayers = new LinkedHashMap<>();
         verifyPath();
     }

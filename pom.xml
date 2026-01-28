@@ -17,9 +17,10 @@
     <dependencies>
         <dependency>
             <groupId>com.hypixel.hytale</groupId>
-            <artifactId>HytaleServer-Parent</artifactId>
+            <artifactId>hytale-server</artifactId>
             <version>1.0-SNAPSHOT</version>
-            <scope>provided</scope>
+            <scope>system</scope>
+            <systemPath>D:/GitHub/ORS-HytaleEssentials/libs/HytaleServer.jar</systemPath>
         </dependency>
     </dependencies>
 

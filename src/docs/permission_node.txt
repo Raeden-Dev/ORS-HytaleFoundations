@@ -1,24 +1,24 @@
 admin:
-ors.essentials.admin
+ors.foundations.admin
 
 analytics:
-ors.essentials.analytics
+ors.foundations.analytics
 
 chatcontrol:
-ors.essentials.chatcontrol
-ors.essentials.block
-ors.essentials.mute
-ors.essentials.silence
-ors.essentials.clearchat
+ors.foundations.chatcontrol
+ors.foundations.block
+ors.foundations.mute
+ors.foundations.silence
+ors.foundations.clearchat
 
 economy:
-ors.essentials.economy
+ors.foundations.economy
 
 rank:
-ors.essentials.rank
+ors.foundations.rank
 
 socials:
-ors.essentials.socials
+ors.foundations.socials
 
 utility:
-ors.essentials.playtime
+ors.foundations.playtime

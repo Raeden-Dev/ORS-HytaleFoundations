@@ -7,18 +7,18 @@ import com.hypixel.hytale.server.core.command.system.basecommands.AbstractPlayer
 import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.world.World;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
-import com.raeden.hytale.HytaleEssentials;
+import com.raeden.hytale.HytaleFoundations;
 
 import javax.annotation.Nonnull;
 
-public class EssentialsCommand extends AbstractPlayerCommand {
-    private final HytaleEssentials hytaleEssentials;
+public class CoreCommand extends AbstractPlayerCommand {
+    private final HytaleFoundations hytaleFoundations;
 
-    public EssentialsCommand(HytaleEssentials hytaleEssentials) {
-        super("essentials", "Argument for all Hytale Essentials Command.");
-        this.hytaleEssentials = hytaleEssentials;
-        this.addAliases("ess", "es", "essen");
-        this.addSubCommand(new EssentialsMenuCommand());
+    public CoreCommand(HytaleFoundations hytaleFoundations) {
+        super("foundation", "Argument for all Hytale Foundations Command.");
+        this.hytaleFoundations = hytaleFoundations;
+        this.addAliases("hf", "fd");
+        this.addSubCommand(new PluginMenuCommand());
     }
 
     @Override
@@ -26,7 +26,4 @@ public class EssentialsCommand extends AbstractPlayerCommand {
 
     }
 
-    public HytaleEssentials getHytaleEssentials() {
-        return hytaleEssentials;
-    }
 }

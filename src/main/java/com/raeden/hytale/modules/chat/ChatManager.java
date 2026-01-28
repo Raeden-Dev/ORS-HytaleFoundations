@@ -1,6 +1,6 @@
 package com.raeden.hytale.modules.chat;
 
-import com.raeden.hytale.HytaleEssentials;
+import com.raeden.hytale.HytaleFoundations;
 import com.raeden.hytale.lang.LangKey;
 import com.raeden.hytale.utils.Scheduler;
 import com.raeden.hytale.utils.TimeUtils;
@@ -15,11 +15,11 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
-import static com.raeden.hytale.HytaleEssentials.langManager;
-import static com.raeden.hytale.HytaleEssentials.myLogger;
+import static com.raeden.hytale.HytaleFoundations.langManager;
+import static com.raeden.hytale.HytaleFoundations.myLogger;
 
 public class ChatManager {
-    private final HytaleEssentials hytaleEssentials;
+    private final HytaleFoundations hytaleFoundations;
     private final Scheduler scheduler;
 
     private final LinkedHashMap<String, String> activeMessengers;
@@ -27,16 +27,16 @@ public class ChatManager {
 
     private final Path chatLogDir;
 
-    public ChatManager(HytaleEssentials hytaleEssentials, Scheduler scheduler) {
-        this.hytaleEssentials = hytaleEssentials;
+    public ChatManager(HytaleFoundations hytaleFoundations, Scheduler scheduler) {
+        this.hytaleFoundations = hytaleFoundations;
         this.scheduler = scheduler;
 
-        chatLogDir = hytaleEssentials.getDataDirectory().resolve("logs").resolve("chat");
+        chatLogDir = hytaleFoundations.getDataDirectory().resolve("logs").resolve("chat");
         activeMessengers = new LinkedHashMap<>();
         messageLog = new LinkedHashMap<>();
 
         verify();
-        if(hytaleEssentials.getConfigManager().getDefaultConfig().isSaveChatLog()) {
+        if(hytaleFoundations.getConfigManager().getDefaultConfig().isSaveChatLog()) {
             createChatSaveScheduler();
         }
     }
@@ -57,8 +57,8 @@ public class ChatManager {
                 if(messageLog.isEmpty()) return;
                 exportChatLog();
                 },
-                hytaleEssentials.getConfigManager().getDefaultConfig().getChatLogSaveInterval(),
-                hytaleEssentials.getConfigManager().getDefaultConfig().getChatLogSaveInterval(),
+                hytaleFoundations.getConfigManager().getDefaultConfig().getChatLogSaveInterval(),
+                hytaleFoundations.getConfigManager().getDefaultConfig().getChatLogSaveInterval(),
                 TimeUnit.MINUTES);
     }
 
@@ -102,8 +102,8 @@ public class ChatManager {
     }
     private void clearActiveMessageCache() {
         scheduler.runTaskTimer("clearActiveMessageCache", activeMessengers::clear,
-                hytaleEssentials.getConfigManager().getDefaultConfig().getPvtMsgClearInterval(),
-                hytaleEssentials.getConfigManager().getDefaultConfig().getPvtMsgClearInterval(),
+                hytaleFoundations.getConfigManager().getDefaultConfig().getPvtMsgClearInterval(),
+                hytaleFoundations.getConfigManager().getDefaultConfig().getPvtMsgClearInterval(),
                 TimeUnit.MINUTES);
     }
 

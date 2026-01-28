@@ -1,18 +1,17 @@
 package com.raeden.hytale.core.config;
 
-import com.raeden.hytale.HytaleEssentials;
+import com.raeden.hytale.HytaleFoundations;
 import com.raeden.hytale.lang.LangKey;
-import com.raeden.hytale.lang.LangManager;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-import static com.raeden.hytale.HytaleEssentials.*;
+import static com.raeden.hytale.HytaleFoundations.*;
 
 public class ConfigManager {
-    private final HytaleEssentials hytaleEssentials;
+    private final HytaleFoundations hytaleFoundations;
 
     private final String CONFIG_FILE = "config.json";
     private final String LANG_FILE = "en-us.json";
@@ -25,9 +24,9 @@ public class ConfigManager {
 
     private final Path dataDir;
 
-    public ConfigManager(HytaleEssentials hytaleEssentials) {
-        this.hytaleEssentials = hytaleEssentials;
-        dataDir = hytaleEssentials.getDataDirectory();
+    public ConfigManager(HytaleFoundations hytaleFoundations) {
+        this.hytaleFoundations = hytaleFoundations;
+        dataDir = hytaleFoundations.getDataDirectory();
         loadConfigs();
     }
 

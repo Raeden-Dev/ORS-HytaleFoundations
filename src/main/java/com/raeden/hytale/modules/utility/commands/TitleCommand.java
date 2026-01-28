@@ -2,23 +2,16 @@ package com.raeden.hytale.modules.utility.commands;
 
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
-import com.hypixel.hytale.server.core.HytaleServer;
-import com.hypixel.hytale.server.core.Message;
-import com.hypixel.hytale.server.core.command.system.AbstractCommand;
 import com.hypixel.hytale.server.core.command.system.CommandContext;
 import com.hypixel.hytale.server.core.command.system.arguments.system.RequiredArg;
-import com.hypixel.hytale.server.core.command.system.arguments.system.OptionalArg;
 import com.hypixel.hytale.server.core.command.system.arguments.types.ArgTypes;
-import com.hypixel.hytale.server.core.command.system.arguments.types.SingleArgumentType;
 import com.hypixel.hytale.server.core.command.system.basecommands.AbstractPlayerCommand;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.world.World;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
-import com.raeden.hytale.HytaleEssentials;
-import com.raeden.hytale.utils.colors;
+import com.raeden.hytale.HytaleFoundations;
 
 import javax.annotation.Nonnull;
-import java.util.concurrent.CompletableFuture;
 
 public class TitleCommand extends AbstractPlayerCommand {
 
@@ -31,7 +24,7 @@ public class TitleCommand extends AbstractPlayerCommand {
 //    private final OptionalArg<Integer> fadeOutArg;
 
 
-    public TitleCommand(HytaleEssentials plugin) {
+    public TitleCommand(HytaleFoundations plugin) {
         super("title", "Sends a customized title to a player or all players.");
 
         // Fetch the defaults directly from your JSON config object

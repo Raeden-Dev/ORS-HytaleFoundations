@@ -5,14 +5,14 @@ import com.hypixel.hytale.server.core.entity.entities.player.pages.BasicCustomUI
 import com.hypixel.hytale.server.core.ui.builder.UICommandBuilder;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
 
-public class EssentialsMainMenu extends BasicCustomUIPage {
+public class HFMainMenu extends BasicCustomUIPage {
 
-    public EssentialsMainMenu(PlayerRef ref) {
+    public HFMainMenu(PlayerRef ref) {
         super(ref, CustomPageLifetime.CanDismiss);
     }
 
     @Override
     public void build(UICommandBuilder uiCommandBuilder) {
-        uiCommandBuilder.append("Pages/EssentialsMainMenu.ui");
+        uiCommandBuilder.append("Pages/FoundationsMainMenu.ui");
     }
 }

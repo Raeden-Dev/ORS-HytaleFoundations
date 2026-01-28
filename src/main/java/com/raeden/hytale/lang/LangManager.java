@@ -3,7 +3,7 @@ package com.raeden.hytale.lang;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.hypixel.hytale.server.core.Message;
-import com.raeden.hytale.HytaleEssentials;
+import com.raeden.hytale.HytaleFoundations;
 import com.raeden.hytale.core.data.PlayerData;
 
 import java.io.File;
@@ -15,20 +15,20 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Objects;
 
-import static com.raeden.hytale.HytaleEssentials.*;
+import static com.raeden.hytale.HytaleFoundations.*;
 import static com.raeden.hytale.utils.ColorUtils.color;
 import static com.raeden.hytale.utils.ColorUtils.gradient;
 
 public class LangManager {
-    private final HytaleEssentials hytaleEssentials;
+    private final HytaleFoundations hytaleFoundations;
     private String CONFIG_LANGUAGE;
     private final String DEFAULT_LANGUAGE = "en-us";
     private final Path langDir;
     private final HashMap<String, JsonObject> langCache;
 
-    public LangManager(HytaleEssentials hytaleEssentials) {
-        this.hytaleEssentials = hytaleEssentials;
-        langDir = hytaleEssentials.getDataDirectory().resolve("lang");
+    public LangManager(HytaleFoundations hytaleFoundations) {
+        this.hytaleFoundations = hytaleFoundations;
+        langDir = hytaleFoundations.getDataDirectory().resolve("lang");
         langCache = new HashMap<>();
         verify();
     }
@@ -52,7 +52,7 @@ public class LangManager {
     }
 
     public void setDefaultLanguage() {
-        CONFIG_LANGUAGE = hytaleEssentials.getConfigManager().getDefaultConfig().getLang();
+        CONFIG_LANGUAGE = hytaleFoundations.getConfigManager().getDefaultConfig().getLang();
     }
 
     private void saveDefaultLangFile(Path path) {
@@ -135,7 +135,7 @@ public class LangManager {
         if(setLanguage == null) setLanguage = DEFAULT_LANGUAGE;
 
         if(username != null) {
-            PlayerData meta = hytaleEssentials.getPlayerDataManager().getPlayerData(username);
+            PlayerData meta = hytaleFoundations.getPlayerDataManager().getPlayerData(username);
             if (meta != null && meta.getLanguage() != null) {
                 setLanguage = meta.getLanguage();
             }

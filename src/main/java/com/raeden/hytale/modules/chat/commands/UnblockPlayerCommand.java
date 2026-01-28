@@ -9,24 +9,24 @@ import com.hypixel.hytale.server.core.command.system.basecommands.AbstractPlayer
 import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.world.World;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
-import com.raeden.hytale.HytaleEssentials;
+import com.raeden.hytale.HytaleFoundations;
 import com.raeden.hytale.core.data.PlayerData;
 import com.raeden.hytale.lang.LangKey;
 
 import javax.annotation.Nonnull;
 import java.util.List;
 
-import static com.raeden.hytale.HytaleEssentials.langManager;
+import static com.raeden.hytale.HytaleFoundations.langManager;
 import static com.raeden.hytale.core.utils.Permissions.isPlayerAdmin;
 import static com.raeden.hytale.utils.GeneralUtils.findPlayerByName;
 
 public class UnblockPlayerCommand extends AbstractPlayerCommand {
-    private final HytaleEssentials hytaleEssentials;
+    private final HytaleFoundations hytaleFoundations;
     private final RequiredArg<String> targetPlayer;
 
-    public UnblockPlayerCommand(HytaleEssentials hytaleEssentials) {
+    public UnblockPlayerCommand(HytaleFoundations hytaleFoundations) {
         super("unblock", "Unblocks a player so they can interact with you again.");
-        this.hytaleEssentials = hytaleEssentials;
+        this.hytaleFoundations = hytaleFoundations;
         targetPlayer = withRequiredArg("Player", "Player to execute command on.", ArgTypes.STRING);
     }
     @Override
@@ -35,7 +35,7 @@ public class UnblockPlayerCommand extends AbstractPlayerCommand {
         String senderUsername = commandContext.sender().getDisplayName();
         String targetUsername = commandContext.get(this.targetPlayer);
 
-        if(!commandContext.sender().hasPermission("ors.essentials.block") && !isAdmin) {
+        if(!commandContext.sender().hasPermission("ors.foundations.block") && !isAdmin) {
             commandContext.sender().sendMessage(langManager.getMessage(senderUsername, LangKey.NO_PERMISSION));
             return;
         }
@@ -46,7 +46,7 @@ public class UnblockPlayerCommand extends AbstractPlayerCommand {
             return;
         }
 
-        PlayerData senderData = hytaleEssentials.getPlayerDataManager().getPlayerData(senderUsername);
+        PlayerData senderData = hytaleFoundations.getPlayerDataManager().getPlayerData(senderUsername);
 
         List<String> blockedPlayers = senderData.getBlockedPlayers();
         if(blockedPlayers.contains(targetUsername)) {

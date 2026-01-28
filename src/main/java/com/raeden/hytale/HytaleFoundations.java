@@ -8,7 +8,7 @@ import com.hypixel.hytale.server.core.event.events.player.PlayerDisconnectEvent;
 import com.hypixel.hytale.server.core.event.events.player.PlayerReadyEvent;
 import com.hypixel.hytale.server.core.plugin.JavaPlugin;
 import com.hypixel.hytale.server.core.plugin.JavaPluginInit;
-import com.raeden.hytale.core.commands.EssentialsCommand;
+import com.raeden.hytale.core.commands.CoreCommand;
 import com.raeden.hytale.core.config.ConfigManager;
 import com.raeden.hytale.core.data.PlayerDataManager;
 import com.raeden.hytale.core.events.playerEvents.PlayerDeathListener;
@@ -29,7 +29,7 @@ import com.raeden.hytale.utils.Scheduler;
 
 import javax.annotation.Nonnull;
 
-public class HytaleEssentials extends JavaPlugin {
+public class HytaleFoundations extends JavaPlugin {
     public static final HytaleLogger myLogger = HytaleLogger.forEnclosingClass();
     public static final Gson GSON = new GsonBuilder()
             .setPrettyPrinting()
@@ -44,20 +44,20 @@ public class HytaleEssentials extends JavaPlugin {
     private PlayerDataManager playerDataManager;
     private ChatManager chatManager;
 
-    public HytaleEssentials(@Nonnull JavaPluginInit init) {
+    public HytaleFoundations(@Nonnull JavaPluginInit init) {
         super(init);
     }
 
     @Override
     protected void setup() {
-        myLogger.atInfo().log("Hytale Essentials loaded!");
+        myLogger.atInfo().log("Hytale Foundations loaded!");
         registerManagers();
         registerCommands();
         registerListeners();
     }
 
     protected void shutdown() {
-        myLogger.atInfo().log("Hytale Essentials is shutting down...");
+        myLogger.atInfo().log("Hytale Foundations is shutting down...");
 
         if(scheduler != null) {
             scheduler.shutdown();
@@ -91,7 +91,7 @@ public class HytaleEssentials extends JavaPlugin {
     }
 
     private void registerCommands() {
-        this.getCommandRegistry().registerCommand(new EssentialsCommand(this));
+        this.getCommandRegistry().registerCommand(new CoreCommand(this));
         this.getCommandRegistry().registerCommand(new AnnounceCommand(this));
         this.getCommandRegistry().registerCommand(new TitleCommand(this));
         this.getCommandRegistry().registerCommand(new ClearChatCommand(this));

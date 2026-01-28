@@ -9,25 +9,25 @@ import com.hypixel.hytale.server.core.command.system.basecommands.AbstractPlayer
 import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.world.World;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
-import com.raeden.hytale.HytaleEssentials;
+import com.raeden.hytale.HytaleFoundations;
 import com.raeden.hytale.core.data.PlayerData;
 import com.raeden.hytale.lang.LangKey;
 import com.raeden.hytale.modules.chat.ChatManager;
 
 import javax.annotation.Nonnull;
 
-import static com.raeden.hytale.HytaleEssentials.langManager;
+import static com.raeden.hytale.HytaleFoundations.langManager;
 import static com.raeden.hytale.core.utils.Permissions.isPlayerAdmin;
 import static com.raeden.hytale.utils.GeneralUtils.findPlayerByName;
 
 public class MessagePlayerCommand extends AbstractPlayerCommand {
-    private final HytaleEssentials hytaleEssentials;
+    private final HytaleFoundations hytaleFoundations;
     private final RequiredArg<String> receiver;
     private final RequiredArg<String> message;
 
-    public MessagePlayerCommand(HytaleEssentials hytaleEssentials) {
+    public MessagePlayerCommand(HytaleFoundations hytaleFoundations) {
         super("message", "Send a private message to a player");
-        this.hytaleEssentials = hytaleEssentials;
+        this.hytaleFoundations = hytaleFoundations;
         this.addAliases("msg");
         this.setAllowsExtraArguments(true);
 
@@ -48,9 +48,9 @@ public class MessagePlayerCommand extends AbstractPlayerCommand {
             return;
         }
 
-        ChatManager chatManager = hytaleEssentials.getChatManager();
-        PlayerData senderData = hytaleEssentials.getPlayerDataManager().getPlayerData(senderUsername);
-        PlayerData receiverData = hytaleEssentials.getPlayerDataManager().getPlayerData(receiverUsername);
+        ChatManager chatManager = hytaleFoundations.getChatManager();
+        PlayerData senderData = hytaleFoundations.getPlayerDataManager().getPlayerData(senderUsername);
+        PlayerData receiverData = hytaleFoundations.getPlayerDataManager().getPlayerData(receiverUsername);
 
         if(senderData.isMuted() && !isAdmin) {
             commandContext.sender().sendMessage(langManager.getMessage(senderUsername, LangKey.PLAYER_MUTED_PM, receiverUsername));

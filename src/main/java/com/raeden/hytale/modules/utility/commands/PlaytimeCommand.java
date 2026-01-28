@@ -2,38 +2,32 @@ package com.raeden.hytale.modules.utility.commands;
 
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
-import com.hypixel.hytale.server.core.HytaleServer;
-import com.hypixel.hytale.server.core.Message;
-import com.hypixel.hytale.server.core.command.system.AbstractCommand;
 import com.hypixel.hytale.server.core.command.system.CommandContext;
 import com.hypixel.hytale.server.core.command.system.arguments.system.OptionalArg;
 import com.hypixel.hytale.server.core.command.system.arguments.types.ArgTypes;
-import com.hypixel.hytale.server.core.command.system.arguments.types.SingleArgumentType;
 import com.hypixel.hytale.server.core.command.system.basecommands.AbstractPlayerCommand;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.world.World;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
-import com.raeden.hytale.HytaleEssentials;
+import com.raeden.hytale.HytaleFoundations;
 import com.raeden.hytale.core.data.PlayerData;
 import com.raeden.hytale.core.data.PlayerDataManager;
 import com.raeden.hytale.lang.LangKey;
 import com.raeden.hytale.utils.TimeUtils;
-import com.raeden.hytale.utils.colors;
 
 import javax.annotation.Nonnull;
-import java.util.concurrent.CompletableFuture;
 
-import static com.raeden.hytale.HytaleEssentials.langManager;
+import static com.raeden.hytale.HytaleFoundations.langManager;
 import static com.raeden.hytale.utils.GeneralUtils.findPlayerByName;
 
 public class PlaytimeCommand extends AbstractPlayerCommand {
 
-    private final HytaleEssentials hytaleEssentials;
+    private final HytaleFoundations hytaleFoundations;
     private final OptionalArg<String> targetPlayer;
 
-    public PlaytimeCommand(HytaleEssentials plugin) {
+    public PlaytimeCommand(HytaleFoundations plugin) {
         super("playtime", "Shows your or a player's total playtime.");
-        this.hytaleEssentials = plugin;
+        this.hytaleFoundations = plugin;
         targetPlayer = withOptionalArg("Player", "Target player to check their playtime", ArgTypes.STRING);
     }
 
@@ -43,12 +37,12 @@ public class PlaytimeCommand extends AbstractPlayerCommand {
         String senderUsername = commandContext.sender().getDisplayName();
         String targetUsername = commandContext.get(this.targetPlayer);
 
-        if(!commandContext.sender().hasPermission("ors.essentials.playtime")) {
+        if(!commandContext.sender().hasPermission("ors.foundations.playtime")) {
             commandContext.sender().sendMessage(langManager.getMessage(senderUsername, LangKey.NO_PERMISSION));
             return;
         }
 
-        PlayerDataManager dataManager = hytaleEssentials.getPlayerDataManager();
+        PlayerDataManager dataManager = hytaleFoundations.getPlayerDataManager();
 
         if(targetUsername == null) {
             PlayerData data = dataManager.getPlayerData(senderUsername);

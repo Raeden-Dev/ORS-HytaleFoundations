@@ -11,8 +11,8 @@ import com.hypixel.hytale.server.core.universe.Universe;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import com.raeden.hytale.lang.LangKey;
 
-import static com.raeden.hytale.HytaleEssentials.langManager;
-import static com.raeden.hytale.HytaleEssentials.myLogger;
+import static com.raeden.hytale.HytaleFoundations.langManager;
+import static com.raeden.hytale.HytaleFoundations.myLogger;
 
 public class GeneralUtils {
     public static boolean playerHasInventorySpace(PlayerRef playerRef, int slots) {

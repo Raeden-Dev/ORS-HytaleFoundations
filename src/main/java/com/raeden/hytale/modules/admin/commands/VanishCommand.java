@@ -7,17 +7,17 @@ import com.hypixel.hytale.server.core.command.system.basecommands.AbstractPlayer
 import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.world.World;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
-import com.raeden.hytale.HytaleEssentials;
+import com.raeden.hytale.HytaleFoundations;
 
 import javax.annotation.Nonnull;
 
 public class VanishCommand extends AbstractPlayerCommand {
-    private final HytaleEssentials hytaleEssentials;
+    private final HytaleFoundations hytaleFoundations;
 
-    public VanishCommand(HytaleEssentials hytaleEssentials) {
+    public VanishCommand(HytaleFoundations hytaleFoundations) {
         super("vanish", "Hide or unhide yourself from everyone.");
         this.addAliases("vn");
-        this.hytaleEssentials = hytaleEssentials;
+        this.hytaleFoundations = hytaleFoundations;
     }
 
     @Override

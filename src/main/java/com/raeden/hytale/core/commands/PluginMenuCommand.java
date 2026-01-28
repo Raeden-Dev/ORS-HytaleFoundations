@@ -8,13 +8,13 @@ import com.hypixel.hytale.server.core.entity.entities.Player;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.world.World;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
-import com.raeden.hytale.core.pages.EssentialsMainMenu;
+import com.raeden.hytale.core.pages.HFMainMenu;
 
 import javax.annotation.Nonnull;
 
-public class EssentialsMenuCommand extends AbstractPlayerCommand {
-    public EssentialsMenuCommand() {
-        super("menu", "Opens Hytale Essentials Main Menu.", false);
+public class PluginMenuCommand extends AbstractPlayerCommand {
+    public PluginMenuCommand() {
+        super("menu", "Opens Hytale Foundations Main Menu.", false);
         this.addAliases("m", "mn");
 
     }
@@ -27,7 +27,7 @@ public class EssentialsMenuCommand extends AbstractPlayerCommand {
             return;
         }
 
-        EssentialsMainMenu menu = new EssentialsMainMenu(playerRef);
+        HFMainMenu menu = new HFMainMenu(playerRef);
         player.getPageManager().openCustomPage(ref, store, menu);
     }
 }

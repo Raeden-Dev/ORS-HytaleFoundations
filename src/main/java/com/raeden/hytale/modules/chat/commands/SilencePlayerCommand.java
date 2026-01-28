@@ -9,17 +9,17 @@ import com.hypixel.hytale.server.core.command.system.basecommands.AbstractPlayer
 import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.world.World;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
-import com.raeden.hytale.HytaleEssentials;
+import com.raeden.hytale.HytaleFoundations;
 
 import javax.annotation.Nonnull;
 
 public class SilencePlayerCommand extends AbstractPlayerCommand {
-    private final HytaleEssentials hytaleEssentials;
+    private final HytaleFoundations hytaleFoundations;
     private final RequiredArg<String> targetPlayer;
 
-    public SilencePlayerCommand(HytaleEssentials hytaleEssentials) {
+    public SilencePlayerCommand(HytaleFoundations hytaleFoundations) {
         super("silence", "Other players can't see message of the target but target player can still send messages. Silenced players can still talk through private messages.");
-        this.hytaleEssentials = hytaleEssentials;
+        this.hytaleFoundations = hytaleFoundations;
         targetPlayer = withRequiredArg("Player", "Player to execute command on.", ArgTypes.STRING);
     }
     @Override

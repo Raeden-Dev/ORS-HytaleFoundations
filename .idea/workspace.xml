@@ -5,8 +5,44 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="24500026-cdfe-4eb7-b260-df31ea3f1bca" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/docs/permission_node.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/docs/permission_node.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/raeden/hytale/HytaleEssentials.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/raeden/hytale/HytaleFoundations.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/raeden/hytale/core/commands/EssentialsCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/raeden/hytale/core/commands/CoreCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/raeden/hytale/core/commands/EssentialsMenuCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/raeden/hytale/core/commands/PluginMenuCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/raeden/hytale/core/config/ConfigManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/raeden/hytale/core/config/ConfigManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/raeden/hytale/core/data/PlayerDataManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/raeden/hytale/core/data/PlayerDataManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/raeden/hytale/core/events/playerEvents/PlayerDeathListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/raeden/hytale/core/events/playerEvents/PlayerDeathListener.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/raeden/hytale/core/events/playerEvents/PlayerServerDisconnectListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/raeden/hytale/core/events/playerEvents/PlayerServerDisconnectListener.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/raeden/hytale/core/events/playerEvents/PlayerServerJoinListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/raeden/hytale/core/events/playerEvents/PlayerServerJoinListener.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/raeden/hytale/core/pages/EssentialsMainMenu.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/raeden/hytale/core/pages/HFMainMenu.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/raeden/hytale/lang/LangManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/raeden/hytale/lang/LangManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/raeden/hytale/modules/admin/commands/AnnounceCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/raeden/hytale/modules/admin/commands/AnnounceCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/raeden/hytale/modules/admin/commands/TitleCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/raeden/hytale/modules/admin/commands/TitleCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/raeden/hytale/modules/admin/commands/VanishCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/raeden/hytale/modules/admin/commands/VanishCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/raeden/hytale/modules/analytics/pluginactions/PluginActionManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/raeden/hytale/modules/analytics/pluginactions/PluginActionManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/raeden/hytale/modules/chat/ChatManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/raeden/hytale/modules/chat/ChatManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/raeden/hytale/modules/chat/MailManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/raeden/hytale/modules/chat/MailManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/raeden/hytale/modules/chat/commands/BlockPlayerCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/raeden/hytale/modules/chat/commands/BlockPlayerCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/raeden/hytale/modules/chat/commands/ClearChatCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/raeden/hytale/modules/chat/commands/ClearChatCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/raeden/hytale/modules/chat/commands/IngorePlayerCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/raeden/hytale/modules/chat/commands/IngorePlayerCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/raeden/hytale/modules/chat/commands/MailCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/raeden/hytale/modules/chat/commands/MailCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/raeden/hytale/modules/chat/commands/MessagePlayerCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/raeden/hytale/modules/chat/commands/MessagePlayerCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/raeden/hytale/modules/chat/commands/MutePlayerCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/raeden/hytale/modules/chat/commands/MutePlayerCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/raeden/hytale/modules/chat/commands/ReplyPlayerCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/raeden/hytale/modules/chat/commands/ReplyPlayerCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/raeden/hytale/modules/chat/commands/SilencePlayerCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/raeden/hytale/modules/chat/commands/SilencePlayerCommand.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/raeden/hytale/modules/chat/commands/UnblockPlayerCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/raeden/hytale/modules/chat/commands/UnblockPlayerCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/raeden/hytale/modules/chat/commands/UnmutePlayerCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/raeden/hytale/modules/chat/commands/UnmutePlayerCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/raeden/hytale/modules/chat/events/PlayerChatListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/raeden/hytale/modules/chat/events/PlayerChatListener.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/raeden/hytale/modules/utility/commands/PlayerInfoCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/raeden/hytale/modules/utility/commands/PlayerInfoCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/raeden/hytale/modules/utility/commands/PlaytimeCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/raeden/hytale/modules/utility/commands/PlaytimeCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/raeden/hytale/modules/utility/commands/TitleCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/raeden/hytale/modules/utility/commands/TitleCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/raeden/hytale/utils/GeneralUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/raeden/hytale/utils/GeneralUtils.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/raeden/hytale/utils/Scheduler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/raeden/hytale/utils/Scheduler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/Common/UI/Custom/Pages/EssentialsMainMenu.ui" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/Common/UI/Custom/Pages/FoundationsMainMenu.ui" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/manifest.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/manifest.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -29,12 +65,12 @@
     &quot;assignee&quot;: &quot;Raeden-Dev&quot;
   }
 }</component>
-  <component name="GithubPullRequestsUISettings">{
-  &quot;selectedUrlAndAccountId&quot;: {
-    &quot;url&quot;: &quot;https://github.com/Raeden-Dev/ORS-HytaleEssentials.git&quot;,
-    &quot;accountId&quot;: &quot;c5f39ba4-4799-425d-aa5c-69b1b24299ab&quot;
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/Raeden-Dev/ORS-HytaleEssentials.git",
+    "accountId": "5bc18f0a-8222-4f1c-b962-b86d2707e710"
   }
-}</component>
+}]]></component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 7
 }</component>
@@ -65,6 +101,7 @@
       <recent name="com.raeden.hytale" />
     </key>
   </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
       <changelist id="24500026-cdfe-4eb7-b260-df31ea3f1bca" name="Changes" comment="" />

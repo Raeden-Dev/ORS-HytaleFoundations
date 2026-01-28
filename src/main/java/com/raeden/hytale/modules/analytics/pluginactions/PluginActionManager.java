@@ -1,6 +1,6 @@
 package com.raeden.hytale.modules.analytics.pluginactions;
 
-import com.raeden.hytale.HytaleEssentials;
+import com.raeden.hytale.HytaleFoundations;
 import com.raeden.hytale.lang.LangKey;
 import com.raeden.hytale.utils.TimeUtils;
 
@@ -10,20 +10,20 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.LinkedHashMap;
 
-import static com.raeden.hytale.HytaleEssentials.langManager;
-import static com.raeden.hytale.HytaleEssentials.myLogger;
+import static com.raeden.hytale.HytaleFoundations.langManager;
+import static com.raeden.hytale.HytaleFoundations.myLogger;
 
 public class PluginActionManager {
-    private final HytaleEssentials hytaleEssentials;
+    private final HytaleFoundations hytaleFoundations;
     private final Path pluginActionPath;
 
     private String dateToday;
     private File logFile;
     private LinkedHashMap<String, String> actionLogs;
 
-    public PluginActionManager(HytaleEssentials hytaleEssentials) {
-        this.hytaleEssentials = hytaleEssentials;
-        pluginActionPath = hytaleEssentials.getDataDirectory().resolve("logs").resolve("action_logs");
+    public PluginActionManager(HytaleFoundations hytaleFoundations) {
+        this.hytaleFoundations = hytaleFoundations;
+        pluginActionPath = hytaleFoundations.getDataDirectory().resolve("logs").resolve("action_logs");
         actionLogs = new LinkedHashMap<>();
         verify();
     }

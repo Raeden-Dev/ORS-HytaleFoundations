@@ -10,25 +10,25 @@ import com.hypixel.hytale.server.core.command.system.basecommands.AbstractPlayer
 import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.world.World;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
-import com.raeden.hytale.HytaleEssentials;
+import com.raeden.hytale.HytaleFoundations;
 import com.raeden.hytale.core.data.PlayerData;
 import com.raeden.hytale.lang.LangKey;
 import com.raeden.hytale.utils.TimeUtils;
 
 import javax.annotation.Nonnull;
 
-import static com.raeden.hytale.HytaleEssentials.langManager;
+import static com.raeden.hytale.HytaleFoundations.langManager;
 import static com.raeden.hytale.core.utils.Permissions.isPlayerAdmin;
 import static com.raeden.hytale.utils.GeneralUtils.findPlayerByName;
 
 public class MutePlayerCommand extends AbstractPlayerCommand {
-    private final HytaleEssentials hytaleEssentials;
+    private final HytaleFoundations hytaleFoundations;
     private final RequiredArg<String> targetPlayer;
     private final OptionalArg<String> duration;
 
-    public MutePlayerCommand(HytaleEssentials hytaleEssentials) {
+    public MutePlayerCommand(HytaleFoundations hytaleFoundations) {
         super("mute", "Mutes a player so they can't speak in chat.");
-        this.hytaleEssentials = hytaleEssentials;
+        this.hytaleFoundations = hytaleFoundations;
         targetPlayer = withRequiredArg("Player", "Player to execute command on.", ArgTypes.STRING);
         duration = withOptionalArg("Duration", "Duration of the mute. (d|h|m|s eg. 1d8h5m33s)", ArgTypes.STRING);
     }
@@ -38,7 +38,7 @@ public class MutePlayerCommand extends AbstractPlayerCommand {
         String senderUsername = commandContext.sender().getDisplayName();
         String targetUsername = commandContext.get(this.targetPlayer);
 
-        if(!commandContext.sender().hasPermission("ors.essentials.mute") && !isAdmin) {
+        if(!commandContext.sender().hasPermission("ors.foundations.mute") && !isAdmin) {
             commandContext.sender().sendMessage(langManager.getMessage(senderUsername, LangKey.NO_PERMISSION));
             return;
         }
@@ -52,7 +52,7 @@ public class MutePlayerCommand extends AbstractPlayerCommand {
         PlayerRef target = findPlayerByName("Mute Player Command", targetUsername);
         boolean isTargetOffline = false;
         if(target == null) {
-            if(!hytaleEssentials.getPlayerDataManager().doesPlayerDataExist(targetUsername)) {
+            if(!hytaleFoundations.getPlayerDataManager().doesPlayerDataExist(targetUsername)) {
                 commandContext.sender().sendMessage(langManager.getMessage(senderUsername, LangKey.PLAYER_NEVER_JOINED, targetUsername));
                 return;
             } else {
@@ -62,9 +62,9 @@ public class MutePlayerCommand extends AbstractPlayerCommand {
 
         PlayerData targetData;
         if(isTargetOffline) {
-            targetData = hytaleEssentials.getPlayerDataManager().getPlayerDataFromFile(targetUsername);
+            targetData = hytaleFoundations.getPlayerDataManager().getPlayerDataFromFile(targetUsername);
         } else {
-            targetData = hytaleEssentials.getPlayerDataManager().getPlayerData(targetUsername);
+            targetData = hytaleFoundations.getPlayerDataManager().getPlayerData(targetUsername);
         }
 
         long muteDuration = targetData.getMuteDuration();
@@ -90,7 +90,7 @@ public class MutePlayerCommand extends AbstractPlayerCommand {
         }
 
         if(isTargetOffline) {
-            hytaleEssentials.getPlayerDataManager().savePlayerData(targetUsername, targetData);
+            hytaleFoundations.getPlayerDataManager().savePlayerData(targetUsername, targetData);
         }
     }
 }

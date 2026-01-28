@@ -1,26 +1,25 @@
 package com.raeden.hytale.utils;
 
-import com.raeden.hytale.HytaleEssentials;
+import com.raeden.hytale.HytaleFoundations;
 import com.raeden.hytale.lang.LangKey;
 
 import java.util.LinkedHashMap;
-import java.util.LinkedList;
 import java.util.concurrent.*;
 
-import static com.raeden.hytale.HytaleEssentials.langManager;
-import static com.raeden.hytale.HytaleEssentials.myLogger;
+import static com.raeden.hytale.HytaleFoundations.langManager;
+import static com.raeden.hytale.HytaleFoundations.myLogger;
 
 public class Scheduler {
-    private final HytaleEssentials hytaleEssentials;
+    private final HytaleFoundations hytaleFoundations;
     private final ScheduledExecutorService scheduler;
     private final LinkedHashMap<String, ScheduledFuture<?>> activeSchedulers;
     private boolean debugMode;
 
-    public Scheduler(HytaleEssentials hytaleEssentials) {
-        this.hytaleEssentials = hytaleEssentials;
+    public Scheduler(HytaleFoundations hytaleFoundations) {
+        this.hytaleFoundations = hytaleFoundations;
         this.scheduler = Executors.newScheduledThreadPool(2);
         activeSchedulers = new LinkedHashMap<>();
-        debugMode = hytaleEssentials.getConfigManager().getDefaultConfig().isToggleDebug();
+        debugMode = hytaleFoundations.getConfigManager().getDefaultConfig().isToggleDebug();
     }
 
     // Run a task off main thread
