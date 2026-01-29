@@ -10,8 +10,8 @@ import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.world.World;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import com.raeden.hytale.HytaleFoundations;
-import com.raeden.hytale.core.data.PlayerData;
 import com.raeden.hytale.core.data.PlayerDataManager;
+import com.raeden.hytale.core.data.PlayerStats;
 import com.raeden.hytale.lang.LangKey;
 import com.raeden.hytale.utils.TimeUtils;
 
@@ -45,9 +45,9 @@ public class PlaytimeCommand extends AbstractPlayerCommand {
         PlayerDataManager dataManager = hytaleFoundations.getPlayerDataManager();
 
         if(targetUsername == null) {
-            PlayerData data = dataManager.getPlayerData(senderUsername);
-            dataManager.savePlayTime(data);
-            String playtime = TimeUtils.formatDuration(data.getPlayTimeMillis());
+            PlayerStats stats = dataManager.getPlayerStats(senderUsername);
+            dataManager.savePlayTime(senderUsername);
+            String playtime = TimeUtils.formatDuration(stats.getPlayTimeMillis());
             commandContext.sender().sendMessage(langManager.getMessage(senderUsername, LangKey.PLAYER_PLAYTIME, senderUsername, playtime));
             return;
         }
@@ -55,16 +55,16 @@ public class PlaytimeCommand extends AbstractPlayerCommand {
         PlayerRef target = findPlayerByName(targetUsername);
         if(target == null) {
             if(dataManager.doesPlayerDataExist(targetUsername)) {
-                PlayerData data = dataManager.getPlayerDataFromFile(targetUsername);
-                String playtime = TimeUtils.formatDuration(data.getPlayTimeMillis());
+                PlayerStats stats = dataManager.getPlayerStats(targetUsername);
+                String playtime = TimeUtils.formatDuration(stats.getPlayTimeMillis());
                 commandContext.sender().sendMessage(langManager.getMessage(senderUsername, LangKey.PLAYER_PLAYTIME, targetUsername, playtime));
             } else {
               commandContext.sender().sendMessage(langManager.getMessage(senderUsername, LangKey.PLAYER_NEVER_JOINED, targetUsername));
             }
         } else {
-            PlayerData data = dataManager.getPlayerData(target.getUsername());
-            dataManager.savePlayTime(data);
-            String playtime = TimeUtils.formatDuration(data.getPlayTimeMillis());
+            PlayerStats stats = dataManager.getPlayerStats(targetUsername);
+            dataManager.savePlayTime(targetUsername);
+            String playtime = TimeUtils.formatDuration(stats.getPlayTimeMillis());
             commandContext.sender().sendMessage(langManager.getMessage(senderUsername, LangKey.PLAYER_PLAYTIME, targetUsername, playtime));
         }
     }

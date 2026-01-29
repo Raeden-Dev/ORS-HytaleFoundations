@@ -4,7 +4,6 @@ import com.hypixel.hytale.server.core.event.events.player.PlayerDisconnectEvent;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.raeden.hytale.HytaleFoundations;
 import com.raeden.hytale.core.data.PlayerDataManager;
-import com.raeden.hytale.core.data.PlayerData;
 
 public class PlayerServerDisconnectListener {
     public static void onPlayerDisconnect(PlayerDisconnectEvent e, HytaleFoundations hytaleFoundations) {

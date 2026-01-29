@@ -3,7 +3,8 @@ package com.raeden.hytale.modules.chat.events;
 import com.hypixel.hytale.server.core.event.events.player.PlayerChatEvent;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.raeden.hytale.HytaleFoundations;
-import com.raeden.hytale.core.data.PlayerData;
+import com.raeden.hytale.core.data.PlayerProfile;
+import com.raeden.hytale.core.data.PlayerStats;
 import com.raeden.hytale.lang.LangKey;
 import com.raeden.hytale.modules.chat.ChatManager;
 import com.raeden.hytale.utils.TimeUtils;
@@ -16,16 +17,17 @@ public class PlayerChatListener {
         PlayerRef playerRef = e.getSender();
         String playerUsername = playerRef.getUsername();
 
-        PlayerData senderData = hytaleFoundations.getPlayerDataManager().getPlayerData(playerUsername);
-        if(senderData == null) return;
+        PlayerProfile profile = hytaleFoundations.getPlayerDataManager().getPlayerProfile(playerUsername);
+        PlayerStats stats = hytaleFoundations.getPlayerDataManager().getPlayerStats(playerUsername);
+        if(profile == null) return;
 
-        if(senderData.isMuted()) {
-            playerRef.sendMessage(langManager.getMessage(playerUsername, LangKey.PLAYER_MUTED, TimeUtils.formatDuration(senderData.getMuteDuration())));
+        if(profile.isMuted()) {
+            playerRef.sendMessage(langManager.getMessage(playerUsername, LangKey.PLAYER_MUTED, TimeUtils.formatDuration(profile.getMuteDuration())));
             e.setCancelled(true);
             return;
         }
 
         chatManager.addMessageToLog(e.getContent());
-        senderData.increaseMessageSent();
+        stats.increaseMessageSent();
     }
 }

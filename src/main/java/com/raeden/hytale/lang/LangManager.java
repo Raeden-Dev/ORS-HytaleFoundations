@@ -4,7 +4,6 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.hypixel.hytale.server.core.Message;
 import com.raeden.hytale.HytaleFoundations;
-import com.raeden.hytale.core.data.PlayerData;
 import com.raeden.hytale.core.data.PlayerProfile;
 
 import java.io.File;

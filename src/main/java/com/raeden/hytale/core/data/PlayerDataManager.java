@@ -27,11 +27,11 @@ import static com.raeden.hytale.utils.GeneralUtils.getPlayerUUID;
 
 public class PlayerDataManager {
     //private final HytaleFoundations hytaleFoundations;
-    private final String USERMAP_JSON = "usermap.json";
-    private final String PROFILE_JSON = "profile.json";
-    private final String STATS_JSON = "stats.json";
-    private final String MAIL_JSON = "mailbox.json";
-    private final String HISTORY_JSON = "history.json";
+    public final String USERMAP_JSON = "usermap.json";
+    public final String PROFILE_JSON = "profile.json";
+    public final String STATS_JSON = "stats.json";
+    public final String MAIL_JSON = "mailbox.json";
+    public final String HISTORY_JSON = "history.json";
     private final Path playerDataPath;
 
     private final LinkedHashMap<String, PlayerProfile> playerProfiles;
@@ -156,6 +156,34 @@ public class PlayerDataManager {
         } catch (IOException e) {
             myLogger.atSevere().log(langManager.getMessage(LangKey.SAVE_FAILURE, jsonName + ".json for player: ", username).getAnsiMessage());
         }
+    }
+
+    public PlayerProfile getPlayerProfileFromFile(String username) {
+        Path profileJsonPath = playerDataPath.resolve(username).resolve(PROFILE_JSON);
+        if(Files.exists(profileJsonPath)) {
+            try {
+                String profile = Files.readString(profileJsonPath, StandardCharsets.UTF_8);
+                return GSON.fromJson(profile, PlayerProfile.class);
+            } catch (IOException e) {
+                myLogger.atSevere().log(langManager.getMessage(LangKey.LOAD_FAILURE, PROFILE_JSON + ": ", username).getAnsiMessage());
+            }
+        }
+        myLogger.atSevere().log(langManager.getMessage(LangKey.LOAD_FAILURE, PROFILE_JSON + ": ", username).getAnsiMessage());
+        return null;
+    }
+
+    public PlayerStats getPlayerStatsFromFile(String username) {
+        Path statsJsonPath = playerDataPath.resolve(username).resolve(STATS_JSON);
+        if(Files.exists(statsJsonPath)) {
+            try {
+                String stats = Files.readString(statsJsonPath, StandardCharsets.UTF_8);
+                return GSON.fromJson(stats, PlayerStats.class);
+            } catch (IOException e) {
+                myLogger.atSevere().log(langManager.getMessage(LangKey.LOAD_FAILURE, STATS_JSON + ": ", username).getAnsiMessage());
+            }
+        }
+        myLogger.atSevere().log(langManager.getMessage(LangKey.LOAD_FAILURE, STATS_JSON + ": ", username).getAnsiMessage());
+        return null;
     }
 
     public PlayerHistory getPlayerHistory(String username) {

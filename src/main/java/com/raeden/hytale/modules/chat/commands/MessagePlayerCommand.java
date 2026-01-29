@@ -10,7 +10,9 @@ import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.world.World;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import com.raeden.hytale.HytaleFoundations;
-import com.raeden.hytale.core.data.PlayerData;
+import com.raeden.hytale.core.data.PlayerDataManager;
+import com.raeden.hytale.core.data.PlayerProfile;
+import com.raeden.hytale.core.data.PlayerStats;
 import com.raeden.hytale.lang.LangKey;
 import com.raeden.hytale.modules.chat.ChatManager;
 
@@ -49,19 +51,21 @@ public class MessagePlayerCommand extends AbstractPlayerCommand {
         }
 
         ChatManager chatManager = hytaleFoundations.getChatManager();
-        PlayerData senderData = hytaleFoundations.getPlayerDataManager().getPlayerData(senderUsername);
-        PlayerData receiverData = hytaleFoundations.getPlayerDataManager().getPlayerData(receiverUsername);
+        PlayerDataManager dataManager = hytaleFoundations.getPlayerDataManager();
+        PlayerProfile senderProfile = dataManager.getPlayerProfile(senderUsername);
+        PlayerStats senderStats = dataManager.getPlayerStats(senderUsername);
+        PlayerProfile receiverProfile = dataManager.getPlayerProfile(receiverUsername);
 
-        if(senderData.isMuted() && !isAdmin) {
+        if(senderProfile.isMuted() && !isAdmin) {
             commandContext.sender().sendMessage(langManager.getMessage(senderUsername, LangKey.PLAYER_MUTED_PM, receiverUsername));
             return;
         }
-        if(receiverData.isMuted() && !isAdmin) {
+        if(receiverProfile.isMuted() && !isAdmin) {
             commandContext.sender().sendMessage(langManager.getMessage(senderUsername, LangKey.RECEIVER_IS_MUTED, receiverUsername));
             return;
         }
 
-        if(receiverData.getBlockedPlayers().contains(senderUsername) && !isAdmin) {
+        if(receiverProfile.getBlockedPlayers().contains(senderUsername) && !isAdmin) {
             commandContext.sender().sendMessage(langManager.getMessage(senderUsername, LangKey.PLAYER_BLOCKED_SENDER, receiverUsername));
             return;
         }
@@ -75,7 +79,7 @@ public class MessagePlayerCommand extends AbstractPlayerCommand {
         sender.sendMessage(langManager.getMessage(senderUsername, LangKey.PRIVATE_MSG_FORMAT_SENDER, receiverUsername, messageContent));
 
         // Need to add for admins
-        senderData.increaseMessageSent();
+        senderStats.increaseMessageSent();
         chatManager.addActiveMessengers(senderUsername, receiverUsername);
     }
 }

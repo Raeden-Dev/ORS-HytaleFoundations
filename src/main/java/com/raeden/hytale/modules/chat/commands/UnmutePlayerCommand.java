@@ -10,7 +10,8 @@ import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.world.World;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import com.raeden.hytale.HytaleFoundations;
-import com.raeden.hytale.core.data.PlayerData;
+import com.raeden.hytale.core.data.PlayerDataManager;
+import com.raeden.hytale.core.data.PlayerProfile;
 import com.raeden.hytale.lang.LangKey;
 
 import javax.annotation.Nonnull;
@@ -50,16 +51,17 @@ public class UnmutePlayerCommand extends AbstractPlayerCommand {
             }
         }
 
-        PlayerData targetData;
+        PlayerDataManager dataManager = hytaleFoundations.getPlayerDataManager();
+        PlayerProfile profile;
         if(isTargetOffline) {
-            targetData = hytaleFoundations.getPlayerDataManager().getPlayerDataFromFile(targetUsername);
+            profile = dataManager.getPlayerProfileFromFile(targetUsername);
         } else {
-            targetData = hytaleFoundations.getPlayerDataManager().getPlayerData(targetUsername);
+            profile = dataManager.getPlayerProfile(targetUsername);
         }
 
-        if(targetData.isMuted()) {
-            targetData.setMuted(false);
-            targetData.setMuteDuration(0);
+        if(profile.isMuted()) {
+            profile.setMuted(false);
+            profile.setMuteDuration(0);
             commandContext.sender().sendMessage(langManager.getMessage(senderUsername, LangKey.UNMUTED_PLAYER, targetUsername));
             if(target != null) target.sendMessage(langManager.getMessage(targetUsername, LangKey.PLAYER_UNMUTE_MSG, senderUsername));
         } else {
@@ -67,7 +69,7 @@ public class UnmutePlayerCommand extends AbstractPlayerCommand {
         }
 
         if(isTargetOffline) {
-            hytaleFoundations.getPlayerDataManager().savePlayerData(targetUsername, targetData);
+            dataManager.savePlayerData(targetUsername, dataManager.PROFILE_JSON, profile);
         }
     }
 }
