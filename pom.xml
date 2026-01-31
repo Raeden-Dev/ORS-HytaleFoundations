@@ -5,8 +5,8 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.raeden.hytale</groupId>
-    <artifactId>Hytale-Foundations</artifactId>
-    <version>1.0.0</version>
+    <artifactId>ORS-HytaleEssentials</artifactId>
+    <version>1.0-SNAPSHOT</version>
 
     <properties>
         <maven.compiler.source>25</maven.compiler.source>
@@ -17,9 +17,10 @@
     <dependencies>
         <dependency>
             <groupId>com.hypixel.hytale</groupId>
-            <artifactId>HytaleServer-Parent</artifactId>
+            <artifactId>hytale-server</artifactId>
             <version>1.0-SNAPSHOT</version>
-            <scope>provided</scope>
+            <scope>system</scope>
+            <systemPath>D:/GitHub/ORS-HytaleEssentials/libs/HytaleServer.jar</systemPath>
         </dependency>
     </dependencies>
 

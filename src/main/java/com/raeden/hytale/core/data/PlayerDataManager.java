@@ -90,6 +90,26 @@ public class PlayerDataManager {
         return null;
     }
 
+    /**
+     * Returns the usernames that exist in the player data "usermap.json".
+     * This is useful for admin UIs (e.g., listing known players).
+     */
+    public List<String> getKnownUsernames() {
+        LinkedHashMap<UUID, String> users = loadUserMap();
+        if (users == null || users.isEmpty()) {
+            return Collections.emptyList();
+        }
+
+        // Preserve insertion order from the JSON (LinkedHashMap) but remove nulls.
+        ArrayList<String> names = new ArrayList<>();
+        for (String name : users.values()) {
+            if (name != null && !name.isBlank()) {
+                names.add(name);
+            }
+        }
+        return names;
+    }
+
     private void updateUserMap(UUID id, String username) {
         LinkedHashMap<UUID, String> users = loadUserMap();
         if(users == null) users = new LinkedHashMap<>();

@@ -16,6 +16,7 @@ import com.raeden.hytale.core.events.playerEvents.PlayerServerDisconnectListener
 import com.raeden.hytale.core.events.playerEvents.PlayerServerJoinListener;
 import com.raeden.hytale.lang.LangManager;
 import com.raeden.hytale.modules.admin.commands.AnnounceCommand;
+import com.raeden.hytale.modules.admin.commands.PlayerDatabaseCommand;
 import com.raeden.hytale.modules.admin.commands.TitleCommand;
 import com.raeden.hytale.modules.admin.commands.VanishCommand;
 import com.raeden.hytale.modules.analytics.pluginactions.PluginActionManager;
@@ -105,6 +106,9 @@ public class HytaleFoundations extends JavaPlugin {
         this.getCommandRegistry().registerCommand(new UnmutePlayerCommand(this));
         this.getCommandRegistry().registerCommand(new IngorePlayerCommand(this));
         this.getCommandRegistry().registerCommand(new MailCommand(this));
+
+        // Admin UI
+        this.getCommandRegistry().registerCommand(new PlayerDatabaseCommand(this));
 
         // Utility Commands
         this.getCommandRegistry().registerCommand(new PlayerInfoCommand());
