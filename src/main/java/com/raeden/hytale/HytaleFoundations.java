@@ -21,6 +21,7 @@ import com.raeden.hytale.modules.admin.commands.TitleCommand;
 import com.raeden.hytale.modules.admin.commands.VanishCommand;
 import com.raeden.hytale.modules.analytics.pluginactions.PluginActionManager;
 import com.raeden.hytale.modules.chat.ChatManager;
+import com.raeden.hytale.modules.chat.MailManager;
 import com.raeden.hytale.modules.chat.commands.*;
 import com.raeden.hytale.modules.chat.events.PlayerChatListener;
 import com.raeden.hytale.modules.utility.commands.AnvilCommand;
@@ -44,6 +45,7 @@ public class HytaleFoundations extends JavaPlugin {
     public static LangManager langManager;
     private PlayerDataManager playerDataManager;
     private ChatManager chatManager;
+    private MailManager mailManager;
 
     public HytaleFoundations(@Nonnull JavaPluginInit init) {
         super(init);
@@ -75,6 +77,7 @@ public class HytaleFoundations extends JavaPlugin {
 
         playerDataManager = new PlayerDataManager(this);
         chatManager = new ChatManager(this, scheduler);
+        mailManager = new MailManager(this);
     }
 
     private void registerListeners() {
@@ -123,4 +126,5 @@ public class HytaleFoundations extends JavaPlugin {
     public PlayerDataManager getPlayerDataManager() {return playerDataManager;}
     public ChatManager getChatManager() {return chatManager;}
     public PluginActionManager getPluginActionManager() {return pluginActionManager;}
+    public MailManager getMailManager() {return mailManager;}
 }

@@ -30,6 +30,7 @@ public class MutePlayerCommand extends AbstractPlayerCommand {
     public MutePlayerCommand(HytaleFoundations hytaleFoundations) {
         super("mute", "Mutes a player so they can't speak in chat.");
         this.hytaleFoundations = hytaleFoundations;
+        this.setAllowsExtraArguments(true);
         targetPlayer = withRequiredArg("Player", "Player to execute command on.", ArgTypes.STRING);
         duration = withOptionalArg("Duration", "Duration of the mute. (d|h|m|s eg. 1d8h5m33s)", ArgTypes.STRING);
     }
@@ -38,13 +39,17 @@ public class MutePlayerCommand extends AbstractPlayerCommand {
         boolean isAdmin = isPlayerAdmin(commandContext.sender());
         String senderUsername = commandContext.sender().getDisplayName();
         String targetUsername = commandContext.get(this.targetPlayer);
+        String[] rawMessage = commandContext.getInputString().split("\\s+", 3);
+        String duration = rawMessage[2];
+
 
         if(!commandContext.sender().hasPermission("ors.foundations.mute") && !isAdmin) {
             commandContext.sender().sendMessage(langManager.getMessage(senderUsername, LangKey.NO_PERMISSION));
             return;
         }
 
-        long durationInMillis = TimeUtils.parseDuration(commandContext.get(this.duration));
+        long durationInMillis = TimeUtils.parseDuration(duration);
+        System.out.println("DURATION---------> " + durationInMillis);
         if(durationInMillis == 0) {
             commandContext.sender().sendMessage(langManager.getMessage(senderUsername, LangKey.INCORRECT_TIME_FORMAT));
             return;
@@ -71,6 +76,7 @@ public class MutePlayerCommand extends AbstractPlayerCommand {
 
         long muteDuration = profile.getMuteDuration();
         long newMuteDuration = muteDuration + durationInMillis;
+        profile.setMuteDuration(newMuteDuration);
 
         if(profile.isMuted()) {
             commandContext.sender().sendMessage(langManager.getMessage(senderUsername, LangKey.MUTE_DURATION_INCREASE,
@@ -80,7 +86,6 @@ public class MutePlayerCommand extends AbstractPlayerCommand {
                target.sendMessage(langManager.getMessage(targetUsername, LangKey.PLAYER_MSG_MUTE_DURATION_INCREASE,
                         TimeUtils.formatDuration(newMuteDuration), senderUsername));
             }
-            profile.setMuteDuration(newMuteDuration);
         } else {
             profile.setMuted(true);
             commandContext.sender().sendMessage(langManager.getMessage(senderUsername, LangKey.MUTE_PLAYER, targetUsername,

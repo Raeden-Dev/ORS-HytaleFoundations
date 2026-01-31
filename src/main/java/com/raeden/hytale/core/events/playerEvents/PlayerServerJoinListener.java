@@ -12,5 +12,6 @@ public class PlayerServerJoinListener {
 
         PlayerDataManager dataManager = hytaleFoundations.getPlayerDataManager();
         dataManager.playerLogin(player);
+        hytaleFoundations.getMailManager().doesPlayerHaveUnreadMails(username);
     }
 }

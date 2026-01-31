@@ -59,6 +59,10 @@ public enum LangKey {
     PLAYER_MSG_MUTE_DURATION_INCREASE("Your mute duration was increased to {0} by {1}.", colors.MC_RED, true),
     NOT_MUTED("{0} is not muted!", colors.LIGHT_CRIMSON, true),
 
+    // Mail System
+    UNREAD_MAILS("You have {0} unread mails.", colors.MC_RED),
+    CHECK_MAILBOX("Check your mailbox to read mails.", colors.WHITE),
+
     // Utility
     PLAYER_PLAYTIME("» Total playtime of {0}: {1}", colors.MC_YELLOW, true),
 

@@ -1,12 +1,52 @@
 package com.raeden.hytale.modules.chat;
 
+import com.hypixel.hytale.protocol.ItemWithAllMetadata;
+import com.hypixel.hytale.protocol.packets.interface_.NotificationStyle;
+import com.hypixel.hytale.server.core.Message;
+import com.hypixel.hytale.server.core.inventory.ItemStack;
+import com.hypixel.hytale.server.core.io.PacketHandler;
+import com.hypixel.hytale.server.core.universe.PlayerRef;
+import com.hypixel.hytale.server.core.util.NotificationUtil;
 import com.raeden.hytale.HytaleFoundations;
+import com.raeden.hytale.core.data.PlayerMailbox;
+import com.raeden.hytale.lang.LangKey;
+import com.raeden.hytale.lang.LangManager;
+
+import java.util.List;
+
+import static com.raeden.hytale.HytaleFoundations.langManager;
+import static com.raeden.hytale.utils.GeneralUtils.findPlayerByName;
 
 public class MailManager {
     private final HytaleFoundations hytaleFoundations;
 
     public MailManager(HytaleFoundations hytaleFoundations) {
         this.hytaleFoundations = hytaleFoundations;
+    }
+
+    public void doesPlayerHaveUnreadMails(String username) {
+        PlayerMailbox mailbox = hytaleFoundations.getPlayerDataManager().getPlayerMailbox(username);
+        List<Mail> mailList = mailbox.getMailList();
+        if(mailList == null) {
+            return;
+        }
+        int unreadMailCount = 0;
+        for(Mail mail : mailList) {
+            if(!mail.isRead()) {
+                mailbox.setHasUnreadMail(true);
+                unreadMailCount++;
+            }
+        }
+
+        if(!mailbox.isHasUnreadMail()) {
+            return;
+        }
+
+        PlayerRef ref = findPlayerByName(username);
+        PacketHandler handler = ref.getPacketHandler();
+        Message pm = langManager.getMessage(LangKey.UNREAD_MAILS, String.valueOf(unreadMailCount));
+        Message sm = langManager.getMessage(LangKey.CHECK_MAILBOX);
+        NotificationUtil.sendNotification(handler, pm, sm,  NotificationStyle.Default);
     }
 
     public static class Mail {
