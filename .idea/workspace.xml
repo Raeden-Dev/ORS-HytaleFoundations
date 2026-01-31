@@ -4,16 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="24500026-cdfe-4eb7-b260-df31ea3f1bca" name="Changes" comment="heheh">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/raeden/hytale/modules/admin/commands/PlayerDatabaseCommand.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/raeden/hytale/modules/admin/pages/AdminPlayerDatabasePage.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/Common/UI/Custom/Pages/AdminPlayerDatabase.ui" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/Pages /AdminPlayerDatabase.ui " afterDir="false" />
+    <list default="true" id="24500026-cdfe-4eb7-b260-df31ea3f1bca" name="Changes" comment="hehe">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/docs/devlogs/tanvir.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/docs/devlogs/tanvir.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/raeden/hytale/HytaleFoundations.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/raeden/hytale/HytaleFoundations.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/raeden/hytale/core/data/PlayerDataManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/raeden/hytale/core/data/PlayerDataManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/Pages /AdminPlayerDatabase.ui " beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/Pages/AdminPlayerDatabase.ui " afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -101,7 +94,18 @@
       <workItem from="1769857254352" duration="2369000" />
       <workItem from="1769868542753" duration="2539000" />
       <workItem from="1769873613474" duration="28000" />
+      <workItem from="1769873665914" duration="751000" />
+      <workItem from="1769874522709" duration="772000" />
     </task>
+    <task id="LOCAL-00001" summary="hehe">
+      <option name="closed" value="true" />
+      <created>1769873831981</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1769873831981</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -109,7 +113,8 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="heheh" />
-    <option name="LAST_COMMIT_MESSAGE" value="heheh" />
+    <MESSAGE value="hehe" />
+    <option name="LAST_COMMIT_MESSAGE" value="hehe" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
