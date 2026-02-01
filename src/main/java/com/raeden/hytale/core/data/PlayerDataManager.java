@@ -336,6 +336,8 @@ public class PlayerDataManager {
         PlayerStats stats = getPlayerStats(username);
         PlayerProfile profile = getPlayerProfile(username);
 
+        if(stats == null || profile == null) return;
+
         long timeNow = System.currentTimeMillis();
         long sessionDuration = timeNow -  profile.getSessionStart();
         if(sessionDuration > 0) {
