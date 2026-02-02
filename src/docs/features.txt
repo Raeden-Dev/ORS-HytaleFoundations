@@ -35,6 +35,12 @@ To Do:
     > /mail history (shows your sent/received history of your last 10 mails)
     > Has a max limit per day
 
+- /rules
+    > Show server rules (configurable)
+
+- /discord
+    > Show server discord info
+
 - /gift [player]
     > Give an item to a player as a gift
     > Has a max limit per day
@@ -49,6 +55,9 @@ To Do:
 - /sethome
     > Sets home at the location of entity
     > /home [home name] to teleport to home location
+    > /homes to show GUI of your available homes
+    > /delhome [home name] to delete home
+    > /home update [home name] to update home position
 
 - /trash cmd
     > Opens a HUD where if you place items and close, they are deleted
@@ -93,6 +102,8 @@ To Do:
 - /repair
     > Repairs the item in hand
     > Has cooldown
+    > /repair all : repairs all item in inventory
+        [!] Make sure this is tested well
 
 - /kit (shows all available kits)
     > /kit [name] (gives the kit if user has access)
@@ -101,6 +112,10 @@ To Do:
 
 - /nick
     > Change one's nickname with color code functions
+
+- /rtp : random teleportation to any location in predesignated area
+    > /rtp (player) : rtp a player
+    > /rtp (player) (world) : rtp a player in a certain world
 
 - /clearchat
     > /clearchat all (purges whole chat)
@@ -144,6 +159,28 @@ To Do:
     > Hides self or unhides self
     > Admin command
 
+- /clearinv
+    > Removes all items from inventory
+    > /hideinv (hides all items of a player's inventory until returned, execute again to unhide)
+
+- /spawn
+    > tp to world spawn location
+
+- /setspawn
+    > Sets the spawnpoint of the world
+    > /delspawn (deletes the existing spawn point of the world, switches to default)
+
+- /warp : opens warps GUI
+    > /warp list : show all available warps in the world
+    > /warp manage : show warp manager UI
+
+- /warptop
+    > teleport to the highest block in position
+
+- /fly [target]
+    > Makes the target fly (no target means self is the target, execute again to make them walk)
+    > /fly speed [amount] [target] (sets a target's flight speed)
+
 - Rank System
     > /rank list
     > /rankset [player] [rank name]
@@ -152,7 +189,8 @@ To Do:
 
 - Economy System
     > /pay [player] [amount]
-    > /balance [player] [amount]
+    > /balance [player]
+    > /balance set [player] [currency] [amount]
     > /baltop (Shows leaderboard of balance)
 
 - Chat Control
@@ -173,12 +211,13 @@ To Do:
     > On player world change
     > On player kick
 
-- Custom GUI System
-    > Add any custom GUI to the server
-    > /ui
+- /show command
+    > /show players : displays all online players
 
 - Schedulers
     > Add schedulers to server that runs commands after X time
+
+- In game config editor
 
 Completed:
 ----------
