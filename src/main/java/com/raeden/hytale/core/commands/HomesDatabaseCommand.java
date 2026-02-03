@@ -8,15 +8,15 @@ import com.hypixel.hytale.server.core.entity.entities.Player;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.world.World;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
-import com.raeden.hytale.core.pages.HFMainMenu;
+import com.raeden.hytale.core.pages.HomesDatabasePage;
 
 import javax.annotation.Nonnull;
 
-public class PluginMenuCommand extends AbstractPlayerCommand {
+public class HomesDatabaseCommand extends AbstractPlayerCommand {
 
-    public PluginMenuCommand() {
-        super("menu", "Opens Hytale Foundations Main Menu.", false);
-        this.addAliases("m", "mn");
+    public HomesDatabaseCommand() {
+        super("homes", "Opens Homes Database UI.", false);
+        this.addAliases("home", "hdb");
     }
 
     @Override
@@ -28,12 +28,9 @@ public class PluginMenuCommand extends AbstractPlayerCommand {
             @Nonnull World world
     ) {
         Player player = store.getComponent(ref, Player.getComponentType());
+        if (player == null) return;
 
-        if (player == null) {
-            return;
-        }
-
-        HFMainMenu menu = new HFMainMenu(playerRef);
-        player.getPageManager().openCustomPage(ref, store, menu);
+        HomesDatabasePage page = new HomesDatabasePage(playerRef);
+        player.getPageManager().openCustomPage(ref, store, page);
     }
 }

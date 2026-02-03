@@ -19,6 +19,8 @@ public class CoreCommand extends AbstractPlayerCommand {
         this.hytaleFoundations = hytaleFoundations;
         this.addAliases("hf", "fd");
         this.addSubCommand(new PluginMenuCommand());
+        this.addSubCommand(new HomesDatabaseCommand());
+
     }
 
     @Override
