@@ -8,6 +8,7 @@ import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.world.World;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import com.raeden.hytale.HytaleFoundations;
+import com.raeden.hytale.modules.utility.commands.HomesCommand;
 
 import javax.annotation.Nonnull;
 
@@ -19,12 +20,15 @@ public class CoreCommand extends AbstractPlayerCommand {
         this.hytaleFoundations = hytaleFoundations;
         this.addAliases("hf", "fd");
         this.addSubCommand(new PluginMenuCommand());
+<<<<<<< Updated upstream
     }
 
     private void addAliases(String hf, String fd) {
     }
 
     private void addSubCommand(PluginMenuCommand pluginMenuCommand) {
+=======
+>>>>>>> Stashed changes
     }
 
     @Override

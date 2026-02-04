@@ -25,6 +25,7 @@ import com.raeden.hytale.modules.chat.MailManager;
 import com.raeden.hytale.modules.chat.commands.*;
 import com.raeden.hytale.modules.chat.events.PlayerChatListener;
 import com.raeden.hytale.modules.utility.commands.AnvilCommand;
+import com.raeden.hytale.modules.utility.commands.HomesCommand;
 import com.raeden.hytale.modules.utility.commands.PlayerInfoCommand;
 import com.raeden.hytale.modules.utility.commands.PlaytimeCommand;
 import com.raeden.hytale.utils.Scheduler;
@@ -112,6 +113,7 @@ public class HytaleFoundations extends JavaPlugin {
 
         // Admin UI
         this.getCommandRegistry().registerCommand(new PlayerDatabaseCommand(this));
+        this.getCommandRegistry().registerCommand(new HomesCommand());
 
         // Utility Commands
         this.getCommandRegistry().registerCommand(new PlayerInfoCommand());
