@@ -5,13 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="24500026-cdfe-4eb7-b260-df31ea3f1bca" name="Changes" comment="hehe">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/raeden/hytale/core/commands/HomesDatabaseCommand.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/raeden/hytale/core/pages/HomesDatabasePage.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/Pages/PlayerDatabase.ui" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/raeden/hytale/core/commands/CoreCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/raeden/hytale/core/commands/CoreCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/raeden/hytale/core/commands/PluginMenuCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/raeden/hytale/core/commands/PluginMenuCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/Pages/PlayerDatabase.ui" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -34,12 +29,12 @@
     &quot;assignee&quot;: &quot;Raeden-Dev&quot;
   }
 }</component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "https://github.com/Raeden-Dev/ORS-HytaleFoundations.git",
-    "accountId": "05c3ae0d-756e-44ca-9117-7b8cee0c6c54"
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/Raeden-Dev/ORS-HytaleFoundations.git&quot;,
+    &quot;accountId&quot;: &quot;05c3ae0d-756e-44ca-9117-7b8cee0c6c54&quot;
   }
-}]]></component>
+}</component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 7
 }</component>
