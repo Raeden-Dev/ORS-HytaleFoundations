@@ -20,15 +20,6 @@ public class CoreCommand extends AbstractPlayerCommand {
         this.hytaleFoundations = hytaleFoundations;
         this.addAliases("hf", "fd");
         this.addSubCommand(new PluginMenuCommand());
-<<<<<<< Updated upstream
-    }
-
-    private void addAliases(String hf, String fd) {
-    }
-
-    private void addSubCommand(PluginMenuCommand pluginMenuCommand) {
-=======
->>>>>>> Stashed changes
     }
 
     @Override
