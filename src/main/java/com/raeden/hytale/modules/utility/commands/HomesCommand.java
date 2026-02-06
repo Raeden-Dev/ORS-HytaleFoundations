@@ -8,7 +8,6 @@ import com.hypixel.hytale.server.core.entity.entities.Player;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.world.World;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
-import com.raeden.hytale.modules.utility.pages.HomesPage;
 
 import javax.annotation.Nonnull;
 
@@ -30,7 +29,5 @@ public class HomesCommand extends AbstractPlayerCommand {
         Player player = store.getComponent(ref, Player.getComponentType());
         if (player == null) return;
 
-        HomesPage page = new HomesPage(playerRef);
-        player.getPageManager().openCustomPage(ref, store, page);
     }
 }
