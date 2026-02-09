@@ -7,6 +7,7 @@ import com.hypixel.hytale.component.query.Query;
 import com.hypixel.hytale.server.core.entity.entities.Player;
 import com.hypixel.hytale.server.core.modules.entity.damage.DeathComponent;
 import com.hypixel.hytale.server.core.modules.entity.damage.DeathSystems;
+import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import com.raeden.hytale.HytaleFoundations;
 
@@ -24,7 +25,7 @@ public class PlayerDeathListener extends DeathSystems.OnDeathSystem {
     @Nullable
     @Override
     public Query<EntityStore> getQuery() {
-        return Query.and(Player.getComponentType());
+        return Query.and(PlayerRef.getComponentType());
     }
 
     @Override
