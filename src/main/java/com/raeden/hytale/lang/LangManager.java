@@ -16,8 +16,8 @@ import java.util.LinkedHashMap;
 import java.util.Objects;
 
 import static com.raeden.hytale.HytaleFoundations.*;
-import static com.raeden.hytale.utils.ColorUtils.color;
-import static com.raeden.hytale.utils.ColorUtils.gradient;
+import static com.raeden.hytale.utils.ColorEngine.color;
+import static com.raeden.hytale.utils.ColorEngine.gradient;
 
 public class LangManager {
     private final HytaleFoundations hytaleFoundations;
@@ -60,10 +60,7 @@ public class LangManager {
 
         for(LangKey key : LangKey.values()) {
             String text = key.getDefaultMessage();
-            String start = key.getStartColor().getHex();
-            String end = key.isGradient() ? key.getEndColor().getHex() : null;
-            boolean bold = key.isBold();
-            LangEntry entry = new LangEntry(text, start, end, bold);
+            LangEntry entry = new LangEntry(text);
             defaultMap.put(key.getKey(), entry);
         }
 
@@ -118,14 +115,14 @@ public class LangManager {
                 finalText = finalText.replace("{" + i + "}", val);
             }
         }
-        return colorize(finalText, entry);
+        return formatMessage(finalText, entry);
     }
 
-    private Message colorize(String text, LangEntry entry) {
+    private Message formatMessage(String text, LangEntry entry) {
         if (entry.endColor != null) {
-            return gradient(text, "#" + entry.startColor, "#" + entry.endColor, entry.bold);
+            return gradient(text, entry.startColor, entry.endColor, entry.bold);
         }
-        return color(text, "#" + entry.startColor, entry.bold);
+        return color(text, entry.startColor, entry.bold);
     }
 
     private LangEntry getLangEntry(String username, LangKey key) {
@@ -148,9 +145,7 @@ public class LangManager {
         }
 
         if (data == null) {
-            String start = key.getStartColor().getHex();
-            String end = key.isGradient() ? key.getEndColor().getHex() : null;
-            data = new LangEntry(key.getDefaultMessage(), start, end, key.isBold());
+            data = new LangEntry(key.getDefaultMessage());
         }
 
         return data;
@@ -175,11 +170,8 @@ public class LangManager {
 
         public LangEntry() {}
 
-        public LangEntry(String text, String startColor, String endColor, boolean bold) {
+        public LangEntry(String text) {
             this.text = text;
-            this.startColor = startColor;
-            this.endColor = endColor;
-            this.bold = bold;
         }
     }
 }

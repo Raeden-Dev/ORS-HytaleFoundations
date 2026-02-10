@@ -1,0 +1,21 @@
+PEACH("#F8B195"),
+CUTE_PINK("#F67290"),
+LIGHT_CRIMSON("#C06C84"),
+CHARRED_BLUE("#6C5B7B"),
+BLUEY_BLUE("#355C7D"),
+LIME("#BCC07B"),
+SKY_BLUE("#D5EDF8"),
+PALE_RED("#EA7D70"),
+PALE_WATER("#7D8BE0"),
+PALE_PURPLE("#9A81B0"),
+LIGHT_ORANGE("#FFAF6E");
+
+Available colors:
+&4 - MC DARK RED
+
+
+
+Message Foramt:
+
+&4This is my message = Dark Red message
+&4&

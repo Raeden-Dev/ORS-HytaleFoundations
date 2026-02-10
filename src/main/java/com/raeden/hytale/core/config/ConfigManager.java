@@ -53,12 +53,12 @@ public class ConfigManager {
                 Config config = GSON.fromJson(readConfig, Config.class);
 
                 if (config == null) {
-                    myLogger.atSevere().log(langManager.getMessage(null, LangKey.READ_FAILURE_W_LOC, "config.json", "data directory").getAnsiMessage());
+                    myLogger.atSevere().log(langManager.getMessage(null, LangKey.READ_FAILURE_W_LOC, CONFIG_FILE, "data directory").getAnsiMessage());
                 } else {
                     return config;
                 }
             } catch (IOException e) {
-                myLogger.atSevere().log(langManager.getMessage(null, LangKey.READ_FAILURE_W_LOC, "config.json", dataDir.toString()).getAnsiMessage());
+                myLogger.atSevere().log(langManager.getMessage(null, LangKey.READ_FAILURE_W_LOC, CONFIG_FILE, dataDir.toString()).getAnsiMessage());
             }
         }
 
@@ -68,12 +68,12 @@ public class ConfigManager {
     }
 
     private void saveConfigFile(Config config) {
-        Path savePath = dataDir.resolve("config.json");
+        Path savePath = dataDir.resolve(CONFIG_FILE);
         String toJson = GSON.toJson(config);
         try {
             Files.writeString(savePath, toJson, StandardCharsets.UTF_8);
         } catch (IOException e) {
-            myLogger.atSevere().log(langManager.getMessage(null, LangKey.SAVE_FAILURE_W_LOC, "config.json", "data directory").getAnsiMessage());
+            myLogger.atSevere().log(langManager.getMessage(null, LangKey.SAVE_FAILURE_W_LOC, CONFIG_FILE, "data directory").getAnsiMessage());
         }
     }
 

@@ -28,9 +28,11 @@ import com.raeden.hytale.modules.utility.commands.AnvilCommand;
 import com.raeden.hytale.modules.utility.commands.HomesCommand;
 import com.raeden.hytale.modules.utility.commands.PlayerInfoCommand;
 import com.raeden.hytale.modules.utility.commands.PlaytimeCommand;
+import com.raeden.hytale.utils.ColorEngine;
 import com.raeden.hytale.utils.Scheduler;
 
 import javax.annotation.Nonnull;
+import java.nio.file.Path;
 
 public class HytaleFoundations extends JavaPlugin {
     public static final HytaleLogger myLogger = HytaleLogger.forEnclosingClass();
@@ -39,6 +41,7 @@ public class HytaleFoundations extends JavaPlugin {
             .disableHtmlEscaping()
             .create();
 
+    private ColorEngine colorEngine;
     private Scheduler scheduler;
     private PluginActionManager pluginActionManager;
 
@@ -60,6 +63,11 @@ public class HytaleFoundations extends JavaPlugin {
         registerListeners();
     }
 
+    @Override
+    protected void start() {
+
+    }
+
     protected void shutdown() {
         myLogger.atInfo().log("Hytale Foundations is shutting down...");
 
@@ -75,6 +83,7 @@ public class HytaleFoundations extends JavaPlugin {
 
         scheduler = new Scheduler(this);
         pluginActionManager = new PluginActionManager(this);
+        colorEngine = new ColorEngine(this);
 
         playerDataManager = new PlayerDataManager(this);
         chatManager = new ChatManager(this, scheduler);
@@ -129,4 +138,5 @@ public class HytaleFoundations extends JavaPlugin {
     public ChatManager getChatManager() {return chatManager;}
     public PluginActionManager getPluginActionManager() {return pluginActionManager;}
     public MailManager getMailManager() {return mailManager;}
+    public ColorEngine getColorEngine() {return colorEngine;}
 }

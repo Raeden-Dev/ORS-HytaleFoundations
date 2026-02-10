@@ -63,7 +63,7 @@ public class TitleCommand extends AbstractPlayerCommand {
 //            HytaleServer.get().getUniverse().getPlayers().forEach(playerRef -> {
 //                sendTitleToPlayer(playerRef, titleMsg, subtitleMsg, fadeIn, stay, fadeOut);
 //            });
-//            commandContext.sendMessage(Message.raw("Title sent to all players.").color(colors.MC_GREEN.getHex()));
+//            commandContext.sendMessage(Message.raw("Title sent to all players.").color(DefaultColors.MC_GREEN.getHex()));
 //            return null;
 //        }
 //
@@ -71,9 +71,9 @@ public class TitleCommand extends AbstractPlayerCommand {
 //        PlayerRef targetPlayerRef = HytaleServer.get().getUniverse().getPlayerByName(target);
 //        if (targetPlayerRef != null && targetPlayerRef.isValid()) {
 //            sendTitleToPlayer(targetPlayerRef, titleMsg, subtitleMsg, fadeIn, stay, fadeOut);
-//            commandContext.sendMessage(Message.raw("Title sent to " + target).color(colors.MC_GREEN.getHex()));
+//            commandContext.sendMessage(Message.raw("Title sent to " + target).color(DefaultColors.MC_GREEN.getHex()));
 //        } else {
-//            commandContext.sendMessage(Message.raw("Failed to send: Player '" + target + "' not found!").color(colors.MC_RED.getHex()));
+//            commandContext.sendMessage(Message.raw("Failed to send: Player '" + target + "' not found!").color(DefaultColors.MC_RED.getHex()));
 //        }
 //        return null;
 //    }
