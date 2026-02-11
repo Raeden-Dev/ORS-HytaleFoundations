@@ -73,9 +73,9 @@ public class PlayerDataManager {
         if(users == null) users = new LinkedHashMap<>();
         String oldUsername = users.get(id);
         users.put(id, username);
-        Type type = new TypeToken<LinkedHashMap<UUID, String>>(){}.getType();
+
         Path userMapPath = playerDataPath.resolve(USERMAP_JSON);
-        saveJsonFile(USERMAP_JSON, userMapPath, type, true, true);
+        saveJsonFile(USERMAP_JSON, userMapPath, users, true, true);
 
         if (oldUsername != null && !oldUsername.equals(username)) {
             Path oldDataPath = playerDataPath.resolve(oldUsername);
@@ -83,7 +83,6 @@ public class PlayerDataManager {
             if (Files.exists(oldDataPath)) {
                 try {
                     Files.move(oldDataPath, newDataPath);
-                    Files.delete(oldDataPath);
                 } catch (IOException e) {
                     myLogger.atSevere().log(e.getMessage());
                 }

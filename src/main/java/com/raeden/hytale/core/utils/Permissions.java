@@ -45,11 +45,12 @@ public class Permissions {
         MUTE_PLAYER("mute.player"),
         SILENCE_PLAYER("silence.player"),
         CLEAR_CHAT("chat.clear"),
+        CHAT_COLORS("chat.colors"),
         PLAYTIME("utils.playtime");
 
-        private String PREFIX = "hytalefoundations.";
         private final String permission;
         HFPermissions(String permission) {
+            String PREFIX = "hytalefoundations.";
             this.permission = PREFIX + permission;
         }
         public String getPermission() {return permission;}

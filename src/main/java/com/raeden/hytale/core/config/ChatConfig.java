@@ -9,8 +9,8 @@ public class ChatConfig {
     private boolean CENSOR_CURSE_WORDS;
     private boolean REMOVE_LINKS;
     private boolean REMOVE_IPS;
-    private final List<String> CURSE_WORD_LIST = new LinkedList<>();
-    private final List<String> CENSOR_WORD_LIST = new LinkedList<>();
+    private List<String> CURSE_WORD_LIST = new LinkedList<>();
+    private List<String> CENSOR_WORD_LIST = new LinkedList<>();
 
 
     public boolean isAllowPlayerChatColors() {return ALLOW_PLAYER_CHAT_COLORS;}
@@ -23,6 +23,9 @@ public class ChatConfig {
     public void setRemoveLinks(boolean REMOVE_LINKS) {this.REMOVE_LINKS = REMOVE_LINKS;}
     public boolean isRemoveIps() {return REMOVE_IPS;}
     public void setRemoveIps(boolean REMOVE_IPS) {this.REMOVE_IPS = REMOVE_IPS;}
+
     public List<String> getCurseWordList() {return CURSE_WORD_LIST;}
+    public void setCurseWordList(List<String> CURSE_WORD_LIST) {this.CURSE_WORD_LIST = CURSE_WORD_LIST;}
     public List<String> getCensorWordList() {return CENSOR_WORD_LIST;}
+    public void setCensorWordList(List<String> CENSOR_WORD_LIST) {this.CENSOR_WORD_LIST = CENSOR_WORD_LIST;}
 }

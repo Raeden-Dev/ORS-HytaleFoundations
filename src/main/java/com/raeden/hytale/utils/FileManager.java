@@ -57,9 +57,9 @@ public class FileManager {
             }
         } else {
             if(langManager != null) {
-                myLogger.atSevere().log(langManager.getMessage(LangKey.FILE_NOT_FOUND_W_LOC, fileName, filePath.toString()).getAnsiMessage());
+                myLogger.atWarning().log(langManager.getMessage(LangKey.FILE_NOT_FOUND_W_LOC, fileName, filePath.toString()).getAnsiMessage());
             } else {
-                myLogger.atSevere().log("[ERROR] Could not find " + fileName + " at " + filePath);
+                myLogger.atWarning().log("[ERROR] Could not find " + fileName + " at " + filePath);
             }
         }
 
@@ -104,9 +104,9 @@ public class FileManager {
             }
         } else {
             if(langManager != null) {
-                myLogger.atSevere().log(langManager.getMessage(LangKey.FILE_NOT_FOUND_W_LOC, fileName, filePath.toString()).getAnsiMessage());
+                myLogger.atWarning().log(langManager.getMessage(LangKey.FILE_NOT_FOUND_W_LOC, fileName, filePath.toString()).getAnsiMessage());
             } else {
-                myLogger.atSevere().log("[ERROR] Could not find " + fileName + " at " + filePath);
+                myLogger.atWarning().log("[ERROR] Could not find " + fileName + " at " + filePath);
             }
         }
 

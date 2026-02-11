@@ -41,7 +41,6 @@ public class HytaleFoundations extends JavaPlugin {
             .disableHtmlEscaping()
             .create();
 
-    private ColorEngine colorEngine;
     private Scheduler scheduler;
     private PluginActionManager pluginActionManager;
 
@@ -57,7 +56,7 @@ public class HytaleFoundations extends JavaPlugin {
 
     @Override
     protected void setup() {
-        myLogger.atInfo().log("Hytale Foundations loaded!");
+        myLogger.atInfo().log("Hytale Foundations loading...");
         registerManagers();
         registerCommands();
         registerListeners();
@@ -65,7 +64,7 @@ public class HytaleFoundations extends JavaPlugin {
 
     @Override
     protected void start() {
-
+        myLogger.atInfo().log("Hytale Foundations loaded!");
     }
 
     protected void shutdown() {
@@ -83,7 +82,6 @@ public class HytaleFoundations extends JavaPlugin {
 
         scheduler = new Scheduler(this);
         pluginActionManager = new PluginActionManager(this);
-        colorEngine = new ColorEngine(this);
 
         playerDataManager = new PlayerDataManager(this);
         chatManager = new ChatManager(this, scheduler);
@@ -138,5 +136,4 @@ public class HytaleFoundations extends JavaPlugin {
     public ChatManager getChatManager() {return chatManager;}
     public PluginActionManager getPluginActionManager() {return pluginActionManager;}
     public MailManager getMailManager() {return mailManager;}
-    public ColorEngine getColorEngine() {return colorEngine;}
 }

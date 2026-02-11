@@ -2,6 +2,7 @@ package com.raeden.hytale.modules.chat;
 
 import com.raeden.hytale.HytaleFoundations;
 import com.raeden.hytale.lang.LangKey;
+import com.raeden.hytale.utils.ColorEngine;
 import com.raeden.hytale.utils.Scheduler;
 import com.raeden.hytale.utils.TimeUtils;
 
@@ -21,6 +22,7 @@ import static com.raeden.hytale.HytaleFoundations.myLogger;
 public class ChatManager {
     private final HytaleFoundations hytaleFoundations;
     private final Scheduler scheduler;
+    private final ColorEngine colorEngine;
 
     private final LinkedHashMap<String, String> activeMessengers;
     private final LinkedHashMap<String, String> messageLog; // Time string + Message
@@ -30,6 +32,9 @@ public class ChatManager {
     public ChatManager(HytaleFoundations hytaleFoundations, Scheduler scheduler) {
         this.hytaleFoundations = hytaleFoundations;
         this.scheduler = scheduler;
+
+        // Color Engine
+        colorEngine = new ColorEngine(hytaleFoundations);
 
         chatLogDir = hytaleFoundations.getDataDirectory().resolve("logs").resolve("chat");
         activeMessengers = new LinkedHashMap<>();
@@ -107,4 +112,5 @@ public class ChatManager {
                 TimeUnit.MINUTES);
     }
 
+    public ColorEngine getColorEngine() {return colorEngine;}
 }

@@ -6,6 +6,8 @@ import com.raeden.hytale.lang.LangKey;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.List;
 
 import static com.raeden.hytale.HytaleFoundations.*;
 import static com.raeden.hytale.utils.FileManager.loadJsonFile;
@@ -40,7 +42,7 @@ public class ConfigManager {
             }
 
             defaultConfig = loadConfigData();
-
+            defaultChatConfig = loadChatConfigData();
         } catch (IOException e) {
             myLogger.atSevere().log(langManager.getMessage(null, LangKey.CREATE_DIRECTORY_FAIL, "data directory").getAnsiMessage());
             this.defaultConfig = createDefaultConfig();
@@ -48,20 +50,38 @@ public class ConfigManager {
     }
 
     private Config loadConfigData() {
-        Path configFile = dataDir.resolve(CONFIG_FILE);
-        Config config = loadJsonFile(CONFIG_FILE, configFile, Config.class, true);
+        Path configPath = dataDir.resolve(CONFIG_FILE);
+        Config config = loadJsonFile(CONFIG_FILE, configPath, Config.class, true);
         if(config !=  null) {
             return config;
         }
         Config defConfig = createDefaultConfig();
-        saveJsonFile(CONFIG_FILE, configFile, defConfig, true);
+        saveJsonFile(CONFIG_FILE, configPath, defConfig, true);
         return defConfig;
+    }
+
+    private ChatConfig loadChatConfigData() {
+        Path chatConfigPath = dataDir.resolve(CHAT_CONFIG);
+        ChatConfig chatConfig = loadJsonFile(CHAT_CONFIG, chatConfigPath, ChatConfig.class, true);
+        if(chatConfig != null) {
+            return chatConfig;
+        }
+        ChatConfig defaultChatConfig = createDefaultChatConfig();
+        saveJsonFile(CHAT_CONFIG, chatConfigPath, defaultChatConfig, true);
+        return defaultChatConfig;
     }
 
     private ChatConfig createDefaultChatConfig() {
         ChatConfig chatConfig = new ChatConfig();
-        //chatConfig.
-
+        chatConfig.setRemoveIps(true);
+        chatConfig.setAllowPlayerChatColors(true);
+        chatConfig.setRemoveLinks(true);
+        chatConfig.setCensorCurseWords(true);
+        chatConfig.setToggleCensorWordList(true);
+        List<String> censorWordList = new ArrayList<>(List.of("lgbt", "LGBTQ+", "woke", "nigga", "nigger"));
+        chatConfig.setCensorWordList(censorWordList);
+        List<String> curseWordList = new ArrayList<>(List.of("fuck", "cunt", "faggot", "pussy", "cocksucker", "dumbass"));
+        chatConfig.setCurseWordList(curseWordList);
         return chatConfig;
     }
 
@@ -83,12 +103,7 @@ public class ConfigManager {
         return config;
     }
 
-    public Config getDefaultConfig() {
-        return defaultConfig;
-    }
-    public void setDefaultConfig(Config config) {
-        this.defaultConfig = config;
-    }
-
+    public Config getDefaultConfig() {return defaultConfig;}
+    public ChatConfig getDefaultChatConfig() {return defaultChatConfig;}
 }
 

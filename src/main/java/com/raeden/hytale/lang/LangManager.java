@@ -1,10 +1,11 @@
 package com.raeden.hytale.lang;
 
 import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import com.hypixel.hytale.server.core.Message;
 import com.raeden.hytale.HytaleFoundations;
 import com.raeden.hytale.core.data.PlayerProfile;
+import com.raeden.hytale.utils.ColorEngine;
+import com.raeden.hytale.utils.DefaultColors;
 
 import java.io.File;
 import java.io.IOException;
@@ -15,8 +16,6 @@ import java.util.LinkedHashMap;
 import java.util.Objects;
 
 import static com.raeden.hytale.HytaleFoundations.*;
-import static com.raeden.hytale.utils.ColorEngine.color;
-import static com.raeden.hytale.utils.ColorEngine.gradient;
 import static com.raeden.hytale.utils.FileManager.getJsonObject;
 import static com.raeden.hytale.utils.FileManager.saveJsonFile;
 
@@ -102,14 +101,16 @@ public class LangManager {
                 finalText = finalText.replace("{" + i + "}", val);
             }
         }
-        return formatMessage(finalText, entry);
+        return formatMessage(finalText);
     }
 
-    private Message formatMessage(String text, LangEntry entry) {
-        if (entry.endColor != null) {
-            return gradient(text, entry.startColor, entry.endColor, entry.bold);
+    private Message formatMessage(String text) {
+        try {
+            ColorEngine engine = hytaleFoundations.getChatManager().getColorEngine();
+            return engine.parseText(text);
+        } catch (NullPointerException e) {
+            return Message.raw(text).color(DefaultColors.WHITE.getHex());
         }
-        return color(text, entry.startColor, entry.bold);
     }
 
     private LangEntry getLangEntry(String username, LangKey key) {
@@ -151,10 +152,6 @@ public class LangManager {
 
     private static class LangEntry {
         String text;
-        String startColor;
-        String endColor;
-        boolean bold;
-
         public LangEntry() {}
 
         public LangEntry(String text) {
