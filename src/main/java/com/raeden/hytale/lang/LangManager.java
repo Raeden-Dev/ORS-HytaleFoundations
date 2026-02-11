@@ -2,6 +2,7 @@ package com.raeden.hytale.lang;
 
 import com.google.gson.JsonObject;
 import com.hypixel.hytale.server.core.Message;
+import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.raeden.hytale.HytaleFoundations;
 import com.raeden.hytale.core.data.PlayerProfile;
 import com.raeden.hytale.utils.ColorEngine;
@@ -18,6 +19,7 @@ import java.util.Objects;
 import static com.raeden.hytale.HytaleFoundations.*;
 import static com.raeden.hytale.utils.FileManager.getJsonObject;
 import static com.raeden.hytale.utils.FileManager.saveJsonFile;
+import static com.raeden.hytale.utils.GeneralUtils.findPlayerByName;
 
 public class LangManager {
     private final HytaleFoundations hytaleFoundations;
@@ -92,8 +94,18 @@ public class LangManager {
     }
 
     public Message getMessage(String username, LangKey key, String... args) {
+        boolean isConsole = username == null;
+        PlayerRef playerRef = username == null ? null : findPlayerByName(username);
+
+        LangEntry playerPrefix = getLangEntry(username, LangKey.PLAYER_MSG_PREFIX);
+        String prefixText = playerPrefix.text != null ? playerPrefix.text : LangKey.PLAYER_MSG_PREFIX.getDefaultMessage();
+
         LangEntry entry = getLangEntry(username, key);
-        String finalText = entry.text != null ? entry.text : key.getDefaultMessage();
+        String finalText = (entry.text != null ? entry.text : key.getDefaultMessage());
+
+        if(username != null) {
+            finalText = prefixText + (entry.text != null ? entry.text : key.getDefaultMessage());
+        }
 
         if (args != null && args.length > 0) {
             for (int i = 0; i < args.length; i++) {
@@ -101,15 +113,16 @@ public class LangManager {
                 finalText = finalText.replace("{" + i + "}", val);
             }
         }
-        return formatMessage(finalText);
+        return formatMessage(playerRef, finalText, isConsole);
     }
 
-    private Message formatMessage(String text) {
+    private Message formatMessage(PlayerRef playerRef, String text, boolean isConsole) {
         try {
             ColorEngine engine = hytaleFoundations.getChatManager().getColorEngine();
-            return engine.parseText(text);
+            return engine.parseText(playerRef, text, isConsole);
         } catch (NullPointerException e) {
-            return Message.raw(text).color(DefaultColors.WHITE.getHex());
+            String cleanText = text.replaceAll("(?i)&[0-9a-z]", "");
+            return Message.raw(cleanText).color(DefaultColors.WHITE.getHex());
         }
     }
 

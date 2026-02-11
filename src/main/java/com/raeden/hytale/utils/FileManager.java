@@ -124,7 +124,7 @@ public class FileManager {
     }
     public static <T> void saveJsonFile(String fileName, Path savePath, T dataObject, boolean showInfo, boolean additionalSaveSettings) {
         if(dataObject == null) {
-            myLogger.atSevere().log(langManager.getMessage(null, LangKey.SAVE_FAILURE_W_LOC, fileName, savePath.toString()).getAnsiMessage());
+            myLogger.atSevere().log(langManager.getMessage(LangKey.SAVE_FAILURE_W_LOC, fileName, savePath.toString()).getAnsiMessage());
             return;
         }
         String toJson = GSON.toJson(dataObject);
@@ -135,12 +135,16 @@ public class FileManager {
                 Files.writeString(savePath, toJson, StandardCharsets.UTF_8,
                         StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
             }
-            if(showInfo && langManager != null) {
-                myLogger.atInfo().log(langManager.getMessage(LangKey.SAVE_W_LOC, fileName, savePath.toString()).getAnsiMessage());
+            if(showInfo) {
+                if(langManager != null) {
+                    myLogger.atInfo().log(langManager.getMessage(LangKey.SAVE_W_LOC, fileName, savePath.toString()).getAnsiMessage());
+                } else {
+                    myLogger.atInfo().log("[SAVE] Saved " + fileName + " at " + savePath);
+                }
             }
         } catch (IOException e) {
             if(langManager != null) {
-                myLogger.atSevere().log(langManager.getMessage(null, LangKey.SAVE_FAILURE_W_LOC, fileName, savePath.toString()).getAnsiMessage());
+                myLogger.atSevere().log(langManager.getMessage(LangKey.SAVE_FAILURE_W_LOC, fileName, savePath.toString()).getAnsiMessage());
             } else {
                 myLogger.atSevere().log("[SAVE] Failed to save " + fileName + " at " + savePath);
             }

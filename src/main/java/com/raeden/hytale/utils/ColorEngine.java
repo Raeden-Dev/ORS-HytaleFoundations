@@ -41,7 +41,7 @@ public class ColorEngine {
 
     public void initializeColorEngine() {
         if(!Files.exists(colorFilePath)) {
-            myLogger.atInfo().log(langManager.getMessage(null, LangKey.CREATE_SUCCESS, COLOR_FILE, colorFilePath.toString()).getAnsiMessage());
+            myLogger.atInfo().log(langManager.getMessage(LangKey.CREATE_SUCCESS, COLOR_FILE, colorFilePath.toString()).getAnsiMessage());
             saveColorFile(true);
         } else {
             loadColors();
@@ -103,7 +103,7 @@ public class ColorEngine {
                 // Get the obtained colors from colormap.json
                 for(Map.Entry<String, String> color : obtainedColormap.entrySet()) {
                     if(!validateColor(color.getKey(), color.getValue())) {
-                        myLogger.atWarning().log(langManager.getMessage(null, LangKey.INVALID_COLOR_FORMAT, color.getKey(), color.getValue()).getAnsiMessage());
+                        myLogger.atWarning().log(langManager.getMessage(LangKey.INVALID_COLOR_FORMAT, color.getKey(), color.getValue()).getAnsiMessage());
                         continue;
                     }
                     if(!COLOR_MAP.containsKey(color.getKey())) {
@@ -113,7 +113,7 @@ public class ColorEngine {
                 }
 
                 if(newColors != 0) {
-                    myLogger.atInfo().log(langManager.getMessage(null, LangKey.LOAD_FILE, newColors + "colors!").getAnsiMessage());
+                    myLogger.atInfo().log(langManager.getMessage(LangKey.LOAD_FILE, newColors + "colors!").getAnsiMessage());
                 }
             }
         }
@@ -121,9 +121,15 @@ public class ColorEngine {
 
     // Parsing a Message
     public Message parseText(String message) {
-        return parseText(null, message);
+        return parseText(null, message, false);
     }
     public Message parseText(PlayerRef playerRef, String message) {
+        return parseText(playerRef, message, false);
+    }
+    public Message parseText(String message, boolean isConsole) {
+        return parseText(null, message, isConsole);
+    }
+    public Message parseText(PlayerRef playerRef, String message, boolean isConsole) {
         // No colors for chat [Not Admin, No Permission, Turned off]
         if(playerRef != null) {
             boolean isAdmin = isPlayerAdmin(playerRef);
@@ -132,6 +138,9 @@ public class ColorEngine {
             if (!isAdmin && (!configAllow || !hasPermission)) {
                 return Message.raw(stripTextOfColorCodes(message)).color(DefaultColors.WHITE.getHex());
             }
+        }
+        if(isConsole) {
+            return Message.raw(stripTextOfColorCodes(message)).color(DefaultColors.WHITE.getHex());
         }
         return formatMessage(message);
     }

@@ -49,7 +49,6 @@ public class MutePlayerCommand extends AbstractPlayerCommand {
         }
 
         long durationInMillis = TimeUtils.parseDuration(duration);
-        System.out.println("DURATION---------> " + durationInMillis);
         if(durationInMillis == 0) {
             commandContext.sender().sendMessage(langManager.getMessage(senderUsername, LangKey.INCORRECT_TIME_FORMAT));
             return;

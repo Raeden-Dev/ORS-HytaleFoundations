@@ -58,10 +58,6 @@ public class MessagePlayerCommand extends AbstractPlayerCommand {
         PlayerStats senderStats = dataManager.getPlayerStats(senderUsername);
         PlayerProfile receiverProfile = dataManager.getPlayerProfile(receiverUsername);
 
-        Message msg1 = Message.raw("This is part 1 of the message").color(DefaultColors.MC_RED.getHex());
-        Message msg2 = Message.raw(" This is part 2 of the message").color(DefaultColors.MC_YELLOW.getHex());
-        sender.sendMessage(Message.join(msg1.color(DefaultColors.MC_RED.getHex()), msg2.color(DefaultColors.MC_YELLOW.getHex())));
-
         if(senderProfile.isMuted() && !isAdmin) {
             commandContext.sender().sendMessage(langManager.getMessage(senderUsername, LangKey.PLAYER_MUTED_PM, receiverUsername));
             return;

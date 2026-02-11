@@ -38,13 +38,13 @@ public class ConfigManager {
         try {
             if (!Files.exists(dataDir)) {
                 Files.createDirectories(dataDir);
-                myLogger.atInfo().log(langManager.getMessage(null, LangKey.CREATE_DIRECTORY_W_LOC, "data directory", dataDir.toString()).getAnsiMessage());
+                myLogger.atInfo().log(langManager.getMessage(LangKey.CREATE_DIRECTORY_W_LOC, "data directory", dataDir.toString()).getAnsiMessage());
             }
 
             defaultConfig = loadConfigData();
             defaultChatConfig = loadChatConfigData();
         } catch (IOException e) {
-            myLogger.atSevere().log(langManager.getMessage(null, LangKey.CREATE_DIRECTORY_FAIL, "data directory").getAnsiMessage());
+            myLogger.atSevere().log(langManager.getMessage(LangKey.CREATE_DIRECTORY_FAIL, "data directory").getAnsiMessage());
             this.defaultConfig = createDefaultConfig();
         }
     }
