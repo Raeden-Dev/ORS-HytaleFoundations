@@ -4,11 +4,12 @@ import com.raeden.hytale.HytaleFoundations;
 import com.raeden.hytale.lang.LangKey;
 
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
 import static com.raeden.hytale.HytaleFoundations.*;
+import static com.raeden.hytale.utils.FileManager.loadJsonFile;
+import static com.raeden.hytale.utils.FileManager.saveJsonFile;
 
 public class ConfigManager {
     private final HytaleFoundations hytaleFoundations;
@@ -21,6 +22,7 @@ public class ConfigManager {
     private final String CHAT_CONFIG = "chat.json";
 
     private Config defaultConfig;
+    private ChatConfig defaultChatConfig;
 
     private final Path dataDir;
 
@@ -47,39 +49,24 @@ public class ConfigManager {
 
     private Config loadConfigData() {
         Path configFile = dataDir.resolve(CONFIG_FILE);
-        if (Files.exists(configFile)) {
-            try {
-                String readConfig = Files.readString(configFile, StandardCharsets.UTF_8);
-                Config config = GSON.fromJson(readConfig, Config.class);
-
-                if (config == null) {
-                    myLogger.atSevere().log(langManager.getMessage(null, LangKey.READ_FAILURE_W_LOC, CONFIG_FILE, "data directory").getAnsiMessage());
-                } else {
-                    return config;
-                }
-            } catch (IOException e) {
-                myLogger.atSevere().log(langManager.getMessage(null, LangKey.READ_FAILURE_W_LOC, CONFIG_FILE, dataDir.toString()).getAnsiMessage());
-            }
+        Config config = loadJsonFile(CONFIG_FILE, configFile, Config.class, true);
+        if(config !=  null) {
+            return config;
         }
-
         Config defConfig = createDefaultConfig();
-        saveConfigFile(defConfig);
+        saveJsonFile(CONFIG_FILE, configFile, defConfig, true);
         return defConfig;
     }
 
-    private void saveConfigFile(Config config) {
-        Path savePath = dataDir.resolve(CONFIG_FILE);
-        String toJson = GSON.toJson(config);
-        try {
-            Files.writeString(savePath, toJson, StandardCharsets.UTF_8);
-        } catch (IOException e) {
-            myLogger.atSevere().log(langManager.getMessage(null, LangKey.SAVE_FAILURE_W_LOC, CONFIG_FILE, "data directory").getAnsiMessage());
-        }
+    private ChatConfig createDefaultChatConfig() {
+        ChatConfig chatConfig = new ChatConfig();
+        //chatConfig.
+
+        return chatConfig;
     }
 
     private Config createDefaultConfig() {
         Config config = new Config();
-
         config.setLang("en-us.json");
         config.setDataStorageType("json");
         config.setPlayerDataSaveInterval(15);
@@ -93,11 +80,6 @@ public class ConfigManager {
         config.setPvtMsgClearInterval(5);
         config.setSaveChatLog(true);
         config.setChatLogSaveInterval(10);
-
-        config.setTitleDefaultFadeIn(10);
-        config.setTitleDefaultStay(70);
-        config.setTitleDefaultFadeOut(20);
-
         return config;
     }
 

@@ -8,7 +8,6 @@ import com.raeden.hytale.core.data.PlayerProfile;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.HashMap;
@@ -18,6 +17,8 @@ import java.util.Objects;
 import static com.raeden.hytale.HytaleFoundations.*;
 import static com.raeden.hytale.utils.ColorEngine.color;
 import static com.raeden.hytale.utils.ColorEngine.gradient;
+import static com.raeden.hytale.utils.FileManager.getJsonObject;
+import static com.raeden.hytale.utils.FileManager.saveJsonFile;
 
 public class LangManager {
     private final HytaleFoundations hytaleFoundations;
@@ -64,13 +65,7 @@ public class LangManager {
             defaultMap.put(key.getKey(), entry);
         }
 
-        String jsonString = GSON.toJson(defaultMap);
-        try {
-            Files.writeString(path, jsonString, StandardCharsets.UTF_8);
-            myLogger.atInfo().log(getMessage(LangKey.SAVE_W_LOC, "en-us.json", langDir.toString()).getAnsiMessage());
-        } catch (IOException e) {
-            myLogger.atSevere().log(getMessage(LangKey.SAVE_FAILURE_W_LOC, "en-us.json", langDir.toString()).getAnsiMessage() + e);
-        }
+        saveJsonFile(DEFAULT_LANGUAGE + ".json", path, defaultMap, true);
     }
 
     public void reloadLanguages() {
@@ -80,18 +75,10 @@ public class LangManager {
 
         for(File file : Objects.requireNonNull(langFolder.listFiles())) {
             if(!file.getName().endsWith(".json")) continue;
-
             String fileName = file.getName();
             String langKey = fileName.replace(".json", "").toLowerCase();
-
-            try {
-                String jsonString = Files.readString(file.toPath());
-                JsonObject jsonObject = JsonParser.parseString(jsonString).getAsJsonObject();
-                langCache.put(langKey, jsonObject);
-                myLogger.atInfo().log(getMessage(LangKey.LOAD_FILE, "language: " + fileName).getAnsiMessage());
-            } catch (IOException e) {
-                myLogger.atWarning().log(getMessage(LangKey.LOAD_FAILURE, "language: " + fileName).getAnsiMessage());
-            }
+            JsonObject jsonObject = getJsonObject(fileName, file.toPath(), true);
+            langCache.put(langKey, jsonObject);
         }
     }
 

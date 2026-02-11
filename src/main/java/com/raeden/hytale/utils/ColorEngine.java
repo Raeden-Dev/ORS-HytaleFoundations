@@ -1,18 +1,24 @@
 package com.raeden.hytale.utils;
 
+import com.google.gson.reflect.TypeToken;
 import com.hypixel.hytale.server.core.Message;
+import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.raeden.hytale.HytaleFoundations;
 import com.raeden.hytale.lang.LangKey;
 
-import java.awt.*;
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
+import java.lang.reflect.Type;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 import static com.raeden.hytale.HytaleFoundations.*;
+import static com.raeden.hytale.core.utils.Permissions.isPlayerAdmin;
+import static com.raeden.hytale.utils.FileManager.loadJsonFile;
+import static com.raeden.hytale.utils.FileManager.saveJsonFile;
 
 public class ColorEngine {
     // Map for all colors
@@ -60,43 +66,81 @@ public class ColorEngine {
         }
         COLOR_MAP_FILE colorMapFile = new COLOR_MAP_FILE();
         colorMapFile.setColorList(COLOR_MAP);
-        String toJson = GSON.toJson(colorMapFile);
-        try {
-            Files.writeString(colorFilePath, toJson, StandardCharsets.UTF_8);
-        } catch (IOException e) {
-            myLogger.atSevere().log(langManager.getMessage(null, LangKey.SAVE_FAILURE_W_LOC, COLOR_FILE, "data directory").getAnsiMessage());
-        }
+        saveJsonFile(COLOR_FILE, colorFilePath, colorMapFile, true);
     }
 
     public void loadColors() {
         if(Files.exists(colorFilePath)) {
-            try {
-                String readColormap = Files.readString(colorFilePath, StandardCharsets.UTF_8);
-                COLOR_MAP_FILE colorMapFile = GSON.fromJson(readColormap, COLOR_MAP_FILE.class);
+            Type type = new TypeToken<LinkedHashMap<String, String>>(){}.getType();
+            COLOR_MAP_FILE colorMapFile = loadJsonFile(COLOR_FILE, colorFilePath, type, true);
 
-                if(colorMapFile.getColorList().isEmpty()) {
-                    saveColorFile(true);
-                } else {
-                    int newColors = 0;
-                    LinkedHashMap<String, String> defaultColors = getDefaultColors();
-                    LinkedHashMap<String, String> obtainedColormap = colorMapFile.getColorList();
-                    for(Map.Entry<String, String> color : obtainedColormap.entrySet()) {
-                        if(!defaultColors.containsKey(color.getKey()) && !obtainedColormap.containsKey(color.getKey())) {
-                            newColors++;
-                            COLOR_MAP.put(color.getKey(), color.getValue());
-                        }
-                    }
+            if(colorMapFile == null) {
+                saveColorFile(true);
+                return;
+            }
 
-                    if(newColors != 0) {
-                        myLogger.atInfo().log(langManager.getMessage(null, LangKey.LOAD_FILE, newColors + "colors!").getAnsiMessage());
+            if(colorMapFile.getColorList().isEmpty()) {
+                saveColorFile(true);
+            } else {
+                int newColors = 0;
+                LinkedHashMap<String, String> defaultColors = getDefaultColors();
+                LinkedHashMap<String, String> obtainedColormap = colorMapFile.getColorList();
+
+                // Validate if default colors exist or not
+                for(Map.Entry<String, String> defaultColor : defaultColors.entrySet()) {
+                    if(!COLOR_MAP.containsKey(defaultColor.getKey())) {
+                        COLOR_MAP.put(defaultColor.getKey(), defaultColor.getValue());
                     }
                 }
-            } catch (IOException e) {
-                myLogger.atSevere().log(langManager.getMessage(null, LangKey.READ_FAILURE_W_LOC, COLOR_FILE, colorFilePath.toString()).getAnsiMessage());
+                // Get the obtained colors from colormap.json
+                for(Map.Entry<String, String> color : obtainedColormap.entrySet()) {
+                    if(!validateColor(color.getKey(), color.getValue())) {
+                        myLogger.atWarning().log(langManager.getMessage(null, LangKey.INVALID_COLOR_FORMAT, color.getKey(), color.getValue()).getAnsiMessage());
+                        continue;
+                    }
+                    if(!COLOR_MAP.containsKey(color.getKey())) {
+                        newColors++;
+                        COLOR_MAP.put(color.getKey(), color.getValue());
+                    }
+                }
+
+                if(newColors != 0) {
+                    myLogger.atInfo().log(langManager.getMessage(null, LangKey.LOAD_FILE, newColors + "colors!").getAnsiMessage());
+                }
             }
         }
     }
 
+    public boolean validateColor(String code, String hex) {
+        Pattern hexPattern = Pattern.compile("^#([A-Fa-f0-9]{6})$");
+        Pattern codePattern = Pattern.compile("^&[0-9a-zA-Z]$");
+        if(code == null || !codePattern.matcher(code).matches()) return false;
+        return hex == null || hexPattern.matcher(hex).matches();
+    }
+
+    public static Message parseMessage(PlayerRef playerRef, String message) {
+        Message finalMessage = null;
+
+        if(!isPlayerAdmin(playerRef)) {
+            return Message.raw(stripMessageOfColorCodes(message)).color(DefaultColors.WHITE.getHex());
+
+        }
+
+        List<Message> messageList = new ArrayList<>();
+        String[] splitMessage = message.split("&");
+
+        return finalMessage;
+    }
+
+    public static Message parseMessage(String message) {
+        return parseMessage(null, message);
+    }
+
+    public static String stripMessageOfColorCodes(String message) {
+        return null;
+    }
+
+    // Static fetching methods
     public static Message gradient(String text, String startHex, String endHex, boolean bold) {
         Message builder = Message.empty();
 

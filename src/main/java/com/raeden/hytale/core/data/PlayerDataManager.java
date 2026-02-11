@@ -1,27 +1,22 @@
 package com.raeden.hytale.core.data;
 
 import com.google.gson.reflect.TypeToken;
-import com.hypixel.hytale.component.Ref;
-import com.hypixel.hytale.component.Store;
 import com.hypixel.hytale.server.core.Message;
-import com.hypixel.hytale.server.core.entity.UUIDComponent;
 import com.hypixel.hytale.server.core.entity.entities.Player;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
-import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import com.raeden.hytale.HytaleFoundations;
 import com.raeden.hytale.lang.LangKey;
-import com.raeden.hytale.modules.chat.MailManager;
 
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Type;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.StandardOpenOption;
 import java.util.*;
 
 import static com.raeden.hytale.HytaleFoundations.*;
+import static com.raeden.hytale.utils.FileManager.loadJsonFile;
+import static com.raeden.hytale.utils.FileManager.saveJsonFile;
 import static com.raeden.hytale.utils.GeneralUtils.findPlayerByName;
 import static com.raeden.hytale.utils.GeneralUtils.getPlayerUUID;
 
@@ -62,52 +57,15 @@ public class PlayerDataManager {
     private void createUserMap() {
         Path userMapPath = playerDataPath.resolve(USERMAP_JSON);
         LinkedHashMap<UUID, String> users = new LinkedHashMap<>();
-        String toJson = GSON.toJson(users);
-
         if(!Files.exists(userMapPath)) {
-            try {
-                Files.writeString(userMapPath, toJson, StandardCharsets.UTF_8);
-                myLogger.atInfo().log(langManager.getMessage(LangKey.CREATE_SUCCESS, USERMAP_JSON).getAnsiMessage());
-            } catch (IOException e) {
-                myLogger.atWarning().log(langManager.getMessage(LangKey.CREATE_FAILURE, USERMAP_JSON).getAnsiMessage());
-            }
+            saveJsonFile(USERMAP_JSON, userMapPath, users, true);
         }
     }
 
     private LinkedHashMap<UUID, String> loadUserMap() {
         Path userMapPath = playerDataPath.resolve(USERMAP_JSON);
-        if(Files.exists(userMapPath)) {
-            try {
-                String userMap = Files.readString(userMapPath, StandardCharsets.UTF_8);
-                Type type = new TypeToken<LinkedHashMap<UUID, String>>(){}.getType();
-                return GSON.fromJson(userMap, type);
-            } catch (IOException e) {
-                myLogger.atSevere().log(langManager.getMessage(LangKey.LOAD_FAILURE, USERMAP_JSON).getAnsiMessage());
-                return null;
-            }
-        }
-
-        return null;
-    }
-
-    /**
-     * Returns the usernames that exist in the player data "usermap.json".
-     * This is useful for admin UIs (e.g., listing known players).
-     */
-    public List<String> getKnownUsernames() {
-        LinkedHashMap<UUID, String> users = loadUserMap();
-        if (users == null || users.isEmpty()) {
-            return Collections.emptyList();
-        }
-
-        // Preserve insertion order from the JSON (LinkedHashMap) but remove nulls.
-        ArrayList<String> names = new ArrayList<>();
-        for (String name : users.values()) {
-            if (name != null && !name.isBlank()) {
-                names.add(name);
-            }
-        }
-        return names;
+        Type type = new TypeToken<LinkedHashMap<UUID, String>>(){}.getType();
+        return loadJsonFile(USERMAP_JSON, userMapPath, type);
     }
 
     private void updateUserMap(UUID id, String username) {
@@ -115,20 +73,13 @@ public class PlayerDataManager {
         if(users == null) users = new LinkedHashMap<>();
         String oldUsername = users.get(id);
         users.put(id, username);
-
+        Type type = new TypeToken<LinkedHashMap<UUID, String>>(){}.getType();
         Path userMapPath = playerDataPath.resolve(USERMAP_JSON);
-        String toJson = GSON.toJson(users);
-        try {
-            Files.writeString(userMapPath, toJson, StandardCharsets.UTF_8,
-                    StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
-        } catch (IOException e) {
-            myLogger.atWarning().log(langManager.getMessage(LangKey.SAVE_FAILURE, USERMAP_JSON).getAnsiMessage());
-        }
+        saveJsonFile(USERMAP_JSON, userMapPath, type, true, true);
 
         if (oldUsername != null && !oldUsername.equals(username)) {
             Path oldDataPath = playerDataPath.resolve(oldUsername);
             Path newDataPath = playerDataPath.resolve(username);
-
             if (Files.exists(oldDataPath)) {
                 try {
                     Files.move(oldDataPath, newDataPath);
@@ -166,72 +117,40 @@ public class PlayerDataManager {
             jsonName += ".json";
         }
         Path playerFolder = playerDataPath.resolve(username);
-        Path savePath = playerFolder.resolve(jsonName);
-        String toJson = GSON.toJson(data);
         try {
             if (!Files.exists(playerFolder)) {
                 Files.createDirectories(playerFolder);
             }
-            Files.writeString(savePath, toJson, StandardCharsets.UTF_8);
         } catch (IOException e) {
-            myLogger.atSevere().log(langManager.getMessage(LangKey.SAVE_FAILURE, jsonName + ".json for player: ", username).getAnsiMessage());
+            myLogger.atSevere().log(langManager.getMessage(LangKey.CREATE_FAILURE, "player directory").getAnsiMessage());
+            return;
         }
+        Path savePath = playerFolder.resolve(jsonName);
+        saveJsonFile(jsonName, savePath, data, true);
     }
 
     public PlayerProfile getPlayerProfileFromFile(String username) {
         Path profileJsonPath = playerDataPath.resolve(username).resolve(PROFILE_JSON);
-        if(Files.exists(profileJsonPath)) {
-            try {
-                String profile = Files.readString(profileJsonPath, StandardCharsets.UTF_8);
-                return GSON.fromJson(profile, PlayerProfile.class);
-            } catch (IOException e) {
-                myLogger.atSevere().log(langManager.getMessage(LangKey.LOAD_FAILURE, PROFILE_JSON + ": ", username).getAnsiMessage());
-            }
-        }
-        myLogger.atSevere().log(langManager.getMessage(LangKey.LOAD_FAILURE, PROFILE_JSON + ": ", username).getAnsiMessage());
-        return null;
+        String fileName = PROFILE_JSON + ": " + username;
+        return loadJsonFile(fileName, profileJsonPath, PlayerProfile.class, true);
     }
 
     public PlayerStats getPlayerStatsFromFile(String username) {
         Path statsJsonPath = playerDataPath.resolve(username).resolve(STATS_JSON);
-        if(Files.exists(statsJsonPath)) {
-            try {
-                String stats = Files.readString(statsJsonPath, StandardCharsets.UTF_8);
-                return GSON.fromJson(stats, PlayerStats.class);
-            } catch (IOException e) {
-                myLogger.atSevere().log(langManager.getMessage(LangKey.LOAD_FAILURE, STATS_JSON + ": ", username).getAnsiMessage());
-            }
-        }
-        myLogger.atSevere().log(langManager.getMessage(LangKey.LOAD_FAILURE, STATS_JSON + ": ", username).getAnsiMessage());
-        return null;
+        String fileName = STATS_JSON + ": " + username;
+        return loadJsonFile(fileName, statsJsonPath, PlayerStats.class, true);
     }
 
     public PlayerHistory getPlayerHistory(String username) {
         Path historyJsonPath = playerDataPath.resolve(username).resolve(HISTORY_JSON);
-        if(Files.exists(historyJsonPath)) {
-            try {
-                String history = Files.readString(historyJsonPath, StandardCharsets.UTF_8);
-                return GSON.fromJson(history, PlayerHistory.class);
-            } catch (IOException e) {
-                myLogger.atSevere().log(langManager.getMessage(LangKey.LOAD_FAILURE, HISTORY_JSON + ": ", username).getAnsiMessage());
-            }
-        }
-        myLogger.atSevere().log(langManager.getMessage(LangKey.LOAD_FAILURE, HISTORY_JSON + ": ", username).getAnsiMessage());
-        return null;
+        String fileName = HISTORY_JSON + ": " + username;
+        return loadJsonFile(fileName, historyJsonPath, PlayerHistory.class, true);
     }
 
     public PlayerMailbox getPlayerMailbox(String username) {
         Path mailJsonPath = playerDataPath.resolve(username).resolve(MAIL_JSON);
-        if(Files.exists(mailJsonPath)) {
-            try {
-                String mails = Files.readString(mailJsonPath, StandardCharsets.UTF_8);
-                return GSON.fromJson(mails, PlayerMailbox.class);
-            } catch (IOException e) {
-                myLogger.atSevere().log(langManager.getMessage(LangKey.LOAD_FAILURE, MAIL_JSON + ": ", username).getAnsiMessage());
-            }
-        }
-        myLogger.atSevere().log(langManager.getMessage(LangKey.LOAD_FAILURE, MAIL_JSON + ": ", username).getAnsiMessage());
-        return null;
+        String fileName = MAIL_JSON + ": " + username;
+        return loadJsonFile(fileName, mailJsonPath, PlayerMailbox.class, true);
     }
 
     public void loadPlayerData(String username) {
@@ -244,28 +163,12 @@ public class PlayerDataManager {
         }
         // Player Profile
         Path profileJson = dataFolder.resolve(PROFILE_JSON);
-        if(Files.exists(profileJson)) {
-            try {
-                String playerProfile = Files.readString(profileJson, StandardCharsets.UTF_8);
-                PlayerProfile profile = GSON.fromJson(playerProfile, PlayerProfile.class);
-                addPlayerProfile(username, profile);
-            } catch (IOException e) {
-                myLogger.atSevere().log(langManager.getMessage(LangKey.LOAD_FAILURE, PROFILE_JSON + ": ", username).getAnsiMessage());
-            }
-        }
+        PlayerProfile profile = loadJsonFile(PROFILE_JSON, profileJson, PlayerProfile.class);
+        addPlayerProfile(username, profile);
         // Player Stats
         Path statsJson = dataFolder.resolve(STATS_JSON);
-        if(Files.exists(statsJson)) {
-            try {
-                String playerStats = Files.readString(statsJson, StandardCharsets.UTF_8);
-                PlayerStats stats = GSON.fromJson(playerStats, PlayerStats.class);
-                addPlayerStats(username, stats);
-            } catch (IOException e) {
-                myLogger.atSevere().log(langManager.getMessage(LangKey.LOAD_FAILURE, STATS_JSON + ": ", username).getAnsiMessage());
-            }
-        }
-
-
+        PlayerStats stats = loadJsonFile(STATS_JSON, statsJson, PlayerStats.class);
+        addPlayerStats(username, stats);
     }
 
     private PlayerProfile createPlayerProfile(PlayerRef playerRef) {

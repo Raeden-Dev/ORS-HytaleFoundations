@@ -27,10 +27,6 @@ public class TitleCommand extends AbstractPlayerCommand {
     public TitleCommand(HytaleFoundations plugin) {
         super("title", "Sends a customized title to a player or all players.");
 
-        // Fetch the defaults directly from your JSON config object
-        int defaultFadeIn = plugin.getConfigManager().getDefaultConfig().getTitleDefaultFadeIn();
-        int defaultStay = plugin.getConfigManager().getDefaultConfig().getTitleDefaultStay();
-        int defaultFadeOut = plugin.getConfigManager().getDefaultConfig().getTitleDefaultFadeOut();
 
         this.targetArg = withRequiredArg("target", "Target player or 'all'", ArgTypes.STRING);
         this.titleArg = withRequiredArg("title", "The main title text (supports & color codes)", ArgTypes.STRING);

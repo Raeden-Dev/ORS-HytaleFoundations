@@ -1,21 +1,24 @@
-PEACH("#F8B195"),
-CUTE_PINK("#F67290"),
-LIGHT_CRIMSON("#C06C84"),
-CHARRED_BLUE("#6C5B7B"),
-BLUEY_BLUE("#355C7D"),
-LIME("#BCC07B"),
-SKY_BLUE("#D5EDF8"),
-PALE_RED("#EA7D70"),
-PALE_WATER("#7D8BE0"),
-PALE_PURPLE("#9A81B0"),
-LIGHT_ORANGE("#FFAF6E");
-
 Available colors:
-&4 - MC DARK RED
+BLACK("&0", "#000000"),
+MC_DARK_BLUE("&1", "#0000AA"),
+MC_DARK_GREEN("&2", "#00AA00"),
+MC_DARK_AQUA("&3", "#00AAAA"),
+MC_DARK_RED("&4", "#AA0000"),
+MC_DARK_PURPLE("&5", "#AA00AA"),
+MC_GOLD("&6", "#FFAA00"),
+MC_GRAY("&7", "#AAAAAA"),
+MC_DARK_GRAY("&8", "#555555"),
+MC_BLUE("&9", "#5555FF"),
+MC_GREEN("&a", "#55FF55"),
+MC_AQUA("&b", "#55FFFF"),
+MC_RED("&c", "#FF5555"),
+MC_LIGHT_PURPLE("&d", "#FF55FF"),
+MC_YELLOW("&e", "#FFFF55"),
+WHITE("&f", "#FFFFFF");
 
 
 
-Message Foramt:
+Message Format:
 
 &4This is my message = Dark Red message
-&4&
+&4&3This is my Dark Red to Aqua Gradient

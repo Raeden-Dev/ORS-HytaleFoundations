@@ -3,6 +3,8 @@ package com.raeden.hytale.lang;
 public enum LangKey {
     // General
     NO_PERMISSION("You don't have permission to run that command!"),
+    FILE_NOT_FOUND("[ERROR] Could not find file {0}"),
+    FILE_NOT_FOUND_W_LOC("[ERROR] Could not find file {0} at {1}"),
     CREATE_SUCCESS("[INFO] Created {0}"),
     CREATE_FAILURE("[ERROR] Failed to create {0}"),
     CREATE_DIRECTORY("[DIR] Created {0} directory"),
@@ -13,6 +15,7 @@ public enum LangKey {
     SAVE_W_LOC("[SAVE] Saved {0} at {1}"),
     SAVE_FAILURE("[SAVE] Failed to save {0}"),
     SAVE_FAILURE_W_LOC("[SAVE] Failed to save {0} at {1}"),
+    CHECK_FAILURE("[INFO] Failed to check {0}"),
     LOAD_FILE("[LOAD] Loaded {0}"),
     LOAD_FILE_W_TYPE("[LOAD] Loaded {0} {1}"),
     LOAD_FAILURE("[LOAD] Failed to load {0}"),
@@ -25,6 +28,7 @@ public enum LangKey {
     USERNAME_FIND_FAILURE("[ERROR] Failed to find player with username {0}"),
     USER_ONLINE_CHECK_FAILURE("[ERROR] Failed to check if player {0} is online!"),
     INV_SLOT_CHECK_ERROR("[ERROR] Failed to check inventory slots for player {0}"),
+    INVALID_COLOR_FORMAT("[ERROR] Skipping invalid color for chat formating. Code: {0} | Hex: {1}"),
     INCORRECT_TIME_FORMAT("Time format is incorrect! Correct format: (d|h|m|s eg. 1d8h5m33s)"),
     PLAYER_NEVER_JOINED("Player with username {0} was not found!"),
     MISMATCH_FOUND("Mismatch found for {0}"),
