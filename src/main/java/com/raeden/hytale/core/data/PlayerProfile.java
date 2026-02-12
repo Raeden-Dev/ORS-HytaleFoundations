@@ -16,6 +16,7 @@ public class PlayerProfile {
     private boolean godModeEnabled;
     private boolean isVanished;
     private boolean isFlying;
+    private boolean isAnonymous;
 
     // Convenience
     private final Map<String, Location> homes = new HashMap<>();
@@ -50,6 +51,8 @@ public class PlayerProfile {
     public void setVanished(boolean vanished) {isVanished = vanished;}
     public boolean isFlying() {return isFlying;}
     public void setFlying(boolean flying) {isFlying = flying;}
+    public boolean isAnonymous() {return isAnonymous;}
+    public void setAnonymous(boolean anonymous) {isAnonymous = anonymous;}
 
     public void addHome(String name, Location location) {homes.put(name, location);}
     public void removeHome(String name) {homes.remove(name);}

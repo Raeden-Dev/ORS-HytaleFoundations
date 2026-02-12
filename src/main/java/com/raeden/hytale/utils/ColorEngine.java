@@ -147,63 +147,65 @@ public class ColorEngine {
     private Message formatMessage(String text) {
         if (text == null || text.isEmpty()) return Message.empty();
         Message finalMessage = Message.empty();
-        String[] splitMessage = text.split("(?=&)");
+        int length = text.length();
 
-        List<String> activeColors = new ArrayList<>();
+        List<String> activeColors = new ArrayList<>(4);
         activeColors.add(DefaultColors.WHITE.getHex());
         boolean isBold = false;
         boolean isItalic = false;
 
-        for(String segment : splitMessage) {
-            if(!segment.startsWith("&") || segment.length() < 2) {
-                String color = activeColors.isEmpty() ? DefaultColors.WHITE.getHex() : activeColors.getFirst();
-                finalMessage.insert(Message.raw(segment).color(color).bold(isBold).italic(isItalic));
-                continue;
-            }
-            String code = segment.substring(0, 2);
-            String content = segment.substring(2);
-            boolean isSpecial = SPECIAL_CODES.contains(code);
-            boolean isColor = COLOR_MAP.containsKey(code);
+        StringBuilder currentContent = new StringBuilder();
+        for(int i = 0; i < length; i++) {
+            char c = text.charAt(i);
+            if(c == '&' && i+1 < length) {
+                String codeKey = "&" + text.charAt(i + 1);
+                boolean isColor = COLOR_MAP.containsKey(codeKey);
+                boolean isSpecial = SPECIAL_CODES.contains(codeKey);
 
-            if (!isSpecial && !isColor) {
-                String color = activeColors.isEmpty() ? DefaultColors.WHITE.getHex() : activeColors.getLast();
-                finalMessage.insert(Message.raw(segment).color(color).bold(isBold).italic(isItalic));
-                continue;
-            }
-
-            if (isSpecial) {
-                if (code.equalsIgnoreCase("&l")) isBold = true;
-                else if (code.equalsIgnoreCase("&o")) isItalic = true;
-                else if (code.equalsIgnoreCase("&r")) {
-                    activeColors.clear();
-                    activeColors.add(DefaultColors.WHITE.getHex());
-                    isBold = false;
-                    isItalic = false;
-                }
-            } else {
-                if (activeColors.size() == 1 && activeColors.getFirst().equals(DefaultColors.WHITE.getHex())) {
-                    activeColors.clear();
-                }
-                activeColors.add(COLOR_MAP.get(code));
-            }
-
-            if (!content.isEmpty()) {
-                if (activeColors.isEmpty()) activeColors.add(DefaultColors.WHITE.getHex());
-                if (activeColors.size() > 1) {
-                    finalMessage.insert(gradient(content, new ArrayList<>(activeColors), isBold, isItalic));
-                    String lastColor = activeColors.getLast();
-                    activeColors.clear();
-                    activeColors.add(lastColor);
-                } else {
-                    finalMessage.insert(Message.raw(content).color(activeColors.getFirst()).bold(isBold).italic(isItalic));
+                if(isColor || isSpecial) {
+                    if(!currentContent.isEmpty()) {
+                        appendSegment(finalMessage, currentContent.toString(), activeColors, isBold, isItalic);
+                        currentContent.setLength(0);
+                    }
+                    if(isSpecial) {
+                        if (codeKey.equalsIgnoreCase("&l")) isBold = true;
+                        else if (codeKey.equalsIgnoreCase("&o")) isItalic = true;
+                        else if (codeKey.equalsIgnoreCase("&r")) {
+                            activeColors.clear();
+                            activeColors.add(DefaultColors.WHITE.getHex());
+                            isBold = false;
+                            isItalic = false;
+                        }
+                    } else {
+                        if (activeColors.size() == 1 && activeColors.getFirst().equals(DefaultColors.WHITE.getHex())) {
+                            activeColors.clear();
+                        }
+                        activeColors.add(COLOR_MAP.get(codeKey));
+                    }
+                    i++;
+                    continue;
                 }
             }
+            currentContent.append(c);
         }
-
+        if (!currentContent.isEmpty()) {
+            appendSegment(finalMessage, currentContent.toString(), activeColors, isBold, isItalic);
+        }
         return finalMessage;
     }
 
     // Helpers
+    private void appendSegment(Message builder, String content, List<String> colors, boolean bold, boolean italic) {
+        if(colors.isEmpty()) colors.add(DefaultColors.WHITE.getHex());
+        if(colors.size() > 1) {
+            builder.insert(gradient(content, colors, bold, italic));
+            String lastColor = colors.getLast();
+            colors.clear();
+            colors.add(lastColor);
+        } else {
+            builder.insert(Message.raw(content).color(colors.getFirst()).bold(bold).italic(italic));
+        }
+    }
     public Message gradient(String text, List<String> hexColors) {
         return gradient(text, hexColors, false, false);
     }

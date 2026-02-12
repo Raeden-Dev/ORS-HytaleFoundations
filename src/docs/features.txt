@@ -10,6 +10,7 @@ FIX (Addresses a specific complaint about EliteEssentials)
 ? = Additional functions
 - = Info
 [!] = COMPETITOR
+✅ = Completed
 
 You can find the features we have to work on below:
 ------------------------------------------------------------------------------------------------------------------
@@ -63,6 +64,7 @@ You can find the features we have to work on below:
     > [A] /staffchat [msg] : Sends a message to staff chat
     > [A] /staffchat toggle [on/off] toggles staff chat on and off
     > [A] /jump : Teleports to the block you're looking at
+    > [A] /anonymous : Removes prefix and everything from your message in chat for anonymous messaging.
 
 
 || ANALYTICAL FEATURES:
@@ -80,7 +82,7 @@ You can find the features we have to work on below:
     > Nicknaming should be available
     > Color naming should be available
     > Tag creation in game (Suffix / Prefix)
-    > Colored Message Available
+    > ✅ Colored Message Available
 
 2. Managing Chat
     > /clearchat : Removes all messages in chat
@@ -161,11 +163,13 @@ You can find the features we have to work on below:
         ? Logging: Number of times unfriended by others, number of times sent friend req, number of people blocked them
 
 5. Message System:
-    > /msg [name] [text]: Sends a private message to player
-    > /reply [text]: Replies to private message if there is any receiver
+    > ✅ /msg [name] [text]: Sends a private message to player
+    > ✅ /reply [text]: Replies to private message if there is any receiver
     > [A] /mute [name] [duration] : Mutes a player for X time (Duration stacks if muted again)
-    > [A] /unmute [name] : Unmutes a player
+    > ✅ [A] /unmute [name] : Unmutes a player
     > [A] /unmuteall : Unmutes all muted player in the server
+        - Need to save a log for the remaining mute duration for every player unmuted
+        - /unmuteall undo : In case this was done by mistake, turns back all previous mute duration
     > /ignore [name] : Blocks all messages from the target (Private messages only)
     > /unignore [name] : Removes the target from ignore list
         ? Configurable max mute duration for play

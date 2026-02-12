@@ -182,6 +182,7 @@ public class PlayerDataManager {
         profile.setGodModeEnabled(false);
         profile.setVanished(false);
         profile.setFlying(false);
+        profile.setAnonymous(false);
         profile.setMuted(false);
         profile.setMuteDuration(0);
         profile.setSilenced(false);

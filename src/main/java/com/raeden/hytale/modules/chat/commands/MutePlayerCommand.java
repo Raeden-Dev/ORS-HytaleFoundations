@@ -13,6 +13,7 @@ import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import com.raeden.hytale.HytaleFoundations;
 import com.raeden.hytale.core.data.PlayerDataManager;
 import com.raeden.hytale.core.data.PlayerProfile;
+import com.raeden.hytale.core.utils.Permissions;
 import com.raeden.hytale.lang.LangKey;
 import com.raeden.hytale.utils.TimeUtils;
 
@@ -25,14 +26,14 @@ import static com.raeden.hytale.utils.GeneralUtils.findPlayerByName;
 public class MutePlayerCommand extends AbstractPlayerCommand {
     private final HytaleFoundations hytaleFoundations;
     private final RequiredArg<String> targetPlayer;
-    private final OptionalArg<String> duration;
+    private final RequiredArg<String> duration;
 
     public MutePlayerCommand(HytaleFoundations hytaleFoundations) {
         super("mute", "Mutes a player so they can't speak in chat.");
         this.hytaleFoundations = hytaleFoundations;
         this.setAllowsExtraArguments(true);
         targetPlayer = withRequiredArg("Player", "Player to execute command on.", ArgTypes.STRING);
-        duration = withOptionalArg("Duration", "Duration of the mute. (d|h|m|s eg. 1d8h5m33s)", ArgTypes.STRING);
+        duration = withRequiredArg("Duration", "Duration of the mute. (d|h|m|s eg. 1d8h5m33s)", ArgTypes.STRING);
     }
     @Override
     protected void execute(@Nonnull CommandContext commandContext, @Nonnull Store<EntityStore> store, @Nonnull Ref<EntityStore> ref, @Nonnull PlayerRef playerRef, @Nonnull World world) {
@@ -42,8 +43,7 @@ public class MutePlayerCommand extends AbstractPlayerCommand {
         String[] rawMessage = commandContext.getInputString().split("\\s+", 3);
         String duration = rawMessage[2];
 
-
-        if(!commandContext.sender().hasPermission("ors.foundations.mute") && !isAdmin) {
+        if(!Permissions.hasPermission(commandContext.sender(), Permissions.HFPermissions.MUTE_PLAYER.getPermission()) && !isAdmin) {
             commandContext.sender().sendMessage(langManager.getMessage(senderUsername, LangKey.NO_PERMISSION));
             return;
         }

@@ -12,6 +12,7 @@ import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import com.raeden.hytale.HytaleFoundations;
 import com.raeden.hytale.core.data.PlayerDataManager;
 import com.raeden.hytale.core.data.PlayerProfile;
+import com.raeden.hytale.core.utils.Permissions;
 import com.raeden.hytale.lang.LangKey;
 
 import javax.annotation.Nonnull;
@@ -35,7 +36,7 @@ public class UnmutePlayerCommand extends AbstractPlayerCommand {
         String senderUsername = commandContext.sender().getDisplayName();
         String targetUsername = commandContext.get(this.targetPlayer);
 
-        if(!commandContext.sender().hasPermission("ors.foundations.mute") && !isAdmin) {
+        if(!Permissions.hasPermission(commandContext.sender(), Permissions.HFPermissions.MUTE_PLAYER.getPermission()) && !isAdmin) {
             commandContext.sender().sendMessage(langManager.getMessage(senderUsername, LangKey.NO_PERMISSION));
             return;
         }

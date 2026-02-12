@@ -1,5 +1,6 @@
 package com.raeden.hytale.lang;
 
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.hypixel.hytale.server.core.Message;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
@@ -58,12 +59,10 @@ public class LangManager {
     }
 
     private void saveDefaultLangFile(Path path) {
-        LinkedHashMap<String, LangEntry> defaultMap = new LinkedHashMap<>();
+        LinkedHashMap<String, String> defaultMap = new LinkedHashMap<>();
 
         for(LangKey key : LangKey.values()) {
-            String text = key.getDefaultMessage();
-            LangEntry entry = new LangEntry(text);
-            defaultMap.put(key.getKey(), entry);
+            defaultMap.put(key.getKey(), key.getDefaultMessage());
         }
 
         saveJsonFile(DEFAULT_LANGUAGE + ".json", path, defaultMap, true);
@@ -97,14 +96,14 @@ public class LangManager {
         boolean isConsole = username == null;
         PlayerRef playerRef = username == null ? null : findPlayerByName(username);
 
-        LangEntry playerPrefix = getLangEntry(username, LangKey.PLAYER_MSG_PREFIX);
-        String prefixText = playerPrefix.text != null ? playerPrefix.text : LangKey.PLAYER_MSG_PREFIX.getDefaultMessage();
+        String prefixText = getLangString(username, LangKey.PLAYER_MSG_PREFIX);
+        if (prefixText == null) prefixText = LangKey.PLAYER_MSG_PREFIX.getDefaultMessage();
 
-        LangEntry entry = getLangEntry(username, key);
-        String finalText = (entry.text != null ? entry.text : key.getDefaultMessage());
+        String finalText = getLangString(username, key);
+        if (finalText == null) finalText = key.getDefaultMessage();
 
         if(username != null) {
-            finalText = prefixText + (entry.text != null ? entry.text : key.getDefaultMessage());
+            finalText = prefixText + finalText;
         }
 
         if (args != null && args.length > 0) {
@@ -126,49 +125,39 @@ public class LangManager {
         }
     }
 
-    private LangEntry getLangEntry(String username, LangKey key) {
+    private String getLangString(String username, LangKey key) {
         String jsonKey = key.getKey();
         String setLanguage = CONFIG_LANGUAGE;
-
         if(setLanguage == null) setLanguage = DEFAULT_LANGUAGE;
-
         if(username != null) {
             PlayerProfile profile = hytaleFoundations.getPlayerDataManager().getPlayerProfile(username);
-            if (profile != null && profile.getLanguage() != null) {
+            if(profile != null && profile.getLanguage() != null) {
                 setLanguage = profile.getLanguage();
             }
         }
-
-        LangEntry data = fetchEntryFromCache(setLanguage, jsonKey);
-
-        if (data == null) {
-            data = fetchEntryFromCache(DEFAULT_LANGUAGE, jsonKey);
+        String data = fetchStringFromCache(setLanguage, jsonKey);
+        if(data == null) {
+            data = fetchStringFromCache(DEFAULT_LANGUAGE, jsonKey);
         }
-
-        if (data == null) {
-            data = new LangEntry(key.getDefaultMessage());
+        if(data == null) {
+            data = key.getDefaultMessage();
         }
-
         return data;
     }
 
-    private LangEntry fetchEntryFromCache(String language, String key) {
+    private String fetchStringFromCache(String language, String key) {
         JsonObject jsonObject = langCache.get(language.toLowerCase());
         if (jsonObject == null || !jsonObject.has(key)) return null;
         try {
-            return GSON.fromJson(jsonObject.get(key), LangEntry.class);
+            JsonElement element = jsonObject.get(key);
+            if(element.isJsonPrimitive()) {
+                return element.getAsString();
+            }
+            return null;
         } catch (Exception e) {
-            myLogger.atWarning().log(getMessage(LangKey.READ_FAILURE, "key '" + key + "' in " + language).getAnsiMessage());
+            myLogger.atWarning().log("Error reading lang key '" + key + "' in " + language);
             return null;
         }
     }
 
-    private static class LangEntry {
-        String text;
-        public LangEntry() {}
-
-        public LangEntry(String text) {
-            this.text = text;
-        }
-    }
 }
