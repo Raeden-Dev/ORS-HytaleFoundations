@@ -4,6 +4,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class ChatConfig {
+    private String VERSION;
     private boolean ALLOW_PLAYER_CHAT_COLORS;
     private boolean TOGGLE_CENSOR_WORD_LIST;
     private boolean CENSOR_CURSE_WORDS;
@@ -28,4 +29,7 @@ public class ChatConfig {
     public void setCurseWordList(List<String> CURSE_WORD_LIST) {this.CURSE_WORD_LIST = CURSE_WORD_LIST;}
     public List<String> getCensorWordList() {return CENSOR_WORD_LIST;}
     public void setCensorWordList(List<String> CENSOR_WORD_LIST) {this.CENSOR_WORD_LIST = CENSOR_WORD_LIST;}
+
+    public String getVersion() {return VERSION;}
+    public void setVersion(String VERSION) {this.VERSION = VERSION;}
 }

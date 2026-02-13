@@ -1,6 +1,7 @@
 package com.raeden.hytale.core.config;
 
 public class Config {
+    private String VERSION;
     private String LANG;
     private String DATA_STORAGE_TYPE;
     private int PLAYER_DATA_SAVE_INTERVAL; // LOGOUT, 5M, 10M, 30M, 1H
@@ -54,4 +55,7 @@ public class Config {
 
     public int getPvtMsgClearInterval() {return PVT_MSG_CACHE_CLEAR_INTERVAL;}
     public void setPvtMsgClearInterval(int PvtMsgClearInterval) {this.PVT_MSG_CACHE_CLEAR_INTERVAL = PvtMsgClearInterval;}
+
+    public String getVersion() {return VERSION;}
+    public void setVersion(String VERSION) {this.VERSION = VERSION;}
 }

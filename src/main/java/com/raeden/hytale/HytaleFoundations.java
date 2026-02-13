@@ -28,6 +28,7 @@ import com.raeden.hytale.modules.utility.commands.*;
 import com.raeden.hytale.utils.Scheduler;
 
 import javax.annotation.Nonnull;
+import java.nio.file.Path;
 
 public class HytaleFoundations extends JavaPlugin {
     public static final HytaleLogger myLogger = HytaleLogger.forEnclosingClass();
@@ -35,6 +36,10 @@ public class HytaleFoundations extends JavaPlugin {
             .setPrettyPrinting()
             .disableHtmlEscaping()
             .create();
+    public static Path errorLogDirectory;
+
+    public static String CONFIG_VERSION = "v1.0";
+    public static String CHAT_CONFIG_VERSION = "v1.0";
 
     private Scheduler scheduler;
     private PluginActionManager pluginActionManager;
@@ -52,6 +57,7 @@ public class HytaleFoundations extends JavaPlugin {
     @Override
     protected void setup() {
         myLogger.atInfo().log("Hytale Foundations loading...");
+        errorLogDirectory = this.getDataDirectory().resolve("logs").resolve("error_logs");
         registerManagers();
         registerCommands();
         registerListeners();

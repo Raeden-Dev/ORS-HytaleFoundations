@@ -18,45 +18,33 @@ import java.util.LinkedHashMap;
 import java.util.Objects;
 
 import static com.raeden.hytale.HytaleFoundations.*;
-import static com.raeden.hytale.utils.FileManager.getJsonObject;
-import static com.raeden.hytale.utils.FileManager.saveJsonFile;
+import static com.raeden.hytale.utils.FileManager.*;
 import static com.raeden.hytale.utils.GeneralUtils.findPlayerByName;
 
 public class LangManager {
     private final HytaleFoundations hytaleFoundations;
     private String CONFIG_LANGUAGE;
     private final String DEFAULT_LANGUAGE = "en-us";
+    private final String FILE_EXTENSION = ".lang";
     private final Path langDir;
-    private final HashMap<String, JsonObject> langCache;
+    private final HashMap<String, String> langCache;
 
     public LangManager(HytaleFoundations hytaleFoundations) {
         this.hytaleFoundations = hytaleFoundations;
         langDir = hytaleFoundations.getDataDirectory().resolve("lang");
         langCache = new HashMap<>();
-        verify();
+        verifyLangManager();
     }
 
-    private void verify() {
-        if(!Files.exists(langDir)) {
-            try {
-                Files.createDirectories(langDir);
-                myLogger.atInfo().log(getMessage(LangKey.CREATE_DIRECTORY_W_LOC, "language", langDir.toString()).getAnsiMessage());
-            } catch (IOException e) {
-                myLogger.atWarning().log(getMessage(LangKey.CREATE_DIRECTORY_FAIL_W_LOC, "language", langDir.toString()).getAnsiMessage() + e);
-            }
-        }
-
-        Path defaultLanguage = langDir.resolve(DEFAULT_LANGUAGE + ".json");
+    private void verifyLangManager() {
+        createDirectory(langDir, true);
+        Path defaultLanguage = langDir.resolve(DEFAULT_LANGUAGE + FILE_EXTENSION);
         if(!Files.exists(defaultLanguage)) {
             saveDefaultLangFile(defaultLanguage);
         }
-
         reloadLanguages();
     }
-
-    public void setDefaultLanguage() {
-        CONFIG_LANGUAGE = hytaleFoundations.getConfigManager().getDefaultConfig().getLang();
-    }
+    public void setDefaultLanguage() {CONFIG_LANGUAGE = hytaleFoundations.getConfigManager().getDefaultConfig().getLang();}
 
     private void saveDefaultLangFile(Path path) {
         LinkedHashMap<String, String> defaultMap = new LinkedHashMap<>();
@@ -96,8 +84,8 @@ public class LangManager {
         boolean isConsole = username == null;
         PlayerRef playerRef = username == null ? null : findPlayerByName(username);
 
-        String prefixText = getLangString(username, LangKey.PLAYER_MSG_PREFIX);
-        if (prefixText == null) prefixText = LangKey.PLAYER_MSG_PREFIX.getDefaultMessage();
+        String prefixText = getLangString(username, LangKey.PREFIX);
+        if (prefixText == null) prefixText = LangKey.PREFIX.getDefaultMessage();
 
         String finalText = getLangString(username, key);
         if (finalText == null) finalText = key.getDefaultMessage();
@@ -120,6 +108,7 @@ public class LangManager {
             ColorEngine engine = hytaleFoundations.getChatManager().getColorEngine();
             return engine.parseText(playerRef, text, isConsole);
         } catch (NullPointerException e) {
+            logExceptionError("formatMessage", e);
             String cleanText = text.replaceAll("(?i)&[0-9a-z]", "");
             return Message.raw(cleanText).color(DefaultColors.WHITE.getHex());
         }
@@ -155,6 +144,7 @@ public class LangManager {
             }
             return null;
         } catch (Exception e) {
+            logExceptionError("fetchStringFromCache", e);
             myLogger.atWarning().log("Error reading lang key '" + key + "' in " + language);
             return null;
         }

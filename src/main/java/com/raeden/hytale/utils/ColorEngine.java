@@ -113,7 +113,7 @@ public class ColorEngine {
                 }
 
                 if(newColors != 0) {
-                    myLogger.atInfo().log(langManager.getMessage(LangKey.LOAD_FILE, newColors + "colors!").getAnsiMessage());
+                    myLogger.atInfo().log(langManager.getMessage(LangKey.LOAD_SUCCESS, newColors + "colors!").getAnsiMessage());
                 }
             }
         }
@@ -302,10 +302,11 @@ public class ColorEngine {
 
     // Color Map Class
     private static final class COLOR_MAP_FILE {
-        private LinkedHashMap<String, String> colorList = new LinkedHashMap<>();
+        private String VERSION = "v1.0";
+        private LinkedHashMap<String, String> COLOR_LIST = new LinkedHashMap<>();
 
-        public LinkedHashMap<String, String> getColorList() {return colorList;}
-        public void setColorList(LinkedHashMap<String, String> colorList) {this.colorList = colorList;}
+        public LinkedHashMap<String, String> getColorList() {return COLOR_LIST;}
+        public void setColorList(LinkedHashMap<String, String> colorList) {this.COLOR_LIST = colorList;}
     }
 
 }

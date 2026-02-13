@@ -10,8 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.raeden.hytale.HytaleFoundations.*;
-import static com.raeden.hytale.utils.FileManager.loadJsonFile;
-import static com.raeden.hytale.utils.FileManager.saveJsonFile;
+import static com.raeden.hytale.utils.FileManager.*;
 
 public class ConfigManager {
     private final HytaleFoundations hytaleFoundations;
@@ -35,18 +34,14 @@ public class ConfigManager {
     }
 
     public void loadConfigs() {
-        try {
-            if (!Files.exists(dataDir)) {
-                Files.createDirectories(dataDir);
-                myLogger.atInfo().log(langManager.getMessage(LangKey.CREATE_DIRECTORY_W_LOC, "data directory", dataDir.toString()).getAnsiMessage());
-            }
+        createDirectory(dataDir, true);
+        this.defaultConfig = loadConfigData();
+        this.defaultChatConfig = loadChatConfigData();
+        createErrorLogDir();
+    }
 
-            defaultConfig = loadConfigData();
-            defaultChatConfig = loadChatConfigData();
-        } catch (IOException e) {
-            myLogger.atSevere().log(langManager.getMessage(LangKey.CREATE_DIRECTORY_FAIL, "data directory").getAnsiMessage());
-            this.defaultConfig = createDefaultConfig();
-        }
+    private void createErrorLogDir() {
+        createDirectory(errorLogDirectory, true);
     }
 
     private Config loadConfigData() {
@@ -73,6 +68,7 @@ public class ConfigManager {
 
     private ChatConfig createDefaultChatConfig() {
         ChatConfig chatConfig = new ChatConfig();
+        chatConfig.setVersion(CHAT_CONFIG_VERSION);
         chatConfig.setRemoveIps(true);
         chatConfig.setAllowPlayerChatColors(true);
         chatConfig.setRemoveLinks(true);
@@ -87,6 +83,7 @@ public class ConfigManager {
 
     private Config createDefaultConfig() {
         Config config = new Config();
+        config.setVersion(CONFIG_VERSION);
         config.setLang("en-us.json");
         config.setDataStorageType("json");
         config.setPlayerDataSaveInterval(15);

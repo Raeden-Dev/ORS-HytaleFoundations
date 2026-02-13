@@ -10,7 +10,6 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -18,6 +17,8 @@ import java.util.concurrent.TimeUnit;
 
 import static com.raeden.hytale.HytaleFoundations.langManager;
 import static com.raeden.hytale.HytaleFoundations.myLogger;
+import static com.raeden.hytale.utils.FileManager.createDirectory;
+import static com.raeden.hytale.utils.FileManager.logExceptionError;
 
 public class ChatManager {
     private final HytaleFoundations hytaleFoundations;
@@ -40,21 +41,14 @@ public class ChatManager {
         activeMessengers = new LinkedHashMap<>();
         messageLog = new LinkedHashMap<>();
 
-        verify();
+        verifyChatManager();
         if(hytaleFoundations.getConfigManager().getDefaultConfig().isSaveChatLog()) {
             createChatSaveScheduler();
         }
     }
 
-    private void verify() {
-        if(!Files.exists(chatLogDir)) {
-            try {
-                Files.createDirectories(chatLogDir);
-                myLogger.atInfo().log(langManager.getMessage(LangKey.CREATE_DIRECTORY_W_LOC, "chat", chatLogDir.toString()).getAnsiMessage());
-            } catch (IOException e) {
-                myLogger.atWarning().log(langManager.getMessage(LangKey.CREATE_DIRECTORY_FAIL_W_LOC,"chat", chatLogDir.toString()).getAnsiMessage());
-            }
-        }
+    private void verifyChatManager() {
+        createDirectory(chatLogDir, true);
     }
 
     private void createChatSaveScheduler() {
@@ -84,9 +78,10 @@ public class ChatManager {
                 writer.newLine();
             }
             writer.write("---- END ----");
-            myLogger.atInfo().log(langManager.getMessage(LangKey.CHAT_LOG_EXPORTED, fileName, chatLogDir.toString()).getAnsiMessage());
+            myLogger.atInfo().log(langManager.getMessage(LangKey.LOG_CHAT_EXPORT_SUCCESS, fileName, chatLogDir.toString()).getAnsiMessage());
         } catch (IOException e) {
-            myLogger.atSevere().log(langManager.getMessage(LangKey.CHAT_LOG_EXPORT_FAIL, fileName).getAnsiMessage());
+            logExceptionError("exportChatLog", e);
+            myLogger.atSevere().log(langManager.getMessage(LangKey.LOG_CHAT_EXPORT_FAIL, fileName).getAnsiMessage());
         }
     }
 

@@ -1,86 +1,92 @@
 package com.raeden.hytale.lang;
 
 public enum LangKey {
-    // General
-    PLAYER_MSG_PREFIX("&f&l| "),
-    NO_PERMISSION("&c&lYou don't have permission to run that command!"),
-    FILE_NOT_FOUND("&c&l[ERROR] &r&cCould not find file &e{0}"),
-    FILE_NOT_FOUND_W_LOC("&c&l[ERROR] Could not find file &r&e&l{0} &r&c&lat &r&e&l{1}"),
-    CREATE_SUCCESS("&a&l[INFO] Created &r&e&l{0}"),
-    CREATE_FAILURE("&c&l[ERROR] Failed to create &r&e&l{0}"),
-    CREATE_DIRECTORY("&e&l[DIR] Created &r&a&l{0} &r&e&ldirectory"),
-    CREATE_DIRECTORY_W_LOC("&e&l[DIR] Created &r&a&l{0} directory at &r&e&l{1}"),
-    CREATE_DIRECTORY_FAIL("&c&l[DIR] Failed to create &r&e&l{0} &r&c&ldirectory"),
-    CREATE_DIRECTORY_FAIL_W_LOC("&c&l[DIR] Failed to create &r&e&l{0} &r&c&lat &r&e&l{1}"),
-    SAVE("&a&l[SAVE] Saved &r&e&l{0}"),
-    SAVE_W_LOC("&a&l[SAVE] Saved &r&e&l{0} &r&a&lat &r&e&l{1}"),
-    SAVE_FAILURE("&c&l[SAVE] Failed to save &r&e&l{0}"),
-    SAVE_FAILURE_W_LOC("&c&l[SAVE] Failed to save &r&e&l{0} &r&c&lat &r&e&l{1}"),
-    CHECK_FAILURE("&c&l[INFO] Failed to check &r&e&l{0}"),
-    LOAD_FILE("&e&l[LOAD] Loaded &r&a&l{0}"),
-    LOAD_FILE_W_TYPE("&e&l[LOAD] Loaded &r&a&l{0} {1}"),
-    LOAD_FAILURE("&c&l[LOAD] Failed to load &r&e&l{0}"),
-    LOAD_FAILURE_W_LOC("&c&l[LOAD] Failed to load &r&e&l{0} &r&c&lat &r&e&l{1}"),
-    READ_FAILURE("&c&l[READ] Failed to read &r&e&l{0}"),
-    READ_FAILURE_W_LOC("&c&l[READ] Failed to read &r&e&l{0} &r&c&lat &r&e&l{1}"),
-    STOP_SUCCESS("&e&l[STOP] Stopped &r&f&l{0}"),
-    STOP_FAILURE("&c&l[STOP] Failed to stop &r&e&l{0}"),
-    GET_PLAYER_FAIL("&c&l[ERROR] Failed to get player &r&e&l{0}"),
-    USERNAME_FIND_FAILURE("&c&l[ERROR] Failed to find player with username &r&e&l{0}"),
-    USER_ONLINE_CHECK_FAILURE("&c&l[ERROR] Failed to check if player &r&e&l{0} &r&c&lis online!"),
-    INV_SLOT_CHECK_ERROR("&c&l[ERROR] Failed to check inventory slots for player &r&e&l{0}"),
-    INVALID_COLOR_FORMAT("&c&l[ERROR] Skipping invalid color for chat formating. &r&e&lCode: {0} | Hex: {1}"),
-    INCORRECT_TIME_FORMAT("&c&lTime format is incorrect! Correct format: &r&e&l(d|h|m|s eg. 1d8h5m33s)"),
-    PLAYER_NEVER_JOINED("&c&lPlayer with username &r&e&l{0} &c&lwas not found!"),
-    MISMATCH_FOUND("&c&lMismatch found for &r&e&l{0}"),
+    // Core System
+    PREFIX                  ("system.prefix",                       "| "),
+    NO_PERMISSION           ("system.no_permission",                "You don't have permission to run that command!"),
+    MISMATCH_FOUND          ("system.error.mismatch",               "Mismatch found for {0}"),
+    INVALID_TIME_FORMAT     ("system.error.invalid_time",           "Time format is incorrect! Correct format: (d|h|m|s eg. 1d8h5m33s)"),
+    INVALID_COLOR_FORMAT    ("system.error.invalid_color",          "Skipping invalid color format. Code: {0} | Hex: {1}"),
+    SCHEDULER_CREATED       ("system.scheduler.create",             "Created scheduler {0} called by {1}"),
 
-    // Chat
-    PRIVATE_MSG_FORMAT_SENDER("&e&lYou &r&f&l» &r&e&l{0}&r&f&l: &r&f{1}"),
-    PRIVATE_MSG_FORMAT_RECEIVER("&e&l{0} &r&f&l» &r&e&lYou&r&f&l: &r&f{1}"),
-    PRIVATE_MSG_FORMAT_ADMIN("&c&l[PEEKING] &r&e&l{0} &r&f&l» &r&e&l{1}&r&f&l: &r&a{2}"),
-    PLAYER_BLOCKED_SENDER("&c&lCannot send message to &r&e&l{0}, &r&c&lthey have blocked you!"),
-    RECEIVER_NOT_ONLINE("&c&l{0} &r&e&lis not online!"),
-    RECEIVER_IS_MUTED("&e&l{0} &r&c&lis muted, they cannot reply to your message!"),
-    PLAYER_SELF_MSG("&e&lYou cannot send a private message to yourself!"),
-    PLAYER_NO_RECEIVER("&c&lYou have no one to reply to! &r&f&l/msg [player] first."),
-    CHAT_LOG_EXPORTED("&a&lSuccessfully exported chat log &r&e&l({0}) &r&a&lat &r&e&l{1}"),
-    CHAT_LOG_EXPORT_FAIL("&c&lFailed to export chat log &r&e&l{0}"),
-    BLOCKED_PLAYER("&c&lYou've blocked &r&e&l{0}"),
-    BLOCKED_PLAYER_ALREADY("&e&l{0} &r&c&lis already blocked by you"),
-    UNBLOCKED_PLAYER("&a&lYou've unblocked &r&e&l{0}"),
-    NOT_BLOCKED_PLAYER("&e&l{0} &r&a&lis not in your blocklist"),
+    FILE_NOT_FOUND          ("system.file.not_found",               "[ERROR] Could not find file {0}"),
+    FILE_NOT_FOUND_LOC      ("system.file.not_found_loc",           "[ERROR] Could not find file {0} at {1}"),
 
-    // Mute Command
-    PLAYER_MUTED("&c&lYou cannot send message because you are muted!"),
-    PLAYER_MUTED_W_TIME("&c&lYou cannot send message because you are muted! &r&e&l(Time Remaining: {0})"),
-    PLAYER_MUTED_PM("&c&lYou cannot send message to &r&e&l{0} &r&c&lbecause you are muted!"),
-    PLAYER_MUTED_PM_W_TIME("&c&lYou cannot send message to &r&e&l{0} &r&c&lbecause you are muted! &r&e&l(Time Remaining: {1})"),
-    MUTE_PLAYER("&c&lMuted &r&e&l{0} &r&c&lfor &r&e&l{1}"),
-    PLAYER_MUTE_MSG("&c&lYou have been muted by &r&e&l{0} &r&c&lfor &r&e&l{1}."),
-    UNMUTED_PLAYER("&e&l{0} &r&a&lhas been unmuted"),
-    PLAYER_UNMUTE_MSG("&a&lYou have been unmuted by &r&e&l{0}"),
-    MUTE_DURATION_INCREASE("&e&l{0} &r&c&lwas already muted, increased their duration from &r&e&l{1}  &r&c&lto &r&e&l{2}."),
-    PLAYER_MSG_MUTE_DURATION_INCREASE("&c&lYour mute duration was increased to &r&e&l{0} &r&c&lby &r&e&l{1}."),
-    NOT_MUTED("{0} is not muted!"),
+    DIR_CREATE_SUCCESS      ("system.dir.create.success",           "[DIR] Created {0} directory"),
+    DIR_CREATE_SUCCESS_LOC  ("system.dir.create.success_loc",       "[DIR] Created {0} directory at {1}"),
+    DIR_CREATE_FAIL         ("system.dir.create.fail",              "[DIR] Failed to create {0} directory"),
+    DIR_CREATE_FAIL_LOC     ("system.dir.create.fail_loc",          "[DIR] Failed to create {0} at {1}"),
 
-    // Mail System
-    UNREAD_MAILS("&f&lYou have &r&e&l{0} &r&f&lunread mails."),
-    CHECK_MAILBOX("&f&lCheck your mailbox to read mails."),
+    CREATE_SUCCESS          ("system.data.create.success",          "[INFO] Created {0}"),
+    CREATE_FAILURE          ("system.data.create.fail",             "[ERROR] Failed to create {0}"),
+    SAVE_SUCCESS            ("system.data.save.success",            "[SAVE] Saved {0}"),
+    SAVE_SUCCESS_LOC        ("system.data.save.success_loc",        "[SAVE] Saved {0} at {1}"),
+    SAVE_FAILURE            ("system.data.save.fail",               "[SAVE] Failed to save {0}"),
+    SAVE_FAILURE_LOC        ("system.data.save.fail_loc",           "[SAVE] Failed to save {0} at {1}"),
+    LOAD_SUCCESS            ("system.data.load.success",            "[LOAD] Loaded {0}"),
+    LOAD_SUCCESS_TYPE       ("system.data.load.success_type",       "[LOAD] Loaded {0} {1}"),
+    LOAD_FAILURE            ("system.data.load.fail",               "[LOAD] Failed to load {0}"),
+    LOAD_FAILURE_LOC        ("system.data.load.fail_loc",           "[LOAD] Failed to load {0} at {1}"),
+    READ_FAILURE            ("system.data.read.fail",               "[READ] Failed to read {0}"),
+    READ_FAILURE_LOC        ("system.data.read.fail_loc",           "[READ] Failed to read {0} at {1}"),
+    CHECK_FAILURE           ("system.data.check.fail",              "[INFO] Failed to check {0}"),
 
-    // Utility
-    PLAYER_PLAYTIME("&a&l» Total playtime of &r&e&l{0}&r&a&l: &r&e&l{1}"),
+    STOP_SUCCESS            ("system.process.stop.success",         "[STOP] Stopped {0}"),
+    STOP_FAILURE            ("system.process.stop.fail",            "[STOP] Failed to stop {0}"),
+    PLAYER_GET_FAIL         ("system.player.get_fail",              "[ERROR] Failed to get player {0}"),
+    PLAYER_NOT_FOUND        ("system.player.not_found",             "[ERROR] Player with username {0} was not found!"),
+    PLAYER_ONLINE_CHECK_FAIL("system.player.online_check_fail",     "[ERROR] Failed to check if player {0} is online!"),
+    PLAYER_INV_CHECK_FAIL   ("system.player.inv_check_fail",        "[ERROR] Failed to check inventory slots for player {0}"),
 
-    // Plugin Actions
-    PA_CLEAR_CHAT("&c&lWhole chat messages were purged."),
-    PA_CREATED_SCHEDULER("&a&lCreated scheduler &r&e&l{0} &r&a&lcalled by &r&e&l{1}"),
-    PA_CLEAR_CHAT_AMOUNT("&c&lCleared &e&l{0} &r&c&lprevious chat messages"),
-    PA_CHAT_LOG_EXPORTED("[{0}] » Exported Chat Log."),
-    PA_CHAT_LOG_EXPORT_FAIL("[{0}] » Failed to export chat Log."),
-    PA_CLEAR_ACTIVE_MESSENGER_CACHE("[{0}] » Cleared active private messenger cache...");
+    CHAT_EXPORT_SUCCESS     ("system.chat.export.success",          "Successfully exported chat log ({0}) at {1}"),
+    CHAT_EXPORT_FAIL        ("system.chat.export.fail",             "Failed to export chat log {0}"),
+    CHAT_CLEAR_ALL          ("system.chat.clear.all",               "Whole chat messages were purged."),
+    CHAT_CLEAR_AMOUNT       ("system.chat.clear.amount",            "Cleared {0} previous chat messages"),
 
+    // Logs
+    LOG_CHAT_EXPORT_SUCCESS ("log.chat.export.success",             "[{0}] » Exported Chat Log."),
+    LOG_CHAT_EXPORT_FAIL    ("log.chat.export.fail",                "[{0}] » Failed to export chat Log."),
+    LOG_CACHE_CLEAR_MSG     ("log.cache.clear.messenger",           "[{0}] » Cleared active private messenger cache..."),
+
+    // Private Messaging
+    PM_FORMAT_SENDER        ("chat.pm.format.sender",               "&e&lYou &r&f&l» &r&e&l{0}&r&f&l: &r&f{1}"),
+    PM_FORMAT_RECEIVER      ("chat.pm.format.receiver",             "&e&l{0} &r&f&l» &r&e&lYou&r&f&l: &r&f{1}"),
+    PM_FORMAT_SPY           ("chat.pm.format.spy",                  "&c&l[PEEKING] &r&e&l{0} &r&f&l» &r&e&l{1}&r&f&l: &r&a{2}"),
+
+    PM_ERROR_SELF           ("chat.pm.error.self",                  "&e&lYou cannot send a private message to yourself!"),
+    PM_ERROR_NO_REPLY       ("chat.pm.error.no_reply",              "&c&lYou have no one to reply to! &r&f&l/msg [player] first."),
+    PM_ERROR_OFFLINE        ("chat.pm.error.offline",               "&c&l{0} &r&e&lis not online!"),
+    PM_ERROR_TARGET_MUTED   ("chat.pm.error.target_muted",          "&e&l{0} &r&c&lis muted, they cannot reply to your message!"),
+    PM_ERROR_SENDER_BLOCKED ("chat.pm.error.sender_blocked",        "&c&lCannot send message to &r&e&l{0}, &r&c&lthey have blocked you!"),
+
+    // Blocking, Muting & Ignoring
+    BLOCK_SUCCESS           ("chat.block.success",                  "&c&lYou've blocked &r&e&l{0}"),
+    BLOCK_ALREADY           ("chat.block.already",                  "&e&l{0} &r&c&lis already blocked by you"),
+    UNBLOCK_SUCCESS         ("chat.block.unblock_success",          "&a&lYou've unblocked &r&e&l{0}"),
+    UNBLOCK_NOT_FOUND       ("chat.block.not_blocked",              "&e&l{0} &r&a&lis not in your blocklist"),
+
+    MUTE_ERROR_CHAT         ("moderation.mute.error.chat",          "&c&lYou cannot send message because you are muted!"),
+    MUTE_ERROR_CHAT_TIME    ("moderation.mute.error.chat_time",     "&c&lYou cannot send message because you are muted! &r&e&l(Time Remaining: {0})"),
+    MUTE_ERROR_PM           ("moderation.mute.error.pm",            "&c&lYou cannot send message to &r&e&l{0} &r&c&lbecause you are muted!"),
+    MUTE_ERROR_PM_TIME      ("moderation.mute.error.pm_time",       "&c&lYou cannot send message to &r&e&l{0} &r&c&lbecause you are muted! &r&e&l(Time Remaining: {1})"),
+    MUTE_ACTION_SUCCESS     ("moderation.mute.action.success",      "&c&lMuted &r&e&l{0} &r&c&lfor &r&e&l{1}"),
+    MUTE_ACTION_INCREASED   ("moderation.mute.action.increased",    "&e&l{0} &r&c&lwas already muted, increased their duration from &r&e&l{1}  &r&c&lto &r&e&l{2}."),
+    UNMUTE_ACTION_SUCCESS   ("moderation.mute.action.unmuted",      "&e&l{0} &r&a&lhas been unmuted"),
+    UNMUTE_ERROR_NOT_MUTED  ("moderation.mute.error.not_muted",     "{0} is not muted!"),
+    MUTE_NOTIFY_ACTIVE      ("moderation.mute.notify.active",       "&c&lYou have been muted by &r&e&l{0} &r&c&lfor &r&e&l{1}."),
+    MUTE_NOTIFY_INCREASED   ("moderation.mute.notify.increased",    "&c&lYour mute duration was increased to &r&e&l{0} &r&c&lby &r&e&l{1}."),
+    UNMUTE_NOTIFY_ACTIVE    ("moderation.mute.notify.unmuted",      "&a&lYou have been unmuted by &r&e&l{0}"),
+
+    MAIL_NOTIFY_UNREAD      ("mail.notify.unread",                  "&f&lYou have &r&e&l{0} &r&f&lunread mails."),
+    MAIL_NOTIFY_CHECK       ("mail.notify.check",                   "&f&lCheck your mailbox to read mails."),
+
+    STATS_PLAYTIME          ("utility.stats.playtime",              "&a&l» Total playtime of &r&e&l{0}&r&a&l: &r&e&l{1}");
+
+    private final String key;
     private final String defaultMessage;
 
-    LangKey(String defaultMessage) {
+    LangKey(String key, String defaultMessage) {
+        this.key = key;
         this.defaultMessage = defaultMessage;
     }
 
@@ -89,6 +95,6 @@ public enum LangKey {
     }
 
     public String getKey() {
-        return name().toLowerCase();
+        return key;
     }
 }

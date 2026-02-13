@@ -15,8 +15,7 @@ import java.nio.file.Path;
 import java.util.*;
 
 import static com.raeden.hytale.HytaleFoundations.*;
-import static com.raeden.hytale.utils.FileManager.loadJsonFile;
-import static com.raeden.hytale.utils.FileManager.saveJsonFile;
+import static com.raeden.hytale.utils.FileManager.*;
 import static com.raeden.hytale.utils.GeneralUtils.findPlayerByName;
 import static com.raeden.hytale.utils.GeneralUtils.getPlayerUUID;
 
@@ -43,14 +42,7 @@ public class PlayerDataManager {
     }
 
     private void verifyDataPath() {
-        try {
-            if(!Files.exists(playerDataPath)) {
-                Files.createDirectories(playerDataPath);
-                myLogger.atInfo().log(langManager.getMessage(LangKey.CREATE_DIRECTORY_W_LOC, "player data", playerDataPath.toString()).getAnsiMessage());
-            }
-        } catch (IOException e) {
-            myLogger.atWarning().log(langManager.getMessage(LangKey.CREATE_DIRECTORY_FAIL_W_LOC, "player data", playerDataPath.toString()).getAnsiMessage());
-        }
+        createDirectory(playerDataPath, true);
     }
 
     // User Map
@@ -121,6 +113,7 @@ public class PlayerDataManager {
                 Files.createDirectories(playerFolder);
             }
         } catch (IOException e) {
+            logExceptionError("PlayerDataManager-SavePlayerData", e);
             myLogger.atSevere().log(langManager.getMessage(LangKey.CREATE_FAILURE, "player directory").getAnsiMessage());
             return;
         }
