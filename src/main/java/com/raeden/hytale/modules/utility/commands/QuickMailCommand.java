@@ -1,4 +1,4 @@
-package com.raeden.hytale.modules.chat.commands;
+package com.raeden.hytale.modules.utility.commands;
 
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
@@ -19,13 +19,13 @@ import javax.annotation.Nonnull;
 
 import static com.raeden.hytale.core.utils.Permissions.isPlayerAdmin;
 
-public class MailCommand extends AbstractPlayerCommand {
+public class QuickMailCommand extends AbstractPlayerCommand {
     private final HytaleFoundations hytaleFoundations;
     private final RequiredArg<String> targetPlayer;
     private final RequiredArg<String> message;
 
-    public MailCommand(HytaleFoundations hytaleFoundations) {
-        super("mail", "Send a mail to a player.");
+    public QuickMailCommand(HytaleFoundations hytaleFoundations) {
+        super("quick", "Send a mail to a player.");
         this.hytaleFoundations = hytaleFoundations;
         this.setAllowsExtraArguments(true);
 

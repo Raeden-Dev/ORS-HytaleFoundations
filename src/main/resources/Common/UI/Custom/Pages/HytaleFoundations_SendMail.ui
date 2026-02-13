@@ -1,0 +1,107 @@
+$C = "../Common.ui";
+
+@PrimaryButtonStyle = TextButtonStyle(
+  Default: (Background: #3a7bd5, LabelStyle: (FontSize: 14, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
+  Hovered: (Background: #4a8be5, LabelStyle: (FontSize: 14, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
+  Pressed: (Background: #2a6bc5, LabelStyle: (FontSize: 14, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center))
+);
+
+@SecondaryBtnStyle = TextButtonStyle(
+  Default: (Background: #2b3542, LabelStyle: (FontSize: 14, TextColor: #96a9be, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
+  Hovered: (Background: #3b4552, LabelStyle: (FontSize: 14, TextColor: #b6c9de, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
+  Pressed: (Background: #1b2532, LabelStyle: (FontSize: 14, TextColor: #96a9be, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center))
+);
+
+$C.@PageOverlay {
+    $C.@Container {
+      Anchor: (Width: 600, Height: 550);
+      Padding: (Full: 20);
+      #Title {
+        Group {
+          $C.@Title {
+            @Text = "Send Mail";
+          }
+        }
+      }
+      #Content {
+        LayoutMode: Top;
+        Group #Main {
+          LayoutMode: Top;
+          Label #ToLabel {
+            Style: (
+              FontSize: 14,
+              TextColor:#b4c8c9,
+              RenderBold: true
+            );
+            Anchor: (Height: 10);
+            Text: "To:";
+          }
+          Group {Anchor: (Height: 15);}
+          $C.@TextField #ToInput {
+            Anchor: (Height: 40);
+            PlaceholderText: "Type receiver name here...";
+          }
+          Group {Anchor: (Height: 10);}
+          Group {Anchor: (Height: 3);Background: #2b3542;}
+          Group {Anchor: (Height: 10);}
+          Label #SubjectLabel {
+            Style: (
+              FontSize: 14,
+              TextColor:#b4c8c9,
+              RenderBold: true
+            );
+            Anchor: (Height: 10);
+            Text: "Subject:";
+          }
+          Group {Anchor: (Height: 15);}
+          $C.@TextField #SubjectInput {
+            Anchor: (Height: 40);
+            PlaceholderText: "Type mail subject here...";
+          }
+          Group {Anchor: (Height: 10);}
+          Group {Anchor: (Height: 3);Background: #2b3542;}
+          Group {Anchor: (Height: 10);}
+          Label #MessageLabel {
+            Style: (
+              FontSize: 14,
+              TextColor:#b4c8c9,
+              RenderBold: true
+            );
+            Anchor: (Height: 10);
+            Text: "Message:";
+          }
+          Group {Anchor: (Height: 15);}
+          $C.@TextField #MessageInput {
+            Anchor: (Height: 180);
+            PlaceholderText: "Write your message here...";
+          }
+          Group {Anchor: (Height: 10);}
+          Group #BottomButtons {
+            LayoutMode: Left;
+            Anchor: (Height: 40);
+
+            TextButton #GiftButton {
+              Text: "GIFT";
+              Anchor: (Width: 90, Height: 36);
+              Style: @PrimaryButtonStyle;
+            }
+            Group {
+              FlexWeight: 1;
+            }
+            TextButton #SendButton {
+              Text: "SEND";
+              Anchor: (Width: 130, Height: 36);
+              Style: @PrimaryButtonStyle;
+            }
+            Group {Anchor: (Width: 10);}
+            TextButton #CancelButton {
+              Text: "CANCEL";
+              Anchor: (Width: 130, Height: 36);
+              Style: @SecondaryBtnStyle;
+            }
+          }
+
+        }
+      }
+    }
+}

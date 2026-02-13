@@ -24,15 +24,10 @@ import com.raeden.hytale.modules.chat.ChatManager;
 import com.raeden.hytale.modules.chat.MailManager;
 import com.raeden.hytale.modules.chat.commands.*;
 import com.raeden.hytale.modules.chat.events.PlayerChatListener;
-import com.raeden.hytale.modules.utility.commands.AnvilCommand;
-import com.raeden.hytale.modules.utility.commands.HomesCommand;
-import com.raeden.hytale.modules.utility.commands.PlayerInfoCommand;
-import com.raeden.hytale.modules.utility.commands.PlaytimeCommand;
-import com.raeden.hytale.utils.ColorEngine;
+import com.raeden.hytale.modules.utility.commands.*;
 import com.raeden.hytale.utils.Scheduler;
 
 import javax.annotation.Nonnull;
-import java.nio.file.Path;
 
 public class HytaleFoundations extends JavaPlugin {
     public static final HytaleLogger myLogger = HytaleLogger.forEnclosingClass();
@@ -117,7 +112,6 @@ public class HytaleFoundations extends JavaPlugin {
         this.getCommandRegistry().registerCommand(new UnmutePlayerCommand(this));
         this.getCommandRegistry().registerCommand(new IngorePlayerCommand(this));
         this.getCommandRegistry().registerCommand(new MailCommand(this));
-
         // Admin UI
         this.getCommandRegistry().registerCommand(new PlayerDatabaseCommand(this));
         this.getCommandRegistry().registerCommand(new HomesCommand());
