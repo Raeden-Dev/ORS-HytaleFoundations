@@ -12,6 +12,7 @@ import java.util.LinkedHashMap;
 
 import static com.raeden.hytale.HytaleFoundations.langManager;
 import static com.raeden.hytale.HytaleFoundations.myLogger;
+import static com.raeden.hytale.utils.FileManager.createDirectory;
 
 public class PluginActionManager {
     private final HytaleFoundations hytaleFoundations;
@@ -29,19 +30,8 @@ public class PluginActionManager {
     }
 
     private void verify() {
-        if(!Files.exists(pluginActionPath)) {
-            try {
-                Files.createDirectories(pluginActionPath);
-                myLogger.atInfo().log(langManager.getMessage(LangKey.CREATE_DIRECTORY_W_LOC, "action_logs", pluginActionPath.toString()).getAnsiMessage());
-            } catch (IOException e) {
-                myLogger.atWarning().log(langManager.getMessage(LangKey.CREATE_DIRECTORY_FAIL_W_LOC,"action_logs", pluginActionPath.toString()).getAnsiMessage());
-            }
-        }
-
-        // Fix date
+        createDirectory(pluginActionPath, true);
         fixDate();
-
-
     }
 
     private void fixDate() {

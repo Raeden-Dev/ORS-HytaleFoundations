@@ -11,6 +11,7 @@ import com.hypixel.hytale.server.core.universe.world.World;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import com.raeden.hytale.HytaleFoundations;
 import com.raeden.hytale.core.data.PlayerProfile;
+import com.raeden.hytale.core.utils.Permissions;
 import com.raeden.hytale.lang.LangKey;
 
 import javax.annotation.Nonnull;
@@ -28,22 +29,17 @@ public class BlockPlayerCommand extends AbstractPlayerCommand {
     public BlockPlayerCommand(HytaleFoundations hytaleFoundations) {
         super("block", "Blocks a player so they can't interact with you anymore.");
         this.hytaleFoundations = hytaleFoundations;
+        this.requirePermission(Permissions.HFPermissions.BLOCK_PLAYER.getPermission());
         targetPlayer = withRequiredArg("Player", "Player to execute command on.", ArgTypes.STRING);
     }
     @Override
     protected void execute(@Nonnull CommandContext commandContext, @Nonnull Store<EntityStore> store, @Nonnull Ref<EntityStore> ref, @Nonnull PlayerRef playerRef, @Nonnull World world) {
-        boolean isAdmin = isPlayerAdmin(commandContext.sender());
         String senderUsername = commandContext.sender().getDisplayName();
         String targetUsername = commandContext.get(this.targetPlayer);
 
-        if(!commandContext.sender().hasPermission("ors.foundations.block") && !isAdmin) {
-            commandContext.sender().sendMessage(langManager.getMessage(senderUsername, LangKey.NO_PERMISSION));
-            return;
-        }
-
         PlayerRef receiver = findPlayerByName("Block Player Command", targetUsername);
         if(receiver == null) {
-            commandContext.sender().sendMessage(langManager.getMessage(senderUsername, LangKey.RECEIVER_NOT_ONLINE, targetUsername));
+            commandContext.sender().sendMessage(langManager.getMessage(senderUsername, LangKey.PM_ERROR_OFFLINE, targetUsername));
             return;
         }
 
@@ -51,10 +47,10 @@ public class BlockPlayerCommand extends AbstractPlayerCommand {
 
         List<String> blockedPlayers = profile.getBlockedPlayers();
         if(blockedPlayers.contains(targetUsername)) {
-            commandContext.sender().sendMessage(langManager.getMessage(senderUsername, LangKey.BLOCKED_PLAYER_ALREADY, targetUsername));
+            commandContext.sender().sendMessage(langManager.getMessage(senderUsername, LangKey.BLOCK_ALREADY, targetUsername));
         } else {
             profile.addNewBlockedPlayer(targetUsername);
-            commandContext.sender().sendMessage(langManager.getMessage(senderUsername, LangKey.BLOCKED_PLAYER, targetUsername));
+            commandContext.sender().sendMessage(langManager.getMessage(senderUsername, LangKey.BLOCK_SUCCESS, targetUsername));
         }
     }
 }

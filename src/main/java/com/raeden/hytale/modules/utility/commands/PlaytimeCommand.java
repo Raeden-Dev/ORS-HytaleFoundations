@@ -48,7 +48,7 @@ public class PlaytimeCommand extends AbstractPlayerCommand {
             PlayerStats stats = dataManager.getPlayerStats(senderUsername);
             dataManager.savePlayTime(senderUsername);
             String playtime = TimeUtils.formatDuration(stats.getPlayTimeMillis());
-            commandContext.sender().sendMessage(langManager.getMessage(senderUsername, LangKey.PLAYER_PLAYTIME, senderUsername, playtime));
+            commandContext.sender().sendMessage(langManager.getMessage(senderUsername, LangKey.STATS_PLAYTIME, senderUsername, playtime));
             return;
         }
 
@@ -57,15 +57,15 @@ public class PlaytimeCommand extends AbstractPlayerCommand {
             if(dataManager.doesPlayerDataExist(targetUsername)) {
                 PlayerStats stats = dataManager.getPlayerStats(targetUsername);
                 String playtime = TimeUtils.formatDuration(stats.getPlayTimeMillis());
-                commandContext.sender().sendMessage(langManager.getMessage(senderUsername, LangKey.PLAYER_PLAYTIME, targetUsername, playtime));
+                commandContext.sender().sendMessage(langManager.getMessage(senderUsername, LangKey.STATS_PLAYTIME, targetUsername, playtime));
             } else {
-              commandContext.sender().sendMessage(langManager.getMessage(senderUsername, LangKey.PLAYER_NEVER_JOINED, targetUsername));
+              commandContext.sender().sendMessage(langManager.getMessage(senderUsername, LangKey.PLAYER_NOT_FOUND, targetUsername));
             }
         } else {
             PlayerStats stats = dataManager.getPlayerStats(targetUsername);
             dataManager.savePlayTime(targetUsername);
             String playtime = TimeUtils.formatDuration(stats.getPlayTimeMillis());
-            commandContext.sender().sendMessage(langManager.getMessage(senderUsername, LangKey.PLAYER_PLAYTIME, targetUsername, playtime));
+            commandContext.sender().sendMessage(langManager.getMessage(senderUsername, LangKey.STATS_PLAYTIME, targetUsername, playtime));
         }
     }
 }

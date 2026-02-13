@@ -42,7 +42,7 @@ public class UnblockPlayerCommand extends AbstractPlayerCommand {
 
         PlayerRef receiver = findPlayerByName("Unblock Player Command", targetUsername);
         if(receiver == null) {
-            commandContext.sender().sendMessage(langManager.getMessage(senderUsername, LangKey.RECEIVER_NOT_ONLINE, targetUsername));
+            commandContext.sender().sendMessage(langManager.getMessage(senderUsername, LangKey.PM_ERROR_OFFLINE, targetUsername));
             return;
         }
 
@@ -51,9 +51,9 @@ public class UnblockPlayerCommand extends AbstractPlayerCommand {
         List<String> blockedPlayers = profile.getBlockedPlayers();
         if(blockedPlayers.contains(targetUsername)) {
             profile.removeBlockedPlayer(targetUsername);
-            commandContext.sender().sendMessage(langManager.getMessage(senderUsername, LangKey.UNBLOCKED_PLAYER, targetUsername));
+            commandContext.sender().sendMessage(langManager.getMessage(senderUsername, LangKey.UNBLOCK_SUCCESS, targetUsername));
         } else {
-            commandContext.sender().sendMessage(langManager.getMessage(senderUsername, LangKey.NOT_BLOCKED_PLAYER, targetUsername));
+            commandContext.sender().sendMessage(langManager.getMessage(senderUsername, LangKey.UNBLOCK_NOT_FOUND, targetUsername));
         }
     }
 }

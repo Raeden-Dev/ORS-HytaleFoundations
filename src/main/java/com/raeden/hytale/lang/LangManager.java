@@ -9,13 +9,14 @@ import com.raeden.hytale.core.data.PlayerProfile;
 import com.raeden.hytale.utils.ColorEngine;
 import com.raeden.hytale.utils.DefaultColors;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.Objects;
+import java.util.*;
 
 import static com.raeden.hytale.HytaleFoundations.*;
 import static com.raeden.hytale.utils.FileManager.*;
@@ -27,7 +28,7 @@ public class LangManager {
     private final String DEFAULT_LANGUAGE = "en-us";
     private final String FILE_EXTENSION = ".lang";
     private final Path langDir;
-    private final HashMap<String, String> langCache;
+    private final HashMap<String, Map<String, String>> langCache;
 
     public LangManager(HytaleFoundations hytaleFoundations) {
         this.hytaleFoundations = hytaleFoundations;
@@ -47,27 +48,94 @@ public class LangManager {
     public void setDefaultLanguage() {CONFIG_LANGUAGE = hytaleFoundations.getConfigManager().getDefaultConfig().getLang();}
 
     private void saveDefaultLangFile(Path path) {
-        LinkedHashMap<String, String> defaultMap = new LinkedHashMap<>();
+        boolean isFirst = true;
+        String parentKey = "";
+        String header = "# ===== {TITLE} Messages =====";
 
-        for(LangKey key : LangKey.values()) {
-            defaultMap.put(key.getKey(), key.getDefaultMessage());
+        try (BufferedWriter writer = Files.newBufferedWriter(path, StandardCharsets.UTF_8)) {
+            writer.write("# HytaleFoundations Language File - English (US)");
+            writer.newLine();
+            writer.write("# This file contains all texts/messages for the plugin");
+            writer.newLine();
+            writer.newLine();
+
+            for (LangKey key : LangKey.values()) {
+                String configKey = key.getKey();
+                String defaultVal = key.getDefaultMessage().replace("\n", "\\n");
+
+                if(isFirst) {
+                    String[] parts = configKey.split("\\.");
+                    String curParentKey = parts[0];
+                    if(!parentKey.equals(curParentKey)) {
+                        parentKey = curParentKey;
+                        writer.newLine();
+                        writer.write(header.replace("{TITLE}",parentKey));
+                        writer.newLine();
+                        writer.newLine();
+                    }
+                    isFirst = false;
+                }
+
+                String check = configKey.substring(0,3);
+                String parentKeySub = parentKey.substring(0,3);
+                if(!parentKeySub.equals(check)) {
+                    String[] parts = configKey.split("\\.");
+                    String curParentKey = parts[0];
+                    if(!parentKey.equals(curParentKey)) {
+                        parentKey = curParentKey;
+                        writer.newLine();
+                        writer.write(header.replace("{TITLE}",parentKey));
+                        writer.newLine();
+                        writer.newLine();
+                    }
+                }
+
+                writer.write(configKey + " = " + defaultVal);
+                writer.newLine();
+            }
+
+            myLogger.atInfo().log(getMessage(LangKey.CREATE_SUCCESS, path.getFileName().toString()).getAnsiMessage());
+
+        } catch (IOException e) {
+            logExceptionError(path, "saveDefaultLangFile", e);
         }
-
-        saveJsonFile(DEFAULT_LANGUAGE + ".json", path, defaultMap, true);
     }
-
     public void reloadLanguages() {
         langCache.clear();
         File langFolder = langDir.toFile();
-        if(langFolder.listFiles() == null) return;
+        if (langFolder.listFiles() == null) return;
 
-        for(File file : Objects.requireNonNull(langFolder.listFiles())) {
-            if(!file.getName().endsWith(".json")) continue;
+        for (File file : Objects.requireNonNull(langFolder.listFiles())) {
+            if (!file.getName().endsWith(FILE_EXTENSION)) continue;
+
             String fileName = file.getName();
-            String langKey = fileName.replace(".json", "").toLowerCase();
-            JsonObject jsonObject = getJsonObject(fileName, file.toPath(), true);
-            langCache.put(langKey, jsonObject);
+            String langCode = fileName.replace(FILE_EXTENSION, "").toLowerCase();
+
+            Map<String, String> langMap = loadLangFile(file.toPath());
+            langCache.put(langCode, langMap);
         }
+
+        myLogger.atInfo().log(getMessage(LangKey.LOAD_SUCCESS, String.valueOf(langCache.size()), "languages").getAnsiMessage());
+    }
+    private Map<String, String> loadLangFile(Path path) {
+        Map<String, String> map = new HashMap<>();
+        try (BufferedReader reader = Files.newBufferedReader(path, StandardCharsets.UTF_8)) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                line = line.trim();
+                if (line.isEmpty() || line.startsWith("#")) continue;
+                int splitIndex = line.indexOf('=');
+                if (splitIndex != -1) {
+                    String key = line.substring(0, splitIndex).trim();
+                    String value = line.substring(splitIndex + 1).trim();
+                    value = value.replace("\\n", "\n");
+                    map.put(key, value);
+                }
+            }
+        } catch (IOException e) {
+            logExceptionError(path, "loadLangFile", e);
+        }
+        return map;
     }
 
     public Message getMessage(LangKey key) {
@@ -108,25 +176,28 @@ public class LangManager {
             ColorEngine engine = hytaleFoundations.getChatManager().getColorEngine();
             return engine.parseText(playerRef, text, isConsole);
         } catch (NullPointerException e) {
-            logExceptionError("formatMessage", e);
             String cleanText = text.replaceAll("(?i)&[0-9a-z]", "");
             return Message.raw(cleanText).color(DefaultColors.WHITE.getHex());
         }
     }
 
     private String getLangString(String username, LangKey key) {
-        String jsonKey = key.getKey();
+        String mapKey = key.getKey();
         String setLanguage = CONFIG_LANGUAGE;
         if(setLanguage == null) setLanguage = DEFAULT_LANGUAGE;
         if(username != null) {
-            PlayerProfile profile = hytaleFoundations.getPlayerDataManager().getPlayerProfile(username);
-            if(profile != null && profile.getLanguage() != null) {
-                setLanguage = profile.getLanguage();
+            try {
+                PlayerProfile profile = hytaleFoundations.getPlayerDataManager().getPlayerProfile(username);
+                if (profile != null && profile.getLanguage() != null) {
+                    setLanguage = profile.getLanguage();
+                }
+            } catch (Exception e) {
+                logExceptionError("getLangString", e);
             }
         }
-        String data = fetchStringFromCache(setLanguage, jsonKey);
+        String data = fetchStringFromCache(setLanguage, mapKey);
         if(data == null) {
-            data = fetchStringFromCache(DEFAULT_LANGUAGE, jsonKey);
+            data = fetchStringFromCache(DEFAULT_LANGUAGE, mapKey);
         }
         if(data == null) {
             data = key.getDefaultMessage();
@@ -135,19 +206,10 @@ public class LangManager {
     }
 
     private String fetchStringFromCache(String language, String key) {
-        JsonObject jsonObject = langCache.get(language.toLowerCase());
-        if (jsonObject == null || !jsonObject.has(key)) return null;
-        try {
-            JsonElement element = jsonObject.get(key);
-            if(element.isJsonPrimitive()) {
-                return element.getAsString();
-            }
-            return null;
-        } catch (Exception e) {
-            logExceptionError("fetchStringFromCache", e);
-            myLogger.atWarning().log("Error reading lang key '" + key + "' in " + language);
-            return null;
-        }
+        Map<String, String> langMap = langCache.get(language.toLowerCase());
+        if (langMap == null) return null;
+
+        return langMap.get(key);
     }
 
 }

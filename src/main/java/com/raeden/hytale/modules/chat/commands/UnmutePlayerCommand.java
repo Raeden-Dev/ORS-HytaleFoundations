@@ -28,6 +28,7 @@ public class UnmutePlayerCommand extends AbstractPlayerCommand {
     public UnmutePlayerCommand(HytaleFoundations hytaleFoundations) {
         super("unmute", "Unmutes a player so they can speak again in chat.");
         this.hytaleFoundations = hytaleFoundations;
+        this.requirePermission(Permissions.HFPermissions.MUTE_PLAYER.getPermission());
         targetPlayer = withRequiredArg("Player", "Player to execute command on.", ArgTypes.STRING);
     }
     @Override
@@ -36,16 +37,11 @@ public class UnmutePlayerCommand extends AbstractPlayerCommand {
         String senderUsername = commandContext.sender().getDisplayName();
         String targetUsername = commandContext.get(this.targetPlayer);
 
-        if(!Permissions.hasPermission(commandContext.sender(), Permissions.HFPermissions.MUTE_PLAYER.getPermission()) && !isAdmin) {
-            commandContext.sender().sendMessage(langManager.getMessage(senderUsername, LangKey.NO_PERMISSION));
-            return;
-        }
-
         PlayerRef target = findPlayerByName("Mute Player Command", targetUsername);
         boolean isTargetOffline = false;
         if(target == null) {
             if(!hytaleFoundations.getPlayerDataManager().doesPlayerDataExist(targetUsername)) {
-                commandContext.sender().sendMessage(langManager.getMessage(senderUsername, LangKey.PLAYER_NEVER_JOINED, targetUsername));
+                commandContext.sender().sendMessage(langManager.getMessage(senderUsername, LangKey.PLAYER_NOT_FOUND, targetUsername));
                 return;
             } else {
                 isTargetOffline = true;
@@ -63,10 +59,10 @@ public class UnmutePlayerCommand extends AbstractPlayerCommand {
         if(profile.isMuted()) {
             profile.setMuted(false);
             profile.setMuteDuration(0);
-            commandContext.sender().sendMessage(langManager.getMessage(senderUsername, LangKey.UNMUTED_PLAYER, targetUsername));
-            if(target != null) target.sendMessage(langManager.getMessage(targetUsername, LangKey.PLAYER_UNMUTE_MSG, senderUsername));
+            commandContext.sender().sendMessage(langManager.getMessage(senderUsername, LangKey.UNMUTE_ACTION_SUCCESS, targetUsername));
+            if(target != null) target.sendMessage(langManager.getMessage(targetUsername, LangKey.UNMUTE_NOTIFY_ACTIVE, senderUsername));
         } else {
-            commandContext.sender().sendMessage(langManager.getMessage(senderUsername, LangKey.NOT_MUTED, targetUsername));
+            commandContext.sender().sendMessage(langManager.getMessage(senderUsername, LangKey.UNMUTE_ERROR_NOT_MUTED, targetUsername));
         }
 
         if(isTargetOffline) {

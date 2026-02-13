@@ -48,7 +48,7 @@ public class MessagePlayerCommand extends AbstractPlayerCommand {
 
         PlayerRef receiver = findPlayerByName("Message Command", receiverUsername);
         if(receiver == null) {
-            commandContext.sender().sendMessage(langManager.getMessage(senderUsername, LangKey.RECEIVER_NOT_ONLINE, receiverUsername));
+            commandContext.sender().sendMessage(langManager.getMessage(senderUsername, LangKey.PM_ERROR_OFFLINE, receiverUsername));
             return;
         }
 
@@ -59,26 +59,26 @@ public class MessagePlayerCommand extends AbstractPlayerCommand {
         PlayerProfile receiverProfile = dataManager.getPlayerProfile(receiverUsername);
 
         if(senderProfile.isMuted() && !isAdmin) {
-            commandContext.sender().sendMessage(langManager.getMessage(senderUsername, LangKey.PLAYER_MUTED_PM, receiverUsername));
+            commandContext.sender().sendMessage(langManager.getMessage(senderUsername, LangKey.MUTE_ERROR_CHAT, receiverUsername));
             return;
         }
         if(receiverProfile.isMuted() && !isAdmin) {
-            commandContext.sender().sendMessage(langManager.getMessage(senderUsername, LangKey.RECEIVER_IS_MUTED, receiverUsername));
+            commandContext.sender().sendMessage(langManager.getMessage(senderUsername, LangKey.PM_ERROR_TARGET_MUTED, receiverUsername));
             return;
         }
 
         if(receiverProfile.getBlockedPlayers().contains(senderUsername) && !isAdmin) {
-            commandContext.sender().sendMessage(langManager.getMessage(senderUsername, LangKey.PLAYER_BLOCKED_SENDER, receiverUsername));
+            commandContext.sender().sendMessage(langManager.getMessage(senderUsername, LangKey.PM_ERROR_SENDER_BLOCKED, receiverUsername));
             return;
         }
 
         if(receiverUsername.equals(senderUsername) && !isAdmin) {
-            commandContext.sender().sendMessage(langManager.getMessage(senderUsername, LangKey.PLAYER_SELF_MSG));
+            commandContext.sender().sendMessage(langManager.getMessage(senderUsername, LangKey.PM_ERROR_SELF));
             return;
         }
 
-        receiver.sendMessage(langManager.getMessage(receiverUsername, LangKey.PRIVATE_MSG_FORMAT_RECEIVER, senderUsername, messageContent));
-        sender.sendMessage(langManager.getMessage(senderUsername, LangKey.PRIVATE_MSG_FORMAT_SENDER, receiverUsername, messageContent));
+        receiver.sendMessage(langManager.getMessage(receiverUsername, LangKey.PM_FORMAT_RECEIVER, senderUsername, messageContent));
+        sender.sendMessage(langManager.getMessage(senderUsername, LangKey.PM_FORMAT_SENDER, receiverUsername, messageContent));
 
         // Need to add for admins
         senderStats.increaseMessageSent();
