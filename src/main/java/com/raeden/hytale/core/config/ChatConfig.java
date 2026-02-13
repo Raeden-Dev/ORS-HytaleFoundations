@@ -5,6 +5,8 @@ import java.util.List;
 
 public class ChatConfig {
     private String VERSION;
+    private boolean SHOW_NICKNAMES;
+    private boolean SHOW_PREFIXES;
     private boolean ALLOW_PLAYER_CHAT_COLORS;
     private boolean TOGGLE_CENSOR_WORD_LIST;
     private boolean CENSOR_CURSE_WORDS;
@@ -32,4 +34,9 @@ public class ChatConfig {
 
     public String getVersion() {return VERSION;}
     public void setVersion(String VERSION) {this.VERSION = VERSION;}
+
+    public boolean isShowNickNames() {return SHOW_NICKNAMES;}
+    public void setShowNickNames(boolean SHOW_NICKNAMES) {this.SHOW_NICKNAMES = SHOW_NICKNAMES;}
+    public boolean isShowPrefixes() {return SHOW_PREFIXES;}
+    public void setShowPrefixes(boolean SHOW_PREFIXES) {this.SHOW_PREFIXES = SHOW_PREFIXES;}
 }

@@ -11,6 +11,8 @@ public class PlayerProfile {
     private final List<String> username = new ArrayList<>();
     private String language;
     private String nickname;
+    private boolean showNickname;
+    private boolean showPrefix;
 
     // Admin
     private boolean godModeEnabled;
@@ -44,6 +46,11 @@ public class PlayerProfile {
 
     public String getNickname() {return nickname;}
     public void setNickname(String nickname) {this.nickname = nickname;}
+
+    public boolean isShowNickname() {return showNickname;}
+    public void setShowNickname(boolean showNickname) {this.showNickname = showNickname;}
+    public boolean isShowPrefix() {return showPrefix;}
+    public void setShowPrefix(boolean showPrefix) {this.showPrefix = showPrefix;}
 
     public boolean isGodModeEnabled() {return godModeEnabled;}
     public void setGodModeEnabled(boolean godModeEnabled) {this.godModeEnabled = godModeEnabled;}

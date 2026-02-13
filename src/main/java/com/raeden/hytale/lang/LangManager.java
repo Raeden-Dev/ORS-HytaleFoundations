@@ -48,10 +48,7 @@ public class LangManager {
     public void setDefaultLanguage() {CONFIG_LANGUAGE = hytaleFoundations.getConfigManager().getDefaultConfig().getLang();}
 
     private void saveDefaultLangFile(Path path) {
-        boolean isFirst = true;
-        String parentKey = "";
-        String header = "# ===== {TITLE} Messages =====";
-
+        String currentSection = null;
         try (BufferedWriter writer = Files.newBufferedWriter(path, StandardCharsets.UTF_8)) {
             writer.write("# HytaleFoundations Language File - English (US)");
             writer.newLine();
@@ -63,31 +60,21 @@ public class LangManager {
                 String configKey = key.getKey();
                 String defaultVal = key.getDefaultMessage().replace("\n", "\\n");
 
-                if(isFirst) {
-                    String[] parts = configKey.split("\\.");
-                    String curParentKey = parts[0];
-                    if(!parentKey.equals(curParentKey)) {
-                        parentKey = curParentKey;
-                        writer.newLine();
-                        writer.write(header.replace("{TITLE}",parentKey));
-                        writer.newLine();
-                        writer.newLine();
-                    }
-                    isFirst = false;
-                }
+                String group;
+                int dotIndex = configKey.indexOf('.');
 
-                String check = configKey.substring(0,3);
-                String parentKeySub = parentKey.substring(0,3);
-                if(!parentKeySub.equals(check)) {
-                    String[] parts = configKey.split("\\.");
-                    String curParentKey = parts[0];
-                    if(!parentKey.equals(curParentKey)) {
-                        parentKey = curParentKey;
-                        writer.newLine();
-                        writer.write(header.replace("{TITLE}",parentKey));
-                        writer.newLine();
-                        writer.newLine();
-                    }
+                if (dotIndex != -1) {
+                    group = configKey.substring(0, dotIndex);
+                } else {
+                    group = "general";
+                }
+                if (!group.equalsIgnoreCase(currentSection)) {
+                    currentSection = group;
+                    String title = group.substring(0, 1).toUpperCase() + group.substring(1);
+
+                    writer.newLine();
+                    writer.write("# ===== " + title + " Messages =====");
+                    writer.newLine();
                 }
 
                 writer.write(configKey + " = " + defaultVal);
@@ -115,7 +102,7 @@ public class LangManager {
             langCache.put(langCode, langMap);
         }
 
-        myLogger.atInfo().log(getMessage(LangKey.LOAD_SUCCESS, String.valueOf(langCache.size()), "languages").getAnsiMessage());
+        myLogger.atInfo().log(getMessage(LangKey.LOAD_SUCCESS, langCache.size() + " languages").getAnsiMessage());
     }
     private Map<String, String> loadLangFile(Path path) {
         Map<String, String> map = new HashMap<>();
@@ -138,18 +125,16 @@ public class LangManager {
         return map;
     }
 
-    public Message getMessage(LangKey key) {
-        return getMessage(null, key, (String[]) null);
-    }
     public Message getMessage(LangKey key, String... args) {
-        return getMessage(null, key, args);
+        return getMessage(null, key, false, args);
     }
-    public Message getMessage(String username, LangKey key) {
-        return getMessage(username, key, (String[]) null);
+    public Message getMessage(LangKey key, boolean isConsole, String... args) {
+        return getMessage(null, key, isConsole, args);
     }
-
     public Message getMessage(String username, LangKey key, String... args) {
-        boolean isConsole = username == null;
+        return getMessage(username, key, false, args);
+    }
+    public Message getMessage(String username, LangKey key, boolean isConsole, String... args) {
         PlayerRef playerRef = username == null ? null : findPlayerByName(username);
 
         String prefixText = getLangString(username, LangKey.PREFIX);
@@ -159,7 +144,7 @@ public class LangManager {
         if (finalText == null) finalText = key.getDefaultMessage();
 
         if(username != null) {
-            finalText = prefixText + finalText;
+            finalText = prefixText + " " + finalText;
         }
 
         if (args != null && args.length > 0) {

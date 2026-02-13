@@ -69,6 +69,8 @@ public class ConfigManager {
     private ChatConfig createDefaultChatConfig() {
         ChatConfig chatConfig = new ChatConfig();
         chatConfig.setVersion(CHAT_CONFIG_VERSION);
+        chatConfig.setShowNickNames(true);
+        chatConfig.setShowPrefixes(true);
         chatConfig.setRemoveIps(true);
         chatConfig.setAllowPlayerChatColors(true);
         chatConfig.setRemoveLinks(true);

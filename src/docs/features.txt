@@ -28,6 +28,7 @@ You can find the features we have to work on below:
     > /hf analytics commandexec on/off : Turns on/off tracking for all executed command
     > Regenerate to full health after slee
         ? Can be turned off in configs
+    > /hf colors: Shows list of all available colors
 
 
 || ADMIN FEATURES:

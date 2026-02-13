@@ -20,7 +20,7 @@ import static com.raeden.hytale.utils.GeneralUtils.findPlayerByName;
 import static com.raeden.hytale.utils.GeneralUtils.getPlayerUUID;
 
 public class PlayerDataManager {
-    //private final HytaleFoundations hytaleFoundations;
+    private final HytaleFoundations hytaleFoundations;
     public final String USERMAP_JSON = "usermap.json";
     public final String PROFILE_JSON = "profile.json";
     public final String STATS_JSON = "stats.json";
@@ -32,7 +32,7 @@ public class PlayerDataManager {
     private final LinkedHashMap<String, PlayerStats> playerStats;
 
     public PlayerDataManager(HytaleFoundations hytaleFoundations) {
-        //this.hytaleFoundations = hytaleFoundations;
+        this.hytaleFoundations = hytaleFoundations;
         playerDataPath = hytaleFoundations.getDataDirectory().resolve("data").resolve("players");
 
         playerProfiles = new LinkedHashMap<>();
@@ -67,7 +67,7 @@ public class PlayerDataManager {
         users.put(id, username);
 
         Path userMapPath = playerDataPath.resolve(USERMAP_JSON);
-        saveJsonFile(USERMAP_JSON, userMapPath, users, true, true);
+        saveJsonFile(USERMAP_JSON, userMapPath, users, true);
 
         if (oldUsername != null && !oldUsername.equals(username)) {
             Path oldDataPath = playerDataPath.resolve(oldUsername);
@@ -142,7 +142,7 @@ public class PlayerDataManager {
     public PlayerMailbox getPlayerMailbox(String username) {
         Path mailJsonPath = playerDataPath.resolve(username).resolve(MAIL_JSON);
         String fileName = MAIL_JSON + ": " + username;
-        return loadJsonFile(fileName, mailJsonPath, PlayerMailbox.class, true);
+        return loadJsonFile(fileName, mailJsonPath, PlayerMailbox.class, false);
     }
 
     public void loadPlayerData(String username) {
@@ -172,6 +172,8 @@ public class PlayerDataManager {
         profile.addUsername(username);
         profile.setLanguage("en-us");
         profile.setNickname("");
+        profile.setShowNickname(hytaleFoundations.getConfigManager().getDefaultChatConfig().isShowNickNames());
+        profile.setShowPrefix(hytaleFoundations.getConfigManager().getDefaultChatConfig().isShowPrefixes());
         profile.setGodModeEnabled(false);
         profile.setVanished(false);
         profile.setFlying(false);

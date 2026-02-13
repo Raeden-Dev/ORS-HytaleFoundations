@@ -37,7 +37,7 @@ public class ChatManager {
         // Color Engine
         colorEngine = new ColorEngine(hytaleFoundations);
 
-        chatLogDir = hytaleFoundations.getDataDirectory().resolve("logs").resolve("chat");
+        chatLogDir = hytaleFoundations.getDataDirectory().resolve("logs").resolve("chat_logs");
         activeMessengers = new LinkedHashMap<>();
         messageLog = new LinkedHashMap<>();
 
@@ -64,7 +64,7 @@ public class ChatManager {
     private void exportChatLog() {
         if(messageLog.isEmpty()) return;
 
-        String fileName = "chatlog_" + TimeUtils.getTimeNow() + ".txt";
+        String fileName = TimeUtils.getFileSafeTime() + "_chatlog" + ".txt";
         File logFile = new File(chatLogDir.toString(), fileName);
 
         try(BufferedWriter writer = new BufferedWriter(new FileWriter(logFile))) {

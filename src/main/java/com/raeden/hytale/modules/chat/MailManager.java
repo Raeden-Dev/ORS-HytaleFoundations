@@ -44,8 +44,8 @@ public class MailManager {
 
         PlayerRef ref = findPlayerByName(username);
         PacketHandler handler = ref.getPacketHandler();
-        Message pm = langManager.getMessage(LangKey.MAIL_NOTIFY_UNREAD, String.valueOf(unreadMailCount));
-        Message sm = langManager.getMessage(LangKey.MAIL_NOTIFY_CHECK);
+        Message pm = langManager.getMessage(LangKey.MAIL_NOTIFY_UNREAD, false, String.valueOf(unreadMailCount));
+        Message sm = langManager.getMessage(LangKey.MAIL_NOTIFY_CHECK, false);
         NotificationUtil.sendNotification(handler, pm, sm,  NotificationStyle.Default);
     }
 

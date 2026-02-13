@@ -79,7 +79,7 @@ public class ColorEngine {
     }
     public void loadColors() {
         if(Files.exists(colorFilePath)) {
-            Type type = new TypeToken<LinkedHashMap<String, String>>(){}.getType();
+            Type type = new TypeToken<COLOR_MAP_FILE>(){}.getType();
             COLOR_MAP_FILE colorMapFile = loadJsonFile(COLOR_FILE, colorFilePath, type, true);
 
             if(colorMapFile == null) {

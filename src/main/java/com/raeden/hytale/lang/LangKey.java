@@ -2,7 +2,7 @@ package com.raeden.hytale.lang;
 
 public enum LangKey {
     // Core System
-    PREFIX                  ("system.prefix",                       "| "),
+    PREFIX                  ("system.prefix",                       "&l|"),
     NO_PERMISSION           ("system.no_permission",                "You don't have permission to run that command!"),
     MISMATCH_FOUND          ("system.error.mismatch",               "Mismatch found for {0}"),
     INVALID_TIME_FORMAT     ("system.error.invalid_time",           "Time format is incorrect! Correct format: (d|h|m|s eg. 1d8h5m33s)"),
@@ -44,9 +44,9 @@ public enum LangKey {
     CHAT_CLEAR_AMOUNT       ("system.chat.clear.amount",            "Cleared {0} previous chat messages"),
 
     // Logs
-    LOG_CHAT_EXPORT_SUCCESS ("log.chat.export.success",             "[{0}] » Exported Chat Log."),
-    LOG_CHAT_EXPORT_FAIL    ("log.chat.export.fail",                "[{0}] » Failed to export chat Log."),
-    LOG_CACHE_CLEAR_MSG     ("log.cache.clear.messenger",           "[{0}] » Cleared active private messenger cache..."),
+    LOG_CHAT_EXPORT_SUCCESS ("log.chat.export.success",             "[{0}] >> Exported Chat Log."),
+    LOG_CHAT_EXPORT_FAIL    ("log.chat.export.fail",                "[{0}] >> Failed to export chat Log."),
+    LOG_CACHE_CLEAR_MSG     ("log.cache.clear.messenger",           "[{0}] >> Cleared active private messenger cache..."),
 
     // Private Messaging
     PM_FORMAT_SENDER        ("chat.pm.format.sender",               "&e&lYou &r&f&l» &r&e&l{0}&r&f&l: &r&f{1}"),
@@ -79,8 +79,10 @@ public enum LangKey {
 
     MAIL_NOTIFY_UNREAD      ("mail.notify.unread",                  "&f&lYou have &r&e&l{0} &r&f&lunread mails."),
     MAIL_NOTIFY_CHECK       ("mail.notify.check",                   "&f&lCheck your mailbox to read mails."),
+    MAIL_SEND_SUCCESS       ("mail.send.success",                   "&a&lMail sent to &r&e&l{0} &r&a&lsuccessfully!"),
+    MAIL_SEND_FAILURE       ("mail.send.fail",                      "&c&lFailed to send mail to &r&e&l{0}&r&c&l!"),
 
-    STATS_PLAYTIME          ("utility.stats.playtime",              "&a&l» Total playtime of &r&e&l{0}&r&a&l: &r&e&l{1}");
+    STATS_PLAYTIME          ("utility.stats.playtime",              "&a&lTotal playtime of &r&e&l{0}&r&a&l: &r&f&l{1}");
 
     private final String key;
     private final String defaultMessage;

@@ -13,6 +13,7 @@ public class TimeUtils {
     public static final long ONE_DAY = ONE_HOUR * 24;
 
     private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+    private static final SimpleDateFormat FILE_NAME_FORMAT = new SimpleDateFormat("dd-MM-yyyy_HH-mm-ss");
 
     public static String formatDuration(long millis) {
         if(millis == 0) return "0 seconds";
@@ -60,6 +61,10 @@ public class TimeUtils {
 
     public static String getTimeNow() {
         return DATE_FORMAT.format(new Date(System.currentTimeMillis()));
+    }
+
+    public static String getFileSafeTime() {
+        return FILE_NAME_FORMAT.format(new Date(System.currentTimeMillis()));
     }
 
     public static String getDate(long millis) {
