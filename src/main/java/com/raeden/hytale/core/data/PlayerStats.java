@@ -21,6 +21,7 @@ public class PlayerStats {
 
     // Chat
     private long totalMessagesSent;
+    private int totalTimesReportedByPlayers;
 
     public long getFirstJoined() {return firstJoined;}
     public void setFirstJoined(long firstJoined) {this.firstJoined = firstJoined;}
@@ -69,4 +70,6 @@ public class PlayerStats {
     public void increaseMessageSent() {totalMessagesSent++;}
     public void setTotalMessagesSent(long totalMessagesSent) {this.totalMessagesSent = totalMessagesSent;}
 
+    public int getTotalTimesReportedByPlayers() {return totalTimesReportedByPlayers;}
+    public void setTotalTimesReportedByPlayers(int totalTimesReportedByPlayers) {this.totalTimesReportedByPlayers = totalTimesReportedByPlayers;}
 }

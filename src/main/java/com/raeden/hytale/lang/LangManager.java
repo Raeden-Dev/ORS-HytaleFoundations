@@ -1,7 +1,5 @@
 package com.raeden.hytale.lang;
 
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 import com.hypixel.hytale.server.core.Message;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.raeden.hytale.HytaleFoundations;

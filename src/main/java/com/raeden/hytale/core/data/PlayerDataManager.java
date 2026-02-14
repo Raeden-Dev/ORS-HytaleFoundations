@@ -5,6 +5,7 @@ import com.hypixel.hytale.server.core.Message;
 import com.hypixel.hytale.server.core.entity.entities.Player;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.raeden.hytale.HytaleFoundations;
+import com.raeden.hytale.core.config.ChatConfig;
 import com.raeden.hytale.lang.LangKey;
 
 import java.io.File;
@@ -31,8 +32,11 @@ public class PlayerDataManager {
     private final LinkedHashMap<String, PlayerProfile> playerProfiles;
     private final LinkedHashMap<String, PlayerStats> playerStats;
 
+    private ChatConfig chatConfig;
+
     public PlayerDataManager(HytaleFoundations hytaleFoundations) {
         this.hytaleFoundations = hytaleFoundations;
+        this.chatConfig = hytaleFoundations.getConfigManager().getDefaultChatConfig();
         playerDataPath = hytaleFoundations.getDataDirectory().resolve("data").resolve("players");
 
         playerProfiles = new LinkedHashMap<>();
@@ -172,8 +176,9 @@ public class PlayerDataManager {
         profile.addUsername(username);
         profile.setLanguage("en-us");
         profile.setNickname("");
-        profile.setShowNickname(hytaleFoundations.getConfigManager().getDefaultChatConfig().isShowNickNames());
-        profile.setShowPrefix(hytaleFoundations.getConfigManager().getDefaultChatConfig().isShowPrefixes());
+        profile.setShowNickname(chatConfig.isShowNickNames());
+        profile.setShowPrefix(chatConfig.isShowPrefix());
+        profile.setShowTags(chatConfig.isShowSuffix());
         profile.setGodModeEnabled(false);
         profile.setVanished(false);
         profile.setFlying(false);
@@ -201,6 +206,7 @@ public class PlayerDataManager {
         stats.setItemsCrafted(0);
         stats.setItemsBroken(0);
         stats.setTotalMessagesSent(0);
+        stats.setTotalTimesReportedByPlayers(0);
 
         return stats;
     }

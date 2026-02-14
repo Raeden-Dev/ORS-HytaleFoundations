@@ -1,6 +1,8 @@
 package com.raeden.hytale.modules.chat;
 
 import com.raeden.hytale.HytaleFoundations;
+import com.raeden.hytale.core.config.ChatConfig;
+import com.raeden.hytale.core.config.ConfigManager;
 import com.raeden.hytale.lang.LangKey;
 import com.raeden.hytale.utils.ColorEngine;
 import com.raeden.hytale.utils.Scheduler;
@@ -22,8 +24,11 @@ import static com.raeden.hytale.utils.FileManager.logExceptionError;
 
 public class ChatManager {
     private final HytaleFoundations hytaleFoundations;
+    private final PrefixManager prefixManager;
+    private final SuffixManager suffixManager;
     private final Scheduler scheduler;
     private final ColorEngine colorEngine;
+    private final ChatConfig chatConfig;
 
     private final LinkedHashMap<String, String> activeMessengers;
     private final LinkedHashMap<String, String> messageLog; // Time string + Message
@@ -34,21 +39,22 @@ public class ChatManager {
         this.hytaleFoundations = hytaleFoundations;
         this.scheduler = scheduler;
 
-        // Color Engine
-        colorEngine = new ColorEngine(hytaleFoundations);
+        prefixManager = new PrefixManager(hytaleFoundations);
+        suffixManager = new SuffixManager(hytaleFoundations);
+        chatConfig = hytaleFoundations.getConfigManager().getDefaultChatConfig();
 
         chatLogDir = hytaleFoundations.getDataDirectory().resolve("logs").resolve("chat_logs");
         activeMessengers = new LinkedHashMap<>();
         messageLog = new LinkedHashMap<>();
+        // Color Engine
+        colorEngine = new ColorEngine(hytaleFoundations);
 
-        verifyChatManager();
-        if(hytaleFoundations.getConfigManager().getDefaultConfig().isSaveChatLog()) {
+
+
+        createDirectory(chatLogDir, true);
+        if(chatConfig.isSaveChatLog()) {
             createChatSaveScheduler();
         }
-    }
-
-    private void verifyChatManager() {
-        createDirectory(chatLogDir, true);
     }
 
     private void createChatSaveScheduler() {
@@ -56,8 +62,8 @@ public class ChatManager {
                 if(messageLog.isEmpty()) return;
                 exportChatLog();
                 },
-                hytaleFoundations.getConfigManager().getDefaultConfig().getChatLogSaveInterval(),
-                hytaleFoundations.getConfigManager().getDefaultConfig().getChatLogSaveInterval(),
+                chatConfig.getChatLogSaveInterval(),
+                chatConfig.getChatLogSaveInterval(),
                 TimeUnit.MINUTES);
     }
 
@@ -100,12 +106,20 @@ public class ChatManager {
         activeMessengers.put(senderUsername, receiverUsername);
         activeMessengers.put(receiverUsername, senderUsername);
     }
+    public void removeActiveMessenger(String username) {
+        if(activeMessengers.isEmpty() || !activeMessengers.containsKey(username)) return;
+        String receiver = activeMessengers.get(username);
+        activeMessengers.remove(username);
+        activeMessengers.remove(receiver);
+    }
     private void clearActiveMessageCache() {
         scheduler.runTaskTimer("clearActiveMessageCache", activeMessengers::clear,
-                hytaleFoundations.getConfigManager().getDefaultConfig().getPvtMsgClearInterval(),
-                hytaleFoundations.getConfigManager().getDefaultConfig().getPvtMsgClearInterval(),
+                chatConfig.getPvtMsgClearInterval(),
+                chatConfig.getPvtMsgClearInterval(),
                 TimeUnit.MINUTES);
     }
 
     public ColorEngine getColorEngine() {return colorEngine;}
+    public PrefixManager getPrefixManager() {return prefixManager;}
+    public SuffixManager getSuffixManager() {return suffixManager;}
 }

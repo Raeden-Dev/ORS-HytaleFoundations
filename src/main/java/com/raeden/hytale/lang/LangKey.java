@@ -48,6 +48,10 @@ public enum LangKey {
     LOG_CHAT_EXPORT_FAIL    ("log.chat.export.fail",                "[{0}] >> Failed to export chat Log."),
     LOG_CACHE_CLEAR_MSG     ("log.cache.clear.messenger",           "[{0}] >> Cleared active private messenger cache..."),
 
+    // Chat format
+    DEFAULT_CHAT_FORMAT     ("chat.format.default",               "{prefix}{player}{suffix} » {message}"),
+    CHANNEL_CHAT_FORMAT     ("chat.format.has_channel",               "{channel}{prefix}{player}{suffix} » {message}"),
+
     // Private Messaging
     PM_FORMAT_SENDER        ("chat.pm.format.sender",               "&e&lYou &r&f&l» &r&e&l{0}&r&f&l: &r&f{1}"),
     PM_FORMAT_RECEIVER      ("chat.pm.format.receiver",             "&e&l{0} &r&f&l» &r&e&lYou&r&f&l: &r&f{1}"),

@@ -8,14 +8,11 @@ public class Config {
     private boolean DEBUG_MODE;
     private boolean TOGGLE_ADMIN_MODULE;
     private boolean TOGGLE_CHAT_MODULE;
+    private boolean TOGGLE_RANK_MODULE;
     private boolean TOGGLE_PARTY_MODULE;
     private boolean TOGGLE_ECONOMY_MODULE;
     private boolean TOGGLE_ANALYTICS_MODULE;
     private boolean TOGGLE_DISCORD_MODULE;
-
-    private int PVT_MSG_CACHE_CLEAR_INTERVAL; // LOGOUT + 5M, 10M, 30M, 1H
-    private boolean SAVE_CHAT_LOG;
-    private int CHAT_LOG_SAVE_INTERVAL; // On shutdown + 5M, 10M, 30M, 1H
 
     public String getLang() {return LANG;}
     public void setLang(String lang) {this.LANG = lang;}
@@ -35,6 +32,9 @@ public class Config {
     public boolean isToggleChatModule() {return TOGGLE_CHAT_MODULE;}
     public void setToggleChatModule(boolean toggleChatModule) {this.TOGGLE_CHAT_MODULE = toggleChatModule;}
 
+    public boolean isToggleRankModule() {return TOGGLE_RANK_MODULE;}
+    public void setToggleRankModule(boolean TOGGLE_RANK_MODULE) {this.TOGGLE_RANK_MODULE = TOGGLE_RANK_MODULE;}
+
     public boolean isTogglePartyModule() {return TOGGLE_PARTY_MODULE;}
     public void setTogglePartyModule(boolean togglePartyModule) {this.TOGGLE_PARTY_MODULE = togglePartyModule;}
 
@@ -47,15 +47,8 @@ public class Config {
     public boolean isToggleDiscordModule() {return TOGGLE_DISCORD_MODULE;}
     public void setToggleDiscordModule(boolean toggleDiscordModule) {this.TOGGLE_DISCORD_MODULE = toggleDiscordModule;}
 
-    public boolean isSaveChatLog() {return SAVE_CHAT_LOG;}
-    public void setSaveChatLog(boolean saveChatLog) {this.SAVE_CHAT_LOG = saveChatLog;}
-
-    public int getChatLogSaveInterval() {return CHAT_LOG_SAVE_INTERVAL;}
-    public void setChatLogSaveInterval(int ChatLogSaveInterval) {this.CHAT_LOG_SAVE_INTERVAL = ChatLogSaveInterval;}
-
-    public int getPvtMsgClearInterval() {return PVT_MSG_CACHE_CLEAR_INTERVAL;}
-    public void setPvtMsgClearInterval(int PvtMsgClearInterval) {this.PVT_MSG_CACHE_CLEAR_INTERVAL = PvtMsgClearInterval;}
-
     public String getVersion() {return VERSION;}
     public void setVersion(String VERSION) {this.VERSION = VERSION;}
+
+
 }

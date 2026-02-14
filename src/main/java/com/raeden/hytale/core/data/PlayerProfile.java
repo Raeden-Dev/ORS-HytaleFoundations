@@ -11,8 +11,7 @@ public class PlayerProfile {
     private final List<String> username = new ArrayList<>();
     private String language;
     private String nickname;
-    private boolean showNickname;
-    private boolean showPrefix;
+
 
     // Admin
     private boolean godModeEnabled;
@@ -30,7 +29,14 @@ public class PlayerProfile {
     private boolean isMuted;
     private long muteDuration;
     private boolean isSilenced;
+    private boolean showNickname;
+    private boolean showPrefix;
+    private boolean showTags;
+    private int maxTags;
+    private final List<String> activeTags = new ArrayList<>();
+
     private final List<String> blockedPlayers = new ArrayList<>();
+
 
     public long getSessionStart() {return sessionStart;}
     public void setSessionStart(long sessionStart) {this.sessionStart = sessionStart;}
@@ -83,4 +89,15 @@ public class PlayerProfile {
 
     public long getMuteDuration() {return muteDuration;}
     public void setMuteDuration(long muteDuration) {this.muteDuration = muteDuration;}
+
+    public boolean isShowTags() {return showTags;}
+    public void setShowTags(boolean showTags) {this.showTags = showTags;}
+    public int getMaxTags() {return maxTags;}
+    public void setMaxTags(int maxTags) {this.maxTags = maxTags;}
+
+    public List<String> getActiveTags() {return activeTags;}
+    public void addActiveTag(String tag) {
+        if(activeTags.size() == maxTags) return;
+        activeTags.add(tag);
+    }
 }

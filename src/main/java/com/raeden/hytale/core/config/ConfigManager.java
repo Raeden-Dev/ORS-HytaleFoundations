@@ -1,10 +1,7 @@
 package com.raeden.hytale.core.config;
 
 import com.raeden.hytale.HytaleFoundations;
-import com.raeden.hytale.lang.LangKey;
 
-import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
@@ -70,12 +67,17 @@ public class ConfigManager {
         ChatConfig chatConfig = new ChatConfig();
         chatConfig.setVersion(CHAT_CONFIG_VERSION);
         chatConfig.setShowNickNames(true);
-        chatConfig.setShowPrefixes(true);
+        chatConfig.setShowPrefix(true);
+        chatConfig.setShowSuffix(true);
+        chatConfig.setMaxSuffix(2);
         chatConfig.setRemoveIps(true);
         chatConfig.setAllowPlayerChatColors(true);
         chatConfig.setRemoveLinks(true);
         chatConfig.setCensorCurseWords(true);
         chatConfig.setToggleCensorWordList(true);
+        chatConfig.setPvtMsgClearInterval(5);
+        chatConfig.setSaveChatLog(true);
+        chatConfig.setChatLogSaveInterval(10);
         List<String> censorWordList = new ArrayList<>(List.of("lgbt", "LGBTQ+", "woke", "nigga", "nigger"));
         chatConfig.setCensorWordList(censorWordList);
         List<String> curseWordList = new ArrayList<>(List.of("fuck", "cunt", "faggot", "pussy", "cocksucker", "dumbass"));
@@ -96,9 +98,7 @@ public class ConfigManager {
         config.setToggleEconomyModule(true);
         config.setToggleAnalyticsModule(true);
         config.setToggleDiscordModule(true);
-        config.setPvtMsgClearInterval(5);
-        config.setSaveChatLog(true);
-        config.setChatLogSaveInterval(10);
+        config.setToggleRankModule(true);
         return config;
     }
 
