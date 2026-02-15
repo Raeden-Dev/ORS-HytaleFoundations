@@ -7,4 +7,6 @@ public class PrefixManager {
     public PrefixManager(HytaleFoundations hytaleFoundations) {
         this.hytaleFoundations = hytaleFoundations;
     }
+
+
 }

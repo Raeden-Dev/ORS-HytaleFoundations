@@ -9,10 +9,14 @@ public class Config {
     private boolean TOGGLE_ADMIN_MODULE;
     private boolean TOGGLE_CHAT_MODULE;
     private boolean TOGGLE_RANK_MODULE;
+    private boolean TOGGLE_HOMES_MODULE;
     private boolean TOGGLE_PARTY_MODULE;
     private boolean TOGGLE_ECONOMY_MODULE;
     private boolean TOGGLE_ANALYTICS_MODULE;
     private boolean TOGGLE_DISCORD_MODULE;
+
+    public String getVersion() {return VERSION;}
+    public void setVersion(String VERSION) {this.VERSION = VERSION;}
 
     public String getLang() {return LANG;}
     public void setLang(String lang) {this.LANG = lang;}
@@ -35,6 +39,9 @@ public class Config {
     public boolean isToggleRankModule() {return TOGGLE_RANK_MODULE;}
     public void setToggleRankModule(boolean TOGGLE_RANK_MODULE) {this.TOGGLE_RANK_MODULE = TOGGLE_RANK_MODULE;}
 
+    public boolean isToggleHomesModule() {return TOGGLE_HOMES_MODULE;}
+    public void setToggleHomesModule(boolean TOGGLE_HOMES_MODULE) {this.TOGGLE_HOMES_MODULE = TOGGLE_HOMES_MODULE;}
+
     public boolean isTogglePartyModule() {return TOGGLE_PARTY_MODULE;}
     public void setTogglePartyModule(boolean togglePartyModule) {this.TOGGLE_PARTY_MODULE = togglePartyModule;}
 
@@ -47,8 +54,7 @@ public class Config {
     public boolean isToggleDiscordModule() {return TOGGLE_DISCORD_MODULE;}
     public void setToggleDiscordModule(boolean toggleDiscordModule) {this.TOGGLE_DISCORD_MODULE = toggleDiscordModule;}
 
-    public String getVersion() {return VERSION;}
-    public void setVersion(String VERSION) {this.VERSION = VERSION;}
+
 
 
 }

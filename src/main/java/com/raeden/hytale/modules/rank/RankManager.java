@@ -8,4 +8,12 @@ public class RankManager {
         this.hytaleFoundations = hytaleFoundations;
         
     }
+
+    public static class Rank {
+        private String title;
+        private String permissionGroup;
+        private String chatPrefix;
+        private int rankPriority;
+
+    }
 }

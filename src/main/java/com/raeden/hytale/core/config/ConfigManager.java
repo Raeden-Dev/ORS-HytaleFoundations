@@ -94,11 +94,13 @@ public class ConfigManager {
         config.setToggleDebug(true);
         config.setToggleAdminModule(true);
         config.setToggleChatModule(true);
+        config.setToggleRankModule(true);
+        config.setToggleHomesModule(true);
         config.setTogglePartyModule(true);
         config.setToggleEconomyModule(true);
         config.setToggleAnalyticsModule(true);
         config.setToggleDiscordModule(true);
-        config.setToggleRankModule(true);
+
         return config;
     }
 

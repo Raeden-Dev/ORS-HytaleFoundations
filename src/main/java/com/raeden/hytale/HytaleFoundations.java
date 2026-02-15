@@ -9,6 +9,7 @@ import com.hypixel.hytale.server.core.event.events.player.PlayerReadyEvent;
 import com.hypixel.hytale.server.core.plugin.JavaPlugin;
 import com.hypixel.hytale.server.core.plugin.JavaPluginInit;
 import com.raeden.hytale.core.commands.CoreCommand;
+import com.raeden.hytale.core.config.Config;
 import com.raeden.hytale.core.config.ConfigManager;
 import com.raeden.hytale.core.data.PlayerDataManager;
 import com.raeden.hytale.core.events.playerEvents.PlayerDeathListener;
@@ -16,7 +17,6 @@ import com.raeden.hytale.core.events.playerEvents.PlayerServerDisconnectListener
 import com.raeden.hytale.core.events.playerEvents.PlayerServerJoinListener;
 import com.raeden.hytale.lang.LangManager;
 import com.raeden.hytale.modules.admin.commands.AnnounceCommand;
-import com.raeden.hytale.modules.admin.commands.PlayerDatabaseCommand;
 import com.raeden.hytale.modules.admin.commands.TitleCommand;
 import com.raeden.hytale.modules.admin.commands.VanishCommand;
 import com.raeden.hytale.modules.analytics.pluginactions.PluginActionManager;
@@ -50,6 +50,8 @@ public class HytaleFoundations extends JavaPlugin {
     private ChatManager chatManager;
     private MailManager mailManager;
 
+    private Config config;
+
     public HytaleFoundations(@Nonnull JavaPluginInit init) {
         super(init);
     }
@@ -79,14 +81,17 @@ public class HytaleFoundations extends JavaPlugin {
     private void registerManagers() {
         langManager = new LangManager(this);
         configManager = new ConfigManager(this);
+        config = configManager.getDefaultConfig();
         langManager.setDefaultLanguage();
 
         scheduler = new Scheduler(this);
         pluginActionManager = new PluginActionManager(this);
-
         playerDataManager = new PlayerDataManager(this);
-        chatManager = new ChatManager(this, scheduler);
-        mailManager = new MailManager(this);
+
+        if(config.isToggleChatModule()) {
+            chatManager = new ChatManager(this, scheduler);
+            mailManager = new MailManager(this);
+        }
     }
 
     private void registerListeners() {
@@ -96,44 +101,54 @@ public class HytaleFoundations extends JavaPlugin {
         this.getEventRegistry().registerGlobal(PlayerDisconnectEvent.class, playerDisconnectEvent -> {
             PlayerServerDisconnectListener.onPlayerDisconnect(playerDisconnectEvent, this);
         });
-        this.getEventRegistry().registerGlobal(PlayerChatEvent.class, playerChatEvent -> {
-            PlayerChatListener.onPlayerChat(playerChatEvent, this);
-        });
+
+        if(config.isToggleChatModule()) {
+            this.getEventRegistry().registerGlobal(PlayerChatEvent.class, playerChatEvent -> {
+                PlayerChatListener.onPlayerChat(playerChatEvent, this);
+            });
+        }
 
         PlayerDeathListener PlayerDeathListener = new PlayerDeathListener(this);
     }
 
     private void registerCommands() {
         this.getCommandRegistry().registerCommand(new CoreCommand(this));
-        this.getCommandRegistry().registerCommand(new AnnounceCommand(this));
-        this.getCommandRegistry().registerCommand(new TitleCommand(this));
-        this.getCommandRegistry().registerCommand(new ClearChatCommand(this));
-        this.getCommandRegistry().registerCommand(new VanishCommand(this));
-        this.getCommandRegistry().registerCommand(new ClearChatCommand(this));
-        this.getCommandRegistry().registerCommand(new MessagePlayerCommand(this));
-        this.getCommandRegistry().registerCommand(new ReplyPlayerCommand(this));
-        this.getCommandRegistry().registerCommand(new BlockPlayerCommand(this));
-        this.getCommandRegistry().registerCommand(new UnblockPlayerCommand(this));
-        this.getCommandRegistry().registerCommand(new MutePlayerCommand(this));
-        this.getCommandRegistry().registerCommand(new UnmutePlayerCommand(this));
-        this.getCommandRegistry().registerCommand(new IngorePlayerCommand(this));
-        this.getCommandRegistry().registerCommand(new MailCommand(this));
+
+        if(config.isToggleAdminModule()) {
+            this.getCommandRegistry().registerCommand(new AnnounceCommand(this));
+            this.getCommandRegistry().registerCommand(new TitleCommand(this));
+            this.getCommandRegistry().registerCommand(new VanishCommand(this));
+        }
+        if(config.isToggleChatModule()) {
+            this.getCommandRegistry().registerCommand(new ClearChatCommand(this));
+            this.getCommandRegistry().registerCommand(new MessagePlayerCommand(this));
+            this.getCommandRegistry().registerCommand(new ReplyPlayerCommand(this));
+            this.getCommandRegistry().registerCommand(new BlockPlayerCommand(this));
+            this.getCommandRegistry().registerCommand(new UnblockPlayerCommand(this));
+            this.getCommandRegistry().registerCommand(new MutePlayerCommand(this));
+            this.getCommandRegistry().registerCommand(new UnmutePlayerCommand(this));
+            this.getCommandRegistry().registerCommand(new IngorePlayerCommand(this));
+            this.getCommandRegistry().registerCommand(new MailCommand(this));
+        }
+
         // Admin UI
-        this.getCommandRegistry().registerCommand(new PlayerDatabaseCommand(this));
-        this.getCommandRegistry().registerCommand(new HomesCommand());
+        if(config.isToggleHomesModule()) {
+            this.getCommandRegistry().registerCommand(new HomesCommand());
+        }
 
         // Utility Commands
         this.getCommandRegistry().registerCommand(new PlayerInfoCommand());
-        this.getCommandRegistry().registerCommand(new TitleCommand(this));
         this.getCommandRegistry().registerCommand(new PlaytimeCommand(this));
         this.getCommandRegistry().registerCommand(new AnvilCommand());
 
     }
 
     public ConfigManager getConfigManager() {return configManager;}
+    public Config getConfig() {return config;}
     public LangManager getLangManager() {return langManager;}
     public PlayerDataManager getPlayerDataManager() {return playerDataManager;}
     public ChatManager getChatManager() {return chatManager;}
     public PluginActionManager getPluginActionManager() {return pluginActionManager;}
     public MailManager getMailManager() {return mailManager;}
+
 }
