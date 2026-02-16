@@ -12,8 +12,8 @@ public class RankManager {
     public static class Rank {
         private String title;
         private String permissionGroup;
+        private String parentPermissionGroup;
         private String chatPrefix;
         private int rankPriority;
-
     }
 }

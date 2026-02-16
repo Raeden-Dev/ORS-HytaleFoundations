@@ -10,6 +10,7 @@ public class Config {
     private boolean TOGGLE_CHAT_MODULE;
     private boolean TOGGLE_RANK_MODULE;
     private boolean TOGGLE_HOMES_MODULE;
+    private boolean TOGGLE_MAIL_MODULE;
     private boolean TOGGLE_PARTY_MODULE;
     private boolean TOGGLE_ECONOMY_MODULE;
     private boolean TOGGLE_ANALYTICS_MODULE;
@@ -36,6 +37,9 @@ public class Config {
     public boolean isToggleChatModule() {return TOGGLE_CHAT_MODULE;}
     public void setToggleChatModule(boolean toggleChatModule) {this.TOGGLE_CHAT_MODULE = toggleChatModule;}
 
+    public boolean isToggleMailModule() {return TOGGLE_MAIL_MODULE;}
+    public void setToggleMailModule(boolean TOGGLE_MAIL_MODULE) {this.TOGGLE_MAIL_MODULE = TOGGLE_MAIL_MODULE;}
+
     public boolean isToggleRankModule() {return TOGGLE_RANK_MODULE;}
     public void setToggleRankModule(boolean TOGGLE_RANK_MODULE) {this.TOGGLE_RANK_MODULE = TOGGLE_RANK_MODULE;}
 
@@ -53,8 +57,4 @@ public class Config {
 
     public boolean isToggleDiscordModule() {return TOGGLE_DISCORD_MODULE;}
     public void setToggleDiscordModule(boolean toggleDiscordModule) {this.TOGGLE_DISCORD_MODULE = toggleDiscordModule;}
-
-
-
-
 }

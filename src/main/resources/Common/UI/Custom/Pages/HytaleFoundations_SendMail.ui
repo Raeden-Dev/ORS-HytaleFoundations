@@ -14,7 +14,7 @@ $C = "../Common.ui";
 
 $C.@PageOverlay {
     $C.@Container {
-      Anchor: (Width: 600, Height: 550);
+      Anchor: (Width: 600, Height: 540);
       Padding: (Full: 20);
       #Title {
         Group {
@@ -71,9 +71,19 @@ $C.@PageOverlay {
             Text: "Message:";
           }
           Group {Anchor: (Height: 15);}
-          $C.@TextField #MessageInput {
+          MultilineTextField #MessageInput {
             Anchor: (Height: 180);
             PlaceholderText: "Write your message here...";
+            PlaceholderStyle: (TextColor: #6e7da1);
+            MaxLines: 32;
+            OutlineColor: #424a5e;
+            OutlineSize: 2;
+            Background: #263047;
+            Padding: 10;
+            ScrollbarStyle: (
+              Spacing: 6,
+              Size: 6
+            );
           }
           Group {Anchor: (Height: 10);}
           Group #BottomButtons {

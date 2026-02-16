@@ -13,7 +13,7 @@ public class ConfigManager {
     private final HytaleFoundations hytaleFoundations;
 
     private final String CONFIG_FILE = "config.json";
-    private final String LANG_FILE = "en-us.json";
+    private final String MAIL_CONFIG = "mail.json";
     private final String RANK_CONFIG = "rank.json";
     private final String PARTY_CONFIG = "party.json";
     private final String ECONOMY_CONFIG = "economy.json";
@@ -21,6 +21,7 @@ public class ConfigManager {
 
     private Config defaultConfig;
     private ChatConfig defaultChatConfig;
+    private MailConfig defaultMailConfig;
 
     private final Path dataDir;
 
@@ -34,6 +35,7 @@ public class ConfigManager {
         createDirectory(dataDir, true);
         this.defaultConfig = loadConfigData();
         this.defaultChatConfig = loadChatConfigData();
+        this.defaultMailConfig = loadMailConfigData();
         createErrorLogDir();
     }
 
@@ -41,6 +43,7 @@ public class ConfigManager {
         createDirectory(errorLogDirectory, true);
     }
 
+    // Load Configs
     private Config loadConfigData() {
         Path configPath = dataDir.resolve(CONFIG_FILE);
         Config config = loadJsonFile(CONFIG_FILE, configPath, Config.class, true);
@@ -61,6 +64,28 @@ public class ConfigManager {
         ChatConfig defaultChatConfig = createDefaultChatConfig();
         saveJsonFile(CHAT_CONFIG, chatConfigPath, defaultChatConfig, true);
         return defaultChatConfig;
+    }
+
+    private MailConfig loadMailConfigData() {
+        Path mailConfigPath = dataDir.resolve(MAIL_CONFIG);
+        MailConfig mailConfig = loadJsonFile(MAIL_CONFIG, mailConfigPath, MailConfig.class, true);
+        if(mailConfig != null) {
+            return mailConfig;
+        }
+        MailConfig defaultMailConfig = createDefaultMailConfig();
+        saveJsonFile(MAIL_CONFIG, mailConfigPath, defaultChatConfig, true);
+        return defaultMailConfig;
+    }
+
+    // Create Default Configs
+    private MailConfig createDefaultMailConfig() {
+        MailConfig mailConfig = new MailConfig();
+        mailConfig.setAllowGifting(true);
+        mailConfig.setMaxGiftPerMail(5);
+        mailConfig.setMaxMailLines(32);
+        mailConfig.setMaxMailPerDay(10);
+        mailConfig.setMaxInboxSize(50);
+        return mailConfig;
     }
 
     private ChatConfig createDefaultChatConfig() {
@@ -100,7 +125,6 @@ public class ConfigManager {
         config.setToggleEconomyModule(true);
         config.setToggleAnalyticsModule(true);
         config.setToggleDiscordModule(true);
-
         return config;
     }
 
