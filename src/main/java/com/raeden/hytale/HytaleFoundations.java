@@ -21,9 +21,10 @@ import com.raeden.hytale.modules.admin.commands.TitleCommand;
 import com.raeden.hytale.modules.admin.commands.VanishCommand;
 import com.raeden.hytale.modules.analytics.pluginactions.PluginActionManager;
 import com.raeden.hytale.modules.chat.ChatManager;
-import com.raeden.hytale.modules.chat.MailManager;
+import com.raeden.hytale.modules.mail.MailManager;
 import com.raeden.hytale.modules.chat.commands.*;
 import com.raeden.hytale.modules.chat.events.PlayerChatListener;
+import com.raeden.hytale.modules.mail.commands.MailCommand;
 import com.raeden.hytale.modules.utility.commands.*;
 import com.raeden.hytale.utils.Scheduler;
 

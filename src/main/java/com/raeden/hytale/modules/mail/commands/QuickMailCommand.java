@@ -1,4 +1,4 @@
-package com.raeden.hytale.modules.utility.commands;
+package com.raeden.hytale.modules.mail.commands;
 
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
@@ -12,7 +12,7 @@ import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import com.raeden.hytale.HytaleFoundations;
 import com.raeden.hytale.core.data.PlayerDataManager;
 import com.raeden.hytale.core.data.PlayerMailbox;
-import com.raeden.hytale.modules.chat.MailManager;
+import com.raeden.hytale.modules.mail.MailManager;
 import com.raeden.hytale.utils.TimeUtils;
 
 import javax.annotation.Nonnull;
@@ -34,8 +34,6 @@ public class QuickMailCommand extends AbstractPlayerCommand {
     }
     @Override
     protected void execute(@Nonnull CommandContext commandContext, @Nonnull Store<EntityStore> store, @Nonnull Ref<EntityStore> ref, @Nonnull PlayerRef playerRef, @Nonnull World world) {
-        boolean isAdmin = isPlayerAdmin(commandContext.sender());
-
         String senderUsername = commandContext.sender().getDisplayName();
         String receiverUsername = commandContext.get(this.targetPlayer);
         String[] rawMessage = commandContext.getInputString().split("\\s+", 3);
@@ -50,13 +48,6 @@ public class QuickMailCommand extends AbstractPlayerCommand {
                 TimeUtils.getCurrentTime(),
                 messageContent
         );
-
-        PlayerDataManager dataManager = hytaleFoundations.getPlayerDataManager();
-
-        PlayerMailbox mailbox = dataManager.getPlayerMailbox(receiverUsername);
-        mailbox.addMail(mail);
-
-        dataManager.savePlayerData(receiverUsername, dataManager.MAIL_JSON, mailbox);
-
+        mailManager.sendMailToPlayer(receiverUsername, mail);
     }
 }

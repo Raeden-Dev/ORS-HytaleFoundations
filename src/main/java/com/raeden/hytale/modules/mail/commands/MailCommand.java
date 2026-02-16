@@ -1,4 +1,4 @@
-package com.raeden.hytale.modules.utility.commands;
+package com.raeden.hytale.modules.mail.commands;
 
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;

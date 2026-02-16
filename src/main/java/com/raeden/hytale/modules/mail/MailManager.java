@@ -1,16 +1,15 @@
-package com.raeden.hytale.modules.chat;
+package com.raeden.hytale.modules.mail;
 
-import com.hypixel.hytale.protocol.ItemWithAllMetadata;
 import com.hypixel.hytale.protocol.packets.interface_.NotificationStyle;
 import com.hypixel.hytale.server.core.Message;
-import com.hypixel.hytale.server.core.inventory.ItemStack;
+import com.hypixel.hytale.server.core.entity.entities.Player;
 import com.hypixel.hytale.server.core.io.PacketHandler;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.util.NotificationUtil;
 import com.raeden.hytale.HytaleFoundations;
+import com.raeden.hytale.core.data.PlayerDataManager;
 import com.raeden.hytale.core.data.PlayerMailbox;
 import com.raeden.hytale.lang.LangKey;
-import com.raeden.hytale.lang.LangManager;
 
 import java.util.List;
 
@@ -22,6 +21,25 @@ public class MailManager {
 
     public MailManager(HytaleFoundations hytaleFoundations) {
         this.hytaleFoundations = hytaleFoundations;
+    }
+
+    public void sendMailToPlayer(String receiver, Mail mail) {
+        sendMailToPlayer(null, receiver, mail);
+    }
+    public void sendMailToPlayer(PlayerRef sender, String receiver, Mail mail) {
+        PlayerDataManager playerDataManager = hytaleFoundations.getPlayerDataManager();
+        PlayerMailbox mailbox = playerDataManager.getPlayerMailbox(receiver);
+        if(mailbox != null) {
+            mailbox.addMail(mail);
+            playerDataManager.savePlayerData(receiver, playerDataManager.MAIL_JSON, mailbox, false);
+            if(sender != null) {
+                sender.sendMessage(langManager.getMessage(sender.getUsername(), LangKey.MAIL_SEND_SUCCESS, false, receiver));
+            }
+        } else {
+            if(sender != null) {
+                sender.sendMessage(langManager.getMessage(sender.getUsername(), LangKey.MAIL_SEND_FAILURE, false, receiver));
+            }
+        }
     }
 
     public void doesPlayerHaveUnreadMails(String username) {

@@ -1,6 +1,6 @@
 package com.raeden.hytale.core.data;
 
-import com.raeden.hytale.modules.chat.MailManager;
+import com.raeden.hytale.modules.mail.MailManager;
 
 import java.util.ArrayList;
 import java.util.List;

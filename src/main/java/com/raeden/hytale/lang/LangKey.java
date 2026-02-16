@@ -35,6 +35,7 @@ public enum LangKey {
     STOP_FAILURE            ("system.process.stop.fail",            "[STOP] Failed to stop {0}"),
     PLAYER_GET_FAIL         ("system.player.get_fail",              "[ERROR] Failed to get player {0}"),
     PLAYER_NOT_FOUND        ("system.player.not_found",             "[ERROR] Player with username {0} was not found!"),
+    PLAYER_NOT_FOUND_MSG    ("system.player.not_found_msg",         "&c&lPlayer with username &r&e&l{0} &r&c&lwas not found!"),
     PLAYER_ONLINE_CHECK_FAIL("system.player.online_check_fail",     "[ERROR] Failed to check if player {0} is online!"),
     PLAYER_INV_CHECK_FAIL   ("system.player.inv_check_fail",        "[ERROR] Failed to check inventory slots for player {0}"),
 
@@ -76,7 +77,7 @@ public enum LangKey {
     MUTE_ACTION_SUCCESS     ("moderation.mute.action.success",      "&c&lMuted &r&e&l{0} &r&c&lfor &r&e&l{1}"),
     MUTE_ACTION_INCREASED   ("moderation.mute.action.increased",    "&e&l{0} &r&c&lwas already muted, increased their duration from &r&e&l{1}  &r&c&lto &r&e&l{2}."),
     UNMUTE_ACTION_SUCCESS   ("moderation.mute.action.unmuted",      "&e&l{0} &r&a&lhas been unmuted"),
-    UNMUTE_ERROR_NOT_MUTED  ("moderation.mute.error.not_muted",     "{0} is not muted!"),
+    UNMUTE_ERROR_NOT_MUTED  ("moderation.mute.error.not_muted",     "&e&l{0} &r&c&lis not muted!"),
     MUTE_NOTIFY_ACTIVE      ("moderation.mute.notify.active",       "&c&lYou have been muted by &r&e&l{0} &r&c&lfor &r&e&l{1}."),
     MUTE_NOTIFY_INCREASED   ("moderation.mute.notify.increased",    "&c&lYour mute duration was increased to &r&e&l{0} &r&c&lby &r&e&l{1}."),
     UNMUTE_NOTIFY_ACTIVE    ("moderation.mute.notify.unmuted",      "&a&lYou have been unmuted by &r&e&l{0}"),
@@ -85,6 +86,9 @@ public enum LangKey {
     MAIL_NOTIFY_CHECK       ("mail.notify.check",                   "&f&lCheck your mailbox to read mails."),
     MAIL_SEND_SUCCESS       ("mail.send.success",                   "&a&lMail sent to &r&e&l{0} &r&a&lsuccessfully!"),
     MAIL_SEND_FAILURE       ("mail.send.fail",                      "&c&lFailed to send mail to &r&e&l{0}&r&c&l!"),
+    MAIL_MISSING_FIELD      ("mail.send.empty_field",                "&c&lPlease fill out all fields to send the mail."),
+
+
 
     STATS_PLAYTIME          ("utility.stats.playtime",              "&a&lTotal playtime of &r&e&l{0}&r&a&l: &r&f&l{1}");
 

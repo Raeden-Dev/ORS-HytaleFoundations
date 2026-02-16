@@ -1,7 +1,6 @@
 package com.raeden.hytale.core.data;
 
 import com.raeden.hytale.modules.admin.PlayerOffence;
-import com.raeden.hytale.modules.chat.MailManager;
 
 import java.util.List;
 

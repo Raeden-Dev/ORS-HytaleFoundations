@@ -105,9 +105,11 @@ public class PlayerDataManager {
         }
         if(mismatch) updateUserMap(playerID, username);
     }
-
-    // Saving, Loading and Creating Player Data
     public <T> void savePlayerData(String username, String jsonName, T data) {
+        savePlayerData(username, jsonName, data, true);
+    }
+    // Saving, Loading and Creating Player Data
+    public <T> void savePlayerData(String username, String jsonName, T data, boolean showInfo) {
         if (!jsonName.endsWith(".json")) {
             jsonName += ".json";
         }
@@ -122,7 +124,7 @@ public class PlayerDataManager {
             return;
         }
         Path savePath = playerFolder.resolve(jsonName);
-        saveJsonFile(jsonName, savePath, data, true);
+        saveJsonFile(jsonName, savePath, data, showInfo);
     }
 
     public PlayerProfile getPlayerProfileFromFile(String username) {
@@ -144,6 +146,7 @@ public class PlayerDataManager {
     }
 
     public PlayerMailbox getPlayerMailbox(String username) {
+        if(username == null) return null;
         Path mailJsonPath = playerDataPath.resolve(username).resolve(MAIL_JSON);
         String fileName = MAIL_JSON + ": " + username;
         return loadJsonFile(fileName, mailJsonPath, PlayerMailbox.class, false);
