@@ -182,6 +182,7 @@ public class PlayerDataManager {
         profile.setShowNickname(chatConfig.isShowNickNames());
         profile.setShowPrefix(chatConfig.isShowPrefix());
         profile.setShowTags(chatConfig.isShowSuffix());
+        profile.setMaxTags(chatConfig.getMaxSuffix());
         profile.setGodModeEnabled(false);
         profile.setVanished(false);
         profile.setFlying(false);

@@ -1,7 +1,9 @@
 package com.raeden.hytale.core.config;
 
 import com.raeden.hytale.HytaleFoundations;
+import com.raeden.hytale.utils.ColorEngine;
 
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
@@ -39,6 +41,24 @@ public class ConfigManager {
         createErrorLogDir();
     }
 
+    public void reloadPlugin() {
+        if(!Files.exists(dataDir)) loadConfigs();
+        this.defaultConfig = loadConfigData();
+        this.defaultChatConfig = loadChatConfigData();
+        this.defaultMailConfig = loadMailConfigData();
+        hytaleFoundations.getChatManager().getColorEngine().loadColors();
+    }
+
+    public void updateConfigs() {
+        updateJsonFile(CONFIG_FILE, dataDir.resolve(CONFIG_FILE), Config.class, true);
+        updateJsonFile(CHAT_CONFIG, dataDir.resolve(CHAT_CONFIG), ChatConfig.class, true);
+        updateJsonFile(MAIL_CONFIG, dataDir.resolve(MAIL_CONFIG), MailConfig.class, true);
+
+        // Color file
+        ColorEngine engine = hytaleFoundations.getChatManager().getColorEngine();
+        updateJsonFile(engine.getColorFile(), engine.getColorFilePath(), ColorEngine.COLOR_MAP_FILE.class, true);
+    }
+
     private void createErrorLogDir() {
         createDirectory(errorLogDirectory, true);
     }
@@ -48,6 +68,7 @@ public class ConfigManager {
         Path configPath = dataDir.resolve(CONFIG_FILE);
         Config config = loadJsonFile(CONFIG_FILE, configPath, Config.class, true);
         if(config !=  null) {
+            updateJsonFile(configPath, Config.class, true);
             return config;
         }
         Config defConfig = createDefaultConfig();
@@ -59,6 +80,7 @@ public class ConfigManager {
         Path chatConfigPath = dataDir.resolve(CHAT_CONFIG);
         ChatConfig chatConfig = loadJsonFile(CHAT_CONFIG, chatConfigPath, ChatConfig.class, true);
         if(chatConfig != null) {
+            updateJsonFile(chatConfigPath, ChatConfig.class, true);
             return chatConfig;
         }
         ChatConfig defaultChatConfig = createDefaultChatConfig();
@@ -70,10 +92,11 @@ public class ConfigManager {
         Path mailConfigPath = dataDir.resolve(MAIL_CONFIG);
         MailConfig mailConfig = loadJsonFile(MAIL_CONFIG, mailConfigPath, MailConfig.class, true);
         if(mailConfig != null) {
+            updateJsonFile(mailConfigPath, MailConfig.class, true);
             return mailConfig;
         }
         MailConfig defaultMailConfig = createDefaultMailConfig();
-        saveJsonFile(MAIL_CONFIG, mailConfigPath, defaultChatConfig, true);
+        saveJsonFile(MAIL_CONFIG, mailConfigPath, defaultMailConfig, true);
         return defaultMailConfig;
     }
 
@@ -130,5 +153,6 @@ public class ConfigManager {
 
     public Config getDefaultConfig() {return defaultConfig;}
     public ChatConfig getDefaultChatConfig() {return defaultChatConfig;}
+    public MailConfig getDefaultMailConfig() {return defaultMailConfig;}
 }
 

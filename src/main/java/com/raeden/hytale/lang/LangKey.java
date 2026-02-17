@@ -31,6 +31,11 @@ public enum LangKey {
     READ_FAILURE_LOC        ("system.data.read.fail_loc",           "[READ] Failed to read {0} at {1}"),
     CHECK_FAILURE           ("system.data.check.fail",              "[INFO] Failed to check {0}"),
 
+    PENDING_UPDATE          ("system.data.update.pending",          "[UPDATE] An update is available for {0}"),
+    UPDATE_SUCCESS          ("system.data.update.success",          "[UPDATE] Updated {0}"),
+    UPDATE_SUCCESS_VERSION  ("system.data.update.success_version",  "[UPDATE] Updated {0} from {1} to {2}"),
+    UPDATE_FAILURE          ("system.data.update.failure",          "[UPDATE] Failed to update {0}"),
+
     STOP_SUCCESS            ("system.process.stop.success",         "[STOP] Stopped {0}"),
     STOP_FAILURE            ("system.process.stop.fail",            "[STOP] Failed to stop {0}"),
     PLAYER_GET_FAIL         ("system.player.get_fail",              "[ERROR] Failed to get player {0}"),
@@ -39,10 +44,8 @@ public enum LangKey {
     PLAYER_ONLINE_CHECK_FAIL("system.player.online_check_fail",     "[ERROR] Failed to check if player {0} is online!"),
     PLAYER_INV_CHECK_FAIL   ("system.player.inv_check_fail",        "[ERROR] Failed to check inventory slots for player {0}"),
 
-    CHAT_EXPORT_SUCCESS     ("system.chat.export.success",          "Successfully exported chat log ({0}) at {1}"),
-    CHAT_EXPORT_FAIL        ("system.chat.export.fail",             "Failed to export chat log {0}"),
-    CHAT_CLEAR_ALL          ("system.chat.clear.all",               "Whole chat messages were purged."),
-    CHAT_CLEAR_AMOUNT       ("system.chat.clear.amount",            "Cleared {0} previous chat messages"),
+    CHAT_CLEAR_ALL          ("system.chat.clear.all",               "[CHAT] Whole chat messages were purged."),
+    CHAT_CLEAR_AMOUNT       ("system.chat.clear.amount",            "[CHAT] Cleared {0} previous chat messages"),
 
     // Logs
     LOG_CHAT_EXPORT_SUCCESS ("log.chat.export.success",             "[{0}] >> Exported Chat Log."),
@@ -50,8 +53,8 @@ public enum LangKey {
     LOG_CACHE_CLEAR_MSG     ("log.cache.clear.messenger",           "[{0}] >> Cleared active private messenger cache..."),
 
     // Chat format
-    DEFAULT_CHAT_FORMAT     ("chat.format.default",               "{prefix}{player}{suffix} » {message}"),
-    CHANNEL_CHAT_FORMAT     ("chat.format.has_channel",               "{channel}{prefix}{player}{suffix} » {message}"),
+    DEFAULT_CHAT_FORMAT     ("chat.format.default",                 "{prefix}{player}{suffix} » {message}"),
+    CHANNEL_CHAT_FORMAT     ("chat.format.has_channel",             "{channel}{prefix}{player}{suffix} » {message}"),
 
     // Private Messaging
     PM_FORMAT_SENDER        ("chat.pm.format.sender",               "&e&lYou &r&f&l» &r&e&l{0}&r&f&l: &r&f{1}"),
@@ -86,7 +89,7 @@ public enum LangKey {
     MAIL_NOTIFY_CHECK       ("mail.notify.check",                   "&f&lCheck your mailbox to read mails."),
     MAIL_SEND_SUCCESS       ("mail.send.success",                   "&a&lMail sent to &r&e&l{0} &r&a&lsuccessfully!"),
     MAIL_SEND_FAILURE       ("mail.send.fail",                      "&c&lFailed to send mail to &r&e&l{0}&r&c&l!"),
-    MAIL_MISSING_FIELD      ("mail.send.empty_field",                "&c&lPlease fill out all fields to send the mail."),
+    MAIL_MISSING_FIELD      ("mail.send.empty_field",               "&c&lPlease fill out all fields to send the mail."),
 
 
 

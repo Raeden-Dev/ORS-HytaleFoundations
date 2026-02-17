@@ -75,6 +75,7 @@ public class ColorEngine {
         }
         COLOR_MAP_FILE colorMapFile = new COLOR_MAP_FILE();
         colorMapFile.setColorList(COLOR_MAP);
+        myLogger.atInfo().log(langManager.getMessage(LangKey.LOAD_SUCCESS, colorMapFile.getColorList().size() + " colors!").getAnsiMessage());
         saveJsonFile(COLOR_FILE, colorFilePath, colorMapFile, true);
     }
     public void loadColors() {
@@ -113,9 +114,11 @@ public class ColorEngine {
                 }
 
                 if(newColors != 0) {
-                    myLogger.atInfo().log(langManager.getMessage(LangKey.LOAD_SUCCESS, newColors + "colors!").getAnsiMessage());
+                    myLogger.atInfo().log(langManager.getMessage(LangKey.LOAD_SUCCESS, newColors + " colors!").getAnsiMessage());
                 }
             }
+        } else {
+            saveColorFile(true);
         }
     }
 
@@ -297,16 +300,17 @@ public class ColorEngine {
     // Getters and Setters
     public LinkedHashMap<String, String> getColorMap() {return COLOR_MAP;}
     public void setColorMap(LinkedHashMap<String, String> COLOR_MAP) {this.COLOR_MAP = COLOR_MAP;}
-
-    public List<String> getSSpecialCodes() {return SPECIAL_CODES;}
-
+    public List<String> getSpecialCodes() {return SPECIAL_CODES;}
+    public String getColorFile() { return COLOR_FILE;}
+    public Path getColorFilePath() { return colorFilePath;}
     // Color Map Class
-    private static final class COLOR_MAP_FILE {
-        private String VERSION = "v1.0";
+    public static final class COLOR_MAP_FILE {
+        private final String VERSION = "v1.0";
         private LinkedHashMap<String, String> COLOR_LIST = new LinkedHashMap<>();
 
         public LinkedHashMap<String, String> getColorList() {return COLOR_LIST;}
         public void setColorList(LinkedHashMap<String, String> colorList) {this.COLOR_LIST = colorList;}
+        public String getVersion() {return VERSION;}
     }
 
 }

@@ -1,5 +1,6 @@
 package com.raeden.hytale.utils;
 
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonSyntaxException;
@@ -42,6 +43,7 @@ public class FileManager {
             }
         }
     }
+
     // Loading a .json file
     public static <T> T loadJsonFile(Path filePath, Type typeOfT) {
         return loadJsonFile(filePath.getFileName().toString(), filePath, typeOfT, false);
@@ -94,6 +96,7 @@ public class FileManager {
         }
         return null;
     }
+
     // Getting a .json object
     public static JsonObject getJsonObject(Path filePath) {
         return getJsonObject(filePath.getFileName().toString(), filePath, false);
@@ -142,6 +145,7 @@ public class FileManager {
         }
         return null;
     }
+
     // Saving a .json file
     public static <T> void saveJsonFile(Path savePath, T dataObject) {
         saveJsonFile(savePath.getFileName().toString(), savePath, dataObject, false);
@@ -177,6 +181,84 @@ public class FileManager {
                 myLogger.atSevere().log("[SAVE] Failed to save " + fileName + " at " + savePath);
             }
         }
+    }
+
+    // Updating a .json file
+    public static <T> void updateJsonFile(Path filePath, T defaultDataObject, boolean showInfo) {
+        updateJsonFile(filePath.getFileName().toString(), filePath, defaultDataObject, showInfo);
+    }
+    public static <T> void updateJsonFile(String fileName, Path filePath, T defaultDataObject, boolean showInfo) {
+        if(!Files.exists(filePath)) {
+            saveJsonFile(fileName, filePath, defaultDataObject, showInfo);
+            return;
+        }
+        try {
+            JsonElement existingJsonTree = getJsonObject(fileName, filePath, false);
+            JsonElement defaultJsonTree = GSON.toJsonTree(defaultDataObject);
+
+            if(existingJsonTree == null || !existingJsonTree.isJsonObject() || !defaultJsonTree.isJsonObject()) {
+                saveJsonFile(fileName, filePath, defaultDataObject, showInfo);
+                return;
+            }
+
+            boolean changed = syncJsonObjects(existingJsonTree.getAsJsonObject(), defaultJsonTree.getAsJsonObject());
+            if(changed) {
+                saveJsonFile(fileName, filePath, existingJsonTree, false);
+                if(showInfo) {
+                    if(langManager != null) {
+                        myLogger.atInfo().log(langManager.getMessage(LangKey.UPDATE_SUCCESS, true, fileName).getAnsiMessage());
+                    } else {
+                        myLogger.atInfo().log("[UPDATE] Updated " + fileName);
+                    }
+                }
+            }
+        } catch (Exception e) {
+            logExceptionError("updateJsonFile", e);
+            if(langManager != null) {
+                myLogger.atSevere().log(langManager.getMessage(LangKey.UPDATE_FAILURE, true, fileName).getAnsiMessage());
+            } else {
+                myLogger.atInfo().log("[UPDATE] Failed to update " + fileName);
+            }
+        }
+    }
+
+    public static boolean syncJsonObjects(JsonObject existingObj, JsonObject targetObj) {
+        boolean changed = false;
+        var existingIterator = existingObj.entrySet().iterator();
+        while (existingIterator.hasNext()) {
+            var entry = existingIterator.next();
+            if (!targetObj.has(entry.getKey())) {
+                existingIterator.remove();
+                changed = true;
+            }
+        }
+        for (var entry : targetObj.entrySet()) {
+            String key = entry.getKey();
+            JsonElement targetVal = entry.getValue();
+            if (!existingObj.has(key)) {
+                existingObj.add(key, targetVal);
+                changed = true;
+                continue;
+            }
+            JsonElement existingVal = existingObj.get(key);
+            if (existingVal.isJsonObject() && targetVal.isJsonObject()) {
+                if (syncJsonObjects(existingVal.getAsJsonObject(), targetVal.getAsJsonObject())) {
+                    changed = true;
+                }
+            }
+            else if (!isSameJsonType(existingVal, targetVal)) {
+                existingObj.add(key, targetVal);
+                changed = true;
+            }
+        }
+        return changed;
+    }
+
+    private static boolean isSameJsonType(JsonElement elementA, JsonElement elementB) {
+        if (elementA.isJsonObject() && elementB.isJsonObject()) return true;
+        if (elementA.isJsonArray() && elementB.isJsonArray()) return true;
+        if (elementA.isJsonPrimitive() && elementB.isJsonPrimitive()) return true;
+        return elementA.isJsonNull() && elementB.isJsonNull();
     }
 
     // Catching errors
