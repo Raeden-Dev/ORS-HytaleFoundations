@@ -13,9 +13,6 @@ import com.raeden.hytale.core.utils.Permissions;
 
 import javax.annotation.Nonnull;
 
-import static com.raeden.hytale.core.utils.Permissions.isPlayerAdmin;
-import static com.raeden.hytale.utils.GeneralUtils.findPlayerByName;
-
 public class NicknameCommand extends AbstractPlayerCommand {
     private final HytaleFoundations hytaleFoundations;
     public NicknameCommand(HytaleFoundations hytaleFoundations) {
@@ -30,6 +27,7 @@ public class NicknameCommand extends AbstractPlayerCommand {
     protected void execute(@Nonnull CommandContext commandContext, @Nonnull Store<EntityStore> store, @Nonnull Ref<EntityStore> ref, @Nonnull PlayerRef playerRef, @Nonnull World world) {
         String senderUsername = commandContext.sender().getDisplayName();
         String[] rawMessage = commandContext.getInputString().split("\\s+", 2);
+        if(rawMessage.length == 1) return;
         String nicknameContent = rawMessage[1];
 
         PlayerProfile senderProfile = hytaleFoundations.getPlayerDataManager().getPlayerProfile(senderUsername);

@@ -55,7 +55,7 @@ public enum LangKey {
     LOG_CACHE_CLEAR_MSG     ("log.cache.clear.messenger",           "[{0}] >> Cleared active private messenger cache..."),
 
     // Chat format
-    CHAT_FORMAT             ("chat.format.default",                 "{prefix}{player}{suffix} » {message}"),
+    CHAT_FORMAT             ("chat.format.default",                 "{prefix} {player} {suffix} » {message}"),
     CHANNEL_CHAT_FORMAT     ("chat.format.has_channel",             "{channel}{prefix}{player}{suffix} » {message}"),
 
     // Private Messaging

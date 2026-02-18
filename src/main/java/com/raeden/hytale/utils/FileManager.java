@@ -277,7 +277,8 @@ public class FileManager {
             } catch (IOException ignored) {
             }
         }
-        String fileName = TimeUtils.getFileSafeTime() + "-" + at + "-log.txt";
+        int ID = random.nextInt(900) + 100;
+        String fileName = TimeUtils.getFileSafeTime() + "-" + at + "-log_" + ID + ".txt";
         Path logFile = exportPath.resolve(fileName);
         try (PrintWriter writer = new PrintWriter(Files.newBufferedWriter(logFile, StandardCharsets.UTF_8))) {
             writer.println("========== ERROR LOG ==========");

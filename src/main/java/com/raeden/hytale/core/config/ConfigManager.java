@@ -68,7 +68,7 @@ public class ConfigManager {
         Path configPath = dataDir.resolve(CONFIG_FILE);
         Config config = loadJsonFile(CONFIG_FILE, configPath, Config.class, true);
         if(config !=  null) {
-            updateJsonFile(configPath, Config.class, true);
+            updateJsonFile(configPath, config, true);
             return config;
         }
         Config defConfig = createDefaultConfig();
@@ -80,7 +80,7 @@ public class ConfigManager {
         Path chatConfigPath = dataDir.resolve(CHAT_CONFIG);
         ChatConfig chatConfig = loadJsonFile(CHAT_CONFIG, chatConfigPath, ChatConfig.class, true);
         if(chatConfig != null) {
-            updateJsonFile(chatConfigPath, ChatConfig.class, true);
+            updateJsonFile(chatConfigPath, chatConfig, true);
             return chatConfig;
         }
         ChatConfig defaultChatConfig = createDefaultChatConfig();
@@ -92,7 +92,7 @@ public class ConfigManager {
         Path mailConfigPath = dataDir.resolve(MAIL_CONFIG);
         MailConfig mailConfig = loadJsonFile(MAIL_CONFIG, mailConfigPath, MailConfig.class, true);
         if(mailConfig != null) {
-            updateJsonFile(mailConfigPath, MailConfig.class, true);
+            updateJsonFile(mailConfigPath, mailConfig, true);
             return mailConfig;
         }
         MailConfig defaultMailConfig = createDefaultMailConfig();

@@ -30,9 +30,11 @@ import com.raeden.hytale.utils.Scheduler;
 
 import javax.annotation.Nonnull;
 import java.nio.file.Path;
+import java.util.Random;
 
 public class HytaleFoundations extends JavaPlugin {
     public static final HytaleLogger myLogger = HytaleLogger.forEnclosingClass();
+    public static final Random random = new Random();
     public static final Gson GSON = new GsonBuilder()
             .setPrettyPrinting()
             .disableHtmlEscaping()

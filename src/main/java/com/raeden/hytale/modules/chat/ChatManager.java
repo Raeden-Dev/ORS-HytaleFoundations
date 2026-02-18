@@ -71,9 +71,9 @@ public class ChatManager {
             }
         }
         return chatFormat
-                .replace("{prefix}", prefix)
-                .replace("{suffix}", suffix)
-                .replace("{player}", displayName)
+                .replace("{prefix}", prefix + "&r")
+                .replace("{suffix}", suffix + "&r")
+                .replace("{player}", displayName + "&r")
                 .replace("{message}", message);
     }
     public void setupChatFormat() {
@@ -82,7 +82,7 @@ public class ChatManager {
             if(validateChatFormat(chatFormat)) {
                 CHAT_FORMAT = chatFormat;
             } else {
-                CHAT_FORMAT = "{prefix}{player}{suffix} » {message}";
+                CHAT_FORMAT = "{prefix} {player} {suffix} » {message}";
             }
         }
     }

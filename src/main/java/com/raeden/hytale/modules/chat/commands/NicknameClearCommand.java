@@ -19,7 +19,7 @@ public class NicknameClearCommand extends AbstractPlayerCommand {
     private final HytaleFoundations hytaleFoundations;
     //private final RequiredArg<String> targetPlayer;
     public NicknameClearCommand(HytaleFoundations hytaleFoundations) {
-        super("set", "Set nickname of other players");
+        super("clear", "Set nickname of other players");
         this.hytaleFoundations = hytaleFoundations;
         this.requirePermission(Permissions.HFPermissions.ADMIN.getPermission());
         //targetPlayer = withRequiredArg("Player", "Player to execute command on.", ArgTypes.STRING);
