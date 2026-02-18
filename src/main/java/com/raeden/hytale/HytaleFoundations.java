@@ -138,6 +138,8 @@ public class HytaleFoundations extends JavaPlugin {
         }
 
         // Utility Commands
+        this.getCommandRegistry().registerCommand(new NicknameCommand(this));
+        this.getCommandRegistry().registerCommand(new AffixCommand(this));
         this.getCommandRegistry().registerCommand(new PlayerInfoCommand());
         this.getCommandRegistry().registerCommand(new PlaytimeCommand(this));
         this.getCommandRegistry().registerCommand(new AnvilCommand());

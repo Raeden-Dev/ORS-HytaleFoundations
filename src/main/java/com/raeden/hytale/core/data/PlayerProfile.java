@@ -11,7 +11,7 @@ public class PlayerProfile {
     private final List<String> username = new ArrayList<>();
     private String language;
     private String nickname;
-
+    private String usernameColorCode;
 
     // Admin
     private boolean godModeEnabled;
@@ -34,8 +34,8 @@ public class PlayerProfile {
     private boolean showSuffix;
     private int maxPrefix;
     private int maxSuffix;
-    private final List<String> activePrefix = new ArrayList<>();
-    private final List<String> activeSuffix = new ArrayList<>();
+    private final LinkedHashMap<String, String> activePrefix = new LinkedHashMap<>();
+    private final LinkedHashMap<String, String> activeSuffix = new LinkedHashMap<>();
     private final List<String> blockedPlayers = new ArrayList<>();
 
 
@@ -98,16 +98,13 @@ public class PlayerProfile {
     public int getMaxPrefix() {return maxPrefix;}
     public void setMaxPrefix(int maxPrefix) {this.maxPrefix = maxPrefix;}
 
-    public List<String> getActiveSuffix() {return activeSuffix;}
-    public void addActiveSuffix(String suffix) {
-        if(activeSuffix.size() == maxSuffix) return;
-        activeSuffix.add(suffix);
-    }
+    public LinkedHashMap<String, String> getActivePrefix() {return activePrefix;}
+    public void addToActivePrefix(String ID, String prefix) { activePrefix.put(ID, prefix);}
+    public void removeActivePrefix(String ID) { activePrefix.remove(ID);}
+    public LinkedHashMap<String, String> getActiveSuffix() {return activeSuffix;}
+    public void addToActiveSuffix(String ID, String suffix) { activeSuffix.put(ID, suffix);}
+    public void removeActiveSuffix(String ID) { activeSuffix.remove(ID);}
 
-    public List<String> getActivePrefix() {return activePrefix;}
-    public void addActivePrefix(String prefix) {
-        if(activePrefix.size() == maxPrefix) return;
-        activePrefix.add(prefix);
-    }
-
+    public String getUsernameColorCode() {return usernameColorCode;}
+    public void setUsernameColorCode(String usernameColorCode) {this.usernameColorCode = usernameColorCode;}
 }

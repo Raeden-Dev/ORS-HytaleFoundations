@@ -45,7 +45,7 @@ public class PlaytimeCommand extends AbstractPlayerCommand {
         PlayerDataManager dataManager = hytaleFoundations.getPlayerDataManager();
 
         if(targetUsername == null) {
-            PlayerStats stats = dataManager.getPlayerStats(senderUsername);
+            PlayerStats stats = dataManager.getOnlinePlayerStats(senderUsername);
             dataManager.savePlayTime(senderUsername);
             String playtime = TimeUtils.formatDuration(stats.getPlayTimeMillis());
             commandContext.sender().sendMessage(langManager.getMessage(senderUsername, LangKey.STATS_PLAYTIME, senderUsername, playtime));
@@ -55,14 +55,14 @@ public class PlaytimeCommand extends AbstractPlayerCommand {
         PlayerRef target = findPlayerByName(targetUsername);
         if(target == null) {
             if(dataManager.doesPlayerDataExist(targetUsername)) {
-                PlayerStats stats = dataManager.getPlayerStats(targetUsername);
+                PlayerStats stats = dataManager.getOnlinePlayerStats(targetUsername);
                 String playtime = TimeUtils.formatDuration(stats.getPlayTimeMillis());
                 commandContext.sender().sendMessage(langManager.getMessage(senderUsername, LangKey.STATS_PLAYTIME, targetUsername, playtime));
             } else {
               commandContext.sender().sendMessage(langManager.getMessage(senderUsername, LangKey.PLAYER_NOT_FOUND, targetUsername));
             }
         } else {
-            PlayerStats stats = dataManager.getPlayerStats(targetUsername);
+            PlayerStats stats = dataManager.getOnlinePlayerStats(targetUsername);
             dataManager.savePlayTime(targetUsername);
             String playtime = TimeUtils.formatDuration(stats.getPlayTimeMillis());
             commandContext.sender().sendMessage(langManager.getMessage(senderUsername, LangKey.STATS_PLAYTIME, targetUsername, playtime));

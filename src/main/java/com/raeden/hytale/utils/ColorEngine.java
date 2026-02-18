@@ -26,7 +26,7 @@ public class ColorEngine {
     // Map for all colors
     private final HytaleFoundations hytaleFoundations;
     private final Path colorFilePath;
-    private final String COLOR_FILE = "colormap.json";
+    private final String COLOR_FILE_NAME = "colormap.json";
     private List<String> SPECIAL_CODES;
     private LinkedHashMap<String, String> COLOR_MAP = new LinkedHashMap<>();
 
@@ -35,90 +35,59 @@ public class ColorEngine {
 
     public ColorEngine(HytaleFoundations hytaleFoundations) {
         this.hytaleFoundations = hytaleFoundations;
-        colorFilePath = hytaleFoundations.getDataDirectory().resolve(COLOR_FILE);
+        colorFilePath = hytaleFoundations.getDataDirectory().resolve(COLOR_FILE_NAME);
         initializeColorEngine();
     }
 
     public void initializeColorEngine() {
+        SPECIAL_CODES = new ArrayList<>(List.of("&l", "&o", "&r"));
+        loadDefaultColors();
         if(!Files.exists(colorFilePath)) {
-            myLogger.atInfo().log(langManager.getMessage(LangKey.CREATE_SUCCESS, COLOR_FILE, colorFilePath.toString()).getAnsiMessage());
-            saveColorFile(true);
+            myLogger.atInfo().log(langManager.getMessage(LangKey.CREATE_SUCCESS, true, COLOR_FILE_NAME, colorFilePath.toString()).getAnsiMessage());
+            saveColorFile(); // Just save the defaults we just loaded
         } else {
             loadColors();
         }
-
-        addSpecialCodes();
-    }
-
-    // Default Colors & Codes
-    private void addSpecialCodes() {
-        // Bold and Italic
-        SPECIAL_CODES = new ArrayList<>(List.of("&l", "&o", "&r"));
-    }
-    private LinkedHashMap<String, String> getDefaultColors() {
-        LinkedHashMap<String, String> colorMap = new LinkedHashMap<>();
-        for (DefaultColors color : DefaultColors.values()) {
-            colorMap.put(color.getCode(), color.getHex());
-        }
-        return colorMap;
     }
     private void loadDefaultColors() {
         for(DefaultColors color : DefaultColors.values()) {
             COLOR_MAP.put(color.getCode(), color.getHex());
         }
     }
-
     // Saving and Loading
-    public void saveColorFile(boolean loadDefault) {
-        if(loadDefault) {
-            loadDefaultColors();
-        }
-        COLOR_MAP_FILE colorMapFile = new COLOR_MAP_FILE();
+    public void saveColorFile() {
+        ColormapHolder colorMapFile = new ColormapHolder();
         colorMapFile.setColorList(COLOR_MAP);
-        myLogger.atInfo().log(langManager.getMessage(LangKey.LOAD_SUCCESS, colorMapFile.getColorList().size() + " colors!").getAnsiMessage());
-        saveJsonFile(COLOR_FILE, colorFilePath, colorMapFile, true);
+        saveJsonFile(COLOR_FILE_NAME, colorFilePath, colorMapFile, true);
+        myLogger.atInfo().log(langManager.getMessage(LangKey.LOAD_SUCCESS, COLOR_MAP.size() + " colors!").getAnsiMessage());
     }
     public void loadColors() {
-        if(Files.exists(colorFilePath)) {
-            Type type = new TypeToken<COLOR_MAP_FILE>(){}.getType();
-            COLOR_MAP_FILE colorMapFile = loadJsonFile(COLOR_FILE, colorFilePath, type, true);
-
-            if(colorMapFile == null) {
-                saveColorFile(true);
-                return;
+        Type type = new TypeToken<ColormapHolder>(){}.getType();
+        ColormapHolder colorMapFile = loadJsonFile(COLOR_FILE_NAME, colorFilePath, type, true);
+        if(colorMapFile == null || colorMapFile.getColorList() == null) {
+            saveColorFile();
+            return;
+        }
+        LinkedHashMap<String, String> obtainedColormap = colorMapFile.getColorList();
+        int newColors = 0;
+        int overwrittenColors = 0;
+        for(Map.Entry<String, String> entry : obtainedColormap.entrySet()) {
+            String code = entry.getKey();
+            String hex = entry.getValue();
+            if(!validateColor(code, hex)) {
+                myLogger.atWarning().log(langManager.getMessage(LangKey.INVALID_COLOR_FORMAT, true, code, hex).getAnsiMessage());
+                continue;
             }
-
-            if(colorMapFile.getColorList().isEmpty()) {
-                saveColorFile(true);
-            } else {
-                int newColors = 0;
-                LinkedHashMap<String, String> defaultColors = getDefaultColors();
-                LinkedHashMap<String, String> obtainedColormap = colorMapFile.getColorList();
-
-                // Validate if default colors exist or not
-                for(Map.Entry<String, String> defaultColor : defaultColors.entrySet()) {
-                    if(!COLOR_MAP.containsKey(defaultColor.getKey())) {
-                        COLOR_MAP.put(defaultColor.getKey(), defaultColor.getValue());
-                    }
-                }
-                // Get the obtained colors from colormap.json
-                for(Map.Entry<String, String> color : obtainedColormap.entrySet()) {
-                    if(!validateColor(color.getKey(), color.getValue())) {
-                        myLogger.atWarning().log(langManager.getMessage(LangKey.INVALID_COLOR_FORMAT, color.getKey(), color.getValue()).getAnsiMessage());
-                        continue;
-                    }
-                    if(!COLOR_MAP.containsKey(color.getKey())) {
-                        newColors++;
-                        COLOR_MAP.put(color.getKey(), color.getValue());
-                    }
-                }
-
-                if(newColors != 0) {
-                    myLogger.atInfo().log(langManager.getMessage(LangKey.LOAD_SUCCESS, newColors + " colors!").getAnsiMessage());
-                }
+            if(!COLOR_MAP.containsKey(code)) {
+                newColors++;
+            } else if (!COLOR_MAP.get(code).equalsIgnoreCase(hex)) {
+                overwrittenColors++;
             }
-        } else {
-            saveColorFile(true);
+            COLOR_MAP.put(code, hex);
+        }
+        if(newColors > 0 || overwrittenColors > 0) {
+            String msg = String.format("%d custom colors and %d overrides loaded.", newColors, overwrittenColors);
+            myLogger.atInfo().log(langManager.getMessage(LangKey.LOAD_SUCCESS, true, msg).getAnsiMessage());
         }
     }
 
@@ -145,9 +114,9 @@ public class ColorEngine {
         if(isConsole) {
             return Message.raw(stripTextOfColorCodes(message)).color(DefaultColors.WHITE.getHex());
         }
-        return formatMessage(message);
+        return colorMessage(message);
     }
-    private Message formatMessage(String text) {
+    private Message colorMessage(String text) {
         if (text == null || text.isEmpty()) return Message.empty();
         Message finalMessage = Message.empty();
         int length = text.length();
@@ -257,7 +226,7 @@ public class ColorEngine {
         return builder.toString();
     }
 
-    private boolean isColorCodeAvailable(String code) {
+    public boolean isColorCodeAvailable(String code) {
         if(!isValidColorCode(code)) return false;
         return COLOR_MAP.containsKey(code) || SPECIAL_CODES.contains(code);
     }
@@ -301,10 +270,10 @@ public class ColorEngine {
     public LinkedHashMap<String, String> getColorMap() {return COLOR_MAP;}
     public void setColorMap(LinkedHashMap<String, String> COLOR_MAP) {this.COLOR_MAP = COLOR_MAP;}
     public List<String> getSpecialCodes() {return SPECIAL_CODES;}
-    public String getColorFile() { return COLOR_FILE;}
+    public String getColorFile() { return COLOR_FILE_NAME;}
     public Path getColorFilePath() { return colorFilePath;}
     // Color Map Class
-    public static final class COLOR_MAP_FILE {
+    public static final class ColormapHolder {
         private final String VERSION = "v1.0";
         private LinkedHashMap<String, String> COLOR_LIST = new LinkedHashMap<>();
 

@@ -42,9 +42,7 @@ public class BlockPlayerCommand extends AbstractPlayerCommand {
             commandContext.sender().sendMessage(langManager.getMessage(senderUsername, LangKey.PM_ERROR_OFFLINE, targetUsername));
             return;
         }
-
         PlayerProfile profile = hytaleFoundations.getPlayerDataManager().getPlayerProfile(senderUsername);
-
         List<String> blockedPlayers = profile.getBlockedPlayers();
         if(blockedPlayers.contains(targetUsername)) {
             commandContext.sender().sendMessage(langManager.getMessage(senderUsername, LangKey.BLOCK_ALREADY, targetUsername));

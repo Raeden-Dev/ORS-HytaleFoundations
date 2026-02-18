@@ -56,7 +56,7 @@ public class ConfigManager {
 
         // Color file
         ColorEngine engine = hytaleFoundations.getChatManager().getColorEngine();
-        updateJsonFile(engine.getColorFile(), engine.getColorFilePath(), ColorEngine.COLOR_MAP_FILE.class, true);
+        updateJsonFile(engine.getColorFile(), engine.getColorFilePath(), ColorEngine.ColormapHolder.class, true);
     }
 
     private void createErrorLogDir() {

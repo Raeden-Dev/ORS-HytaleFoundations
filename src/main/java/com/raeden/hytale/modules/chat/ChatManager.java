@@ -2,7 +2,6 @@ package com.raeden.hytale.modules.chat;
 
 import com.raeden.hytale.HytaleFoundations;
 import com.raeden.hytale.core.config.ChatConfig;
-import com.raeden.hytale.core.config.ConfigManager;
 import com.raeden.hytale.core.data.PlayerProfile;
 import com.raeden.hytale.lang.LangKey;
 import com.raeden.hytale.utils.ColorEngine;
@@ -25,13 +24,12 @@ import static com.raeden.hytale.utils.FileManager.logExceptionError;
 
 public class ChatManager {
     private final HytaleFoundations hytaleFoundations;
-    private final PrefixManager prefixManager;
-    private final SuffixManager suffixManager;
+    private final AffixManager affixManager;
     private final Scheduler scheduler;
     private final ColorEngine colorEngine;
     private final ChatConfig chatConfig;
 
-    private final String DEFAULT_CHAT_FORMAT = "{prefix}{player}{suffix} » {message}";
+    private String CHAT_FORMAT;
 
     private final LinkedHashMap<String, String> activeMessengers;
     private final LinkedHashMap<String, String> messageLog; // Time string + Message
@@ -42,8 +40,7 @@ public class ChatManager {
         this.hytaleFoundations = hytaleFoundations;
         this.scheduler = scheduler;
 
-        prefixManager = new PrefixManager(hytaleFoundations);
-        suffixManager = new SuffixManager(hytaleFoundations);
+        affixManager = new AffixManager(hytaleFoundations);
         chatConfig = hytaleFoundations.getConfigManager().getDefaultChatConfig();
 
         chatLogDir = hytaleFoundations.getDataDirectory().resolve("logs").resolve("chat_logs");
@@ -52,7 +49,7 @@ public class ChatManager {
         // Color Engine
         colorEngine = new ColorEngine(hytaleFoundations);
 
-
+        setupChatFormat();
 
         createDirectory(chatLogDir, true);
         if(chatConfig.isSaveChatLog()) {
@@ -60,36 +57,42 @@ public class ChatManager {
         }
     }
     // Format Chat
-    public String formatChat(PlayerProfile profile, String message) {
+    public String formatChat(PlayerProfile profile, String username, String message) {
         if(profile == null || message.isEmpty()) return "";
-        StringBuilder prefixBuilder = new StringBuilder();
-        StringBuilder suffixBuilder = new StringBuilder();
-
-        String chatFormat = langManager.getMessage(LangKey.CHAT_FORMAT).getAnsiMessage();
-        if(!validateChatFormat(chatFormat)) {
-          chatFormat = DEFAULT_CHAT_FORMAT;
+        String chatFormat = CHAT_FORMAT;
+        String prefix = String.join("", profile.getActivePrefix().values());
+        String suffix = String.join("", profile.getActiveSuffix().values());
+        String displayName = username;
+        if (chatConfig.isShowNickNames() && profile.isShowNickname() && !profile.getNickname().isEmpty()) {
+            displayName = profile.getNickname();
+        } else {
+            if(colorEngine.isColorCodeAvailable(profile.getUsernameColorCode())) {
+                displayName = profile.getUsernameColorCode() + username;
+            }
         }
-
-        prefixBuilder.ap
-
-        chatFormat.replace("{prefix}", prefixBuilder.toString());
-        chatFormat.replace("{suffix}", suffixBuilder.toString());
+        return chatFormat
+                .replace("{prefix}", prefix)
+                .replace("{suffix}", suffix)
+                .replace("{player}", displayName)
+                .replace("{message}", message);
+    }
+    public void setupChatFormat() {
+        if(langManager != null) {
+            String chatFormat = langManager.getMessage(LangKey.CHAT_FORMAT).getAnsiMessage();
+            if(validateChatFormat(chatFormat)) {
+                CHAT_FORMAT = chatFormat;
+            } else {
+                CHAT_FORMAT = "{prefix}{player}{suffix} » {message}";
+            }
+        }
     }
     private boolean validateChatFormat(String format) {
-        if(format.isEmpty()) {
-            myLogger.atWarning().log(langManager.getMessage(LangKey.INVALID_CHAT_FORMAT).getAnsiMessage());
-            return false;
-        }
-        if(!format.contains("{message}") ||
-                !format.contains("{player}") ||
-                !format.contains("{prefix}") ||
-                !format.contains("{suffix}")) {
-            myLogger.atWarning().log(langManager.getMessage(LangKey.INVALID_CHAT_FORMAT).getAnsiMessage());
-            return false;
-        }
-        return true;
+        if (format.isEmpty()) return false;
+        return format.contains("{message}") &&
+                format.contains("{player}") &&
+                format.contains("{prefix}") &&
+                format.contains("{suffix}");
     }
-
     // Chat Logging
     private void createChatSaveScheduler() {
         scheduler.runTaskTimer("chatSaveScheduler", () -> {
@@ -154,6 +157,5 @@ public class ChatManager {
     }
 
     public ColorEngine getColorEngine() {return colorEngine;}
-    public PrefixManager getPrefixManager() {return prefixManager;}
-    public SuffixManager getSuffixManager() {return suffixManager;}
+    public AffixManager getAffixManager() {return affixManager;}
 }

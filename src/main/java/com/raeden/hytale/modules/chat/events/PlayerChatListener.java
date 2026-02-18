@@ -24,8 +24,8 @@ public class PlayerChatListener {
         String playerUsername = playerRef.getUsername();
         boolean isAdmin = isPlayerAdmin(playerRef);
 
-        PlayerProfile profile = hytaleFoundations.getPlayerDataManager().getPlayerProfile(playerUsername);
-        PlayerStats stats = hytaleFoundations.getPlayerDataManager().getPlayerStats(playerUsername);
+        PlayerProfile profile = hytaleFoundations.getPlayerDataManager().getOnlinePlayerProfile(playerUsername);
+        PlayerStats stats = hytaleFoundations.getPlayerDataManager().getOnlinePlayerStats(playerUsername);
         if(profile == null) {
             myLogger.atSevere().log(langManager.getMessage(LangKey.NULL_POINTER, true, "PlayerChatListener - profile").getAnsiMessage());
             return;
@@ -38,8 +38,11 @@ public class PlayerChatListener {
             return;
         }
 
+        String chatContent = e.getContent();
+        String formattedChatContent = hytaleFoundations.getChatManager().formatChat(profile, playerUsername, chatContent);
+
         Message finalMessage = Message.empty();
-        finalMessage.insert(colorEngine.parseText(e.getContent()));
+        finalMessage.insert(colorEngine.parseText(formattedChatContent));
 
         for(PlayerRef players : Universe.get().getPlayers()) {
             players.sendMessage(finalMessage);

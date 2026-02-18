@@ -170,7 +170,7 @@ public class LangManager {
         if(setLanguage == null) setLanguage = DEFAULT_LANGUAGE;
         if(username != null) {
             try {
-                PlayerProfile profile = hytaleFoundations.getPlayerDataManager().getPlayerProfile(username);
+                PlayerProfile profile = hytaleFoundations.getPlayerDataManager().getOnlinePlayerProfile(username);
                 if (profile != null && profile.getLanguage() != null) {
                     setLanguage = profile.getLanguage();
                 }

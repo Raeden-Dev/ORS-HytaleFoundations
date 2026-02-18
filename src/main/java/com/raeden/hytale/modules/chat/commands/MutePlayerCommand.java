@@ -3,7 +3,6 @@ package com.raeden.hytale.modules.chat.commands;
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
 import com.hypixel.hytale.server.core.command.system.CommandContext;
-import com.hypixel.hytale.server.core.command.system.arguments.system.OptionalArg;
 import com.hypixel.hytale.server.core.command.system.arguments.system.RequiredArg;
 import com.hypixel.hytale.server.core.command.system.arguments.types.ArgTypes;
 import com.hypixel.hytale.server.core.command.system.basecommands.AbstractPlayerCommand;
@@ -60,15 +59,8 @@ public class MutePlayerCommand extends AbstractPlayerCommand {
                 isTargetOffline = true;
             }
         }
-
         PlayerDataManager dataManager = hytaleFoundations.getPlayerDataManager();
-        PlayerProfile profile;
-        if(isTargetOffline) {
-            profile = dataManager.getPlayerProfileFromFile(targetUsername);
-        } else {
-            profile = dataManager.getPlayerProfile(targetUsername);
-        }
-
+        PlayerProfile profile = dataManager.getPlayerProfile(targetUsername);
         long muteDuration = profile.getMuteDuration();
         long newMuteDuration = muteDuration + durationInMillis;
         profile.setMuteDuration(newMuteDuration);

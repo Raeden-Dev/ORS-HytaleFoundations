@@ -43,6 +43,8 @@ public class Permissions {
     public enum HFPermissions {
         ACCESS("access"),
         ADMIN("admin"),
+        NICK("nick"),
+        AFFIX("affix"),
         VANISH("admin.vanish"),
         PLAYER_DATABASE("admin.playerdb"),
         ANALYTICS("analytics"),

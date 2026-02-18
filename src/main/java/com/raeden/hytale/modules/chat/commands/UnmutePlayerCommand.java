@@ -47,15 +47,8 @@ public class UnmutePlayerCommand extends AbstractPlayerCommand {
                 isTargetOffline = true;
             }
         }
-
         PlayerDataManager dataManager = hytaleFoundations.getPlayerDataManager();
-        PlayerProfile profile;
-        if(isTargetOffline) {
-            profile = dataManager.getPlayerProfileFromFile(targetUsername);
-        } else {
-            profile = dataManager.getPlayerProfile(targetUsername);
-        }
-
+        PlayerProfile profile = dataManager.getPlayerProfile(targetUsername);
         if(profile.isMuted()) {
             profile.setMuted(false);
             profile.setMuteDuration(0);

@@ -1,6 +1,6 @@
 package com.raeden.hytale.core.config;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ChatConfig {
@@ -21,8 +21,8 @@ public class ChatConfig {
     private boolean SAVE_CHAT_LOG;
     private int CHAT_LOG_SAVE_INTERVAL; // On shutdown + 5M, 10M, 30M, 1H
 
-    private List<String> CURSE_WORD_LIST = new LinkedList<>();
-    private List<String> CENSOR_WORD_LIST = new LinkedList<>();
+    private List<String> CURSE_WORD_LIST = new ArrayList<>();
+    private List<String> CENSOR_WORD_LIST = new ArrayList<>();
 
 
     public String getVersion() {return VERSION;}

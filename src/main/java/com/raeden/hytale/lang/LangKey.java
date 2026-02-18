@@ -93,7 +93,24 @@ public enum LangKey {
     MAIL_SEND_FAILURE       ("mail.send.fail",                      "&c&lFailed to send mail to &r&e&l{0}&r&c&l!"),
     MAIL_MISSING_FIELD      ("mail.send.empty_field",               "&c&lPlease fill out all fields to send the mail."),
 
+    NICKNAME_DISABLED       ("nickname.status.disabled",            "&c&lChanging  &r&e&lnickname &r&c&lis disabled!"),
+    NICKNAME_LENGTH         ("nickname.error.length",               "&c&Nickname must have atleast &r&e&l3 &r&c&lcharacters!"),
+    NICKNAME_NO_SPECIAL_CHAR("nickname.error.no_special_characters","&c&Nickname must not contain any &r&e&lspecial &r&c&lcharacter!"),
+    NICKNAME_EXISTS         ("nickname.error.exists",               "&c&Someone already has the &r&e&lsame &r&c&lnickname!"),
+    NICKNAME_INAPPROPRIATE  ("nickname.error.inappropriate",        "&c&Please pick an &r&e&lappropriate &r&c&lnickname!"),
+    NICKNAME_IMPERSONATION  ("nickname.error.impersonation",        "&c&Please refrain from &r&e&limpersonating &r&c&la staff through nicknames!"),
 
+    PREFIX_DISABLED         ("affix.prefix.disabled",               "&c&lAdding  &r&e&lprefix &r&c&lis disabled!"),
+    SUFFIX_DISABLED         ("affix.suffix.disabled",               "&c&lAdding  &r&e&lsuffix &r&c&lis disabled!"),
+    AFFIX_MAX               ("affix.add.max",                       "&c&lCould not add &r{0} to &r&e&l{1}&r&c&l! Limit of &r{1} &r&c&lis reached!"),
+    AFFIX_ADD_SUCCESS       ("affix.add.success",                   "&a&lAdded affix &r{0} &r&a&lto &r&e&l{1}&r&a&l!"),
+    AFFIX_ADD_FAIL          ("affix.add.failure",                   "&c&lCould not add affix to &r&e&l{1}&r&c&l!"),
+    AFFIX_REMOVE_SUCCESS    ("affix.remove.success",                "&a&lRemoved affix &r{0} &r&a&lto &r&e&l{1}&r&a&l!"),
+    AFFIX_REMOVE_FAIL       ("affix.remove.failure",                "&c&lCould not remove affix to &r&e&l{1}&r&c&l!"),
+    AFFIX_CREATE            ("affix.create",                        "&a&lCreated new affix &r{0}"),
+    AFFIX_DELETE            ("affix.delete",                        "&c&lDeleted affix &r{0}"),
+    AFFIX_NOT_FOUND         ("affix.not_found",                     "&c&lCould not find affix with ID &r&e&l{0}"),
+    AFFIX_UPDATE            ("affix.updated",                       "&c&lPlease fill out all fields to send the mail."),
 
     STATS_PLAYTIME          ("utility.stats.playtime",              "&a&lTotal playtime of &r&e&l{0}&r&a&l: &r&f&l{1}");
 

@@ -2,7 +2,6 @@ package com.raeden.hytale.modules.chat.commands;
 
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
-import com.hypixel.hytale.server.core.Message;
 import com.hypixel.hytale.server.core.command.system.CommandContext;
 import com.hypixel.hytale.server.core.command.system.arguments.system.RequiredArg;
 import com.hypixel.hytale.server.core.command.system.arguments.types.ArgTypes;
@@ -16,7 +15,6 @@ import com.raeden.hytale.core.data.PlayerProfile;
 import com.raeden.hytale.core.data.PlayerStats;
 import com.raeden.hytale.lang.LangKey;
 import com.raeden.hytale.modules.chat.ChatManager;
-import com.raeden.hytale.utils.DefaultColors;
 
 import javax.annotation.Nonnull;
 
@@ -54,9 +52,9 @@ public class MessagePlayerCommand extends AbstractPlayerCommand {
 
         ChatManager chatManager = hytaleFoundations.getChatManager();
         PlayerDataManager dataManager = hytaleFoundations.getPlayerDataManager();
-        PlayerProfile senderProfile = dataManager.getPlayerProfile(senderUsername);
-        PlayerStats senderStats = dataManager.getPlayerStats(senderUsername);
-        PlayerProfile receiverProfile = dataManager.getPlayerProfile(receiverUsername);
+        PlayerProfile senderProfile = dataManager.getOnlinePlayerProfile(senderUsername);
+        PlayerStats senderStats = dataManager.getOnlinePlayerStats(senderUsername);
+        PlayerProfile receiverProfile = dataManager.getOnlinePlayerProfile(receiverUsername);
 
         if(senderProfile.isMuted() && !isAdmin) {
             commandContext.sender().sendMessage(langManager.getMessage(senderUsername, LangKey.MUTE_ERROR_CHAT, receiverUsername));

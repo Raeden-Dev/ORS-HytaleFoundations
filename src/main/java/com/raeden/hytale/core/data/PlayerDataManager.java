@@ -126,21 +126,54 @@ public class PlayerDataManager {
         Path savePath = playerFolder.resolve(jsonName);
         saveJsonFile(jsonName, savePath, data, showInfo);
     }
-
+    // Getting data online or offline
+    public PlayerProfile getPlayerProfile(String username) {
+        PlayerRef ref = findPlayerByName(username);
+        if(ref != null) {
+            return getOnlinePlayerProfile(username);
+        }
+        if(doesPlayerDataExist(username)) {
+            return getPlayerProfileFromFile(username);
+        }
+        return null;
+    }
+    public PlayerStats getPlayerStats(String username) {
+        PlayerRef ref = findPlayerByName(username);
+        if(ref != null) {
+            return getOnlinePlayerStats(username);
+        }
+        if(doesPlayerDataExist(username)) {
+            return getPlayerStatsFromFile(username);
+        }
+        return null;
+    }
+    // Getting data from Files
     public PlayerProfile getPlayerProfileFromFile(String username) {
         Path profileJsonPath = playerDataPath.resolve(username).resolve(PROFILE_JSON);
+        if(!Files.exists(profileJsonPath)) {
+            myLogger.atSevere().log(langManager.getMessage(LangKey.FILE_NOT_FOUND_LOC, true, profileJsonPath.getFileName().toString(), profileJsonPath.toString()).getAnsiMessage());
+            return null;
+        }
         String fileName = PROFILE_JSON + ": " + username;
         return loadJsonFile(fileName, profileJsonPath, PlayerProfile.class, true);
     }
 
     public PlayerStats getPlayerStatsFromFile(String username) {
         Path statsJsonPath = playerDataPath.resolve(username).resolve(STATS_JSON);
+        if(!Files.exists(statsJsonPath)) {
+            myLogger.atSevere().log(langManager.getMessage(LangKey.FILE_NOT_FOUND_LOC, true, statsJsonPath.getFileName().toString(), statsJsonPath.toString()).getAnsiMessage());
+            return null;
+        }
         String fileName = STATS_JSON + ": " + username;
         return loadJsonFile(fileName, statsJsonPath, PlayerStats.class, true);
     }
 
     public PlayerHistory getPlayerHistory(String username) {
         Path historyJsonPath = playerDataPath.resolve(username).resolve(HISTORY_JSON);
+        if(!Files.exists(historyJsonPath)) {
+            myLogger.atSevere().log(langManager.getMessage(LangKey.FILE_NOT_FOUND_LOC, true, historyJsonPath.getFileName().toString(), historyJsonPath.toString()).getAnsiMessage());
+            return null;
+        }
         String fileName = HISTORY_JSON + ": " + username;
         return loadJsonFile(fileName, historyJsonPath, PlayerHistory.class, true);
     }
@@ -148,13 +181,17 @@ public class PlayerDataManager {
     public PlayerMailbox getPlayerMailbox(String username) {
         if(username == null) return null;
         Path mailJsonPath = playerDataPath.resolve(username).resolve(MAIL_JSON);
+        if(!Files.exists(mailJsonPath)) {
+            myLogger.atSevere().log(langManager.getMessage(LangKey.FILE_NOT_FOUND_LOC, true, mailJsonPath.getFileName().toString(), mailJsonPath.toString()).getAnsiMessage());
+            return null;
+        }
         String fileName = MAIL_JSON + ": " + username;
         return loadJsonFile(fileName, mailJsonPath, PlayerMailbox.class, false);
     }
 
+    // Load Player Data
     public void loadPlayerData(String username) {
         verifyUserID(username);
-
         Path dataFolder = playerDataPath.resolve(username);
         if(!Files.exists(dataFolder)) {
             createDefaultPlayerData(findPlayerByName(username));
@@ -170,6 +207,7 @@ public class PlayerDataManager {
         addPlayerStats(username, stats);
     }
 
+    // Create generic profiles
     private PlayerProfile createPlayerProfile(PlayerRef playerRef) {
         String username = playerRef.getUsername();
         UUID playerID = getPlayerUUID(playerRef);
@@ -179,6 +217,7 @@ public class PlayerDataManager {
         profile.addUsername(username);
         profile.setLanguage("en-us");
         profile.setNickname("");
+        profile.setUsernameColorCode("#FFFFFF");
         profile.setShowNickname(chatConfig.isShowNickNames());
         profile.setShowPrefix(chatConfig.isShowPrefix());
         profile.setShowSuffix(chatConfig.isShowSuffix());
@@ -242,11 +281,9 @@ public class PlayerDataManager {
     }
 
     public void savePlayTime(String username) {
-        PlayerStats stats = getPlayerStats(username);
-        PlayerProfile profile = getPlayerProfile(username);
-
+        PlayerStats stats = getOnlinePlayerStats(username);
+        PlayerProfile profile = getOnlinePlayerProfile(username);
         if(stats == null || profile == null) return;
-
         long timeNow = System.currentTimeMillis();
         long sessionDuration = timeNow -  profile.getSessionStart();
         if(sessionDuration > 0) {
@@ -258,17 +295,13 @@ public class PlayerDataManager {
     // Login / Logout used by Events
     public void playerLogin(Player player) {
         String username = player.getDisplayName();
-
         loadPlayerData(username);
-
-        PlayerStats stats = getPlayerStats(username);
-        PlayerProfile profile = getPlayerProfile(username);
-
+        PlayerStats stats = getOnlinePlayerStats(username);
+        PlayerProfile profile = getOnlinePlayerProfile(username);
         if(stats.getPlayTimeMillis() == 0) {
             player.sendMessage(Message.raw("Welcome " + player.getDisplayName() + " to the server!"));
             stats.setFirstJoined(System.currentTimeMillis());
         }
-
         stats.setLastJoined(System.currentTimeMillis());
         profile.setSessionStart(System.currentTimeMillis());
     }
@@ -276,8 +309,8 @@ public class PlayerDataManager {
     public void playerLogout(PlayerRef playerRef) {
         String username = playerRef.getUsername();
         savePlayTime(username);
-        savePlayerData(username, PROFILE_JSON, getPlayerProfile(username));
-        savePlayerData(username, STATS_JSON, getPlayerStats(username));
+        savePlayerData(username, PROFILE_JSON, getOnlinePlayerProfile(username));
+        savePlayerData(username, STATS_JSON, getOnlinePlayerStats(username));
 
         removePlayerStats(username);
         removePlayerProfile(username);
@@ -289,14 +322,14 @@ public class PlayerDataManager {
         return playerDataFile.exists();
     }
 
-    public PlayerProfile getPlayerProfile(String username) { return playerProfiles.get(username);}
+    public PlayerProfile getOnlinePlayerProfile(String username) { return playerProfiles.get(username);}
     public void addPlayerProfile(String username, PlayerProfile profile) {playerProfiles.put(username, profile);}
     public void removePlayerProfile(String username) { playerProfiles.remove(username);}
     public LinkedHashMap<String, PlayerProfile> getPlayerProfiles(){return playerProfiles;}
 
-    public PlayerStats getPlayerStats(String username) { return playerStats.get(username);}
+    public PlayerStats getOnlinePlayerStats(String username) { return playerStats.get(username);}
     public void addPlayerStats(String username, PlayerStats stats) {playerStats.put(username, stats);}
     public void removePlayerStats(String username) { playerStats.remove(username);}
-    public LinkedHashMap<String, PlayerStats> getPlayerStats(){return playerStats;}
+    public LinkedHashMap<String, PlayerStats> getOnlinePlayerStats(){return playerStats;}
 
 }
