@@ -181,8 +181,9 @@ public class PlayerDataManager {
         profile.setNickname("");
         profile.setShowNickname(chatConfig.isShowNickNames());
         profile.setShowPrefix(chatConfig.isShowPrefix());
-        profile.setShowTags(chatConfig.isShowSuffix());
-        profile.setMaxTags(chatConfig.getMaxSuffix());
+        profile.setShowSuffix(chatConfig.isShowSuffix());
+        profile.setMaxSuffix(chatConfig.getMaxSuffix());
+        profile.setMaxPrefix(chatConfig.getMaxPrefix());
         profile.setGodModeEnabled(false);
         profile.setVanished(false);
         profile.setFlying(false);

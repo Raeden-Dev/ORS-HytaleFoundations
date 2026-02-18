@@ -3,6 +3,7 @@ package com.raeden.hytale.modules.chat;
 import com.raeden.hytale.HytaleFoundations;
 import com.raeden.hytale.core.config.ChatConfig;
 import com.raeden.hytale.core.config.ConfigManager;
+import com.raeden.hytale.core.data.PlayerProfile;
 import com.raeden.hytale.lang.LangKey;
 import com.raeden.hytale.utils.ColorEngine;
 import com.raeden.hytale.utils.Scheduler;
@@ -30,6 +31,8 @@ public class ChatManager {
     private final ColorEngine colorEngine;
     private final ChatConfig chatConfig;
 
+    private final String DEFAULT_CHAT_FORMAT = "{prefix}{player}{suffix} » {message}";
+
     private final LinkedHashMap<String, String> activeMessengers;
     private final LinkedHashMap<String, String> messageLog; // Time string + Message
 
@@ -56,7 +59,38 @@ public class ChatManager {
             createChatSaveScheduler();
         }
     }
+    // Format Chat
+    public String formatChat(PlayerProfile profile, String message) {
+        if(profile == null || message.isEmpty()) return "";
+        StringBuilder prefixBuilder = new StringBuilder();
+        StringBuilder suffixBuilder = new StringBuilder();
 
+        String chatFormat = langManager.getMessage(LangKey.CHAT_FORMAT).getAnsiMessage();
+        if(!validateChatFormat(chatFormat)) {
+          chatFormat = DEFAULT_CHAT_FORMAT;
+        }
+
+        prefixBuilder.ap
+
+        chatFormat.replace("{prefix}", prefixBuilder.toString());
+        chatFormat.replace("{suffix}", suffixBuilder.toString());
+    }
+    private boolean validateChatFormat(String format) {
+        if(format.isEmpty()) {
+            myLogger.atWarning().log(langManager.getMessage(LangKey.INVALID_CHAT_FORMAT).getAnsiMessage());
+            return false;
+        }
+        if(!format.contains("{message}") ||
+                !format.contains("{player}") ||
+                !format.contains("{prefix}") ||
+                !format.contains("{suffix}")) {
+            myLogger.atWarning().log(langManager.getMessage(LangKey.INVALID_CHAT_FORMAT).getAnsiMessage());
+            return false;
+        }
+        return true;
+    }
+
+    // Chat Logging
     private void createChatSaveScheduler() {
         scheduler.runTaskTimer("chatSaveScheduler", () -> {
                 if(messageLog.isEmpty()) return;

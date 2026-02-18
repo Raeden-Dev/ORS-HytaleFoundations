@@ -31,10 +31,11 @@ public class PlayerProfile {
     private boolean isSilenced;
     private boolean showNickname;
     private boolean showPrefix;
-    private boolean showTags;
-    private int maxTags;
-    private final List<String> activeTags = new ArrayList<>();
-
+    private boolean showSuffix;
+    private int maxPrefix;
+    private int maxSuffix;
+    private final List<String> activePrefix = new ArrayList<>();
+    private final List<String> activeSuffix = new ArrayList<>();
     private final List<String> blockedPlayers = new ArrayList<>();
 
 
@@ -90,14 +91,23 @@ public class PlayerProfile {
     public long getMuteDuration() {return muteDuration;}
     public void setMuteDuration(long muteDuration) {this.muteDuration = muteDuration;}
 
-    public boolean isShowTags() {return showTags;}
-    public void setShowTags(boolean showTags) {this.showTags = showTags;}
-    public int getMaxTags() {return maxTags;}
-    public void setMaxTags(int maxTags) {this.maxTags = maxTags;}
+    public boolean isShowSuffix() {return showSuffix;}
+    public void setShowSuffix(boolean showSuffix) {this.showSuffix = showSuffix;}
+    public int getMaxSuffix() {return maxSuffix;}
+    public void setMaxSuffix(int maxSuffix) {this.maxSuffix = maxSuffix;}
+    public int getMaxPrefix() {return maxPrefix;}
+    public void setMaxPrefix(int maxPrefix) {this.maxPrefix = maxPrefix;}
 
-    public List<String> getActiveTags() {return activeTags;}
-    public void addActiveTag(String tag) {
-        if(activeTags.size() == maxTags) return;
-        activeTags.add(tag);
+    public List<String> getActiveSuffix() {return activeSuffix;}
+    public void addActiveSuffix(String suffix) {
+        if(activeSuffix.size() == maxSuffix) return;
+        activeSuffix.add(suffix);
     }
+
+    public List<String> getActivePrefix() {return activePrefix;}
+    public void addActivePrefix(String prefix) {
+        if(activePrefix.size() == maxPrefix) return;
+        activePrefix.add(prefix);
+    }
+
 }

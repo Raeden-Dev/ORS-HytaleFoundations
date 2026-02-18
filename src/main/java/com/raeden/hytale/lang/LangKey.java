@@ -8,6 +8,7 @@ public enum LangKey {
     INVALID_TIME_FORMAT     ("system.error.invalid_time",           "Time format is incorrect! Correct format: (d|h|m|s eg. 1d8h5m33s)"),
     INVALID_COLOR_FORMAT    ("system.error.invalid_color",          "Skipping invalid color format. Code: {0} | Hex: {1}"),
     SCHEDULER_CREATED       ("system.scheduler.create",             "Created scheduler {0} called by {1}"),
+    NULL_POINTER            ("system.error.null",                   "[ERROR] Unexpected null error at {0}"),
 
     FILE_NOT_FOUND          ("system.file.not_found",               "[ERROR] Could not find file {0}"),
     FILE_NOT_FOUND_LOC      ("system.file.not_found_loc",           "[ERROR] Could not find file {0} at {1}"),
@@ -46,6 +47,7 @@ public enum LangKey {
 
     CHAT_CLEAR_ALL          ("system.chat.clear.all",               "[CHAT] Whole chat messages were purged."),
     CHAT_CLEAR_AMOUNT       ("system.chat.clear.amount",            "[CHAT] Cleared {0} previous chat messages"),
+    INVALID_CHAT_FORMAT     ("system.chat.invalid_format",          "[CHAT] Chat format is invalid! To ensure correct format, string must contain: {player}, {prefix}, {suffix} and {message}."),
 
     // Logs
     LOG_CHAT_EXPORT_SUCCESS ("log.chat.export.success",             "[{0}] >> Exported Chat Log."),
@@ -53,7 +55,7 @@ public enum LangKey {
     LOG_CACHE_CLEAR_MSG     ("log.cache.clear.messenger",           "[{0}] >> Cleared active private messenger cache..."),
 
     // Chat format
-    DEFAULT_CHAT_FORMAT     ("chat.format.default",                 "{prefix}{player}{suffix} » {message}"),
+    CHAT_FORMAT             ("chat.format.default",                 "{prefix}{player}{suffix} » {message}"),
     CHANNEL_CHAT_FORMAT     ("chat.format.has_channel",             "{channel}{prefix}{player}{suffix} » {message}"),
 
     // Private Messaging

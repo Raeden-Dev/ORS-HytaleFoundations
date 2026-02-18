@@ -118,6 +118,7 @@ public class ConfigManager {
         chatConfig.setShowPrefix(true);
         chatConfig.setShowSuffix(true);
         chatConfig.setMaxSuffix(2);
+        chatConfig.setMaxPrefix(2);
         chatConfig.setRemoveIps(true);
         chatConfig.setAllowPlayerChatColors(true);
         chatConfig.setRemoveLinks(true);

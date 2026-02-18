@@ -8,6 +8,7 @@ public class ChatConfig {
     private boolean SHOW_NICKNAME;
     private boolean SHOW_PREFIX;
     private boolean SHOW_SUFFIX;
+    private int MAX_PREFIX;
     private int MAX_SUFFIX;
     private boolean ALLOW_PLAYER_CHAT_COLORS;
 
@@ -34,6 +35,8 @@ public class ChatConfig {
     public void setShowSuffix(boolean SHOW_SUFFIX) {this.SHOW_SUFFIX = SHOW_SUFFIX;}
     public int getMaxSuffix() {return MAX_SUFFIX;}
     public void setMaxSuffix(int MAX_TAGS) {this.MAX_SUFFIX = MAX_TAGS;}
+    public int getMaxPrefix() {return MAX_PREFIX;}
+    public void setMaxPrefix(int MAX_PREFIX) {this.MAX_PREFIX = MAX_PREFIX;}
 
     public boolean isAllowPlayerChatColors() {return ALLOW_PLAYER_CHAT_COLORS;}
     public void setAllowPlayerChatColors(boolean ALLOW_PLAYER_CHAT_COLORS) {this.ALLOW_PLAYER_CHAT_COLORS = ALLOW_PLAYER_CHAT_COLORS;}

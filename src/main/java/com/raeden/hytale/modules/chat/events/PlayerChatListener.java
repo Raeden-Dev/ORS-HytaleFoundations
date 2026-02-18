@@ -13,6 +13,7 @@ import com.raeden.hytale.utils.ColorEngine;
 import com.raeden.hytale.utils.TimeUtils;
 
 import static com.raeden.hytale.HytaleFoundations.langManager;
+import static com.raeden.hytale.HytaleFoundations.myLogger;
 import static com.raeden.hytale.core.utils.Permissions.isPlayerAdmin;
 
 public class PlayerChatListener {
@@ -25,7 +26,10 @@ public class PlayerChatListener {
 
         PlayerProfile profile = hytaleFoundations.getPlayerDataManager().getPlayerProfile(playerUsername);
         PlayerStats stats = hytaleFoundations.getPlayerDataManager().getPlayerStats(playerUsername);
-        if(profile == null) return;
+        if(profile == null) {
+            myLogger.atSevere().log(langManager.getMessage(LangKey.NULL_POINTER, true, "PlayerChatListener - profile").getAnsiMessage());
+            return;
+        }
 
         e.setCancelled(true); // Cancel event anyway because of our Custom Chat
 
