@@ -18,7 +18,7 @@ You can find the features we have to work on below:
 || BASIC FEATURES:
 -----------------------------
 1. QoL:
-    > /hf reload : Reloads all configs
+    > ✅/hf reload : Reloads all configs
     > /hf save [data_type] [target] : Saves a certain type of data, could be of a player
         - /hf save playerdata Raeden
     > /hf defaultLanguage set [language_name]
@@ -79,9 +79,9 @@ You can find the features we have to work on below:
 || CHAT FEATURES:
 -----------------------------
 1. Message Format:
-    > Prefix/Suffix and message color system
-    > Nicknaming should be available
-    > Color naming should be available
+    > ✅ Prefix/Suffix and message color system
+    > ✅ Nicknaming should be available
+    > ✅ Color naming should be available
     > Tag creation in game (Suffix / Prefix)
     > ✅ Colored Message Available
 
@@ -178,8 +178,8 @@ You can find the features we have to work on below:
 
 6. Mail System:
     > /mailbox : Opens mailbox GUI
-    > /mail : Opens GUI to send a mail
-    > /mail [target] [text] : Sends a quick mail to the target
+    > ✅ /mail : Opens GUI to send a mail
+    > ✅ /mail [target] [text] : Sends a quick mail to the target
     > /mail list : Shows list of mails the player has (read and unread) in chat
         ? Configurable max mails in inbox
         ? Configurable max mails that can be sent per day

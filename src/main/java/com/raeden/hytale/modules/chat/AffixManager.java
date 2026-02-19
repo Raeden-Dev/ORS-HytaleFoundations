@@ -11,6 +11,7 @@ import java.lang.reflect.Type;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 import static com.raeden.hytale.HytaleFoundations.langManager;
 import static com.raeden.hytale.HytaleFoundations.myLogger;
@@ -24,7 +25,7 @@ public class AffixManager {
     private final String AFFIX_FILE_NAME = "affix.json";
     private final Path affixFilePath;
 
-    private final LinkedHashMap<String, PlayerAffix> AFFIX_MAP;
+    private final Map<String, PlayerAffix> AFFIX_MAP;
 
     public enum AffixType { PREFIX, SUFFIX }
 
@@ -32,7 +33,7 @@ public class AffixManager {
         this.hytaleFoundations = hytaleFoundations;
         playerDataManager = hytaleFoundations.getPlayerDataManager();
         affixFilePath = hytaleFoundations.getDataDirectory().resolve(AFFIX_FILE_NAME);
-        AFFIX_MAP = new LinkedHashMap<>();
+        AFFIX_MAP = new ConcurrentHashMap<>();
 
         initializeAffixManager();
     }
@@ -139,7 +140,7 @@ public class AffixManager {
         return false;
     }
     private Map<String, PlayerAffix> getDefaultAffixMap() {
-        Map<String, PlayerAffix> map = new LinkedHashMap<>();
+        Map<String, PlayerAffix> map = new ConcurrentHashMap<>();
         addToMap(map, "df_op",      "&7&l[&r&b&lOP&r&7&l]",         10000);
         addToMap(map, "df_manager", "&7&l[&r&c&lManager&r&7&l]",    9999);
         addToMap(map, "df_admin",   "&7&l[&r&4&lAdmin&r&7&l]",      9998);
@@ -167,12 +168,12 @@ public class AffixManager {
         public void setAffixList(List<PlayerAffix> AFFIX_LIST) {this.AFFIX_LIST = AFFIX_LIST;}
         public void addToAffixList(PlayerAffix affix) { AFFIX_LIST.add(affix);}
 
-        public LinkedHashMap<String, PlayerAffix> getAffixListAsMap() {
-            LinkedHashMap<String, PlayerAffix> affixLinkedHashMap = new LinkedHashMap<>();
+        public Map<String, PlayerAffix> getAffixListAsMap() {
+            Map<String, PlayerAffix> affixMap = new ConcurrentHashMap<>();
             for(PlayerAffix affix : AFFIX_LIST) {
-                affixLinkedHashMap.put(affix.id, affix);
+                affixMap.put(affix.id, affix);
             }
-            return affixLinkedHashMap;
+            return affixMap;
         }
     }
 

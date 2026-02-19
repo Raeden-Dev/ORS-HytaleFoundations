@@ -3,7 +3,7 @@ package com.raeden.hytale.utils;
 import com.raeden.hytale.HytaleFoundations;
 import com.raeden.hytale.lang.LangKey;
 
-import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.concurrent.*;
 
 import static com.raeden.hytale.HytaleFoundations.langManager;
@@ -12,13 +12,13 @@ import static com.raeden.hytale.HytaleFoundations.myLogger;
 public class Scheduler {
     private final HytaleFoundations hytaleFoundations;
     private final ScheduledExecutorService scheduler;
-    private final LinkedHashMap<String, ScheduledFuture<?>> activeSchedulers;
+    private final Map<String, ScheduledFuture<?>> activeSchedulers;
     private boolean debugMode;
 
     public Scheduler(HytaleFoundations hytaleFoundations) {
         this.hytaleFoundations = hytaleFoundations;
         this.scheduler = Executors.newScheduledThreadPool(2);
-        activeSchedulers = new LinkedHashMap<>();
+        activeSchedulers = new ConcurrentHashMap<>();
         debugMode = hytaleFoundations.getConfigManager().getDefaultConfig().isToggleDebug();
     }
 
@@ -79,7 +79,7 @@ public class Scheduler {
         }
     }
 
-    public LinkedHashMap<String, ScheduledFuture<?>> getActiveSchedulers() {
+    public Map<String, ScheduledFuture<?>> getActiveSchedulers() {
         return activeSchedulers;
     }
 }

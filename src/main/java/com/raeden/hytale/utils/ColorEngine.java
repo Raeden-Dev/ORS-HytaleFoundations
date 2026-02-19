@@ -11,9 +11,10 @@ import java.lang.reflect.Type;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.regex.Pattern;
 
 import static com.raeden.hytale.HytaleFoundations.*;
@@ -28,7 +29,7 @@ public class ColorEngine {
     private final Path colorFilePath;
     private final String COLOR_FILE_NAME = "colormap.json";
     private List<String> SPECIAL_CODES;
-    private LinkedHashMap<String, String> COLOR_MAP = new LinkedHashMap<>();
+    private Map<String, String> COLOR_MAP = new ConcurrentHashMap<>();
 
     private static final Pattern CODE_PATTERN = Pattern.compile("^&[0-9a-zA-Z]$");
     private static final Pattern HEX_PATTERN = Pattern.compile("^#([A-Fa-f0-9]{6})$");
@@ -68,7 +69,7 @@ public class ColorEngine {
             saveColorFile();
             return;
         }
-        LinkedHashMap<String, String> obtainedColormap = colorMapFile.getColorList();
+        Map<String, String> obtainedColormap = colorMapFile.getColorList();
         int newColors = 0;
         int overwrittenColors = 0;
         for(Map.Entry<String, String> entry : obtainedColormap.entrySet()) {
@@ -267,18 +268,18 @@ public class ColorEngine {
     }
 
     // Getters and Setters
-    public LinkedHashMap<String, String> getColorMap() {return COLOR_MAP;}
-    public void setColorMap(LinkedHashMap<String, String> COLOR_MAP) {this.COLOR_MAP = COLOR_MAP;}
+    public Map<String, String> getColorMap() {return COLOR_MAP;}
+    public void setColorMap(Map<String, String> COLOR_MAP) {this.COLOR_MAP = COLOR_MAP;}
     public List<String> getSpecialCodes() {return SPECIAL_CODES;}
     public String getColorFile() { return COLOR_FILE_NAME;}
     public Path getColorFilePath() { return colorFilePath;}
     // Color Map Class
     public static final class ColormapHolder {
         private final String VERSION = "v1.0";
-        private LinkedHashMap<String, String> COLOR_LIST = new LinkedHashMap<>();
+        private Map<String, String> COLOR_LIST = new ConcurrentHashMap<>();
 
-        public LinkedHashMap<String, String> getColorList() {return COLOR_LIST;}
-        public void setColorList(LinkedHashMap<String, String> colorList) {this.COLOR_LIST = colorList;}
+        public Map<String, String> getColorList() {return COLOR_LIST;}
+        public void setColorList(Map<String, String> colorList) {this.COLOR_LIST = colorList;}
         public String getVersion() {return VERSION;}
     }
 

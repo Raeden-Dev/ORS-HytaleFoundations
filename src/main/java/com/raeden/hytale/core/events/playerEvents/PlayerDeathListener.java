@@ -1,6 +1,7 @@
 package com.raeden.hytale.core.events.playerEvents;
 
 import com.hypixel.hytale.component.CommandBuffer;
+import com.hypixel.hytale.component.ComponentType;
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
 import com.hypixel.hytale.component.query.Query;
@@ -8,13 +9,16 @@ import com.hypixel.hytale.server.core.entity.entities.Player;
 import com.hypixel.hytale.server.core.modules.entity.damage.DeathComponent;
 import com.hypixel.hytale.server.core.modules.entity.damage.DeathSystems;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
+import com.hypixel.hytale.server.core.universe.Universe;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import com.raeden.hytale.HytaleFoundations;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import static com.raeden.hytale.HytaleFoundations.errorLogDirectory;
 import static com.raeden.hytale.HytaleFoundations.myLogger;
+import static com.raeden.hytale.utils.FileManager.logExceptionError;
 
 public class PlayerDeathListener extends DeathSystems.OnDeathSystem {
     private final HytaleFoundations hytaleFoundations;
@@ -25,14 +29,22 @@ public class PlayerDeathListener extends DeathSystems.OnDeathSystem {
     @Nullable
     @Override
     public Query<EntityStore> getQuery() {
-        return Query.and(PlayerRef.getComponentType());
+        return Query.any();
     }
 
     @Override
     public void onComponentAdded(@Nonnull Ref<EntityStore> ref, @Nonnull DeathComponent deathComponent, @Nonnull Store<EntityStore> store, @Nonnull CommandBuffer<EntityStore> commandBuffer) {
-        myLogger.atInfo().log("Player just died!");
-        Player playerComponent = (Player) store.getComponent(ref, Player.getComponentType());
-        assert playerComponent != null;
+        try {
+            Universe universe = Universe.get();
+            if(universe == null) return;
+            ComponentType<EntityStore, PlayerRef> refType = universe.getPlayerRefComponentType();
+            PlayerRef playerRef = store.getComponent(ref, refType);
+            if(playerRef == null) return;
+
+            System.out.println("PLAYER JUST DIED!");
+        } catch (Exception e) {
+            logExceptionError("PlayerDeathListener", e);
+        }
     }
 
 

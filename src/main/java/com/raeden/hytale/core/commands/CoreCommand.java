@@ -39,15 +39,20 @@ public class CoreCommand extends AbstractPlayerCommand {
                 "&7------------------------------------------",
                 "&e&lCommands:",
                 "&71. &r&e&l/hf menu &r&a: Opens Hytale Foundations management menu.",
-                "&72. &r&e&l/hf reload &r&a: Reloads all HF configs.",
-                "&73. &r&e&l/hf reload <name> &r&a: Reloads a specific HF config."
+                "&72. &r&e&l/hf debug &r&a: Toggles debug mode",
+                "&73. &r&e&l/hf reload &r&a: Reloads all HF configs.",
+                "&74. &r&e&l/hf reload <name> &r&a: Reloads a specific HF config.",
+                "&75. &r&e&l/hf save playerdata &r&a: Saves data of all online players.",
+                "&76. &r&e&l/hf colors &r&a: Shows all available color codes."
         ));
+        if(hytaleFoundations.getConfigManager().getDefaultConfig().isToggleDebug()) {
+            messageToSendPlayer.add("&75. &r&e&l/hf save playerdata &r&a: Saves data of all online players.");
+        }
         for(String msg : messageToSendPlayer) {
             if(commandContext.isPlayer()) {
                 commandContext.sender().sendMessage(hytaleFoundations.getChatManager().getColorEngine().parseText(msg));
             }
         }
-
     }
 
 }

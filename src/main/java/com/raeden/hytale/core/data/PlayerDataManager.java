@@ -14,6 +14,7 @@ import java.lang.reflect.Type;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 import static com.raeden.hytale.HytaleFoundations.*;
 import static com.raeden.hytale.utils.FileManager.*;
@@ -29,8 +30,8 @@ public class PlayerDataManager {
     public final String HISTORY_JSON = "history.json";
     private final Path playerDataPath;
 
-    private final LinkedHashMap<String, PlayerProfile> playerProfiles;
-    private final LinkedHashMap<String, PlayerStats> playerStats;
+    private final Map<String, PlayerProfile> playerProfiles;
+    private final Map<String, PlayerStats> playerStats;
 
     private ChatConfig chatConfig;
 
@@ -39,8 +40,8 @@ public class PlayerDataManager {
         this.chatConfig = hytaleFoundations.getConfigManager().getDefaultChatConfig();
         playerDataPath = hytaleFoundations.getDataDirectory().resolve("data").resolve("players");
 
-        playerProfiles = new LinkedHashMap<>();
-        playerStats = new LinkedHashMap<>();
+        playerProfiles = new ConcurrentHashMap<>();
+        playerStats = new ConcurrentHashMap<>();
         verifyDataPath();
         createUserMap();
     }
@@ -52,21 +53,21 @@ public class PlayerDataManager {
     // User Map
     private void createUserMap() {
         Path userMapPath = playerDataPath.resolve(USERMAP_JSON);
-        LinkedHashMap<UUID, String> users = new LinkedHashMap<>();
+        Map<UUID, String> users = new ConcurrentHashMap<>();
         if(!Files.exists(userMapPath)) {
             saveJsonFile(USERMAP_JSON, userMapPath, users, true);
         }
     }
 
-    private LinkedHashMap<UUID, String> loadUserMap() {
+    private Map<UUID, String> loadUserMap() {
         Path userMapPath = playerDataPath.resolve(USERMAP_JSON);
-        Type type = new TypeToken<LinkedHashMap<UUID, String>>(){}.getType();
+        Type type = new TypeToken<Map<UUID, String>>(){}.getType();
         return loadJsonFile(USERMAP_JSON, userMapPath, type);
     }
 
     private void updateUserMap(UUID id, String username) {
-        LinkedHashMap<UUID, String> users = loadUserMap();
-        if(users == null) users = new LinkedHashMap<>();
+        Map<UUID, String> users = loadUserMap();
+        if(users == null) users = new ConcurrentHashMap<>();
         String oldUsername = users.get(id);
         users.put(id, username);
 
@@ -87,7 +88,7 @@ public class PlayerDataManager {
     }
 
     private void verifyUserID(String username) {
-        LinkedHashMap<UUID, String> users = loadUserMap();
+        Map<UUID, String> users = loadUserMap();
         if(users == null) return;
 
         UUID playerID = getPlayerUUID(username);
@@ -325,11 +326,11 @@ public class PlayerDataManager {
     public PlayerProfile getOnlinePlayerProfile(String username) { return playerProfiles.get(username);}
     public void addPlayerProfile(String username, PlayerProfile profile) {playerProfiles.put(username, profile);}
     public void removePlayerProfile(String username) { playerProfiles.remove(username);}
-    public LinkedHashMap<String, PlayerProfile> getPlayerProfiles(){return playerProfiles;}
+    public Map<String, PlayerProfile> getPlayerProfiles(){return playerProfiles;}
 
     public PlayerStats getOnlinePlayerStats(String username) { return playerStats.get(username);}
     public void addPlayerStats(String username, PlayerStats stats) {playerStats.put(username, stats);}
     public void removePlayerStats(String username) { playerStats.remove(username);}
-    public LinkedHashMap<String, PlayerStats> getOnlinePlayerStats(){return playerStats;}
+    public Map<String, PlayerStats> getOnlinePlayerStats(){return playerStats;}
 
 }

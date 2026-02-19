@@ -3,6 +3,7 @@ package com.raeden.hytale.core.data;
 import com.hypixel.hytale.math.vector.Location;
 
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class PlayerProfile {
     private transient long sessionStart = 0;
@@ -20,10 +21,10 @@ public class PlayerProfile {
     private boolean isAnonymous;
 
     // Convenience
-    private final Map<String, Location> homes = new HashMap<>();
+    private final Map<String, Location> homes = new ConcurrentHashMap<>();
 
     // Economy
-    private final HashMap<String, Long> balances = new HashMap<>();
+    private final Map<String, Long> balances = new ConcurrentHashMap<>();
 
     // Chat
     private boolean isMuted;
@@ -34,8 +35,8 @@ public class PlayerProfile {
     private boolean showSuffix;
     private int maxPrefix;
     private int maxSuffix;
-    private final LinkedHashMap<String, String> activePrefix = new LinkedHashMap<>();
-    private final LinkedHashMap<String, String> activeSuffix = new LinkedHashMap<>();
+    private final Map<String, String> activePrefix = new ConcurrentHashMap<>();
+    private final Map<String, String> activeSuffix = new ConcurrentHashMap<>();
     private final List<String> blockedPlayers = new ArrayList<>();
 
 
@@ -74,7 +75,7 @@ public class PlayerProfile {
     public Map<String, Location> getHomes() {return homes;}
 
     public long getCurrencyBalance(String currency) {return balances.getOrDefault(currency, 0L);}
-    public HashMap<String, Long> getBalances() {return balances;}
+    public Map<String, Long> getBalances() {return balances;}
     public void setCurrencyBalance(String currency, long balance) {this.balances.put(currency, balance);}
 
     public boolean isMuted() {return isMuted;}
@@ -98,10 +99,10 @@ public class PlayerProfile {
     public int getMaxPrefix() {return maxPrefix;}
     public void setMaxPrefix(int maxPrefix) {this.maxPrefix = maxPrefix;}
 
-    public LinkedHashMap<String, String> getActivePrefix() {return activePrefix;}
+    public Map<String, String> getActivePrefix() {return activePrefix;}
     public void addToActivePrefix(String ID, String prefix) { activePrefix.put(ID, prefix);}
     public void removeActivePrefix(String ID) { activePrefix.remove(ID);}
-    public LinkedHashMap<String, String> getActiveSuffix() {return activeSuffix;}
+    public Map<String, String> getActiveSuffix() {return activeSuffix;}
     public void addToActiveSuffix(String ID, String suffix) { activeSuffix.put(ID, suffix);}
     public void removeActiveSuffix(String ID) { activeSuffix.remove(ID);}
 

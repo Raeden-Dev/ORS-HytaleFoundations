@@ -15,6 +15,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 import static com.raeden.hytale.HytaleFoundations.*;
 import static com.raeden.hytale.utils.FileManager.*;
@@ -26,12 +27,12 @@ public class LangManager {
     private final String DEFAULT_LANGUAGE = "en-us";
     private final String FILE_EXTENSION = ".lang";
     private final Path langDir;
-    private final HashMap<String, Map<String, String>> langCache;
+    private final Map<String, Map<String, String>> langCache;
 
     public LangManager(HytaleFoundations hytaleFoundations) {
         this.hytaleFoundations = hytaleFoundations;
         langDir = hytaleFoundations.getDataDirectory().resolve("lang");
-        langCache = new HashMap<>();
+        langCache = new ConcurrentHashMap<>();
         verifyLangManager();
     }
 
@@ -103,7 +104,7 @@ public class LangManager {
         myLogger.atInfo().log(getMessage(LangKey.LOAD_SUCCESS, langCache.size() + " languages").getAnsiMessage());
     }
     private Map<String, String> loadLangFile(Path path) {
-        Map<String, String> map = new HashMap<>();
+        Map<String, String> map = new ConcurrentHashMap<>();
         try (BufferedReader reader = Files.newBufferedReader(path, StandardCharsets.UTF_8)) {
             String line;
             while ((line = reader.readLine()) != null) {

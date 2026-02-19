@@ -1,17 +1,13 @@
 package com.raeden.hytale.modules.analytics.pluginactions;
 
 import com.raeden.hytale.HytaleFoundations;
-import com.raeden.hytale.lang.LangKey;
 import com.raeden.hytale.utils.TimeUtils;
 
 import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
-import static com.raeden.hytale.HytaleFoundations.langManager;
-import static com.raeden.hytale.HytaleFoundations.myLogger;
 import static com.raeden.hytale.utils.FileManager.createDirectory;
 
 public class PluginActionManager {
@@ -20,16 +16,16 @@ public class PluginActionManager {
 
     private String dateToday;
     private File logFile;
-    private LinkedHashMap<String, String> actionLogs;
+    private Map<String, String> actionLogs;
 
     public PluginActionManager(HytaleFoundations hytaleFoundations) {
         this.hytaleFoundations = hytaleFoundations;
         pluginActionPath = hytaleFoundations.getDataDirectory().resolve("logs").resolve("action_logs");
-        actionLogs = new LinkedHashMap<>();
-        verify();
+        actionLogs = new ConcurrentHashMap<>();
+        initializeActionManager();
     }
 
-    private void verify() {
+    private void initializeActionManager() {
         createDirectory(pluginActionPath, true);
         fixDate();
     }

@@ -13,8 +13,9 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Path;
-import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 
 import static com.raeden.hytale.HytaleFoundations.langManager;
@@ -31,8 +32,8 @@ public class ChatManager {
 
     private String CHAT_FORMAT;
 
-    private final LinkedHashMap<String, String> activeMessengers;
-    private final LinkedHashMap<String, String> messageLog; // Time string + Message
+    private final Map<String, String> activeMessengers;
+    private final Map<String, String> messageLog; // Time string + Message
 
     private final Path chatLogDir;
 
@@ -44,8 +45,8 @@ public class ChatManager {
         chatConfig = hytaleFoundations.getConfigManager().getDefaultChatConfig();
 
         chatLogDir = hytaleFoundations.getDataDirectory().resolve("logs").resolve("chat_logs");
-        activeMessengers = new LinkedHashMap<>();
-        messageLog = new LinkedHashMap<>();
+        activeMessengers = new ConcurrentHashMap<>();
+        messageLog = new ConcurrentHashMap<>();
         // Color Engine
         colorEngine = new ColorEngine(hytaleFoundations);
 
@@ -133,7 +134,7 @@ public class ChatManager {
     }
 
     // Private Messaging
-    public LinkedHashMap<String, String> getActiveMessengers() {
+    public Map<String, String> getActiveMessengers() {
         return activeMessengers;
     }
     public String getReceiver(String senderUsername) {
