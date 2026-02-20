@@ -97,7 +97,7 @@ public class PlayerDataManager {
         for(Map.Entry<UUID, String> entry : users.entrySet()) {
             if(playerID.equals(entry.getKey())) {
                 if(!entry.getValue().equals(username)) {
-                    myLogger.atWarning().log(langManager.getMessage(LangKey.MISMATCH_FOUND, USERMAP_JSON + " |" + playerID + ", " + entry.getValue() + "[EXPECTED: " + username + "]").getAnsiMessage());
+                    myLogger.atWarning().log(langManager.getMessage(LangKey.MISMATCH_FOUND, true, USERMAP_JSON + " |" + playerID + ", " + entry.getValue() + "[EXPECTED: " + username + "]").getAnsiMessage());
                     mismatch = true;
                     break;
                 }
@@ -121,7 +121,7 @@ public class PlayerDataManager {
             }
         } catch (IOException e) {
             logExceptionError("PlayerDataManager-SavePlayerData", e);
-            myLogger.atSevere().log(langManager.getMessage(LangKey.CREATE_FAILURE, "player directory").getAnsiMessage());
+            myLogger.atSevere().log(langManager.getMessage(LangKey.CREATE_FAILURE,true, "player directory").getAnsiMessage());
             return;
         }
         Path savePath = playerFolder.resolve(jsonName);
@@ -258,7 +258,7 @@ public class PlayerDataManager {
 
     private void createDefaultPlayerData(PlayerRef playerRef) {
         if(playerRef == null) {
-            myLogger.atSevere().log(langManager.getMessage(LangKey.CREATE_FAILURE, "player data!").getAnsiMessage());
+            myLogger.atSevere().log(langManager.getMessage(LangKey.CREATE_FAILURE,true, "player data!").getAnsiMessage());
             return;
         }
 

@@ -8,17 +8,14 @@ import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.world.World;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import com.raeden.hytale.HytaleFoundations;
-import com.raeden.hytale.core.utils.Permissions;
 
 import javax.annotation.Nonnull;
 
-public class AffixCommand extends AbstractPlayerCommand {
+public class AffixListCommand extends AbstractPlayerCommand {
     private final HytaleFoundations hytaleFoundations;
-    public AffixCommand(HytaleFoundations hytaleFoundations) {
-        super("affix", "Argument for all affix related command");
-        this.requirePermission(Permissions.HFPermissions.AFFIX.getPermission());
+    public AffixListCommand(HytaleFoundations hytaleFoundations) {
+        super("list", "Show list of all available affixes");
         this.hytaleFoundations = hytaleFoundations;
-        this.addSubCommand(new AffixListCommand(hytaleFoundations));
     }
     @Override
     protected void execute(@Nonnull CommandContext commandContext, @Nonnull Store<EntityStore> store, @Nonnull Ref<EntityStore> ref, @Nonnull PlayerRef playerRef, @Nonnull World world) {

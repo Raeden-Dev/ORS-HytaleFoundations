@@ -60,7 +60,7 @@ public class ColorEngine {
         ColormapHolder colorMapFile = new ColormapHolder();
         colorMapFile.setColorList(COLOR_MAP);
         saveJsonFile(COLOR_FILE_NAME, colorFilePath, colorMapFile, true);
-        myLogger.atInfo().log(langManager.getMessage(LangKey.LOAD_SUCCESS, COLOR_MAP.size() + " colors!").getAnsiMessage());
+        myLogger.atInfo().log(langManager.getMessage(LangKey.LOAD_SUCCESS, true, COLOR_MAP.size() + " colors!").getAnsiMessage());
     }
     public void loadColors() {
         Type type = new TypeToken<ColormapHolder>(){}.getType();

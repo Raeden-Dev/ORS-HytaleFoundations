@@ -1,5 +1,6 @@
 package com.raeden.hytale.modules.chat;
 
+import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.raeden.hytale.HytaleFoundations;
 import com.raeden.hytale.core.config.ChatConfig;
 import com.raeden.hytale.core.data.PlayerProfile;
@@ -122,15 +123,24 @@ public class ChatManager {
                 writer.newLine();
             }
             writer.write("---- END ----");
-            myLogger.atInfo().log(langManager.getMessage(LangKey.LOG_CHAT_EXPORT_SUCCESS, fileName, chatLogDir.toString()).getAnsiMessage());
+            myLogger.atInfo().log(langManager.getMessage(LangKey.LOG_CHAT_EXPORT_SUCCESS,true, fileName, chatLogDir.toString()).getAnsiMessage());
         } catch (IOException e) {
             logExceptionError("exportChatLog", e);
-            myLogger.atSevere().log(langManager.getMessage(LangKey.LOG_CHAT_EXPORT_FAIL, fileName).getAnsiMessage());
+            myLogger.atSevere().log(langManager.getMessage(LangKey.LOG_CHAT_EXPORT_FAIL,true, fileName).getAnsiMessage());
         }
     }
 
     public void addMessageToLog(String message) {
         messageLog.put(TimeUtils.getTimeNow(), message);
+    }
+
+    // Nicknaming
+    public boolean validateNickname(PlayerRef caller, String nickname) {
+        if(nickname.length() <= 2) {
+            caller.sendMessage(langManager.getMessage(LangKey.NICKNAME_LENGTH, false));
+            return false;
+        }
+        return true;
     }
 
     // Private Messaging

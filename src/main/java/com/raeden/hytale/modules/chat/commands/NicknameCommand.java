@@ -10,8 +10,11 @@ import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import com.raeden.hytale.HytaleFoundations;
 import com.raeden.hytale.core.data.PlayerProfile;
 import com.raeden.hytale.core.utils.Permissions;
+import com.raeden.hytale.lang.LangKey;
 
 import javax.annotation.Nonnull;
+
+import static com.raeden.hytale.HytaleFoundations.langManager;
 
 public class NicknameCommand extends AbstractPlayerCommand {
     private final HytaleFoundations hytaleFoundations;
@@ -29,7 +32,9 @@ public class NicknameCommand extends AbstractPlayerCommand {
         String[] rawMessage = commandContext.getInputString().split("\\s+", 2);
         if(rawMessage.length == 1) return;
         String nicknameContent = rawMessage[1];
-
+        if(!hytaleFoundations.getChatManager().validateNickname(playerRef, nicknameContent)) {
+            return;
+        }
         PlayerProfile senderProfile = hytaleFoundations.getPlayerDataManager().getPlayerProfile(senderUsername);
         if(senderProfile != null) {
             senderProfile.setNickname(nicknameContent);

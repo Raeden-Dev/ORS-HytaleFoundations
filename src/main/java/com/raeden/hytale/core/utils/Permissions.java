@@ -35,7 +35,7 @@ public class Permissions {
             return permissionsModule.hasPermission(playerID, permission);
         } catch (Exception e) {
             logExceptionError("Permissions-HasPermission", e);
-            myLogger.atWarning().log(langManager.getMessage(LangKey.CHECK_FAILURE, "permission [" + permission + "]").getAnsiMessage());
+            myLogger.atWarning().log(langManager.getMessage(LangKey.CHECK_FAILURE,true, "permission [" + permission + "]").getAnsiMessage());
             return false;
         }
     }

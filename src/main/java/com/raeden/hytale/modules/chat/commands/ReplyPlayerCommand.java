@@ -43,7 +43,7 @@ public class ReplyPlayerCommand extends AbstractPlayerCommand {
         String receiverUsername = chatManager.getReceiver(senderUsername);
 
         if(receiverUsername == null) {
-            commandContext.sender().sendMessage(langManager.getMessage(senderUsername, LangKey.PM_ERROR_OFFLINE));
+            commandContext.sender().sendMessage(langManager.getMessage(senderUsername, LangKey.PM_ERROR_OFFLINE, false));
             return;
         }
         PlayerDataManager dataManager = hytaleFoundations.getPlayerDataManager();
@@ -56,25 +56,25 @@ public class ReplyPlayerCommand extends AbstractPlayerCommand {
 
         PlayerRef receiver = findPlayerByName("Reply Command", receiverUsername);
         if(receiver == null) {
-            commandContext.sender().sendMessage(langManager.getMessage(senderUsername, LangKey.PM_ERROR_OFFLINE, receiverUsername));
+            commandContext.sender().sendMessage(langManager.getMessage(senderUsername, LangKey.PM_ERROR_OFFLINE, false, receiverUsername));
             return;
         }
         if(senderProfile.isMuted() && !isAdmin) {
-            commandContext.sender().sendMessage(langManager.getMessage(senderUsername, LangKey.MUTE_ERROR_CHAT, receiverUsername));
+            commandContext.sender().sendMessage(langManager.getMessage(senderUsername, LangKey.MUTE_ERROR_CHAT,false, receiverUsername));
             return;
         }
         if(receiverProfile.isMuted() && !isAdmin) {
-            commandContext.sender().sendMessage(langManager.getMessage(senderUsername, LangKey.PM_ERROR_TARGET_MUTED, receiverUsername));
+            commandContext.sender().sendMessage(langManager.getMessage(senderUsername, LangKey.PM_ERROR_TARGET_MUTED,false, receiverUsername));
             return;
         }
 
         if(receiverProfile.getBlockedPlayers().contains(senderUsername) && !isAdmin) {
-            commandContext.sender().sendMessage(langManager.getMessage(senderUsername, LangKey.PM_ERROR_SENDER_BLOCKED, receiverUsername));
+            commandContext.sender().sendMessage(langManager.getMessage(senderUsername, LangKey.PM_ERROR_SENDER_BLOCKED,false, receiverUsername));
             return;
         }
 
-        receiver.sendMessage(langManager.getMessage(receiverUsername, LangKey.PM_FORMAT_RECEIVER, senderUsername, messageContent));
-        sender.sendMessage(langManager.getMessage(senderUsername, LangKey.PM_FORMAT_SENDER, receiverUsername, messageContent));
+        receiver.sendMessage(langManager.getMessage(receiverUsername, LangKey.PM_FORMAT_RECEIVER,false, senderUsername, messageContent));
+        sender.sendMessage(langManager.getMessage(senderUsername, LangKey.PM_FORMAT_SENDER,false, receiverUsername, messageContent));
 
         senderStats.increaseMessageSent();
     }

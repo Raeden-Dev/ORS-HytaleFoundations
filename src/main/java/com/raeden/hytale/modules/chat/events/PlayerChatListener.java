@@ -34,7 +34,7 @@ public class PlayerChatListener {
         e.setCancelled(true); // Cancel event anyway because of our Custom Chat
 
         if(profile.isMuted() && !isAdmin) {
-            playerRef.sendMessage(langManager.getMessage(playerUsername, LangKey.MUTE_ERROR_CHAT_TIME, TimeUtils.formatDuration(profile.getMuteDuration())));
+            playerRef.sendMessage(langManager.getMessage(playerUsername, LangKey.MUTE_ERROR_CHAT_TIME,false, TimeUtils.formatDuration(profile.getMuteDuration())));
             return;
         }
 

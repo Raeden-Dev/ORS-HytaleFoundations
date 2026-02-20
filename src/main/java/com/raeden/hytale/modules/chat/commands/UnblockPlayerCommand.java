@@ -36,13 +36,13 @@ public class UnblockPlayerCommand extends AbstractPlayerCommand {
         String targetUsername = commandContext.get(this.targetPlayer);
 
         if(!commandContext.sender().hasPermission("ors.foundations.block") && !isAdmin) {
-            commandContext.sender().sendMessage(langManager.getMessage(senderUsername, LangKey.NO_PERMISSION));
+            commandContext.sender().sendMessage(langManager.getMessage(senderUsername, LangKey.NO_PERMISSION, false));
             return;
         }
 
         PlayerRef receiver = findPlayerByName("Unblock Player Command", targetUsername);
         if(receiver == null) {
-            commandContext.sender().sendMessage(langManager.getMessage(senderUsername, LangKey.PM_ERROR_OFFLINE, targetUsername));
+            commandContext.sender().sendMessage(langManager.getMessage(senderUsername, LangKey.PM_ERROR_OFFLINE, false, targetUsername));
             return;
         }
 
@@ -51,9 +51,9 @@ public class UnblockPlayerCommand extends AbstractPlayerCommand {
         List<String> blockedPlayers = profile.getBlockedPlayers();
         if(blockedPlayers.contains(targetUsername)) {
             profile.removeBlockedPlayer(targetUsername);
-            commandContext.sender().sendMessage(langManager.getMessage(senderUsername, LangKey.UNBLOCK_SUCCESS, targetUsername));
+            commandContext.sender().sendMessage(langManager.getMessage(senderUsername, LangKey.UNBLOCK_SUCCESS,false, targetUsername));
         } else {
-            commandContext.sender().sendMessage(langManager.getMessage(senderUsername, LangKey.UNBLOCK_NOT_FOUND, targetUsername));
+            commandContext.sender().sendMessage(langManager.getMessage(senderUsername, LangKey.UNBLOCK_NOT_FOUND,false, targetUsername));
         }
     }
 }

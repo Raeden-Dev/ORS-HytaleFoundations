@@ -12,6 +12,7 @@ import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import com.raeden.hytale.HytaleFoundations;
 import com.raeden.hytale.core.data.PlayerDataManager;
 import com.raeden.hytale.core.data.PlayerStats;
+import com.raeden.hytale.core.utils.Permissions;
 import com.raeden.hytale.lang.LangKey;
 import com.raeden.hytale.utils.TimeUtils;
 
@@ -27,6 +28,7 @@ public class PlaytimeCommand extends AbstractPlayerCommand {
 
     public PlaytimeCommand(HytaleFoundations plugin) {
         super("playtime", "Shows your or a player's total playtime.");
+        this.requirePermission(Permissions.HFPermissions.PLAYTIME.getPermission());
         this.hytaleFoundations = plugin;
         targetPlayer = withOptionalArg("Player", "Target player to check their playtime", ArgTypes.STRING);
     }
@@ -36,19 +38,13 @@ public class PlaytimeCommand extends AbstractPlayerCommand {
     protected void execute(@Nonnull CommandContext commandContext, @Nonnull Store<EntityStore> store, @Nonnull Ref<EntityStore> ref, @Nonnull PlayerRef playerRef, @Nonnull World world) {
         String senderUsername = commandContext.sender().getDisplayName();
         String targetUsername = commandContext.get(this.targetPlayer);
-
-        if(!commandContext.sender().hasPermission("ors.foundations.playtime")) {
-            commandContext.sender().sendMessage(langManager.getMessage(senderUsername, LangKey.NO_PERMISSION));
-            return;
-        }
-
         PlayerDataManager dataManager = hytaleFoundations.getPlayerDataManager();
 
         if(targetUsername == null) {
             PlayerStats stats = dataManager.getOnlinePlayerStats(senderUsername);
             dataManager.savePlayTime(senderUsername);
             String playtime = TimeUtils.formatDuration(stats.getPlayTimeMillis());
-            commandContext.sender().sendMessage(langManager.getMessage(senderUsername, LangKey.STATS_PLAYTIME, senderUsername, playtime));
+            commandContext.sender().sendMessage(langManager.getMessage(senderUsername, LangKey.STATS_PLAYTIME,false, senderUsername, playtime));
             return;
         }
 
@@ -57,15 +53,15 @@ public class PlaytimeCommand extends AbstractPlayerCommand {
             if(dataManager.doesPlayerDataExist(targetUsername)) {
                 PlayerStats stats = dataManager.getOnlinePlayerStats(targetUsername);
                 String playtime = TimeUtils.formatDuration(stats.getPlayTimeMillis());
-                commandContext.sender().sendMessage(langManager.getMessage(senderUsername, LangKey.STATS_PLAYTIME, targetUsername, playtime));
+                commandContext.sender().sendMessage(langManager.getMessage(senderUsername, LangKey.STATS_PLAYTIME,false, targetUsername, playtime));
             } else {
-              commandContext.sender().sendMessage(langManager.getMessage(senderUsername, LangKey.PLAYER_NOT_FOUND, targetUsername));
+              commandContext.sender().sendMessage(langManager.getMessage(senderUsername, LangKey.PLAYER_NOT_FOUND,false, targetUsername));
             }
         } else {
             PlayerStats stats = dataManager.getOnlinePlayerStats(targetUsername);
             dataManager.savePlayTime(targetUsername);
             String playtime = TimeUtils.formatDuration(stats.getPlayTimeMillis());
-            commandContext.sender().sendMessage(langManager.getMessage(senderUsername, LangKey.STATS_PLAYTIME, targetUsername, playtime));
+            commandContext.sender().sendMessage(langManager.getMessage(senderUsername, LangKey.STATS_PLAYTIME,false, targetUsername, playtime));
         }
     }
 }

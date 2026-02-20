@@ -41,7 +41,7 @@ public class UnmutePlayerCommand extends AbstractPlayerCommand {
         boolean isTargetOffline = false;
         if(target == null) {
             if(!hytaleFoundations.getPlayerDataManager().doesPlayerDataExist(targetUsername)) {
-                commandContext.sender().sendMessage(langManager.getMessage(senderUsername, LangKey.PLAYER_NOT_FOUND, targetUsername));
+                commandContext.sender().sendMessage(langManager.getMessage(senderUsername, LangKey.PLAYER_NOT_FOUND, false, targetUsername));
                 return;
             } else {
                 isTargetOffline = true;
@@ -52,10 +52,10 @@ public class UnmutePlayerCommand extends AbstractPlayerCommand {
         if(profile.isMuted()) {
             profile.setMuted(false);
             profile.setMuteDuration(0);
-            commandContext.sender().sendMessage(langManager.getMessage(senderUsername, LangKey.UNMUTE_ACTION_SUCCESS, targetUsername));
-            if(target != null) target.sendMessage(langManager.getMessage(targetUsername, LangKey.UNMUTE_NOTIFY_ACTIVE, senderUsername));
+            commandContext.sender().sendMessage(langManager.getMessage(senderUsername, LangKey.UNMUTE_ACTION_SUCCESS,false, targetUsername));
+            if(target != null) target.sendMessage(langManager.getMessage(targetUsername, LangKey.UNMUTE_NOTIFY_ACTIVE,false, senderUsername));
         } else {
-            commandContext.sender().sendMessage(langManager.getMessage(senderUsername, LangKey.UNMUTE_ERROR_NOT_MUTED, targetUsername));
+            commandContext.sender().sendMessage(langManager.getMessage(senderUsername, LangKey.UNMUTE_ERROR_NOT_MUTED,false, targetUsername));
         }
 
         if(isTargetOffline) {
