@@ -101,9 +101,11 @@ public class PlayerProfile {
 
     public Map<String, String> getActivePrefix() {return activePrefix;}
     public void addToActivePrefix(String ID, String prefix) { activePrefix.put(ID, prefix);}
+    public void clearActivePrefix() {activePrefix.clear();}
     public void removeActivePrefix(String ID) { activePrefix.remove(ID);}
     public Map<String, String> getActiveSuffix() {return activeSuffix;}
     public void addToActiveSuffix(String ID, String suffix) { activeSuffix.put(ID, suffix);}
+    public void clearActiveSuffix() {activeSuffix.clear();}
     public void removeActiveSuffix(String ID) { activeSuffix.remove(ID);}
 
     public String getUsernameColorCode() {return usernameColorCode;}

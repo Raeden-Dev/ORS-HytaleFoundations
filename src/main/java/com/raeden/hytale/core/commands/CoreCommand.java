@@ -27,6 +27,7 @@ public class CoreCommand extends AbstractPlayerCommand {
         this.addSubCommand(new ReloadPluginCommand(hytaleFoundations));
         this.addSubCommand(new UpdatePluginCommand(hytaleFoundations));
         this.addSubCommand(new TestPlayerCommand(hytaleFoundations));
+        this.addSubCommand(new ReloadLangCommand(hytaleFoundations));
     }
 
     @Override

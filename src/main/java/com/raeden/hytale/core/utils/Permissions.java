@@ -4,12 +4,13 @@ import com.hypixel.hytale.server.core.command.system.CommandSender;
 import com.hypixel.hytale.server.core.permissions.PermissionsModule;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.raeden.hytale.lang.LangKey;
+import com.raeden.hytale.utils.FileManager;
 
 import java.util.UUID;
 
 import static com.raeden.hytale.HytaleFoundations.langManager;
 import static com.raeden.hytale.HytaleFoundations.myLogger;
-import static com.raeden.hytale.utils.FileManager.logExceptionError;
+import static com.raeden.hytale.utils.FileManager.logError;
 
 public class Permissions {
     public static boolean isPlayerAdmin(PlayerRef playerRef) {
@@ -34,7 +35,7 @@ public class Permissions {
             PermissionsModule permissionsModule = PermissionsModule.get();
             return permissionsModule.hasPermission(playerID, permission);
         } catch (Exception e) {
-            logExceptionError("Permissions-HasPermission", e);
+            FileManager.logError("Permissions-HasPermission", e);
             myLogger.atWarning().log(langManager.getMessage(LangKey.CHECK_FAILURE,true, "permission [" + permission + "]").getAnsiMessage());
             return false;
         }

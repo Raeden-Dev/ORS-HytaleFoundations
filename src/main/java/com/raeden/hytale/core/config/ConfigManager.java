@@ -49,6 +49,7 @@ public class ConfigManager {
         this.defaultConfig = loadConfigData();
         this.defaultChatConfig = loadChatConfigData();
         this.defaultMailConfig = loadMailConfigData();
+        hytaleFoundations.getChatManager().getAffixManager().loadAffixes();
         hytaleFoundations.getChatManager().getColorEngine().loadColors();
     }
 
@@ -63,7 +64,7 @@ public class ConfigManager {
     }
 
     private void createErrorLogDir() {
-        createDirectory(errorLogDirectory, true);
+        createDirectory(ERROR_LOG_DIRECTORY, true);
     }
 
     // Load Configs
@@ -147,6 +148,7 @@ public class ConfigManager {
         config.setToggleDebug(true);
         config.setToggleAdminModule(true);
         config.setToggleChatModule(true);
+        config.setToggleMailModule(true);
         config.setToggleRankModule(true);
         config.setToggleHomesModule(true);
         config.setTogglePartyModule(true);

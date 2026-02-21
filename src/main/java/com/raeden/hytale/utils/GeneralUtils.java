@@ -17,7 +17,7 @@ import java.util.UUID;
 
 import static com.raeden.hytale.HytaleFoundations.langManager;
 import static com.raeden.hytale.HytaleFoundations.myLogger;
-import static com.raeden.hytale.utils.FileManager.logExceptionError;
+import static com.raeden.hytale.utils.FileManager.logError;
 
 public class GeneralUtils {
     public static UUID getPlayerUUID(String username) {
@@ -98,7 +98,7 @@ public class GeneralUtils {
                 return player;
             }
         } catch (Exception e) {
-            logExceptionError("findPlayerByName", e);
+            FileManager.logError("findPlayerByName", e);
             myLogger.atWarning().log((caller == null ? "" : "[Called by: " + caller + "]") +
                     langManager.getMessage(LangKey.PLAYER_NOT_FOUND, username).getAnsiMessage() + e.getMessage());
             return null;

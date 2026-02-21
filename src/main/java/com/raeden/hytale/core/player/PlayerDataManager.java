@@ -120,7 +120,7 @@ public class PlayerDataManager {
                 Files.createDirectories(playerFolder);
             }
         } catch (IOException e) {
-            logExceptionError("PlayerDataManager-SavePlayerData", e);
+            logError("PlayerDataManager-SavePlayerData", e);
             myLogger.atSevere().log(langManager.getMessage(LangKey.CREATE_FAILURE,true, "player directory").getAnsiMessage());
             return;
         }

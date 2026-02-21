@@ -1,4 +1,4 @@
-package com.raeden.hytale.modules.chat.commands;
+package com.raeden.hytale.modules.chat.commands.nickname;
 
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
@@ -29,6 +29,7 @@ public class NicknameClearCommand extends AbstractPlayerCommand {
     @Override
     protected void execute(@Nonnull CommandContext commandContext, @Nonnull Store<EntityStore> store, @Nonnull Ref<EntityStore> ref, @Nonnull PlayerRef playerRef, @Nonnull World world) {
         String[] rawMessage = commandContext.getInputString().split("\\s+", 3);
+        if(rawMessage.length <= 2) return;
         String targetPlayer = rawMessage[2];
         String senderUsername = commandContext.sender().getDisplayName();
         if(targetPlayer == null || targetPlayer.isEmpty()) {

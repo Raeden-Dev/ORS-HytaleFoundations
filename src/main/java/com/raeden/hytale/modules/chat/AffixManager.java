@@ -38,7 +38,7 @@ public class AffixManager {
         initializeAffixManager();
     }
     // Initialization and Loading
-    public void initializeAffixManager() {
+    private void initializeAffixManager() {
         AFFIX_MAP.putAll(getDefaultAffixMap());
         if (Files.exists(affixFilePath)) {
             loadAffixes();
@@ -47,7 +47,7 @@ public class AffixManager {
             saveAffixFile();
         }
     }
-    public void saveAffixFile() {
+    private void saveAffixFile() {
         AffixHolder affixHolder = new AffixHolder();
         affixHolder.AFFIX_LIST = new ArrayList<>(AFFIX_MAP.values());
         saveJsonFile(AFFIX_FILE_NAME, affixFilePath, affixHolder, true);
@@ -88,41 +88,37 @@ public class AffixManager {
         boolean isConsole = (caller == null);
         PlayerAffix affix = AFFIX_MAP.get(affixId);
         if (affix == null) {
-            sendResponse(caller, LangKey.AFFIX_NOT_FOUND, isConsole, affixId);
+            if(caller != null) caller.sendMessage(langManager.getMessage(caller.getUsername(),
+                    LangKey.AFFIX_NOT_FOUND, false, affixId));
             return;
         }
         PlayerProfile profile = playerDataManager.getPlayerProfile(targetUsername);
         if (profile == null) {
-            if (isConsole) sendResponse(null, LangKey.PLAYER_NOT_FOUND, true, targetUsername);
-            else sendResponse(caller, LangKey.PLAYER_NOT_FOUND, false, targetUsername);
+            if(caller != null) caller.sendMessage(langManager.getMessage(caller.getUsername(),
+                    LangKey.PLAYER_NOT_FOUND, false, targetUsername));
             return;
         }
-        if (type == AffixType.PREFIX) {
+        if (type == AffixType.PREFIX && canHavePrefix(targetUsername)) {
             if (profile.getActivePrefix().size() >= profile.getMaxPrefix()) {
-                sendResponse(caller, LangKey.AFFIX_MAX, isConsole, "prefix", String.valueOf(profile.getMaxPrefix()));
+                if(caller != null) caller.sendMessage(langManager.getMessage(caller.getUsername(),
+                        LangKey.AFFIX_MAX, false, "prefix",targetUsername, String.valueOf(profile.getMaxPrefix())));
                 return;
             }
             profile.addToActivePrefix(affixId, affix.displayText);
-        } else {
+        } else if(type == AffixType.SUFFIX && canHaveSuffix(targetUsername)) {
             if (profile.getActiveSuffix().size() >= profile.getMaxSuffix()) {
-                sendResponse(caller, LangKey.AFFIX_MAX, isConsole, "suffix", String.valueOf(profile.getMaxSuffix()));
+                if(caller != null) caller.sendMessage(langManager.getMessage(caller.getUsername(),
+                        LangKey.AFFIX_MAX, false, "suffix",targetUsername, String.valueOf(profile.getMaxSuffix())));
                 return;
             }
             profile.addToActiveSuffix(affixId, affix.displayText);
         }
     }
-    private void sendResponse(PlayerRef caller, LangKey key, boolean isConsole, String... args) {
-        if (isConsole) {
-            myLogger.atInfo().log(langManager.getMessage(key, true, args).getAnsiMessage());
-        } else {
-            caller.sendMessage(langManager.getMessage(key, false, args));
-        }
-    }
     // Classes and Getter / Setter
-    public boolean canHavePrefix(String username) {
+    private boolean canHavePrefix(String username) {
         return checkAffixConfig(username, true);
     }
-    public boolean canHaveSuffix(String username) {
+    private boolean canHaveSuffix(String username) {
         return checkAffixConfig(username, false);
     }
     private boolean checkAffixConfig(String username, boolean isPrefix) {
@@ -157,6 +153,17 @@ public class AffixManager {
         map.put(id, new PlayerAffix(id, text, priority));
     }
 
+    public boolean doesAffixExists(String id) {
+        return AFFIX_MAP.containsKey(id);
+    }
+    public Map<String, PlayerAffix> getAffixMap() {return AFFIX_MAP;}
+    public String getAffixDisplay(String id) {
+        if(AFFIX_MAP.containsKey(id)) {
+            return AFFIX_MAP.get(id).displayText;
+        }
+        return "<UNDEFINED>";
+    }
+
     // Classes
     private static class AffixHolder {
         private String VERSION = "v1.0";
@@ -177,7 +184,7 @@ public class AffixManager {
         }
     }
 
-    private static class PlayerAffix {
+    public static class PlayerAffix {
         private String id;
         private String displayText;
         private int priority;

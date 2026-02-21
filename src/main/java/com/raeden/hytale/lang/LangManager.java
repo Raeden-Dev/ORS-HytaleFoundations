@@ -83,7 +83,7 @@ public class LangManager {
             myLogger.atInfo().log(getMessage(LangKey.CREATE_SUCCESS, path.getFileName().toString()).getAnsiMessage());
 
         } catch (IOException e) {
-            logExceptionError(path, "saveDefaultLangFile", e);
+            logError(path, "saveDefaultLangFile", e);
         }
     }
     public void reloadLanguages() {
@@ -101,7 +101,7 @@ public class LangManager {
             langCache.put(langCode, langMap);
         }
 
-        myLogger.atInfo().log(getMessage(LangKey.LOAD_SUCCESS, langCache.size() + " languages").getAnsiMessage());
+        myLogger.atInfo().log(getMessage(LangKey.LOAD_SUCCESS, true, langCache.size() + " languages").getAnsiMessage());
     }
     private Map<String, String> loadLangFile(Path path) {
         Map<String, String> map = new ConcurrentHashMap<>();
@@ -119,7 +119,7 @@ public class LangManager {
                 }
             }
         } catch (IOException e) {
-            logExceptionError(path, "loadLangFile", e);
+            logError(path, "loadLangFile", e);
         }
         return map;
     }
@@ -176,7 +176,7 @@ public class LangManager {
                     setLanguage = profile.getLanguage();
                 }
             } catch (Exception e) {
-                logExceptionError("getLangString", e);
+                logError("getLangString", e);
             }
         }
         String data = fetchStringFromCache(setLanguage, mapKey);

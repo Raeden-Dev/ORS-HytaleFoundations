@@ -21,6 +21,10 @@ import com.raeden.hytale.modules.admin.commands.TitleCommand;
 import com.raeden.hytale.modules.admin.commands.VanishCommand;
 import com.raeden.hytale.modules.analytics.pluginactions.PluginActionManager;
 import com.raeden.hytale.modules.chat.ChatManager;
+import com.raeden.hytale.modules.chat.commands.affix.AffixCommand;
+import com.raeden.hytale.modules.chat.commands.affix.PrefixCommand;
+import com.raeden.hytale.modules.chat.commands.affix.SuffixCommand;
+import com.raeden.hytale.modules.chat.commands.nickname.NicknameCommand;
 import com.raeden.hytale.modules.mail.MailManager;
 import com.raeden.hytale.modules.chat.commands.*;
 import com.raeden.hytale.modules.chat.events.PlayerChatListener;
@@ -36,7 +40,7 @@ public class HytaleFoundations extends JavaPlugin {
     public static final HytaleLogger myLogger = HytaleLogger.forEnclosingClass();
     public static final Random random = new Random();
     public static final Gson GSON = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
-    public static Path errorLogDirectory;
+    public static Path ERROR_LOG_DIRECTORY;
 
     public static String CONFIG_VERSION = "v1.0";
     public static String CHAT_CONFIG_VERSION = "v1.0";
@@ -58,7 +62,7 @@ public class HytaleFoundations extends JavaPlugin {
     @Override
     protected void setup() {
         myLogger.atInfo().log("Hytale Foundations loading...");
-        errorLogDirectory = this.getDataDirectory().resolve("logs").resolve("error_logs");
+        ERROR_LOG_DIRECTORY = this.getDataDirectory().resolve("logs").resolve("error_logs");
         registerManagers();
         registerCommands();
         registerListeners();
@@ -132,6 +136,8 @@ public class HytaleFoundations extends JavaPlugin {
             this.getCommandRegistry().registerCommand(new MailCommand(this));
             this.getCommandRegistry().registerCommand(new NicknameCommand(this));
             this.getCommandRegistry().registerCommand(new AffixCommand(this));
+            this.getCommandRegistry().registerCommand(new PrefixCommand(this));
+            this.getCommandRegistry().registerCommand(new SuffixCommand(this));
         }
         // Admin UI
         if(configManager.getDefaultConfig().isToggleHomesModule()) {

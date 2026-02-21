@@ -9,26 +9,24 @@ public enum LangKey {
     INVALID_COLOR_FORMAT    ("system.error.invalid_color",          "Skipping invalid color format. Code: {0} | Hex: {1}"),
     SCHEDULER_CREATED       ("system.scheduler.create",             "Created scheduler {0} called by {1}"),
     NULL_POINTER            ("system.error.null",                   "[ERROR] Unexpected null error at {0}"),
+    PLUGIN_RELOAD_SUCCESS   ("system.plugin.reload_success",        "&a&lSuccessfully reloaded Hytale Foundations!"),
+    PLUGIN_RELOAD_FAILURE   ("system.plugin.reload_failure",        "&c&lFailed to reload Hytale Foundations!"),
+    GENERAL_LIST            ("message.info.list",                   "&a&lAvailable {0}:"),
+    GENERAL_LIST_ITEM       ("message.info.list_item",              "&7&l  - &r{0}"),
 
     FILE_NOT_FOUND          ("system.file.not_found",               "[ERROR] Could not find file {0}"),
     FILE_NOT_FOUND_LOC      ("system.file.not_found_loc",           "[ERROR] Could not find file {0} at {1}"),
 
-    DIR_CREATE_SUCCESS      ("system.dir.create.success",           "[DIR] Created {0} directory"),
     DIR_CREATE_SUCCESS_LOC  ("system.dir.create.success_loc",       "[DIR] Created {0} directory at {1}"),
-    DIR_CREATE_FAIL         ("system.dir.create.fail",              "[DIR] Failed to create {0} directory"),
     DIR_CREATE_FAIL_LOC     ("system.dir.create.fail_loc",          "[DIR] Failed to create {0} at {1}"),
 
     CREATE_SUCCESS          ("system.data.create.success",          "[INFO] Created {0}"),
     CREATE_FAILURE          ("system.data.create.fail",             "[ERROR] Failed to create {0}"),
-    SAVE_SUCCESS            ("system.data.save.success",            "[SAVE] Saved {0}"),
     SAVE_SUCCESS_LOC        ("system.data.save.success_loc",        "[SAVE] Saved {0} at {1}"),
     SAVE_FAILURE            ("system.data.save.fail",               "[SAVE] Failed to save {0}"),
     SAVE_FAILURE_LOC        ("system.data.save.fail_loc",           "[SAVE] Failed to save {0} at {1}"),
     LOAD_SUCCESS            ("system.data.load.success",            "[LOAD] Loaded {0}"),
-    LOAD_SUCCESS_TYPE       ("system.data.load.success_type",       "[LOAD] Loaded {0} {1}"),
-    LOAD_FAILURE            ("system.data.load.fail",               "[LOAD] Failed to load {0}"),
     LOAD_FAILURE_LOC        ("system.data.load.fail_loc",           "[LOAD] Failed to load {0} at {1}"),
-    READ_FAILURE            ("system.data.read.fail",               "[READ] Failed to read {0}"),
     READ_FAILURE_LOC        ("system.data.read.fail_loc",           "[READ] Failed to read {0} at {1}"),
     CHECK_FAILURE           ("system.data.check.fail",              "[INFO] Failed to check {0}"),
 
@@ -102,15 +100,15 @@ public enum LangKey {
 
     PREFIX_DISABLED         ("affix.prefix.disabled",               "&c&lAdding  &r&e&lprefix &r&c&lis disabled!"),
     SUFFIX_DISABLED         ("affix.suffix.disabled",               "&c&lAdding  &r&e&lsuffix &r&c&lis disabled!"),
-    AFFIX_MAX               ("affix.add.max",                       "&c&lCould not add &r{0} to &r&e&l{1}&r&c&l! Limit of &r{1} &r&c&lis reached!"),
-    AFFIX_ADD_SUCCESS       ("affix.add.success",                   "&a&lAdded affix &r{0} &r&a&lto &r&e&l{1}&r&a&l!"),
+    AFFIX_MAX               ("affix.add.max",                       "&c&lCould not add {0} to &r&e&l{1}&r&c&l! Max limit of &r&e&l{2} &r&c&lis reached!"),
+    AFFIX_ADD_SUCCESS       ("affix.add.success",                   "&a&lAdded affix {0} &r&a&lto &r&e&l{1}&r&a&l!"),
     AFFIX_ADD_FAIL          ("affix.add.failure",                   "&c&lCould not add affix to &r&e&l{1}&r&c&l!"),
     AFFIX_REMOVE_SUCCESS    ("affix.remove.success",                "&a&lRemoved affix &r{0} &r&a&lto &r&e&l{1}&r&a&l!"),
     AFFIX_REMOVE_FAIL       ("affix.remove.failure",                "&c&lCould not remove affix to &r&e&l{1}&r&c&l!"),
     AFFIX_CREATE            ("affix.create",                        "&a&lCreated new affix &r{0}"),
     AFFIX_DELETE            ("affix.delete",                        "&c&lDeleted affix &r{0}"),
     AFFIX_NOT_FOUND         ("affix.not_found",                     "&c&lCould not find affix with ID &r&e&l{0}"),
-    AFFIX_UPDATE            ("affix.updated",                       "&c&lPlease fill out all fields to send the mail."),
+    AFFIX_UPDATE            ("affix.updated",                       "&a&lAffix was updated from &r&e&l{0} &r&a&lto &r&e&l{1}"),
 
     STATS_PLAYTIME          ("utility.stats.playtime",              "&a&lTotal playtime of &r&e&l{0}&r&a&l: &r&f&l{1}");
 

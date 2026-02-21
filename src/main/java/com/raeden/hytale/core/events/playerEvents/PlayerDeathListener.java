@@ -13,11 +13,12 @@ import com.hypixel.hytale.server.core.universe.Universe;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import com.raeden.hytale.HytaleFoundations;
 import com.raeden.hytale.core.player.PlayerStats;
+import com.raeden.hytale.utils.FileManager;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import static com.raeden.hytale.utils.FileManager.logExceptionError;
+import static com.raeden.hytale.utils.FileManager.logError;
 
 public class PlayerDeathListener extends DeathSystems.OnDeathSystem {
     private final HytaleFoundations hytaleFoundations;
@@ -45,7 +46,7 @@ public class PlayerDeathListener extends DeathSystems.OnDeathSystem {
                 stats.addDeath();
             }
         } catch (Exception e) {
-            logExceptionError("PlayerDeathListener", e);
+            FileManager.logError("PlayerDeathListener", e);
         }
     }
 

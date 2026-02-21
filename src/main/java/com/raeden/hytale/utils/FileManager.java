@@ -15,7 +15,6 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
-import java.util.logging.Level;
 
 import static com.raeden.hytale.HytaleFoundations.*;
 
@@ -35,7 +34,7 @@ public class FileManager {
                 }
             }
         } catch (IOException e) {
-            logExceptionError("createDirectory", e);
+            logError("createDirectory", e);
             if (langManager != null) {
                 myLogger.atSevere().log(langManager.getMessage(LangKey.DIR_CREATE_FAIL_LOC,true, fileName, directoryPath.toString()).getAnsiMessage());
             } else {
@@ -80,7 +79,7 @@ public class FileManager {
                     return myObj;
                 }
             } catch (IOException | JsonSyntaxException e) {
-                logExceptionError("loadJsonFile", e);
+                logError("loadJsonFile", e);
                 if (langManager != null) {
                     myLogger.atSevere().log(langManager.getMessage(LangKey.READ_FAILURE_LOC,true, fileName, filePath.toString()).getAnsiMessage());
                 } else {
@@ -129,7 +128,7 @@ public class FileManager {
                     return jsonObject;
                 }
             } catch (IOException | JsonSyntaxException e) {
-                logExceptionError("getJsonObject", e);
+                logError("getJsonObject", e);
                 if (langManager != null) {
                     myLogger.atSevere().log(langManager.getMessage(LangKey.LOAD_FAILURE_LOC,true, fileName, filePath.toString()).getAnsiMessage());
                 } else {
@@ -174,7 +173,7 @@ public class FileManager {
                 }
             }
         } catch (IOException e) {
-            logExceptionError("saveJsonFile", e);
+            logError("saveJsonFile", e);
             if (langManager != null) {
                 myLogger.atSevere().log(langManager.getMessage(LangKey.SAVE_FAILURE_LOC,true, fileName, savePath.toString()).getAnsiMessage());
             } else {
@@ -213,7 +212,7 @@ public class FileManager {
                 }
             }
         } catch (Exception e) {
-            logExceptionError("updateJsonFile", e);
+            logError("updateJsonFile", e);
             if(langManager != null) {
                 myLogger.atSevere().log(langManager.getMessage(LangKey.UPDATE_FAILURE, true, fileName).getAnsiMessage());
             } else {
@@ -262,15 +261,15 @@ public class FileManager {
     }
 
     // Catching errors
-    public static void logExceptionError(Exception e) {
-        logExceptionError(errorLogDirectory, "undefined", e);
+    public static void logError(Exception e) {
+        logError(ERROR_LOG_DIRECTORY, "undefined", e);
     }
 
-    public static void logExceptionError(String at, Exception e) {
-        logExceptionError(errorLogDirectory, at, e);
+    public static void logError(String at, Exception e) {
+        logError(ERROR_LOG_DIRECTORY, at, e);
     }
 
-    public static void logExceptionError(Path exportPath, String at, Exception e) {
+    public static void logError(Path exportPath, String at, Exception e) {
         if (!Files.exists(exportPath)) {
             try {
                 Files.createDirectories(exportPath);

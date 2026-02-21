@@ -6,6 +6,7 @@ import com.raeden.hytale.core.config.containers.ChatConfig;
 import com.raeden.hytale.core.player.PlayerProfile;
 import com.raeden.hytale.lang.LangKey;
 import com.raeden.hytale.utils.ColorEngine;
+import com.raeden.hytale.utils.FileManager;
 import com.raeden.hytale.utils.Scheduler;
 import com.raeden.hytale.utils.TimeUtils;
 
@@ -21,7 +22,7 @@ import java.util.concurrent.TimeUnit;
 import static com.raeden.hytale.HytaleFoundations.langManager;
 import static com.raeden.hytale.HytaleFoundations.myLogger;
 import static com.raeden.hytale.utils.FileManager.createDirectory;
-import static com.raeden.hytale.utils.FileManager.logExceptionError;
+import static com.raeden.hytale.utils.FileManager.logError;
 
 public class ChatManager {
     private final HytaleFoundations hytaleFoundations;
@@ -124,7 +125,7 @@ public class ChatManager {
             writer.write("---- END ----");
             myLogger.atInfo().log(langManager.getMessage(LangKey.LOG_CHAT_EXPORT_SUCCESS,true, fileName, chatLogDir.toString()).getAnsiMessage());
         } catch (IOException e) {
-            logExceptionError("exportChatLog", e);
+            FileManager.logError("exportChatLog", e);
             myLogger.atSevere().log(langManager.getMessage(LangKey.LOG_CHAT_EXPORT_FAIL,true, fileName).getAnsiMessage());
         }
     }
