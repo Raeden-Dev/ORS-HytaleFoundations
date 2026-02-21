@@ -10,9 +10,9 @@ import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.world.World;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import com.raeden.hytale.HytaleFoundations;
-import com.raeden.hytale.core.data.PlayerDataManager;
-import com.raeden.hytale.core.data.PlayerProfile;
-import com.raeden.hytale.core.data.PlayerStats;
+import com.raeden.hytale.core.player.PlayerDataManager;
+import com.raeden.hytale.core.player.PlayerProfile;
+import com.raeden.hytale.core.player.PlayerStats;
 import com.raeden.hytale.lang.LangKey;
 import com.raeden.hytale.modules.chat.ChatManager;
 

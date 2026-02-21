@@ -1,6 +1,9 @@
 package com.raeden.hytale.core.config;
 
 import com.raeden.hytale.HytaleFoundations;
+import com.raeden.hytale.core.config.containers.ChatConfig;
+import com.raeden.hytale.core.config.containers.Config;
+import com.raeden.hytale.core.config.containers.MailConfig;
 import com.raeden.hytale.utils.ColorEngine;
 
 import java.nio.file.Files;
@@ -103,6 +106,7 @@ public class ConfigManager {
     // Create Default Configs
     private MailConfig createDefaultMailConfig() {
         MailConfig mailConfig = new MailConfig();
+        mailConfig.setVersion(MAIL_CONFIG_VERSION);
         mailConfig.setAllowGifting(true);
         mailConfig.setMaxGiftPerMail(5);
         mailConfig.setMaxMailLines(32);

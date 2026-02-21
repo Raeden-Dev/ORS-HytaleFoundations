@@ -12,12 +12,11 @@ import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.Universe;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import com.raeden.hytale.HytaleFoundations;
+import com.raeden.hytale.core.player.PlayerStats;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import static com.raeden.hytale.HytaleFoundations.errorLogDirectory;
-import static com.raeden.hytale.HytaleFoundations.myLogger;
 import static com.raeden.hytale.utils.FileManager.logExceptionError;
 
 public class PlayerDeathListener extends DeathSystems.OnDeathSystem {
@@ -29,7 +28,7 @@ public class PlayerDeathListener extends DeathSystems.OnDeathSystem {
     @Nullable
     @Override
     public Query<EntityStore> getQuery() {
-        return Query.any();
+        return Query.and(Player.getComponentType());
     }
 
     @Override
@@ -40,8 +39,11 @@ public class PlayerDeathListener extends DeathSystems.OnDeathSystem {
             ComponentType<EntityStore, PlayerRef> refType = universe.getPlayerRefComponentType();
             PlayerRef playerRef = store.getComponent(ref, refType);
             if(playerRef == null) return;
-
-            System.out.println("PLAYER JUST DIED!");
+            String playerUsername = playerRef.getUsername();
+            PlayerStats stats = hytaleFoundations.getPlayerDataManager().getPlayerStats(playerUsername);
+            if(stats != null) {
+                stats.addDeath();
+            }
         } catch (Exception e) {
             logExceptionError("PlayerDeathListener", e);
         }

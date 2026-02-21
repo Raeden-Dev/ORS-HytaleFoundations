@@ -1,4 +1,4 @@
-package com.raeden.hytale.core.data;
+package com.raeden.hytale.core.player;
 
 public class PlayerStats {
     // playtime

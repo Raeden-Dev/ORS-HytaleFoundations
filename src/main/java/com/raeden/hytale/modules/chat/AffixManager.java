@@ -3,8 +3,8 @@ package com.raeden.hytale.modules.chat;
 import com.google.gson.reflect.TypeToken;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.raeden.hytale.HytaleFoundations;
-import com.raeden.hytale.core.data.PlayerDataManager;
-import com.raeden.hytale.core.data.PlayerProfile;
+import com.raeden.hytale.core.player.PlayerDataManager;
+import com.raeden.hytale.core.player.PlayerProfile;
 import com.raeden.hytale.lang.LangKey;
 
 import java.lang.reflect.Type;

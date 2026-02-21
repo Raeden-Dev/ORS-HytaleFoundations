@@ -8,10 +8,10 @@ import com.hypixel.hytale.server.core.event.events.player.PlayerDisconnectEvent;
 import com.hypixel.hytale.server.core.event.events.player.PlayerReadyEvent;
 import com.hypixel.hytale.server.core.plugin.JavaPlugin;
 import com.hypixel.hytale.server.core.plugin.JavaPluginInit;
+import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import com.raeden.hytale.core.commands.CoreCommand;
-import com.raeden.hytale.core.config.Config;
 import com.raeden.hytale.core.config.ConfigManager;
-import com.raeden.hytale.core.data.PlayerDataManager;
+import com.raeden.hytale.core.player.PlayerDataManager;
 import com.raeden.hytale.core.events.playerEvents.PlayerDeathListener;
 import com.raeden.hytale.core.events.playerEvents.PlayerServerDisconnectListener;
 import com.raeden.hytale.core.events.playerEvents.PlayerServerJoinListener;
@@ -35,25 +35,21 @@ import java.util.Random;
 public class HytaleFoundations extends JavaPlugin {
     public static final HytaleLogger myLogger = HytaleLogger.forEnclosingClass();
     public static final Random random = new Random();
-    public static final Gson GSON = new GsonBuilder()
-            .setPrettyPrinting()
-            .disableHtmlEscaping()
-            .create();
+    public static final Gson GSON = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
     public static Path errorLogDirectory;
 
     public static String CONFIG_VERSION = "v1.0";
     public static String CHAT_CONFIG_VERSION = "v1.0";
+    public static String MAIL_CONFIG_VERSION = "v1.0";
 
     private Scheduler scheduler;
     private PluginActionManager pluginActionManager;
-
     private ConfigManager configManager;
     public static LangManager langManager;
     private PlayerDataManager playerDataManager;
+
     private ChatManager chatManager;
     private MailManager mailManager;
-
-    private Config config;
 
     public HytaleFoundations(@Nonnull JavaPluginInit init) {
         super(init);
@@ -82,17 +78,18 @@ public class HytaleFoundations extends JavaPlugin {
     }
 
     private void registerManagers() {
+        // Main dependencies
         langManager = new LangManager(this);
         configManager = new ConfigManager(this);
-        config = configManager.getDefaultConfig();
         langManager.setDefaultLanguage();
-
         scheduler = new Scheduler(this);
         pluginActionManager = new PluginActionManager(this);
         playerDataManager = new PlayerDataManager(this);
 
-        if(config.isToggleChatModule()) {
+        if(configManager.getDefaultConfig().isToggleChatModule()) {
             chatManager = new ChatManager(this, scheduler);
+        }
+        if(configManager.getDefaultConfig().isToggleMailModule()) {
             mailManager = new MailManager(this);
         }
     }
@@ -105,24 +102,25 @@ public class HytaleFoundations extends JavaPlugin {
             PlayerServerDisconnectListener.onPlayerDisconnect(playerDisconnectEvent, this);
         });
 
-        if(config.isToggleChatModule()) {
+        if(configManager.getDefaultConfig().isToggleChatModule()) {
             this.getEventRegistry().registerGlobal(PlayerChatEvent.class, playerChatEvent -> {
                 PlayerChatListener.onPlayerChat(playerChatEvent, this);
             });
         }
 
         PlayerDeathListener PlayerDeathListener = new PlayerDeathListener(this);
+        EntityStore.REGISTRY.registerSystem(PlayerDeathListener);
     }
 
     private void registerCommands() {
         this.getCommandRegistry().registerCommand(new CoreCommand(this));
 
-        if(config.isToggleAdminModule()) {
+        if(configManager.getDefaultConfig().isToggleAdminModule()) {
             this.getCommandRegistry().registerCommand(new AnnounceCommand(this));
             this.getCommandRegistry().registerCommand(new TitleCommand(this));
             this.getCommandRegistry().registerCommand(new VanishCommand(this));
         }
-        if(config.isToggleChatModule()) {
+        if(configManager.getDefaultConfig().isToggleChatModule()) {
             this.getCommandRegistry().registerCommand(new ClearChatCommand(this));
             this.getCommandRegistry().registerCommand(new MessagePlayerCommand(this));
             this.getCommandRegistry().registerCommand(new ReplyPlayerCommand(this));
@@ -132,16 +130,14 @@ public class HytaleFoundations extends JavaPlugin {
             this.getCommandRegistry().registerCommand(new UnmutePlayerCommand(this));
             this.getCommandRegistry().registerCommand(new IngorePlayerCommand(this));
             this.getCommandRegistry().registerCommand(new MailCommand(this));
+            this.getCommandRegistry().registerCommand(new NicknameCommand(this));
+            this.getCommandRegistry().registerCommand(new AffixCommand(this));
         }
-
         // Admin UI
-        if(config.isToggleHomesModule()) {
+        if(configManager.getDefaultConfig().isToggleHomesModule()) {
             this.getCommandRegistry().registerCommand(new HomesCommand());
         }
-
         // Utility Commands
-        this.getCommandRegistry().registerCommand(new NicknameCommand(this));
-        this.getCommandRegistry().registerCommand(new AffixCommand(this));
         this.getCommandRegistry().registerCommand(new PlayerInfoCommand());
         this.getCommandRegistry().registerCommand(new PlaytimeCommand(this));
         this.getCommandRegistry().registerCommand(new AnvilCommand());
@@ -149,7 +145,6 @@ public class HytaleFoundations extends JavaPlugin {
     }
 
     public ConfigManager getConfigManager() {return configManager;}
-    public Config getConfig() {return config;}
     public LangManager getLangManager() {return langManager;}
     public PlayerDataManager getPlayerDataManager() {return playerDataManager;}
     public ChatManager getChatManager() {return chatManager;}

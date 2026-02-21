@@ -3,7 +3,7 @@ package com.raeden.hytale.lang;
 import com.hypixel.hytale.server.core.Message;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.raeden.hytale.HytaleFoundations;
-import com.raeden.hytale.core.data.PlayerProfile;
+import com.raeden.hytale.core.player.PlayerProfile;
 import com.raeden.hytale.utils.ColorEngine;
 import com.raeden.hytale.utils.DefaultColors;
 

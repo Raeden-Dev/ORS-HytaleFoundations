@@ -1,15 +1,19 @@
-package com.raeden.hytale.core.config;
+package com.raeden.hytale.core.config.containers;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class MailConfig {
+    private String VERSION;
     private int MAX_INBOX_SIZE;
     private int MAX_MAIL_LINES;
     private int MAX_MAIL_PER_DAY;
     private boolean ALLOW_GIFTING;
     private int MAX_GIFT_PER_MAIL;
     private final List<String> BLACKLISTED_GIFTS = new ArrayList<>();
+
+    public String getVersion() {return VERSION;}
+    public void setVersion(String VERSION) {this.VERSION = VERSION;}
 
     public int getMaxInboxSize() {return MAX_INBOX_SIZE;}
     public void setMaxInboxSize(int MAX_INBOX_SIZE) {this.MAX_INBOX_SIZE = MAX_INBOX_SIZE;}

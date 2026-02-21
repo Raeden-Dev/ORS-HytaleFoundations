@@ -2,13 +2,12 @@ package com.raeden.hytale.modules.mail;
 
 import com.hypixel.hytale.protocol.packets.interface_.NotificationStyle;
 import com.hypixel.hytale.server.core.Message;
-import com.hypixel.hytale.server.core.entity.entities.Player;
 import com.hypixel.hytale.server.core.io.PacketHandler;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.util.NotificationUtil;
 import com.raeden.hytale.HytaleFoundations;
-import com.raeden.hytale.core.data.PlayerDataManager;
-import com.raeden.hytale.core.data.PlayerMailbox;
+import com.raeden.hytale.core.player.PlayerDataManager;
+import com.raeden.hytale.core.player.PlayerMailbox;
 import com.raeden.hytale.lang.LangKey;
 
 import java.util.List;

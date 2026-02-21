@@ -10,8 +10,6 @@ import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.world.World;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import com.raeden.hytale.HytaleFoundations;
-import com.raeden.hytale.core.data.PlayerDataManager;
-import com.raeden.hytale.core.data.PlayerMailbox;
 import com.raeden.hytale.modules.mail.MailManager;
 import com.raeden.hytale.utils.TimeUtils;
 

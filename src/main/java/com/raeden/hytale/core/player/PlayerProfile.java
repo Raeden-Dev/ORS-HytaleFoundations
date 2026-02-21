@@ -1,4 +1,4 @@
-package com.raeden.hytale.core.data;
+package com.raeden.hytale.core.player;
 
 import com.hypixel.hytale.math.vector.Location;
 

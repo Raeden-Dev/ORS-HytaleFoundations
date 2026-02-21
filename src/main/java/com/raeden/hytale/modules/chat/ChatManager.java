@@ -2,8 +2,8 @@ package com.raeden.hytale.modules.chat;
 
 import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.raeden.hytale.HytaleFoundations;
-import com.raeden.hytale.core.config.ChatConfig;
-import com.raeden.hytale.core.data.PlayerProfile;
+import com.raeden.hytale.core.config.containers.ChatConfig;
+import com.raeden.hytale.core.player.PlayerProfile;
 import com.raeden.hytale.lang.LangKey;
 import com.raeden.hytale.utils.ColorEngine;
 import com.raeden.hytale.utils.Scheduler;
@@ -14,7 +14,6 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Path;
-import java.util.Map;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;

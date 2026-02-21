@@ -1,11 +1,11 @@
-package com.raeden.hytale.core.data;
+package com.raeden.hytale.core.player;
 
 import com.google.gson.reflect.TypeToken;
 import com.hypixel.hytale.server.core.Message;
 import com.hypixel.hytale.server.core.entity.entities.Player;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.raeden.hytale.HytaleFoundations;
-import com.raeden.hytale.core.config.ChatConfig;
+import com.raeden.hytale.core.config.containers.ChatConfig;
 import com.raeden.hytale.lang.LangKey;
 
 import java.io.File;

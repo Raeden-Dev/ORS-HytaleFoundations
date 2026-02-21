@@ -1,4 +1,4 @@
-package com.raeden.hytale.core.config;
+package com.raeden.hytale.core.config.containers;
 
 public class Config {
     private String VERSION;
@@ -6,6 +6,7 @@ public class Config {
     private String DATA_STORAGE_TYPE;
     private int PLAYER_DATA_SAVE_INTERVAL; // LOGOUT, 5M, 10M, 30M, 1H
     private boolean DEBUG_MODE;
+    private boolean LOG_ACTIONS;
     private boolean TOGGLE_ADMIN_MODULE;
     private boolean TOGGLE_CHAT_MODULE;
     private boolean TOGGLE_RANK_MODULE;

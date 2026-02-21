@@ -1,4 +1,4 @@
-package com.raeden.hytale.core.config;
+package com.raeden.hytale.core.config.containers;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -5,8 +5,8 @@ import com.hypixel.hytale.server.core.event.events.player.PlayerChatEvent;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.Universe;
 import com.raeden.hytale.HytaleFoundations;
-import com.raeden.hytale.core.data.PlayerProfile;
-import com.raeden.hytale.core.data.PlayerStats;
+import com.raeden.hytale.core.player.PlayerProfile;
+import com.raeden.hytale.core.player.PlayerStats;
 import com.raeden.hytale.lang.LangKey;
 import com.raeden.hytale.modules.chat.ChatManager;
 import com.raeden.hytale.utils.ColorEngine;
@@ -31,23 +31,24 @@ public class PlayerChatListener {
             return;
         }
 
-        e.setCancelled(true); // Cancel event anyway because of our Custom Chat
+        if(hytaleFoundations.getConfigManager().getDefaultConfig().isToggleChatModule()) {
+            e.setCancelled(true);
+            if(profile.isMuted() && !isAdmin) {
+                playerRef.sendMessage(langManager.getMessage(playerUsername, LangKey.MUTE_ERROR_CHAT_TIME,false, TimeUtils.formatDuration(profile.getMuteDuration())));
+                return;
+            }
+            String chatContent = e.getContent();
+            String formattedChatContent = hytaleFoundations.getChatManager().formatChat(profile, playerUsername, chatContent);
 
-        if(profile.isMuted() && !isAdmin) {
-            playerRef.sendMessage(langManager.getMessage(playerUsername, LangKey.MUTE_ERROR_CHAT_TIME,false, TimeUtils.formatDuration(profile.getMuteDuration())));
-            return;
+            Message finalMessage = Message.empty();
+            finalMessage.insert(colorEngine.parseText(formattedChatContent));
+
+            for(PlayerRef players : Universe.get().getPlayers()) {
+                players.sendMessage(finalMessage);
+            }
+            chatManager.addMessageToLog(e.getContent());
         }
 
-        String chatContent = e.getContent();
-        String formattedChatContent = hytaleFoundations.getChatManager().formatChat(profile, playerUsername, chatContent);
-
-        Message finalMessage = Message.empty();
-        finalMessage.insert(colorEngine.parseText(formattedChatContent));
-
-        for(PlayerRef players : Universe.get().getPlayers()) {
-            players.sendMessage(finalMessage);
-        }
-        chatManager.addMessageToLog(e.getContent());
         stats.increaseMessageSent();
     }
 }
