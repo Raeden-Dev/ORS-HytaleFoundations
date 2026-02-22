@@ -9,8 +9,8 @@ public enum LangKey {
     INVALID_COLOR_FORMAT    ("system.error.invalid_color",          "Skipping invalid color format. Code: {0} | Hex: {1}"),
     SCHEDULER_CREATED       ("system.scheduler.create",             "Created scheduler {0} called by {1}"),
     NULL_POINTER            ("system.error.null",                   "[ERROR] Unexpected null error at {0}"),
-    PLUGIN_RELOAD_SUCCESS   ("system.plugin.reload_success",        "&a&lSuccessfully reloaded Hytale Foundations!"),
-    PLUGIN_RELOAD_FAILURE   ("system.plugin.reload_failure",        "&c&lFailed to reload Hytale Foundations!"),
+    PLUGIN_RELOAD_SUCCESS   ("system.plugin.reload_success",        "&a&lSuccessfully reloaded {0}!"),
+    PLUGIN_RELOAD_FAILURE   ("system.plugin.reload_failure",        "&c&lFailed to reload {0}!"),
     GENERAL_LIST            ("message.info.list",                   "&a&lAvailable {0}:"),
     GENERAL_LIST_ITEM       ("message.info.list_item",              "&7&l  - &r{0}"),
 
@@ -91,7 +91,9 @@ public enum LangKey {
     MAIL_SEND_FAILURE       ("mail.send.fail",                      "&c&lFailed to send mail to &r&e&l{0}&r&c&l!"),
     MAIL_MISSING_FIELD      ("mail.send.empty_field",               "&c&lPlease fill out all fields to send the mail."),
 
-    NICKNAME_DISABLED       ("nickname.status.disabled",            "&c&lChanging  &r&e&lnickname &r&c&lis disabled!"),
+    NICKNAME_DISABLED       ("nickname.disabled",                   "&c&lChanging  &r&e&lnickname &r&c&lis disabled!"),
+    NICKNAME_SET            ("nickname.set",                        "&a&lChanged nickname of &r&e&l{0} to &r{1}"),
+    NICKNAME_CLEARED        ("nickname.clear",                      "&a&lCleared nickname of &r&e&l{0}}"),
     NICKNAME_LENGTH         ("nickname.error.length",               "&c&Nickname must have atleast &r&e&l3 &r&c&lcharacters!"),
     NICKNAME_NO_SPECIAL_CHAR("nickname.error.no_special_characters","&c&Nickname must not contain any &r&e&lspecial &r&c&lcharacter!"),
     NICKNAME_EXISTS         ("nickname.error.exists",               "&c&Someone already has the &r&e&lsame &r&c&lnickname!"),

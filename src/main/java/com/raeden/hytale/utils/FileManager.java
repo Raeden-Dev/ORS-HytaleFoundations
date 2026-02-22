@@ -6,15 +6,13 @@ import com.google.gson.JsonParser;
 import com.google.gson.JsonSyntaxException;
 import com.raeden.hytale.lang.LangKey;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.*;
 import java.lang.reflect.Type;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
+import java.util.Objects;
 
 import static com.raeden.hytale.HytaleFoundations.*;
 
@@ -301,6 +299,19 @@ public class FileManager {
                 myLogger.atSevere().log("Failed to save error log.");
             }
             writeEx.printStackTrace();
+        }
+    }
+    private int getTotalFilesInDir(Path location) {
+        int count = 0;
+        if(Files.exists(location)) {
+            for(File file : Objects.requireNonNull(location.toFile().listFiles())) {
+                if(!file.isDirectory()) {
+                    count++;
+                }
+            }
+            return count;
+        } else {
+            return 0;
         }
     }
 }
