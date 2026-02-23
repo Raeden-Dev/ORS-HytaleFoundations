@@ -30,9 +30,7 @@ public class ChatManager {
     private final Scheduler scheduler;
     private final ColorEngine colorEngine;
     private final ChatConfig chatConfig;
-
     private String CHAT_FORMAT;
-
     private final Map<String, String> activeMessengers;
     private final Map<String, String> messageLog; // Time string + Message
 
@@ -54,7 +52,7 @@ public class ChatManager {
         setupChatFormat();
 
         createDirectory(chatLogDir, true);
-        if(chatConfig.isSaveChatLog()) {
+        if(chatConfig.getChatLogSaveInterval() != 0) {
             createChatSaveScheduler();
         }
     }

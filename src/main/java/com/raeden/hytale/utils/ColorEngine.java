@@ -275,7 +275,7 @@ public class ColorEngine {
     public Path getColorFilePath() { return colorFilePath;}
     // Color Map Class
     public static final class ColormapHolder {
-        private final String VERSION = "v1.0";
+        private final String VERSION = COLORMAP_VERSION;
         private Map<String, String> COLOR_LIST = new ConcurrentHashMap<>();
 
         public Map<String, String> getColorList() {return COLOR_LIST;}

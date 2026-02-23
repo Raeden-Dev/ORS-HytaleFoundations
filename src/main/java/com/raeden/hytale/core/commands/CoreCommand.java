@@ -43,6 +43,7 @@ public class CoreCommand extends AbstractCommandCollection {
         private final HytaleFoundations hytaleFoundations;
         public HFHelpCommand(HytaleFoundations hytaleFoundations) {
             super("help", "Enquire about how to use Hytale Foundations");
+            this.requirePermission(Permissions.HFPermissions.ACCESS.getPermission());
             this.hytaleFoundations = hytaleFoundations;
         }
         @Override
@@ -86,6 +87,34 @@ public class CoreCommand extends AbstractCommandCollection {
         }
     }
 
+    private static class DebugCommand extends AbstractAsyncCommand {
+        private final HytaleFoundations hytaleFoundations;
+        public DebugCommand(HytaleFoundations hytaleFoundations) {
+            super("debug", "Toggle debug mode on/off for Hytale Foundations");
+            this.addAliases("dbug");
+            this.hytaleFoundations = hytaleFoundations;
+        }
+        @Nonnull
+        @Override
+        protected CompletableFuture<Void> executeAsync(@Nonnull CommandContext commandContext) {
+            try {
+                hytaleFoundations.getConfigManager().getDefaultConfig().setToggleDebug(!hytaleFoundations.getConfigManager().getDefaultConfig().isToggleDebug());
+                if(commandContext.isPlayer()) {
+                    commandContext.sender().sendMessage(langManager.getMessage(commandContext.sender().getDisplayName(), LangKey.DEBUG_MODE, false, "On"));
+                } else {
+                    commandContext.sender().sendMessage(langManager.getMessage(LangKey.DEBUG_MODE, true, "On"));
+                }
+            } catch (Exception e) {
+                if(commandContext.isPlayer()) {
+                    commandContext.sender().sendMessage(langManager.getMessage(commandContext.sender().getDisplayName(), LangKey.DEBUG_MODE, false, "Off"));
+                } else {
+                    commandContext.sender().sendMessage(langManager.getMessage(LangKey.DEBUG_MODE, true, "Off"));
+                }
+                logError(ERROR_LOG_DIRECTORY, "DebugCommand", e);
+            }
+            return CompletableFuture.completedFuture(null);
+        }
+    }
 
     private static class UpdatePluginCommand extends AbstractAsyncCommand {
         private final HytaleFoundations hytaleFoundations;

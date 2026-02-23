@@ -5,6 +5,7 @@ import java.util.List;
 
 public class ChatConfig {
     private String VERSION;
+    private boolean SHOW_CHAT_MSG_PREFIX;
     private boolean SHOW_NICKNAME;
     private boolean SHOW_PREFIX;
     private boolean SHOW_SUFFIX;
@@ -18,7 +19,6 @@ public class ChatConfig {
     private boolean REMOVE_IPS;
 
     private int PVT_MSG_CACHE_CLEAR_INTERVAL; // LOGOUT + 5M, 10M, 30M, 1H
-    private boolean SAVE_CHAT_LOG;
     private int CHAT_LOG_SAVE_INTERVAL; // On shutdown + 5M, 10M, 30M, 1H
 
     private List<String> CURSE_WORD_LIST = new ArrayList<>();
@@ -49,8 +49,6 @@ public class ChatConfig {
     public boolean isRemoveIps() {return REMOVE_IPS;}
     public void setRemoveIps(boolean REMOVE_IPS) {this.REMOVE_IPS = REMOVE_IPS;}
 
-    public boolean isSaveChatLog() {return SAVE_CHAT_LOG;}
-    public void setSaveChatLog(boolean saveChatLog) {this.SAVE_CHAT_LOG = saveChatLog;}
     public int getChatLogSaveInterval() {return CHAT_LOG_SAVE_INTERVAL;}
     public void setChatLogSaveInterval(int ChatLogSaveInterval) {this.CHAT_LOG_SAVE_INTERVAL = ChatLogSaveInterval;}
     public int getPvtMsgClearInterval() {return PVT_MSG_CACHE_CLEAR_INTERVAL;}
@@ -60,4 +58,7 @@ public class ChatConfig {
     public void setCurseWordList(List<String> CURSE_WORD_LIST) {this.CURSE_WORD_LIST = CURSE_WORD_LIST;}
     public List<String> getCensorWordList() {return CENSOR_WORD_LIST;}
     public void setCensorWordList(List<String> CENSOR_WORD_LIST) {this.CENSOR_WORD_LIST = CENSOR_WORD_LIST;}
+
+    public boolean isShowChatMsgPrefix() {return SHOW_CHAT_MSG_PREFIX;}
+    public void setShowChatMsgPrefix(boolean SHOW_CHAT_MSG_PREFIX) {this.SHOW_CHAT_MSG_PREFIX = SHOW_CHAT_MSG_PREFIX;}
 }

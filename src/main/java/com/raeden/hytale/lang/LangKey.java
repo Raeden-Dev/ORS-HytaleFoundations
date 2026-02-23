@@ -2,7 +2,7 @@ package com.raeden.hytale.lang;
 
 public enum LangKey {
     // Core System
-    PREFIX                  ("system.prefix",                       "&l|"),
+    CHAT_MSG_PREFIX         ("system.prefix",                       "&l|"),
     NO_PERMISSION           ("system.no_permission",                "You don't have permission to run that command!"),
     MISMATCH_FOUND          ("system.error.mismatch",               "Mismatch found for {0}"),
     INVALID_TIME_FORMAT     ("system.error.invalid_time",           "Time format is incorrect! Correct format: (d|h|m|s eg. 1d8h5m33s)"),
@@ -30,6 +30,7 @@ public enum LangKey {
     READ_FAILURE_LOC        ("system.data.read.fail_loc",           "[READ] Failed to read {0} at {1}"),
     CHECK_FAILURE           ("system.data.check.fail",              "[INFO] Failed to check {0}"),
 
+    DEBUG_MODE              ("system.process.debug",                                "&a&lDebug Mode: &r&e&l{0}"),
     PENDING_UPDATE          ("system.data.update.pending",          "[UPDATE] An update is available for {0}"),
     UPDATE_SUCCESS          ("system.data.update.success",          "[UPDATE] Updated {0}"),
     UPDATE_SUCCESS_VERSION  ("system.data.update.success_version",  "[UPDATE] Updated {0} from {1} to {2}"),

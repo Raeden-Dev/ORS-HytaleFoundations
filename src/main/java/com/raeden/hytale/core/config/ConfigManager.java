@@ -54,13 +54,13 @@ public class ConfigManager {
     }
 
     public void updateConfigs() {
-        updateJsonFile(CONFIG_FILE, dataDir.resolve(CONFIG_FILE), Config.class, true);
-        updateJsonFile(CHAT_CONFIG, dataDir.resolve(CHAT_CONFIG), ChatConfig.class, true);
-        updateJsonFile(MAIL_CONFIG, dataDir.resolve(MAIL_CONFIG), MailConfig.class, true);
+        updateJsonFile(CONFIG_FILE, dataDir.resolve(CONFIG_FILE), new Config(), true);
+        updateJsonFile(CHAT_CONFIG, dataDir.resolve(CHAT_CONFIG), new ChatConfig(), true);
+        updateJsonFile(MAIL_CONFIG, dataDir.resolve(MAIL_CONFIG),new MailConfig(), true);
 
         // Color file
         ColorEngine engine = hytaleFoundations.getChatManager().getColorEngine();
-        updateJsonFile(engine.getColorFile(), engine.getColorFilePath(), ColorEngine.ColormapHolder.class, true);
+        updateJsonFile(engine.getColorFile(), engine.getColorFilePath(), new ColorEngine.ColormapHolder(), true);
     }
 
     private void createErrorLogDir() {
@@ -130,7 +130,6 @@ public class ConfigManager {
         chatConfig.setCensorCurseWords(true);
         chatConfig.setToggleCensorWordList(true);
         chatConfig.setPvtMsgClearInterval(5);
-        chatConfig.setSaveChatLog(true);
         chatConfig.setChatLogSaveInterval(10);
         List<String> censorWordList = new ArrayList<>(List.of("lgbt", "LGBTQ+", "woke", "nigga", "nigger"));
         chatConfig.setCensorWordList(censorWordList);

@@ -29,6 +29,7 @@ import com.raeden.hytale.modules.mail.MailManager;
 import com.raeden.hytale.modules.chat.commands.*;
 import com.raeden.hytale.modules.chat.events.PlayerChatListener;
 import com.raeden.hytale.modules.mail.commands.MailCommand;
+import com.raeden.hytale.modules.rank.commands.RankCommand;
 import com.raeden.hytale.modules.utility.commands.*;
 import com.raeden.hytale.utils.Scheduler;
 
@@ -45,6 +46,9 @@ public class HytaleFoundations extends JavaPlugin {
     public static String CONFIG_VERSION = "v1.0";
     public static String CHAT_CONFIG_VERSION = "v1.0";
     public static String MAIL_CONFIG_VERSION = "v1.0";
+    public static String COLORMAP_VERSION = "v1.0";
+    public static String AFFIX_VERSION = "v1.0";
+    public static String RANK_VERSION = "v1.0";
 
     private Scheduler scheduler;
     private PluginActionManager pluginActionManager;
@@ -83,18 +87,18 @@ public class HytaleFoundations extends JavaPlugin {
 
     private void registerManagers() {
         // Main dependencies
-        langManager = new LangManager(this);
-        configManager = new ConfigManager(this);
+        if(langManager == null) langManager = new LangManager(this);
+        if(configManager == null) configManager = new ConfigManager(this);
         langManager.setDefaultLanguage();
-        scheduler = new Scheduler(this);
-        pluginActionManager = new PluginActionManager(this);
-        playerDataManager = new PlayerDataManager(this);
+        if(scheduler == null) scheduler = new Scheduler(this);
+        if(pluginActionManager == null) pluginActionManager = new PluginActionManager(this);
+        if(playerDataManager == null) playerDataManager = new PlayerDataManager(this);
 
         if(configManager.getDefaultConfig().isToggleChatModule()) {
-            chatManager = new ChatManager(this, scheduler);
+            if(chatManager == null) chatManager = new ChatManager(this, scheduler);
         }
         if(configManager.getDefaultConfig().isToggleMailModule()) {
-            mailManager = new MailManager(this);
+            if(mailManager == null) mailManager = new MailManager(this);
         }
     }
 
@@ -141,7 +145,10 @@ public class HytaleFoundations extends JavaPlugin {
         }
         // Admin UI
         if(configManager.getDefaultConfig().isToggleHomesModule()) {
-            this.getCommandRegistry().registerCommand(new HomesCommand());
+            this.getCommandRegistry().registerCommand(new HomesCommand(this));
+        }
+        if(configManager.getDefaultConfig().isToggleRankModule()) {
+            this.getCommandRegistry().registerCommand(new RankCommand(this));
         }
         // Utility Commands
         this.getCommandRegistry().registerCommand(new PlayerInfoCommand());

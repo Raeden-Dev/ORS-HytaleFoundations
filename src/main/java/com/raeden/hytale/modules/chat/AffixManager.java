@@ -13,8 +13,7 @@ import java.nio.file.Path;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
-import static com.raeden.hytale.HytaleFoundations.langManager;
-import static com.raeden.hytale.HytaleFoundations.myLogger;
+import static com.raeden.hytale.HytaleFoundations.*;
 import static com.raeden.hytale.utils.FileManager.loadJsonFile;
 import static com.raeden.hytale.utils.FileManager.saveJsonFile;
 import static com.raeden.hytale.utils.GeneralUtils.findPlayerByName;
@@ -165,25 +164,6 @@ public class AffixManager {
     }
 
     // Classes
-    private static class AffixHolder {
-        private String VERSION = "v1.0";
-        private List<PlayerAffix> AFFIX_LIST = new ArrayList<>();
-
-        public String getVersion() {return VERSION;}
-        public void setVersion(String VERSION) {this.VERSION = VERSION;}
-        public List<PlayerAffix> getAffixList() {return AFFIX_LIST;}
-        public void setAffixList(List<PlayerAffix> AFFIX_LIST) {this.AFFIX_LIST = AFFIX_LIST;}
-        public void addToAffixList(PlayerAffix affix) { AFFIX_LIST.add(affix);}
-
-        public Map<String, PlayerAffix> getAffixListAsMap() {
-            Map<String, PlayerAffix> affixMap = new ConcurrentHashMap<>();
-            for(PlayerAffix affix : AFFIX_LIST) {
-                affixMap.put(affix.id, affix);
-            }
-            return affixMap;
-        }
-    }
-
     public static class PlayerAffix {
         private String id;
         private String displayText;
@@ -200,5 +180,21 @@ public class AffixManager {
         public int getPriority() {return priority;}
         public void setPriority(int priority) {this.priority = priority;}
     }
+    private static class AffixHolder {
+        private final String VERSION = AFFIX_VERSION;
+        private List<PlayerAffix> AFFIX_LIST = new ArrayList<>();
 
+        public String getVersion() {return VERSION;}
+        public List<PlayerAffix> getAffixList() {return AFFIX_LIST;}
+        public void setAffixList(List<PlayerAffix> AFFIX_LIST) {this.AFFIX_LIST = AFFIX_LIST;}
+        public void addToAffixList(PlayerAffix affix) { AFFIX_LIST.add(affix);}
+
+        public Map<String, PlayerAffix> getAffixListAsMap() {
+            Map<String, PlayerAffix> affixMap = new ConcurrentHashMap<>();
+            for(PlayerAffix affix : AFFIX_LIST) {
+                affixMap.put(affix.getId(), affix);
+            }
+            return affixMap;
+        }
+    }
 }

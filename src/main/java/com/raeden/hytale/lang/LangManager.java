@@ -136,8 +136,8 @@ public class LangManager {
     public Message getMessage(String username, LangKey key, boolean isConsole, String... args) {
         PlayerRef playerRef = username == null ? null : findPlayerByName(username);
 
-        String prefixText = getLangString(username, LangKey.PREFIX);
-        if (prefixText == null) prefixText = LangKey.PREFIX.getDefaultMessage();
+        String prefixText = getLangString(username, LangKey.CHAT_MSG_PREFIX);
+        if (prefixText == null) prefixText = LangKey.CHAT_MSG_PREFIX.getDefaultMessage();
 
         String finalText = getLangString(username, key);
         if (finalText == null) finalText = key.getDefaultMessage();
