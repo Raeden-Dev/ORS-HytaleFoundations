@@ -18,6 +18,10 @@ public class RankConfig {
     @SerializedName("RANK_LIST")
     private List<RankManager.Rank> rankList = new ArrayList<>();
 
+    public String getVersion() {return version;}
+    public boolean isForceAddAffix() {return forceAddAffix;}
+    public void setForceAddAffix(boolean forceAddAffix) {this.forceAddAffix = forceAddAffix;}
+
     public List<RankManager.Rank> getRankList() {return rankList;}
     public void setRankList(List<RankManager.Rank> RANK_LIST) {this.rankList = RANK_LIST;}
     public void addRank(RankManager.Rank rank) {this.rankList.add(rank);}
@@ -31,6 +35,4 @@ public class RankConfig {
         }
         return rankMap;
     }
-
-    public String getVersion() {return version;}
 }

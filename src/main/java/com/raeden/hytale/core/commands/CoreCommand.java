@@ -34,6 +34,7 @@ public class CoreCommand extends AbstractCommandCollection {
         this.addSubCommand(new PluginMenuCommand());
         this.addSubCommand(new ReloadPluginCommand(hytaleFoundations));
         this.addSubCommand(new UpdatePluginCommand(hytaleFoundations));
+        this.addSubCommand(new DebugCommand(hytaleFoundations));
         this.addSubCommand(new TestPlayerCommand(hytaleFoundations));
         this.addSubCommand(new LangCommand(hytaleFoundations));
         this.addSubCommand(new HFHelpCommand(hytaleFoundations));
@@ -99,17 +100,13 @@ public class CoreCommand extends AbstractCommandCollection {
         protected CompletableFuture<Void> executeAsync(@Nonnull CommandContext commandContext) {
             try {
                 hytaleFoundations.getConfigManager().getDefaultConfig().setToggleDebug(!hytaleFoundations.getConfigManager().getDefaultConfig().isToggleDebug());
+                String debugStr = hytaleFoundations.getConfigManager().getDefaultConfig().isToggleDebug() ? "On":"Off";
                 if(commandContext.isPlayer()) {
-                    commandContext.sender().sendMessage(langManager.getMessage(commandContext.sender().getDisplayName(), LangKey.DEBUG_MODE, false, "On"));
+                    commandContext.sender().sendMessage(langManager.getMessage(commandContext.sender().getDisplayName(), LangKey.DEBUG_MODE, false, debugStr));
                 } else {
-                    commandContext.sender().sendMessage(langManager.getMessage(LangKey.DEBUG_MODE, true, "On"));
+                    commandContext.sender().sendMessage(langManager.getMessage(LangKey.DEBUG_MODE, true, debugStr));
                 }
             } catch (Exception e) {
-                if(commandContext.isPlayer()) {
-                    commandContext.sender().sendMessage(langManager.getMessage(commandContext.sender().getDisplayName(), LangKey.DEBUG_MODE, false, "Off"));
-                } else {
-                    commandContext.sender().sendMessage(langManager.getMessage(LangKey.DEBUG_MODE, true, "Off"));
-                }
                 logError(ERROR_LOG_DIRECTORY, "DebugCommand", e);
             }
             return CompletableFuture.completedFuture(null);

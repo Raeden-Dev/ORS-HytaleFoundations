@@ -37,9 +37,9 @@ public class BlockPlayerCommand extends AbstractPlayerCommand {
         String senderUsername = commandContext.sender().getDisplayName();
         String targetUsername = commandContext.get(this.targetPlayer);
 
-        PlayerRef receiver = findPlayerByName("Block Player Command", targetUsername);
-        if(receiver == null) {
-            commandContext.sender().sendMessage(langManager.getMessage(senderUsername, LangKey.PM_ERROR_OFFLINE,false, targetUsername));
+        PlayerRef receiver = findPlayerByName("BlockPlayerCommand", targetUsername);
+        if(receiver == null && !hytaleFoundations.getPlayerDataManager().doesPlayerDataExist(targetUsername)) {
+            commandContext.sender().sendMessage(langManager.getMessage(senderUsername, LangKey.PLAYER_NOT_FOUND_MSG, false, targetUsername));
             return;
         }
         PlayerProfile profile = hytaleFoundations.getPlayerDataManager().getPlayerProfile(senderUsername);

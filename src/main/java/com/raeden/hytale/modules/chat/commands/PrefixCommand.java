@@ -26,6 +26,8 @@ public class PrefixCommand extends AbstractCommandCollection {
         this.addAliases("pfx");
         this.requirePermission(Permissions.HFPermissions.AFFIX.getPermission());
         this.addSubCommand(new PrefixAddCommand(hytaleFoundations));
+        this.addSubCommand(new PrefixForceAddCommand(hytaleFoundations));
+        this.addSubCommand(new PrefixRemoveCommand(hytaleFoundations));
         this.addSubCommand(new PrefixClearCommand(hytaleFoundations));
     }
     public static class PrefixAddCommand extends AbstractPlayerCommand {
@@ -41,21 +43,48 @@ public class PrefixCommand extends AbstractCommandCollection {
         }
         @Override
         protected void execute(@Nonnull CommandContext commandContext, @Nonnull Store<EntityStore> store, @Nonnull Ref<EntityStore> ref, @Nonnull PlayerRef playerRef, @Nonnull World world) {
-            String senderUsername = commandContext.sender().getDisplayName();
             String targetPlayerName = commandContext.get(this.targetPlayer);
             String affixId = commandContext.get(this.affixId);
-            PlayerProfile profile = hytaleFoundations.getPlayerDataManager().getPlayerProfile(targetPlayerName);
             AffixManager affixManager = hytaleFoundations.getChatManager().getAffixManager();
-            if(profile == null) {
-                commandContext.sender().sendMessage(langManager.getMessage(senderUsername, LangKey.PLAYER_NOT_FOUND_MSG,false, targetPlayerName));
-                return;
-            }
-            if(!affixManager.doesAffixExists(affixId)) {
-                commandContext.sender().sendMessage(langManager.getMessage(senderUsername, LangKey.AFFIX_NOT_FOUND,false, affixId));
-                return;
-            }
-            commandContext.sender().sendMessage(langManager.getMessage(senderUsername, LangKey.AFFIX_ADD_SUCCESS, false, affixManager.getAffixDisplay(affixId), targetPlayerName));
             affixManager.addPrefixToPlayer(playerRef, targetPlayerName, affixId, false);
+        }
+    }
+    public static class PrefixForceAddCommand extends AbstractPlayerCommand {
+        private final HytaleFoundations hytaleFoundations;
+        private final RequiredArg<String> targetPlayer;
+        private final RequiredArg<String> affixId;
+        public PrefixForceAddCommand(HytaleFoundations hytaleFoundations) {
+            super("forceadd", "Force add a prefix for target player");
+            this.requirePermission(Permissions.HFPermissions.AFFIX.getPermission());
+            this.hytaleFoundations = hytaleFoundations;
+            targetPlayer = withRequiredArg("Player", "The target player", ArgTypes.STRING);
+            affixId = withRequiredArg("Affix ID", "ID of the affix to set for target", ArgTypes.STRING);
+        }
+        @Override
+        protected void execute(@Nonnull CommandContext commandContext, @Nonnull Store<EntityStore> store, @Nonnull Ref<EntityStore> ref, @Nonnull PlayerRef playerRef, @Nonnull World world) {
+            String targetPlayerName = commandContext.get(this.targetPlayer);
+            String affixId = commandContext.get(this.affixId);
+            AffixManager affixManager = hytaleFoundations.getChatManager().getAffixManager();
+            affixManager.addPrefixToPlayer(playerRef, targetPlayerName, affixId, true);
+        }
+    }
+    public static class PrefixRemoveCommand extends AbstractPlayerCommand {
+        private final HytaleFoundations hytaleFoundations;
+        private final RequiredArg<String> targetPlayer;
+        private final RequiredArg<String> affixId;
+        public PrefixRemoveCommand(HytaleFoundations hytaleFoundations) {
+            super("remove", "Remove a prefix for the target player.");
+            this.requirePermission(Permissions.HFPermissions.AFFIX.getPermission());
+            this.hytaleFoundations = hytaleFoundations;
+            targetPlayer = withRequiredArg("Player", "The target player", ArgTypes.STRING);
+            affixId = withRequiredArg("Affix ID", "ID of the affix to set for target", ArgTypes.STRING);
+        }
+        @Override
+        protected void execute(@Nonnull CommandContext commandContext, @Nonnull Store<EntityStore> store, @Nonnull Ref<EntityStore> ref, @Nonnull PlayerRef playerRef, @Nonnull World world) {
+            String targetPlayerName = commandContext.get(this.targetPlayer);
+            String affixId = commandContext.get(this.affixId);
+            AffixManager affixManager = hytaleFoundations.getChatManager().getAffixManager();
+            affixManager.removePrefixFromPlayer(playerRef, targetPlayerName, affixId);
         }
     }
     public static class PrefixClearCommand extends AbstractPlayerCommand {
@@ -69,14 +98,9 @@ public class PrefixCommand extends AbstractCommandCollection {
         }
         @Override
         protected void execute(@Nonnull CommandContext commandContext, @Nonnull Store<EntityStore> store, @Nonnull Ref<EntityStore> ref, @Nonnull PlayerRef playerRef, @Nonnull World world) {
-            String senderUsername = commandContext.sender().getDisplayName();
             String targetPlayerName = commandContext.get(this.targetPlayer);
-            PlayerProfile profile = hytaleFoundations.getPlayerDataManager().getPlayerProfile(targetPlayerName);
-            if(profile == null) {
-                commandContext.sender().sendMessage(langManager.getMessage(senderUsername, LangKey.PLAYER_NOT_FOUND_MSG,false, targetPlayerName));
-                return;
-            }
-            profile.clearActivePrefix();
+            AffixManager affixManager = hytaleFoundations.getChatManager().getAffixManager();
+            affixManager.removeAllCertainAffixFromPlayer(playerRef, targetPlayerName, true);
         }
     }
 

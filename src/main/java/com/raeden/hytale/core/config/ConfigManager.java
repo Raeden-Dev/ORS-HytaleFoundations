@@ -4,6 +4,7 @@ import com.raeden.hytale.HytaleFoundations;
 import com.raeden.hytale.core.config.containers.ChatConfig;
 import com.raeden.hytale.core.config.containers.Config;
 import com.raeden.hytale.core.config.containers.MailConfig;
+import com.raeden.hytale.core.config.containers.RankConfig;
 import com.raeden.hytale.modules.chat.ColorManager;
 
 import java.nio.file.Files;
@@ -48,8 +49,8 @@ public class ConfigManager {
     public void loadConfigs() {
         createDirectory(dataDirectory, true);
         this.defaultConfig = loadConfigData();
-        this.defaultChatConfig = loadChatConfigData();
-        this.defaultMailConfig = loadMailConfigData();
+        if(defaultConfig.isToggleChatModule()) this.defaultChatConfig = loadChatConfigData();
+        if(defaultConfig.isToggleMailModule()) this.defaultMailConfig = loadMailConfigData();
         createErrorLogDir();
     }
 
@@ -57,12 +58,13 @@ public class ConfigManager {
     public void reloadPlugin() {
         if(!Files.exists(dataDirectory)) loadConfigs();
         this.defaultConfig = loadConfigData();
-        this.defaultChatConfig = loadChatConfigData();
-        this.defaultMailConfig = loadMailConfigData();
         if(defaultConfig.isToggleChatModule()) {
+            this.defaultChatConfig = loadChatConfigData();
             hytaleFoundations.getChatManager().getAffixManager().loadAffixes();
             hytaleFoundations.getChatManager().getColorEngine().loadColors();
         }
+        if(defaultConfig.isToggleMailModule()) this.defaultMailConfig = loadMailConfigData();
+
     }
 
     // Do not use without try/catch
@@ -130,6 +132,7 @@ public class ConfigManager {
     private ChatConfig createDefaultChatConfig() {
         ChatConfig chatConfig = new ChatConfig();
         chatConfig.setVersion(CHAT_CONFIG_VERSION);
+        chatConfig.setShowChatMsgPrefix(true);
         chatConfig.setShowNickname(true);
         chatConfig.setShowPrefix(true);
         chatConfig.setShowSuffix(true);

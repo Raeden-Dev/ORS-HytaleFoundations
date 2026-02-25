@@ -128,4 +128,37 @@ public class RankManager {
         public String getChatSuffixId() {return chatSuffixId;}
         public int getRankPriority() {return rankPriority;}
     }
+    public static class RankHolder {
+        @SerializedName("VERSION")
+        private final String version = RANK_VERSION;
+        @SerializedName("FORCE_ADD_AFFIX")
+        private boolean forceAddAffix;
+        @SerializedName("RANK_GROUPS")
+        private final Map<String, List<String>> rankGroups = new ConcurrentHashMap<>();
+        @SerializedName("RANK_LIST")
+        private List<Rank> rankList = new ArrayList<>();
+
+        public List<Rank> getRankList() {return rankList;}
+        public void setRankList(List<Rank> RANK_LIST) {this.rankList = RANK_LIST;}
+        public void addRank(Rank rank) {this.rankList.add(rank);}
+        public void removeRank(Rank rank) {
+            rankList.removeIf(i -> i.getId().equals(rank.getId()));
+        }
+        public Map<String, Rank> getRankListAsMap() {
+            Map<String, Rank> rankMap = new ConcurrentHashMap<>();
+            for(Rank rank : rankList) {
+                rankMap.put(rank.getId(), rank);
+            }
+            return rankMap;
+        }
+
+        public String getVersion() {return version;}
+        public boolean isForceAddAffix() {return forceAddAffix;}
+        public void setForceAddAffix(boolean forceAddAffix) {this.forceAddAffix = forceAddAffix;}
+
+        public Map<String, List<String>> getRankGroups() {return rankGroups;}
+        public void addRankGroup(String groupName, List<String> rankList) {rankGroups.put(groupName, rankList);}
+        public void removeRankGroup(String groupName) { rankGroups.remove(groupName);}
+
+    }
 }

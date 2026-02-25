@@ -58,15 +58,9 @@ public class AffixCommand extends AbstractCommandCollection {
         }
         @Override
         protected void execute(@Nonnull CommandContext commandContext, @Nonnull Store<EntityStore> store, @Nonnull Ref<EntityStore> ref, @Nonnull PlayerRef playerRef, @Nonnull World world) {
-            String senderUsername = commandContext.sender().getDisplayName();
             String targetPlayerName = commandContext.get(this.targetPlayer);
-            PlayerProfile profile = hytaleFoundations.getPlayerDataManager().getPlayerProfile(targetPlayerName);
-            if(profile == null) {
-                commandContext.sender().sendMessage(langManager.getMessage(senderUsername, LangKey.PLAYER_NOT_FOUND_MSG,false, targetPlayerName));
-                return;
-            }
-            profile.clearActiveSuffix();
-            profile.clearActivePrefix();
+            AffixManager affixManager = hytaleFoundations.getChatManager().getAffixManager();
+            affixManager.removeAllAffixFromPlayer(playerRef, targetPlayerName);
         }
     }
 }

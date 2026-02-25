@@ -2,7 +2,8 @@ package com.raeden.hytale.lang;
 
 public enum LangKey {
     // Core System
-    CHAT_MSG_PREFIX         ("system.prefix",                       "&l|"),
+    CHAT_MSG_PREFIX         ("system.prefix",                       "&l|&r"),
+    CHAT_MSG_PREFIX_ADMIN   ("system.prefix_admin",                 "&7&l[&r&b&a&lHytaleFoundations&r&7&l]&r"),
     NO_PERMISSION           ("system.no_permission",                "You don't have permission to run that command!"),
     MISMATCH_FOUND          ("system.error.mismatch",               "Mismatch found for {0}"),
     INVALID_TIME_FORMAT     ("system.error.invalid_time",           "Time format is incorrect! Correct format: (d|h|m|s eg. 1d8h5m33s)"),
@@ -30,7 +31,7 @@ public enum LangKey {
     READ_FAILURE_LOC        ("system.data.read.fail_loc",           "[READ] Failed to read {0} at {1}"),
     CHECK_FAILURE           ("system.data.check.fail",              "[INFO] Failed to check {0}"),
 
-    DEBUG_MODE              ("system.process.debug",                                "&a&lDebug Mode: &r&e&l{0}"),
+    DEBUG_MODE              ("system.process.debug",                "&a&lDebug Mode: &r&e&l{0}"),
     PENDING_UPDATE          ("system.data.update.pending",          "[UPDATE] An update is available for {0}"),
     UPDATE_SUCCESS          ("system.data.update.success",          "[UPDATE] Updated {0}"),
     UPDATE_SUCCESS_VERSION  ("system.data.update.success_version",  "[UPDATE] Updated {0} from {1} to {2}"),
@@ -94,7 +95,7 @@ public enum LangKey {
 
     NICKNAME_DISABLED       ("nickname.disabled",                   "&c&lChanging  &r&e&lnickname &r&c&lis disabled!"),
     NICKNAME_SET            ("nickname.set",                        "&a&lChanged nickname of &r&e&l{0} to &r{1}"),
-    NICKNAME_CLEARED        ("nickname.clear",                      "&a&lCleared nickname of &r&e&l{0}}"),
+    NICKNAME_CLEARED        ("nickname.clear",                      "&a&lCleared nickname of &r&e&l{0}"),
     NICKNAME_LENGTH         ("nickname.error.length",               "&c&Nickname must have atleast &r&e&l3 &r&c&lcharacters!"),
     NICKNAME_NO_SPECIAL_CHAR("nickname.error.no_special_characters","&c&Nickname must not contain any &r&e&lspecial &r&c&lcharacter!"),
     NICKNAME_EXISTS         ("nickname.error.exists",               "&c&Someone already has the &r&e&lsame &r&c&lnickname!"),
@@ -108,12 +109,13 @@ public enum LangKey {
     AFFIX_ADD_FAIL          ("affix.add.failure",                   "&c&lCould not add affix to &r&e&l{1}&r&c&l!"),
     AFFIX_REMOVE_SUCCESS    ("affix.remove.success",                "&a&lRemoved affix &r{0} &r&a&lof &r&e&l{1}&r&a&l!"),
     AFFIX_REMOVE_FAIL       ("affix.remove.failure",                "&c&lCould not remove affix to &r&e&l{1}&r&c&l!"),
+    AFFIX_REMOVE_ALL       ( "affix.remove.all",                    "&a&lRemoved all {0} of &r&e&l{1}&r&a&l!"),
     AFFIX_REPLACE           ("affix.add.replace",                   "&a&lReplaced affix &r{0} &r&a&lwith &r&e&l{1} &r&a&lfor {2}. (Affix had least priority)"),
     AFFIX_CREATE            ("affix.create",                        "&a&lCreated new affix &r{0}"),
     AFFIX_DELETE            ("affix.delete",                        "&c&lDeleted affix &r{0}"),
     AFFIX_NOT_FOUND         ("affix.not_found",                     "&c&lCould not find affix with ID &r&e&l{0}"),
-    AFFIX_ACTIVE            ( "affix.add.active",                    "&e&l{0} &r&c&lalready has an active &r&e&l{1} &r&c&lcalled &r&e&l{2}"),
-    AFFIX_INACTIVE          ( "affix.remove.inactive",               "&e&l{0} &r&c&ldoes not have an active &r&e&l{1} &r&c&lcalled &r&e&l{2}"),
+    AFFIX_ACTIVE            ("affix.add.active",                    "&e&l{0} &r&c&lalready has an active &r&e&l{1} &r&c&lcalled &r&e&l{2}"),
+    AFFIX_INACTIVE          ("affix.remove.inactive",               "&e&l{0} &r&c&ldoes not have an active &r&e&l{1} &r&c&lcalled &r&e&l{2}"),
     AFFIX_UPDATE            ("affix.updated",                       "&a&lAffix was updated from &r&e&l{0} &r&a&lto &r&e&l{1}"),
 
     RANK_SET_SUCCESS        ("rank.set.success",                    "&a&lSet rank &r{0} for &r&e&l{1}"),

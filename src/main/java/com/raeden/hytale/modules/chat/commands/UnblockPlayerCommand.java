@@ -11,6 +11,7 @@ import com.hypixel.hytale.server.core.universe.world.World;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import com.raeden.hytale.HytaleFoundations;
 import com.raeden.hytale.core.player.PlayerProfile;
+import com.raeden.hytale.core.utils.Permissions;
 import com.raeden.hytale.lang.LangKey;
 
 import javax.annotation.Nonnull;
@@ -27,6 +28,7 @@ public class UnblockPlayerCommand extends AbstractPlayerCommand {
     public UnblockPlayerCommand(HytaleFoundations hytaleFoundations) {
         super("unblock", "Unblocks a player so they can interact with you again.");
         this.hytaleFoundations = hytaleFoundations;
+        this.requirePermission(Permissions.HFPermissions.BLOCK_PLAYER.getPermission());
         targetPlayer = withRequiredArg("Player", "Player to execute command on.", ArgTypes.STRING);
     }
     @Override
@@ -35,19 +37,12 @@ public class UnblockPlayerCommand extends AbstractPlayerCommand {
         String senderUsername = commandContext.sender().getDisplayName();
         String targetUsername = commandContext.get(this.targetPlayer);
 
-        if(!commandContext.sender().hasPermission("ors.foundations.block") && !isAdmin) {
-            commandContext.sender().sendMessage(langManager.getMessage(senderUsername, LangKey.NO_PERMISSION, false));
+        PlayerRef receiver = findPlayerByName("UnblockPlayerCommand", targetUsername);
+        if(receiver == null && !hytaleFoundations.getPlayerDataManager().doesPlayerDataExist(targetUsername)) {
+            commandContext.sender().sendMessage(langManager.getMessage(senderUsername, LangKey.PLAYER_NOT_FOUND_MSG, false, targetUsername));
             return;
         }
-
-        PlayerRef receiver = findPlayerByName("Unblock Player Command", targetUsername);
-        if(receiver == null) {
-            commandContext.sender().sendMessage(langManager.getMessage(senderUsername, LangKey.PM_ERROR_OFFLINE, false, targetUsername));
-            return;
-        }
-
         PlayerProfile profile = hytaleFoundations.getPlayerDataManager().getPlayerProfile(senderUsername);
-
         List<String> blockedPlayers = profile.getBlockedPlayers();
         if(blockedPlayers.contains(targetUsername)) {
             profile.removeBlockedPlayer(targetUsername);

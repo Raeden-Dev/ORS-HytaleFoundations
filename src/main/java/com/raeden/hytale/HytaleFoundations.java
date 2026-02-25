@@ -29,6 +29,7 @@ import com.raeden.hytale.modules.mail.MailManager;
 import com.raeden.hytale.modules.chat.commands.*;
 import com.raeden.hytale.modules.chat.events.PlayerChatListener;
 import com.raeden.hytale.modules.mail.commands.MailCommand;
+import com.raeden.hytale.modules.rank.RankManager;
 import com.raeden.hytale.modules.rank.commands.RankCommand;
 import com.raeden.hytale.modules.utility.commands.*;
 import com.raeden.hytale.utils.Scheduler;
@@ -51,6 +52,7 @@ public class HytaleFoundations extends JavaPlugin {
 
     private ChatManager chatManager;
     private MailManager mailManager;
+    private RankManager rankManager;
 
     public HytaleFoundations(@Nonnull JavaPluginInit init) {
         super(init);
@@ -78,7 +80,7 @@ public class HytaleFoundations extends JavaPlugin {
         }
     }
 
-    private void registerManagers() {
+    public void registerManagers() {
         // Main dependencies
         if(langManager == null) langManager = new LangManager(this);
         if(configManager == null) configManager = new ConfigManager(this);
@@ -92,6 +94,9 @@ public class HytaleFoundations extends JavaPlugin {
         }
         if(configManager.getDefaultConfig().isToggleMailModule()) {
             if(mailManager == null) mailManager = new MailManager(this);
+        }
+        if(configManager.getDefaultConfig().isToggleRankModule()) {
+            if(rankManager == null) rankManager = new RankManager(this);
         }
     }
 
@@ -156,5 +161,5 @@ public class HytaleFoundations extends JavaPlugin {
     public ChatManager getChatManager() {return chatManager;}
     public PluginActionManager getPluginActionManager() {return pluginActionManager;}
     public MailManager getMailManager() {return mailManager;}
-
+    public RankManager getRankManager() {return rankManager;}
 }
