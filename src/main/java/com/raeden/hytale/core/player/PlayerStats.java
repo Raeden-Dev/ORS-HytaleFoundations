@@ -1,26 +1,41 @@
 package com.raeden.hytale.core.player;
 
+import com.google.gson.annotations.SerializedName;
+
 public class PlayerStats {
-    // playtime
+    @SerializedName("FIRST_JOINED")
     private long firstJoined;
+    @SerializedName("LAST_JOINED")
     private long lastJoined;
+    @SerializedName("PLAY_TIME_MILLIS")
     private long playTimeMillis;
 
     // Stats
+    @SerializedName("TOTAL_DEATHS")
     private int totalDeaths;
+    @SerializedName("PLAYER_KILLS")
     private int playerKills;
+    @SerializedName("MOB_KILLS")
     private int mobKills;
+    @SerializedName("DAMAGE_TAKEN")
     private int damageTaken;
+    @SerializedName("DAMAGE_GIVEN")
     private int damageGiven;
+    @SerializedName("BLOCKS_BROKEN")
     private int blocksBroken;
+    @SerializedName("BLOCKS_PLACED")
     private int blocksPlaced;
+    @SerializedName("DISTANCE_WALKED")
     private double distanceWalked;
-
+    @SerializedName("ITEMS_CRAFTED")
     private int itemsCrafted;
+    @SerializedName("ITEMS_BROKEN")
     private int itemsBroken;
 
     // Chat
+    @SerializedName("TOTAL_MESSAGES_SENT")
     private long totalMessagesSent;
+    @SerializedName("TOTAL_TIMES_REPORTED_BY_PLAYERS")
     private int totalTimesReportedByPlayers;
 
     public long getFirstJoined() {return firstJoined;}

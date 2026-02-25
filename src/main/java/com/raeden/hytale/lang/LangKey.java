@@ -106,12 +106,26 @@ public enum LangKey {
     AFFIX_MAX               ("affix.add.max",                       "&c&lCould not add {0} to &r&e&l{1}&r&c&l! Max limit of &r&e&l{2} &r&c&lis reached!"),
     AFFIX_ADD_SUCCESS       ("affix.add.success",                   "&a&lAdded affix {0} &r&a&lto &r&e&l{1}&r&a&l!"),
     AFFIX_ADD_FAIL          ("affix.add.failure",                   "&c&lCould not add affix to &r&e&l{1}&r&c&l!"),
-    AFFIX_REMOVE_SUCCESS    ("affix.remove.success",                "&a&lRemoved affix &r{0} &r&a&lto &r&e&l{1}&r&a&l!"),
+    AFFIX_REMOVE_SUCCESS    ("affix.remove.success",                "&a&lRemoved affix &r{0} &r&a&lof &r&e&l{1}&r&a&l!"),
     AFFIX_REMOVE_FAIL       ("affix.remove.failure",                "&c&lCould not remove affix to &r&e&l{1}&r&c&l!"),
+    AFFIX_REPLACE           ("affix.add.replace",                   "&a&lReplaced affix &r{0} &r&a&lwith &r&e&l{1} &r&a&lfor {2}. (Affix had least priority)"),
     AFFIX_CREATE            ("affix.create",                        "&a&lCreated new affix &r{0}"),
     AFFIX_DELETE            ("affix.delete",                        "&c&lDeleted affix &r{0}"),
     AFFIX_NOT_FOUND         ("affix.not_found",                     "&c&lCould not find affix with ID &r&e&l{0}"),
+    AFFIX_ACTIVE            ( "affix.add.active",                    "&e&l{0} &r&c&lalready has an active &r&e&l{1} &r&c&lcalled &r&e&l{2}"),
+    AFFIX_INACTIVE          ( "affix.remove.inactive",               "&e&l{0} &r&c&ldoes not have an active &r&e&l{1} &r&c&lcalled &r&e&l{2}"),
     AFFIX_UPDATE            ("affix.updated",                       "&a&lAffix was updated from &r&e&l{0} &r&a&lto &r&e&l{1}"),
+
+    RANK_SET_SUCCESS        ("rank.set.success",                    "&a&lSet rank &r{0} for &r&e&l{1}"),
+    RANK_SET_FAIL           ("rank.set.fail",                       "&c&lFailed to set rank &r{0} for &r&e&l{1}"),
+    RANK_PROMOTE            ("rank.promote",                        "&a&lPromoted &r&e&l{0} from &r{1} &r&a&l-> &r{2}"),
+    RANK_PROMOTE_CAP        ("rank.promote.cap",                    "&c&lCould not promote &r&e&l{0}, &r&a&lmax rank is reached."),
+    RANK_DEMOTE             ("rank.demote",                         "&a&lDemoted &r&e&l{0} from &r{1} &r&a&l-> &r{2}"),
+    RANK_DEMOTE_CAP         ("rank.demote.cap",                     "&a&lSet rank &r{0} for &r&e&l{1}"),
+    RANK_INDEPENDENT        ("rank.independent",                    "&c&lThis rank is independent and devoid of next/previous ranks."),
+    RANK_NOT_FOUND        (  "rank.not_found",                      "&c&lRank with id &r&e&l{0} &r&c&lis not found!"),
+    RANK_REMOVE             ("rank.remove",                         "&a&lSet rank &r{0} for &r&e&l{1}"),
+
 
     STATS_PLAYTIME          ("utility.stats.playtime",              "&a&lTotal playtime of &r&e&l{0}&r&a&l: &r&f&l{1}");
 

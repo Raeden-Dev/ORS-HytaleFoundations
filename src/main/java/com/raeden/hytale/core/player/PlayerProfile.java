@@ -1,5 +1,6 @@
 package com.raeden.hytale.core.player;
 
+import com.google.gson.annotations.SerializedName;
 import com.hypixel.hytale.math.vector.Location;
 
 import java.util.*;
@@ -8,43 +9,69 @@ import java.util.concurrent.ConcurrentHashMap;
 public class PlayerProfile {
     private transient long sessionStart = 0;
 
-    private UUID UUID;
+    @SerializedName("UUID")
+    private UUID uuid;
+    @SerializedName("USERNAME")
     private final List<String> username = new ArrayList<>();
+    @SerializedName("LANGUAGE")
     private String language;
+    @SerializedName("NICKNAME")
     private String nickname;
+    @SerializedName("USERNAME_COLOR_CODE")
     private String usernameColorCode;
 
     // Admin
+    @SerializedName("GOD_MODE_ENABLED")
     private boolean godModeEnabled;
+    @SerializedName("IS_VANISHED")
     private boolean isVanished;
+    @SerializedName("IS_FLYING")
     private boolean isFlying;
+    @SerializedName("IS_ANONYMOUS")
     private boolean isAnonymous;
 
     // Convenience
+    @SerializedName("HOMES")
     private final Map<String, Location> homes = new ConcurrentHashMap<>();
 
     // Economy
+    @SerializedName("BALANCES")
     private final Map<String, Long> balances = new ConcurrentHashMap<>();
 
     // Chat
+    @SerializedName("IS_MUTED")
     private boolean isMuted;
+    @SerializedName("MUTE_DURATION")
     private long muteDuration;
+    @SerializedName("IS_SILENCED")
     private boolean isSilenced;
+    @SerializedName("SHOW_NICKNAME")
     private boolean showNickname;
+    @SerializedName("SHOW_PREFIX")
     private boolean showPrefix;
+    @SerializedName("SHOW_SUFFIX")
     private boolean showSuffix;
+    @SerializedName("MAX_PREFIX")
     private int maxPrefix;
+    @SerializedName("MAX_SUFFIX")
     private int maxSuffix;
+
+    @SerializedName("ACTIVE_PREFIX")
     private final Map<String, String> activePrefix = new ConcurrentHashMap<>();
+    @SerializedName("ACTIVE_SUFFIX")
     private final Map<String, String> activeSuffix = new ConcurrentHashMap<>();
+    @SerializedName("BLOCKED_PLAYERS")
     private final List<String> blockedPlayers = new ArrayList<>();
 
+    // Rank
+    @SerializedName("RANK_ID")
+    private String rankId;
 
     public long getSessionStart() {return sessionStart;}
     public void setSessionStart(long sessionStart) {this.sessionStart = sessionStart;}
 
-    public UUID getUUID() {return UUID;}
-    public void setUUID(UUID UUID) {this.UUID = UUID;}
+    public UUID getUuid() {return uuid;}
+    public void setUuid(UUID uuid) {this.uuid = uuid;}
 
     public String getLanguage() {return language;}
     public void setLanguage(String language) {this.language = language;}
@@ -100,7 +127,7 @@ public class PlayerProfile {
     public void setMaxPrefix(int maxPrefix) {this.maxPrefix = maxPrefix;}
 
     public Map<String, String> getActivePrefix() {return activePrefix;}
-    public void addToActivePrefix(String ID, String prefix) { activePrefix.put(ID, prefix);}
+    public void addToActivePrefix(String ID, String prefix) {activePrefix.put(ID, prefix);}
     public void clearActivePrefix() {activePrefix.clear();}
     public void removeActivePrefix(String ID) { activePrefix.remove(ID);}
     public Map<String, String> getActiveSuffix() {return activeSuffix;}
@@ -110,4 +137,7 @@ public class PlayerProfile {
 
     public String getUsernameColorCode() {return usernameColorCode;}
     public void setUsernameColorCode(String usernameColorCode) {this.usernameColorCode = usernameColorCode;}
+
+    public String getRankId() {return rankId;}
+    public void setRankId(String rankId) {this.rankId = rankId;}
 }

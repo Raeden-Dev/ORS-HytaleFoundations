@@ -55,7 +55,7 @@ public class PrefixCommand extends AbstractCommandCollection {
                 return;
             }
             commandContext.sender().sendMessage(langManager.getMessage(senderUsername, LangKey.AFFIX_ADD_SUCCESS, false, affixManager.getAffixDisplay(affixId), targetPlayerName));
-            affixManager.addPrefixToPlayer(playerRef, targetPlayerName, affixId);
+            affixManager.addPrefixToPlayer(playerRef, targetPlayerName, affixId, false);
         }
     }
     public static class PrefixClearCommand extends AbstractPlayerCommand {

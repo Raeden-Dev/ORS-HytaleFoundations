@@ -5,7 +5,6 @@ import com.raeden.hytale.HytaleFoundations;
 import com.raeden.hytale.core.config.containers.ChatConfig;
 import com.raeden.hytale.core.player.PlayerProfile;
 import com.raeden.hytale.lang.LangKey;
-import com.raeden.hytale.utils.ColorEngine;
 import com.raeden.hytale.utils.FileManager;
 import com.raeden.hytale.utils.Scheduler;
 import com.raeden.hytale.utils.TimeUtils;
@@ -28,9 +27,9 @@ public class ChatManager {
     private final HytaleFoundations hytaleFoundations;
     private final AffixManager affixManager;
     private final Scheduler scheduler;
-    private final ColorEngine colorEngine;
+    private final ColorManager colorManager;
     private final ChatConfig chatConfig;
-    private String CHAT_FORMAT;
+    private String chatFormat;
     private final Map<String, String> activeMessengers;
     private final Map<String, String> messageLog; // Time string + Message
 
@@ -47,7 +46,7 @@ public class ChatManager {
         activeMessengers = new ConcurrentHashMap<>();
         messageLog = new ConcurrentHashMap<>();
         // Color Engine
-        colorEngine = new ColorEngine(hytaleFoundations);
+        colorManager = new ColorManager(hytaleFoundations);
 
         setupChatFormat();
 
@@ -59,14 +58,14 @@ public class ChatManager {
     // Format Chat
     public String formatChat(PlayerProfile profile, String username, String message) {
         if(profile == null || message.isEmpty()) return "";
-        String chatFormat = CHAT_FORMAT;
+        String chatFormat = this.chatFormat;
         String prefix = String.join("", profile.getActivePrefix().values());
         String suffix = String.join("", profile.getActiveSuffix().values());
         String displayName = username;
-        if (chatConfig.isShowNickNames() && profile.isShowNickname() && !profile.getNickname().isEmpty()) {
+        if (chatConfig.isShowNickname() && profile.isShowNickname() && !profile.getNickname().isEmpty()) {
             displayName = profile.getNickname();
         } else {
-            if(colorEngine.isColorCodeAvailable(profile.getUsernameColorCode())) {
+            if(colorManager.isColorCodeAvailable(profile.getUsernameColorCode())) {
                 displayName = profile.getUsernameColorCode() + username;
             }
         }
@@ -80,9 +79,9 @@ public class ChatManager {
         if(langManager != null) {
             String chatFormat = langManager.getMessage(LangKey.CHAT_FORMAT).getAnsiMessage();
             if(validateChatFormat(chatFormat)) {
-                CHAT_FORMAT = chatFormat;
+                this.chatFormat = chatFormat;
             } else {
-                CHAT_FORMAT = "{prefix} {player} {suffix} » {message}";
+                this.chatFormat = "{prefix} {player} {suffix} » {message}";
             }
         }
     }
@@ -165,6 +164,6 @@ public class ChatManager {
                 TimeUnit.MINUTES);
     }
 
-    public ColorEngine getColorEngine() {return colorEngine;}
+    public ColorManager getColorEngine() {return colorManager;}
     public AffixManager getAffixManager() {return affixManager;}
 }

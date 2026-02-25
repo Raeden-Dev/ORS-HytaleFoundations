@@ -30,7 +30,7 @@ public class MailManager {
         PlayerMailbox mailbox = playerDataManager.getPlayerMailbox(receiver);
         if(mailbox != null) {
             mailbox.addMail(mail);
-            playerDataManager.savePlayerData(receiver, playerDataManager.MAIL_JSON, mailbox, false);
+            playerDataManager.savePlayerData(receiver, playerDataManager.MAIL_FILENAME, mailbox, false);
             if(sender != null) {
                 sender.sendMessage(langManager.getMessage(sender.getUsername(), LangKey.MAIL_SEND_SUCCESS, false, receiver));
             }

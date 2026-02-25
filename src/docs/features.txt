@@ -30,6 +30,19 @@ You can find the features we have to work on below:
         ? Can be turned off in configs
     > /hf colors: Shows list of all available colors
 
+|| DATA SHARING FEATURES:
+-----------------------------
+1. Separate Data: "World"
+    > The plugin can load and create Data for a single World
+2. Shared Data: World1 + World2
+    > The plugin can share data between worlds
+        - Example: Gamemode with a Player Base (Home) and Actions (Dungeons)
+
+Concept:
+--------
+Adding cause Ive heard each world of hytale runs on its own thread.
+If Im making a gamemode where world1 is base and world2 is dungeons.
+Then World1 and World2 will communicate between the same player files. And in
 
 || ADMIN FEATURES:
 -----------------------------

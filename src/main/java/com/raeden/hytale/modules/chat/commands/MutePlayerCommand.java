@@ -84,7 +84,7 @@ public class MutePlayerCommand extends AbstractPlayerCommand {
         }
 
         if(isTargetOffline) {
-            dataManager.savePlayerData(targetUsername, dataManager.PROFILE_JSON, profile);
+            dataManager.savePlayerData(targetUsername, dataManager.PROFILE_FILENAME, profile);
         }
     }
 }

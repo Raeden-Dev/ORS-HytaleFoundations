@@ -59,7 +59,7 @@ public class UnmutePlayerCommand extends AbstractPlayerCommand {
         }
 
         if(isTargetOffline) {
-            dataManager.savePlayerData(targetUsername, dataManager.PROFILE_JSON, profile);
+            dataManager.savePlayerData(targetUsername, dataManager.PROFILE_FILENAME, profile);
         }
     }
 }

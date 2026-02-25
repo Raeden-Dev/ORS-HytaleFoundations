@@ -9,7 +9,7 @@ import com.raeden.hytale.core.player.PlayerProfile;
 import com.raeden.hytale.core.player.PlayerStats;
 import com.raeden.hytale.lang.LangKey;
 import com.raeden.hytale.modules.chat.ChatManager;
-import com.raeden.hytale.utils.ColorEngine;
+import com.raeden.hytale.modules.chat.ColorManager;
 import com.raeden.hytale.utils.TimeUtils;
 
 import static com.raeden.hytale.HytaleFoundations.langManager;
@@ -19,7 +19,7 @@ import static com.raeden.hytale.core.utils.Permissions.isPlayerAdmin;
 public class PlayerChatListener {
     public static void onPlayerChat(PlayerChatEvent e, HytaleFoundations hytaleFoundations) {
         ChatManager chatManager = hytaleFoundations.getChatManager();
-        ColorEngine colorEngine = chatManager.getColorEngine();
+        ColorManager colorManager = chatManager.getColorEngine();
         PlayerRef playerRef = e.getSender();
         String playerUsername = playerRef.getUsername();
         boolean isAdmin = isPlayerAdmin(playerRef);
@@ -41,7 +41,7 @@ public class PlayerChatListener {
             String formattedChatContent = hytaleFoundations.getChatManager().formatChat(profile, playerUsername, chatContent);
 
             Message finalMessage = Message.empty();
-            finalMessage.insert(colorEngine.parseText(formattedChatContent));
+            finalMessage.insert(colorManager.parseText(formattedChatContent));
 
             for(PlayerRef players : Universe.get().getPlayers()) {
                 players.sendMessage(finalMessage);

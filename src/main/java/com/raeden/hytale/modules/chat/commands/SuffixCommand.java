@@ -55,7 +55,7 @@ public class SuffixCommand extends AbstractCommandCollection {
                 return;
             }
             commandContext.sender().sendMessage(langManager.getMessage(senderUsername, LangKey.AFFIX_ADD_SUCCESS, false, affixManager.getAffixDisplay(affixId), targetPlayerName));
-            affixManager.addSuffixToPlayer(playerRef, targetPlayerName, affixId);
+            affixManager.addSuffixToPlayer(playerRef, targetPlayerName, affixId, false);
         }
     }
     public static class SuffixClearCommand extends AbstractPlayerCommand {

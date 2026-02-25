@@ -8,11 +8,11 @@ import com.raeden.hytale.utils.FileManager;
 
 import java.util.UUID;
 
-import static com.raeden.hytale.HytaleFoundations.langManager;
-import static com.raeden.hytale.HytaleFoundations.myLogger;
+import static com.raeden.hytale.HytaleFoundations.*;
 import static com.raeden.hytale.utils.FileManager.logError;
 
 public class Permissions {
+    public static String PERMISSION_GROUP_PREFIX = "hytalefoundations.";
     public static boolean isPlayerAdmin(PlayerRef playerRef) {
         return hasPermission(playerRef, "hytale.command.*");
     }
@@ -58,11 +58,9 @@ public class Permissions {
         ANNOUNCE("utils.announce"),
         TITLE("utils.send.title");
 
-
         private final String permission;
         HFPermissions(String permission) {
-            String PREFIX = "hytalefoundations.";
-            this.permission = PREFIX + permission;
+            this.permission = PERMISSION_GROUP_PREFIX + permission;
         }
         public String getPermission() {return permission;}
     }

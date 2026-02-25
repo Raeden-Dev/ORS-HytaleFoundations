@@ -1,12 +1,15 @@
 package com.raeden.hytale.core.player;
 
+import com.google.gson.annotations.SerializedName;
 import com.raeden.hytale.modules.mail.MailManager;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class PlayerMailbox {
+    @SerializedName("HAS_UNREAD_MAILS")
     private boolean hasUnreadMail;
+    @SerializedName("MAIL_LIST")
     private List<MailManager.Mail> mailList = new ArrayList<>();
 
     public List<MailManager.Mail> getMailList() {return mailList;}

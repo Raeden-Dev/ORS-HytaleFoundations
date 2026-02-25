@@ -4,8 +4,8 @@ import com.hypixel.hytale.server.core.Message;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.raeden.hytale.HytaleFoundations;
 import com.raeden.hytale.core.player.PlayerProfile;
-import com.raeden.hytale.utils.ColorEngine;
-import com.raeden.hytale.utils.DefaultColors;
+import com.raeden.hytale.modules.chat.ColorManager;
+import com.raeden.hytale.modules.chat.DefaultColors;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -143,7 +143,8 @@ public class LangManager {
         if (finalText == null) finalText = key.getDefaultMessage();
 
         if(username != null) {
-            finalText = prefixText + " " + finalText;
+            finalText = (hytaleFoundations.getConfigManager().getDefaultChatConfig().isShowChatMsgPrefix() ? prefixText + " ": "")
+                + finalText;
         }
 
         if (args != null && args.length > 0) {
@@ -157,7 +158,7 @@ public class LangManager {
 
     private Message formatMessage(PlayerRef playerRef, String text, boolean isConsole) {
         try {
-            ColorEngine engine = hytaleFoundations.getChatManager().getColorEngine();
+            ColorManager engine = hytaleFoundations.getChatManager().getColorEngine();
             return engine.parseText(playerRef, text, isConsole);
         } catch (NullPointerException e) {
             String cleanText = text.replaceAll("(?i)&[0-9a-z]", "");

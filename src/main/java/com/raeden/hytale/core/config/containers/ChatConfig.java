@@ -1,64 +1,93 @@
 package com.raeden.hytale.core.config.containers;
 
+import com.google.gson.annotations.SerializedName;
 import java.util.ArrayList;
 import java.util.List;
 
 public class ChatConfig {
-    private String VERSION;
-    private boolean SHOW_CHAT_MSG_PREFIX;
-    private boolean SHOW_NICKNAME;
-    private boolean SHOW_PREFIX;
-    private boolean SHOW_SUFFIX;
-    private int MAX_PREFIX;
-    private int MAX_SUFFIX;
-    private boolean ALLOW_PLAYER_CHAT_COLORS;
 
-    private boolean TOGGLE_CENSOR_WORD_LIST;
-    private boolean CENSOR_CURSE_WORDS;
-    private boolean REMOVE_LINKS;
-    private boolean REMOVE_IPS;
+    @SerializedName("VERSION")
+    private String version;
+    @SerializedName("SHOW_CHAT_MSG_PREFIX")
+    private boolean showChatMsgPrefix;
 
-    private int PVT_MSG_CACHE_CLEAR_INTERVAL; // LOGOUT + 5M, 10M, 30M, 1H
-    private int CHAT_LOG_SAVE_INTERVAL; // On shutdown + 5M, 10M, 30M, 1H
+    @SerializedName("SHOW_NICKNAME")
+    private boolean showNickname;
+    @SerializedName("SHOW_PREFIX")
+    private boolean showPrefix;
+    @SerializedName("SHOW_SUFFIX")
+    private boolean showSuffix;
+    @SerializedName("MAX_PREFIX")
+    private int maxPrefix;
+    @SerializedName("MAX_SUFFIX")
+    private int maxSuffix;
 
-    private List<String> CURSE_WORD_LIST = new ArrayList<>();
-    private List<String> CENSOR_WORD_LIST = new ArrayList<>();
+    @SerializedName("ALLOW_PLAYER_CHAT_COLORS")
+    private boolean allowPlayerChatColors;
+    @SerializedName("TOGGLE_CENSOR_WORD_LIST")
+    private boolean toggleCensorWordList;
+    @SerializedName("CENSOR_CURSE_WORDS")
+    private boolean censorCurseWords;
+    @SerializedName("REMOVE_LINKS")
+    private boolean removeLinks;
+    @SerializedName("REMOVE_IPS")
+    private boolean removeIps;
+    @SerializedName("PVT_MSG_CACHE_CLEAR_INTERVAL")
+    private int pvtMsgCacheClearInterval; // LOGOUT + 5M, 10M, 30M, 1H
+    @SerializedName("CHAT_LOG_SAVE_INTERVAL")
+    private int chatLogSaveInterval; // On shutdown + 5M, 10M, 30M, 1H
+    @SerializedName("CURSE_WORD_LIST")
+    private List<String> curseWordList = new ArrayList<>();
+    @SerializedName("CENSOR_WORD_LIST")
+    private List<String> censorWordList = new ArrayList<>();
 
+    // --- Getters and Setters ---
 
-    public String getVersion() {return VERSION;}
-    public void setVersion(String VERSION) {this.VERSION = VERSION;}
-    public boolean isShowNickNames() {return SHOW_NICKNAME;}
-    public void setShowNickNames(boolean SHOW_NICKNAME) {this.SHOW_NICKNAME = SHOW_NICKNAME;}
-    public boolean isShowPrefix() {return SHOW_PREFIX;}
-    public void setShowPrefix(boolean SHOW_PREFIX) {this.SHOW_PREFIX = SHOW_PREFIX;}
-    public boolean isShowSuffix() {return SHOW_SUFFIX;}
-    public void setShowSuffix(boolean SHOW_SUFFIX) {this.SHOW_SUFFIX = SHOW_SUFFIX;}
-    public int getMaxSuffix() {return MAX_SUFFIX;}
-    public void setMaxSuffix(int MAX_TAGS) {this.MAX_SUFFIX = MAX_TAGS;}
-    public int getMaxPrefix() {return MAX_PREFIX;}
-    public void setMaxPrefix(int MAX_PREFIX) {this.MAX_PREFIX = MAX_PREFIX;}
+    public String getVersion() { return version; }
+    public void setVersion(String version) { this.version = version; }
 
-    public boolean isAllowPlayerChatColors() {return ALLOW_PLAYER_CHAT_COLORS;}
-    public void setAllowPlayerChatColors(boolean ALLOW_PLAYER_CHAT_COLORS) {this.ALLOW_PLAYER_CHAT_COLORS = ALLOW_PLAYER_CHAT_COLORS;}
-    public boolean isToggleCensorWordList() {return TOGGLE_CENSOR_WORD_LIST;}
-    public void setToggleCensorWordList(boolean TOGGLE_CENSOR_WORD_LIST) {this.TOGGLE_CENSOR_WORD_LIST = TOGGLE_CENSOR_WORD_LIST;}
-    public boolean isCensorCurseWords() {return CENSOR_CURSE_WORDS;}
-    public void setCensorCurseWords(boolean CENSOR_CURSE_WORDS) {this.CENSOR_CURSE_WORDS = CENSOR_CURSE_WORDS;}
-    public boolean isRemoveLinks() {return REMOVE_LINKS;}
-    public void setRemoveLinks(boolean REMOVE_LINKS) {this.REMOVE_LINKS = REMOVE_LINKS;}
-    public boolean isRemoveIps() {return REMOVE_IPS;}
-    public void setRemoveIps(boolean REMOVE_IPS) {this.REMOVE_IPS = REMOVE_IPS;}
+    public boolean isShowNickname() { return showNickname; }
+    public void setShowNickname(boolean showNickname) { this.showNickname = showNickname; }
 
-    public int getChatLogSaveInterval() {return CHAT_LOG_SAVE_INTERVAL;}
-    public void setChatLogSaveInterval(int ChatLogSaveInterval) {this.CHAT_LOG_SAVE_INTERVAL = ChatLogSaveInterval;}
-    public int getPvtMsgClearInterval() {return PVT_MSG_CACHE_CLEAR_INTERVAL;}
-    public void setPvtMsgClearInterval(int PvtMsgClearInterval) {this.PVT_MSG_CACHE_CLEAR_INTERVAL = PvtMsgClearInterval;}
+    public boolean isShowPrefix() { return showPrefix; }
+    public void setShowPrefix(boolean showPrefix) { this.showPrefix = showPrefix; }
 
-    public List<String> getCurseWordList() {return CURSE_WORD_LIST;}
-    public void setCurseWordList(List<String> CURSE_WORD_LIST) {this.CURSE_WORD_LIST = CURSE_WORD_LIST;}
-    public List<String> getCensorWordList() {return CENSOR_WORD_LIST;}
-    public void setCensorWordList(List<String> CENSOR_WORD_LIST) {this.CENSOR_WORD_LIST = CENSOR_WORD_LIST;}
+    public boolean isShowSuffix() { return showSuffix; }
+    public void setShowSuffix(boolean showSuffix) { this.showSuffix = showSuffix; }
 
-    public boolean isShowChatMsgPrefix() {return SHOW_CHAT_MSG_PREFIX;}
-    public void setShowChatMsgPrefix(boolean SHOW_CHAT_MSG_PREFIX) {this.SHOW_CHAT_MSG_PREFIX = SHOW_CHAT_MSG_PREFIX;}
+    public int getMaxSuffix() { return maxSuffix; }
+    public void setMaxSuffix(int maxSuffix) { this.maxSuffix = maxSuffix; }
+
+    public int getMaxPrefix() { return maxPrefix; }
+    public void setMaxPrefix(int maxPrefix) { this.maxPrefix = maxPrefix; }
+
+    public boolean isAllowPlayerChatColors() { return allowPlayerChatColors; }
+    public void setAllowPlayerChatColors(boolean allowPlayerChatColors) { this.allowPlayerChatColors = allowPlayerChatColors; }
+
+    public boolean isToggleCensorWordList() { return toggleCensorWordList; }
+    public void setToggleCensorWordList(boolean toggleCensorWordList) { this.toggleCensorWordList = toggleCensorWordList; }
+
+    public boolean isCensorCurseWords() { return censorCurseWords; }
+    public void setCensorCurseWords(boolean censorCurseWords) { this.censorCurseWords = censorCurseWords; }
+
+    public boolean isRemoveLinks() { return removeLinks; }
+    public void setRemoveLinks(boolean removeLinks) { this.removeLinks = removeLinks; }
+
+    public boolean isRemoveIps() { return removeIps; }
+    public void setRemoveIps(boolean removeIps) { this.removeIps = removeIps; }
+
+    public int getChatLogSaveInterval() { return chatLogSaveInterval; }
+    public void setChatLogSaveInterval(int chatLogSaveInterval) { this.chatLogSaveInterval = chatLogSaveInterval; }
+
+    public int getPvtMsgClearInterval() { return pvtMsgCacheClearInterval; }
+    public void setPvtMsgClearInterval(int pvtMsgClearInterval) { this.pvtMsgCacheClearInterval = pvtMsgClearInterval; }
+
+    public List<String> getCurseWordList() { return curseWordList; }
+    public void setCurseWordList(List<String> curseWordList) { this.curseWordList = curseWordList; }
+
+    public List<String> getCensorWordList() { return censorWordList; }
+    public void setCensorWordList(List<String> censorWordList) { this.censorWordList = censorWordList; }
+
+    public boolean isShowChatMsgPrefix() { return showChatMsgPrefix; }
+    public void setShowChatMsgPrefix(boolean showChatMsgPrefix) { this.showChatMsgPrefix = showChatMsgPrefix; }
 }

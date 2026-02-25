@@ -43,13 +43,6 @@ public class HytaleFoundations extends JavaPlugin {
     public static final Gson GSON = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
     public static Path ERROR_LOG_DIRECTORY;
 
-    public static String CONFIG_VERSION = "v1.0";
-    public static String CHAT_CONFIG_VERSION = "v1.0";
-    public static String MAIL_CONFIG_VERSION = "v1.0";
-    public static String COLORMAP_VERSION = "v1.0";
-    public static String AFFIX_VERSION = "v1.0";
-    public static String RANK_VERSION = "v1.0";
-
     private Scheduler scheduler;
     private PluginActionManager pluginActionManager;
     private ConfigManager configManager;

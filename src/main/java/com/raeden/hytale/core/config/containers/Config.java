@@ -1,61 +1,94 @@
 package com.raeden.hytale.core.config.containers;
 
+import com.google.gson.annotations.SerializedName;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+
 public class Config {
-    private String VERSION;
-    private String LANG;
-    private String DATA_STORAGE_TYPE;
-    private int PLAYER_DATA_SAVE_INTERVAL; // LOGOUT, 5M, 10M, 30M, 1H
-    private boolean DEBUG_MODE;
-    private boolean LOG_ACTIONS;
-    private boolean TOGGLE_ADMIN_MODULE;
-    private boolean TOGGLE_CHAT_MODULE;
-    private boolean TOGGLE_RANK_MODULE;
-    private boolean TOGGLE_HOMES_MODULE;
-    private boolean TOGGLE_MAIL_MODULE;
-    private boolean TOGGLE_PARTY_MODULE;
-    private boolean TOGGLE_ECONOMY_MODULE;
-    private boolean TOGGLE_ANALYTICS_MODULE;
-    private boolean TOGGLE_DISCORD_MODULE;
+    @SerializedName("VERSION")
+    private String version;
+    @SerializedName("LANG")
+    private String lang;
+    @SerializedName("DATA_STORAGE_TYPE")
+    private String dataStorageType;
+    @SerializedName("PLAYER_DATA_SAVE_INTERVAL")
+    private int playerDataSaveInterval; // LOGOUT, 5M, 10M, 30M, 1H
 
-    public String getVersion() {return VERSION;}
-    public void setVersion(String VERSION) {this.VERSION = VERSION;}
+    @SerializedName("DEBUG_MODE")
+    private boolean debugMode;
+    @SerializedName("LOG_ACTIONS")
+    private boolean logActions;
 
-    public String getLang() {return LANG;}
-    public void setLang(String lang) {this.LANG = lang;}
+    @SerializedName("TOGGLE_ADMIN_MODULE")
+    private boolean toggleAdminModule;
+    @SerializedName("TOGGLE_CHAT_MODULE")
+    private boolean toggleChatModule;
+    @SerializedName("TOGGLE_RANK_MODULE")
+    private boolean toggleRankModule;
+    @SerializedName("TOGGLE_HOMES_MODULE")
+    private boolean toggleHomesModule;
+    @SerializedName("TOGGLE_MAIL_MODULE")
+    private boolean toggleMailModule;
+    @SerializedName("TOGGLE_PARTY_MODULE")
+    private boolean togglePartyModule;
+    @SerializedName("TOGGLE_ECONOMY_MODULE")
+    private boolean toggleEconomyModule;
+    @SerializedName("TOGGLE_ANALYTICS_MODULE")
+    private boolean toggleAnalyticsModule;
+    @SerializedName("TOGGLE_DISCORD_MODULE")
+    private boolean toggleDiscordModule;
 
-    public String getDataStorageType() {return DATA_STORAGE_TYPE;}
-    public void setDataStorageType(String dataStorageType) {this.DATA_STORAGE_TYPE = dataStorageType;}
+    @SerializedName("DATA_CLUSTERS")
+    private final Map<String, List<String>> dataClusters = new ConcurrentHashMap<>();
 
-    public int getPlayerDataSaveInterval() {return PLAYER_DATA_SAVE_INTERVAL;}
-    public void setPlayerDataSaveInterval(int playerDataSaveInterval) {this.PLAYER_DATA_SAVE_INTERVAL = playerDataSaveInterval;}
+    // --- Getters and Setters ---
 
-    public boolean isToggleDebug() {return DEBUG_MODE;}
-    public void setToggleDebug(boolean toggleDebug) {this.DEBUG_MODE = toggleDebug;}
+    public String getVersion() { return version; }
+    public void setVersion(String version) { this.version = version; }
 
-    public boolean isToggleAdminModule() {return TOGGLE_ADMIN_MODULE;}
-    public void setToggleAdminModule(boolean toggleAdminModule) {this.TOGGLE_ADMIN_MODULE = toggleAdminModule;}
+    public String getLang() { return lang; }
+    public void setLang(String lang) { this.lang = lang; }
 
-    public boolean isToggleChatModule() {return TOGGLE_CHAT_MODULE;}
-    public void setToggleChatModule(boolean toggleChatModule) {this.TOGGLE_CHAT_MODULE = toggleChatModule;}
+    public String getDataStorageType() { return dataStorageType; }
+    public void setDataStorageType(String dataStorageType) { this.dataStorageType = dataStorageType; }
 
-    public boolean isToggleMailModule() {return TOGGLE_MAIL_MODULE;}
-    public void setToggleMailModule(boolean TOGGLE_MAIL_MODULE) {this.TOGGLE_MAIL_MODULE = TOGGLE_MAIL_MODULE;}
+    public int getPlayerDataSaveInterval() { return playerDataSaveInterval; }
+    public void setPlayerDataSaveInterval(int playerDataSaveInterval) { this.playerDataSaveInterval = playerDataSaveInterval; }
 
-    public boolean isToggleRankModule() {return TOGGLE_RANK_MODULE;}
-    public void setToggleRankModule(boolean TOGGLE_RANK_MODULE) {this.TOGGLE_RANK_MODULE = TOGGLE_RANK_MODULE;}
+    public boolean isToggleDebug() { return debugMode; }
+    public void setToggleDebug(boolean debugMode) { this.debugMode = debugMode; }
 
-    public boolean isToggleHomesModule() {return TOGGLE_HOMES_MODULE;}
-    public void setToggleHomesModule(boolean TOGGLE_HOMES_MODULE) {this.TOGGLE_HOMES_MODULE = TOGGLE_HOMES_MODULE;}
+    public boolean isLogActions() { return logActions; }
+    public void setLogActions(boolean logActions) { this.logActions = logActions; }
 
-    public boolean isTogglePartyModule() {return TOGGLE_PARTY_MODULE;}
-    public void setTogglePartyModule(boolean togglePartyModule) {this.TOGGLE_PARTY_MODULE = togglePartyModule;}
+    public boolean isToggleAdminModule() { return toggleAdminModule; }
+    public void setToggleAdminModule(boolean toggleAdminModule) { this.toggleAdminModule = toggleAdminModule; }
 
-    public boolean isToggleEconomyModule() {return TOGGLE_ECONOMY_MODULE;}
-    public void setToggleEconomyModule(boolean toggleEconomyModule) {this.TOGGLE_ECONOMY_MODULE = toggleEconomyModule;}
+    public boolean isToggleChatModule() { return toggleChatModule; }
+    public void setToggleChatModule(boolean toggleChatModule) { this.toggleChatModule = toggleChatModule; }
 
-    public boolean isToggleAnalyticsModule() {return TOGGLE_ANALYTICS_MODULE;}
-    public void setToggleAnalyticsModule(boolean toggleAnalyticsModule) {this.TOGGLE_ANALYTICS_MODULE = toggleAnalyticsModule;}
+    public boolean isToggleMailModule() { return toggleMailModule; }
+    public void setToggleMailModule(boolean toggleMailModule) { this.toggleMailModule = toggleMailModule; }
 
-    public boolean isToggleDiscordModule() {return TOGGLE_DISCORD_MODULE;}
-    public void setToggleDiscordModule(boolean toggleDiscordModule) {this.TOGGLE_DISCORD_MODULE = toggleDiscordModule;}
+    public boolean isToggleRankModule() { return toggleRankModule; }
+    public void setToggleRankModule(boolean toggleRankModule) { this.toggleRankModule = toggleRankModule; }
+
+    public boolean isToggleHomesModule() { return toggleHomesModule; }
+    public void setToggleHomesModule(boolean toggleHomesModule) { this.toggleHomesModule = toggleHomesModule; }
+
+    public boolean isTogglePartyModule() { return togglePartyModule; }
+    public void setTogglePartyModule(boolean togglePartyModule) { this.togglePartyModule = togglePartyModule; }
+
+    public boolean isToggleEconomyModule() { return toggleEconomyModule; }
+    public void setToggleEconomyModule(boolean toggleEconomyModule) { this.toggleEconomyModule = toggleEconomyModule; }
+
+    public boolean isToggleAnalyticsModule() { return toggleAnalyticsModule; }
+    public void setToggleAnalyticsModule(boolean toggleAnalyticsModule) { this.toggleAnalyticsModule = toggleAnalyticsModule; }
+
+    public boolean isToggleDiscordModule() { return toggleDiscordModule; }
+    public void setToggleDiscordModule(boolean toggleDiscordModule) { this.toggleDiscordModule = toggleDiscordModule; }
+
+    public void addDataCluster(String name, List<String> worlds) { dataClusters.put(name, worlds); }
+    public Map<String, List<String>> getDataClusters() { return dataClusters; }
 }

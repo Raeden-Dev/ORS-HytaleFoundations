@@ -1,4 +1,4 @@
-package com.raeden.hytale.utils;
+package com.raeden.hytale.modules.chat;
 
 public enum DefaultColors {
     BLACK("&0", "#000000"),

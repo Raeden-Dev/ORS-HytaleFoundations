@@ -1,5 +1,6 @@
 package com.raeden.hytale.modules.chat;
 
+import com.google.gson.annotations.SerializedName;
 import com.google.gson.reflect.TypeToken;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.raeden.hytale.HytaleFoundations;
@@ -14,6 +15,8 @@ import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 import static com.raeden.hytale.HytaleFoundations.*;
+import static com.raeden.hytale.core.config.ConfigManager.AFFIX_FILENAME;
+import static com.raeden.hytale.core.config.ConfigManager.AFFIX_VERSION;
 import static com.raeden.hytale.utils.FileManager.loadJsonFile;
 import static com.raeden.hytale.utils.FileManager.saveJsonFile;
 import static com.raeden.hytale.utils.GeneralUtils.findPlayerByName;
@@ -21,46 +24,46 @@ import static com.raeden.hytale.utils.GeneralUtils.findPlayerByName;
 public class AffixManager {
     private final HytaleFoundations hytaleFoundations;
     private final PlayerDataManager playerDataManager;
-    private final String AFFIX_FILE_NAME = "affix.json";
+    private final String affixFileName = AFFIX_FILENAME;
     private final Path affixFilePath;
 
-    private final Map<String, PlayerAffix> AFFIX_MAP;
+    private final Map<String, PlayerAffix> affixMap;
 
     public enum AffixType { PREFIX, SUFFIX }
 
     public AffixManager(HytaleFoundations hytaleFoundations) {
         this.hytaleFoundations = hytaleFoundations;
         playerDataManager = hytaleFoundations.getPlayerDataManager();
-        affixFilePath = hytaleFoundations.getDataDirectory().resolve(AFFIX_FILE_NAME);
-        AFFIX_MAP = new ConcurrentHashMap<>();
+        affixFilePath = hytaleFoundations.getDataDirectory().resolve(affixFileName);
+        affixMap = new ConcurrentHashMap<>();
 
         initializeAffixManager();
     }
     // Initialization and Loading
     private void initializeAffixManager() {
-        AFFIX_MAP.putAll(getDefaultAffixMap());
+        affixMap.putAll(getDefaultAffixMap());
         if (Files.exists(affixFilePath)) {
             loadAffixes();
         } else {
-            myLogger.atInfo().log(langManager.getMessage(LangKey.CREATE_SUCCESS, true, AFFIX_FILE_NAME, affixFilePath.toString()).getAnsiMessage());
+            myLogger.atInfo().log(langManager.getMessage(LangKey.CREATE_SUCCESS, true, affixFileName, affixFilePath.toString()).getAnsiMessage());
             saveAffixFile();
         }
     }
     private void saveAffixFile() {
         AffixHolder affixHolder = new AffixHolder();
-        affixHolder.AFFIX_LIST = new ArrayList<>(AFFIX_MAP.values());
-        saveJsonFile(AFFIX_FILE_NAME, affixFilePath, affixHolder, true);
+        affixHolder.affixList = new ArrayList<>(affixMap.values());
+        saveJsonFile(affixFileName, affixFilePath, affixHolder, true);
     }
     public void loadAffixes() {
         Type type = new TypeToken<AffixHolder>(){}.getType();
-        AffixHolder affixHolder = loadJsonFile(AFFIX_FILE_NAME, affixFilePath, type, true);
-        if(affixHolder != null && affixHolder.AFFIX_LIST != null) {
+        AffixHolder affixHolder = loadJsonFile(affixFileName, affixFilePath, type, true);
+        if(affixHolder != null && affixHolder.affixList != null) {
             int newAffixes = 0;
-            for (PlayerAffix affix : affixHolder.AFFIX_LIST) {
-                if (!AFFIX_MAP.containsKey(affix.id)) {
+            for (PlayerAffix affix : affixHolder.affixList) {
+                if (!affixMap.containsKey(affix.id)) {
                     newAffixes++;
                 }
-                AFFIX_MAP.put(affix.id, affix);
+                affixMap.put(affix.id, affix);
             }
 
             if (newAffixes > 0) {
@@ -71,21 +74,33 @@ public class AffixManager {
         }
     }
     // Player Interaction
-    public void addPrefixToPlayer(String username, String affixId) {
-        modifyPlayerAffix(null, username, affixId, AffixType.PREFIX);
+    public void addPrefixToPlayer(String username, String affixId, boolean forceAdd) {
+        modifyPlayerAffix(null, username, affixId, AffixType.PREFIX, false, forceAdd);
     }
-    public void addPrefixToPlayer(PlayerRef caller, String username, String affixId) {
-        modifyPlayerAffix(caller, username, affixId, AffixType.PREFIX);
+    public void addPrefixToPlayer(PlayerRef caller, String username, String affixId, boolean forceAdd) {
+        modifyPlayerAffix(caller, username, affixId, AffixType.PREFIX, false, forceAdd);
     }
-    public void addSuffixToPlayer(String username, String affixId) {
-        modifyPlayerAffix(null, username, affixId, AffixType.SUFFIX);
+    public void addSuffixToPlayer(String username, String affixId, boolean forceAdd) {
+        modifyPlayerAffix(null, username, affixId, AffixType.SUFFIX, false, forceAdd);
     }
-    public void addSuffixToPlayer(PlayerRef caller, String username, String affixId) {
-        modifyPlayerAffix(caller, username, affixId, AffixType.SUFFIX);
+    public void addSuffixToPlayer(PlayerRef caller, String username, String affixId, boolean forceAdd) {
+        modifyPlayerAffix(caller, username, affixId, AffixType.SUFFIX, false, forceAdd);
     }
-    private void modifyPlayerAffix(PlayerRef caller, String targetUsername, String affixId, AffixType type) {
-        boolean isConsole = (caller == null);
-        PlayerAffix affix = AFFIX_MAP.get(affixId);
+
+    public void removePrefixFromPlayer(String username, String affixId) {
+        modifyPlayerAffix(null, username, affixId, AffixType.PREFIX, true, false);
+    }
+    public void removePrefixFromPlayer(PlayerRef caller, String username, String affixId) {
+        modifyPlayerAffix(caller, username, affixId, AffixType.PREFIX, true, false);
+    }
+    public void removeSuffixFromPlayer(String username, String affixId) {
+        modifyPlayerAffix(null, username, affixId, AffixType.SUFFIX, true, false);
+    }
+    public void removeSuffixFromPlayer(PlayerRef caller, String username, String affixId) {
+        modifyPlayerAffix(caller, username, affixId, AffixType.SUFFIX, true, false);
+    }
+    private void modifyPlayerAffix(PlayerRef caller, String targetUsername, String affixId, AffixType type, boolean remove, boolean forceAdd) {
+        PlayerAffix affix = affixMap.get(affixId);
         if (affix == null) {
             if(caller != null) caller.sendMessage(langManager.getMessage(caller.getUsername(),
                     LangKey.AFFIX_NOT_FOUND, false, affixId));
@@ -97,30 +112,72 @@ public class AffixManager {
                     LangKey.PLAYER_NOT_FOUND, false, targetUsername));
             return;
         }
-        if (type == AffixType.PREFIX && canHavePrefix(targetUsername)) {
-            if (profile.getActivePrefix().size() >= profile.getMaxPrefix()) {
+        boolean isPrefix = (type == AffixType.PREFIX);
+        Map<String, String> activeMap = isPrefix ? profile.getActivePrefix() : profile.getActiveSuffix();
+        String affixTypeString = isPrefix ? "prefix" : "suffix";
+        // Remove First
+        if(remove) {
+            if(activeMap.containsKey(affixId)) {
+                if(isPrefix) profile.removeActivePrefix(affixId);
+                else profile.removeActiveSuffix(affixId);
                 if(caller != null) caller.sendMessage(langManager.getMessage(caller.getUsername(),
-                        LangKey.AFFIX_MAX, false, "prefix",targetUsername, String.valueOf(profile.getMaxPrefix())));
-                return;
-            }
-            profile.addToActivePrefix(affixId, affix.displayText);
-        } else if(type == AffixType.SUFFIX && canHaveSuffix(targetUsername)) {
-            if (profile.getActiveSuffix().size() >= profile.getMaxSuffix()) {
+                        LangKey.AFFIX_REMOVE_SUCCESS, false, affix.getDisplayText(), targetUsername));
+            } else {
                 if(caller != null) caller.sendMessage(langManager.getMessage(caller.getUsername(),
-                        LangKey.AFFIX_MAX, false, "suffix",targetUsername, String.valueOf(profile.getMaxSuffix())));
-                return;
+                        LangKey.AFFIX_INACTIVE, false, targetUsername,affixTypeString,affix.getDisplayText()));
             }
-            profile.addToActiveSuffix(affixId, affix.displayText);
+            return;
         }
+        if ((isPrefix && !canHavePrefix(targetUsername)) || (!isPrefix && !canHaveSuffix(targetUsername))) {
+            return;
+        }
+        if (activeMap.containsKey(affixId)) {
+            if(caller != null) caller.sendMessage(langManager.getMessage(caller.getUsername(),
+                    LangKey.AFFIX_ACTIVE, false, targetUsername,affixTypeString,affix.getDisplayText()));
+            return;
+        }
+        int maxAllowed = isPrefix ? profile.getMaxPrefix() : profile.getMaxSuffix();
+        if(activeMap.size() > maxAllowed) {
+            if(forceAdd) {
+                String affixToRemove = findAffixWithLeastPriority(activeMap);
+                if (!affixToRemove.isEmpty()) {
+                    if (isPrefix) profile.removeActivePrefix(affixToRemove);
+                    else profile.removeActiveSuffix(affixToRemove);
+                    if (isPrefix) profile.addToActivePrefix(affixId, affix.getDisplayText());
+                    else profile.addToActiveSuffix(affixId, affix.getDisplayText());
+                    if(caller != null) caller.sendMessage(langManager.getMessage(caller.getUsername(),
+                            LangKey.AFFIX_REPLACE, false, affixMap.get(affixToRemove).getDisplayText(),affix.getDisplayText(), targetUsername));
+                }
+            } else {
+                if(caller != null) caller.sendMessage(langManager.getMessage(caller.getUsername(),
+                        LangKey.AFFIX_MAX, false, affixTypeString,targetUsername, String.valueOf(profile.getMaxSuffix())));
+            }
+            return;
+        }
+        if (isPrefix) profile.addToActivePrefix(affixId, affix.getDisplayText());
+        else profile.addToActiveSuffix(affixId, affix.getDisplayText());
+    }
+    public String findAffixWithLeastPriority(Map<String, String> activeAffix) {
+        String toRemove = "";
+        int priorityNow = Integer.MAX_VALUE;
+        for(String affixId : activeAffix.keySet()) {
+            PlayerAffix affix = affixMap.get(affixId);
+            if(affix != null && affix.getPriority() < priorityNow) {
+                toRemove = affixId;
+                priorityNow = affix.getPriority();
+            }
+        }
+        return toRemove;
     }
     // Classes and Getter / Setter
     private boolean canHavePrefix(String username) {
-        return checkAffixConfig(username, true);
+        return checkAffixConfig(username, true, false);
     }
     private boolean canHaveSuffix(String username) {
-        return checkAffixConfig(username, false);
+        return checkAffixConfig(username, false, false);
     }
-    private boolean checkAffixConfig(String username, boolean isPrefix) {
+    private boolean checkAffixConfig(String username, boolean isPrefix, boolean forceAdd) {
+        if(forceAdd) return true;
         boolean globalSetting = isPrefix
                 ? hytaleFoundations.getConfigManager().getDefaultChatConfig().isShowPrefix()
                 : hytaleFoundations.getConfigManager().getDefaultChatConfig().isShowSuffix();
@@ -136,29 +193,19 @@ public class AffixManager {
     }
     private Map<String, PlayerAffix> getDefaultAffixMap() {
         Map<String, PlayerAffix> map = new ConcurrentHashMap<>();
-        addToMap(map, "df_op",      "&7&l[&r&b&lOP&r&7&l]",         10000);
-        addToMap(map, "df_manager", "&7&l[&r&c&lManager&r&7&l]",    9999);
-        addToMap(map, "df_admin",   "&7&l[&r&4&lAdmin&r&7&l]",      9998);
-        addToMap(map, "df_mod",     "&7&l[&r&3&lModerator&r&7&l]",  9997);
-        addToMap(map, "df_player",  "&7&l[&r&f&lPlayer&r&7&l]",     1);
-        addToMap(map, "df_cracked", "&7&l[&r&c&lC&r&0&lR&r&f&lAC&r&6&lK&r&c&lED&r&7&l]", 10);
-        addToMap(map, "df_beast",   "&7&l[&r&e&6&lBEAST&r&7&l]",    10);
-        addToMap(map, "df_noob",    "&7&l[&r&5&d&lNOOB&r&7&l]",     10);
-        addToMap(map, "df_pro",     "&7&l[&r&9&lPRO&r&7&l]",        10);
-        addToMap(map, "df_amaze",   "&7&l[&r&c&6&e&2&a&b&3&1&d&5&lAMAZE&r&7&l]", 10);
+        for(DefaultAffix affix : DefaultAffix.values()) {
+            map.put(affix.getId(), new PlayerAffix(affix.getId(), affix.getText(), affix.getPriority()));
+        }
         return map;
-    }
-    private void addToMap(Map<String, PlayerAffix> map, String id, String text, int priority) {
-        map.put(id, new PlayerAffix(id, text, priority));
     }
 
     public boolean doesAffixExists(String id) {
-        return AFFIX_MAP.containsKey(id);
+        return affixMap.containsKey(id);
     }
-    public Map<String, PlayerAffix> getAffixMap() {return AFFIX_MAP;}
+    public Map<String, PlayerAffix> getAffixMap() {return affixMap;}
     public String getAffixDisplay(String id) {
-        if(AFFIX_MAP.containsKey(id)) {
-            return AFFIX_MAP.get(id).displayText;
+        if(affixMap.containsKey(id)) {
+            return affixMap.get(id).displayText;
         }
         return "<UNDEFINED>";
     }
@@ -168,6 +215,7 @@ public class AffixManager {
         private String id;
         private String displayText;
         private int priority;
+        public PlayerAffix(){}
         public PlayerAffix(String id, String displayText, int priority) {
             this.id = id;
             this.displayText = displayText;
@@ -181,17 +229,19 @@ public class AffixManager {
         public void setPriority(int priority) {this.priority = priority;}
     }
     private static class AffixHolder {
-        private final String VERSION = AFFIX_VERSION;
-        private List<PlayerAffix> AFFIX_LIST = new ArrayList<>();
+        @SerializedName("VERSION")
+        private final String version = AFFIX_VERSION;
+        @SerializedName("AFFIX_LIST")
+        private List<PlayerAffix> affixList = new ArrayList<>();
 
-        public String getVersion() {return VERSION;}
-        public List<PlayerAffix> getAffixList() {return AFFIX_LIST;}
-        public void setAffixList(List<PlayerAffix> AFFIX_LIST) {this.AFFIX_LIST = AFFIX_LIST;}
-        public void addToAffixList(PlayerAffix affix) { AFFIX_LIST.add(affix);}
+        public String getVersion() {return version;}
+        public List<PlayerAffix> getAffixList() {return affixList;}
+        public void setAffixList(List<PlayerAffix> AFFIX_LIST) {this.affixList = AFFIX_LIST;}
+        public void addToAffixList(PlayerAffix affix) { affixList.add(affix);}
 
         public Map<String, PlayerAffix> getAffixListAsMap() {
             Map<String, PlayerAffix> affixMap = new ConcurrentHashMap<>();
-            for(PlayerAffix affix : AFFIX_LIST) {
+            for(PlayerAffix affix : affixList) {
                 affixMap.put(affix.getId(), affix);
             }
             return affixMap;

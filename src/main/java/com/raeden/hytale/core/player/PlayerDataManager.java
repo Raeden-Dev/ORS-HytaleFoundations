@@ -23,11 +23,11 @@ import static com.raeden.hytale.utils.GeneralUtils.getPlayerUUID;
 
 public class PlayerDataManager {
     private final HytaleFoundations hytaleFoundations;
-    public final String USERMAP_JSON = "usermap.json";
-    public final String PROFILE_JSON = "profile.json";
-    public final String STATS_JSON = "stats.json";
-    public final String MAIL_JSON = "mailbox.json";
-    public final String HISTORY_JSON = "history.json";
+    public final String USERMAP_FILENAME = "usermap.json";
+    public final String PROFILE_FILENAME = "profile.json";
+    public final String STATS_FILENAME = "stats.json";
+    public final String MAIL_FILENAME = "mailbox.json";
+    public final String HISTORY_FILENAME = "history.json";
     private final Path playerDataPath;
 
     private final Map<String, PlayerProfile> playerProfiles;
@@ -52,17 +52,17 @@ public class PlayerDataManager {
 
     // User Map
     private void createUserMap() {
-        Path userMapPath = playerDataPath.resolve(USERMAP_JSON);
+        Path userMapPath = playerDataPath.resolve(USERMAP_FILENAME);
         Map<UUID, String> users = new ConcurrentHashMap<>();
         if(!Files.exists(userMapPath)) {
-            saveJsonFile(USERMAP_JSON, userMapPath, users, true);
+            saveJsonFile(USERMAP_FILENAME, userMapPath, users, true);
         }
     }
 
     private Map<UUID, String> loadUserMap() {
-        Path userMapPath = playerDataPath.resolve(USERMAP_JSON);
+        Path userMapPath = playerDataPath.resolve(USERMAP_FILENAME);
         Type type = new TypeToken<Map<UUID, String>>(){}.getType();
-        return loadJsonFile(USERMAP_JSON, userMapPath, type);
+        return loadJsonFile(USERMAP_FILENAME, userMapPath, type);
     }
 
     private void updateUserMap(UUID id, String username) {
@@ -71,8 +71,8 @@ public class PlayerDataManager {
         String oldUsername = users.get(id);
         users.put(id, username);
 
-        Path userMapPath = playerDataPath.resolve(USERMAP_JSON);
-        saveJsonFile(USERMAP_JSON, userMapPath, users, true);
+        Path userMapPath = playerDataPath.resolve(USERMAP_FILENAME);
+        saveJsonFile(USERMAP_FILENAME, userMapPath, users, true);
 
         if (oldUsername != null && !oldUsername.equals(username)) {
             Path oldDataPath = playerDataPath.resolve(oldUsername);
@@ -97,7 +97,7 @@ public class PlayerDataManager {
         for(Map.Entry<UUID, String> entry : users.entrySet()) {
             if(playerID.equals(entry.getKey())) {
                 if(!entry.getValue().equals(username)) {
-                    myLogger.atWarning().log(langManager.getMessage(LangKey.MISMATCH_FOUND, true, USERMAP_JSON + " |" + playerID + ", " + entry.getValue() + "[EXPECTED: " + username + "]").getAnsiMessage());
+                    myLogger.atWarning().log(langManager.getMessage(LangKey.MISMATCH_FOUND, true, USERMAP_FILENAME + " |" + playerID + ", " + entry.getValue() + "[EXPECTED: " + username + "]").getAnsiMessage());
                     mismatch = true;
                     break;
                 }
@@ -150,43 +150,43 @@ public class PlayerDataManager {
     }
     // Getting data from Files
     public PlayerProfile getPlayerProfileFromFile(String username) {
-        Path profileJsonPath = playerDataPath.resolve(username).resolve(PROFILE_JSON);
+        Path profileJsonPath = playerDataPath.resolve(username).resolve(PROFILE_FILENAME);
         if(!Files.exists(profileJsonPath)) {
             myLogger.atSevere().log(langManager.getMessage(LangKey.FILE_NOT_FOUND_LOC, true, profileJsonPath.getFileName().toString(), profileJsonPath.toString()).getAnsiMessage());
             return null;
         }
-        String fileName = PROFILE_JSON + ": " + username;
+        String fileName = PROFILE_FILENAME + ": " + username;
         return loadJsonFile(fileName, profileJsonPath, PlayerProfile.class, true);
     }
 
     public PlayerStats getPlayerStatsFromFile(String username) {
-        Path statsJsonPath = playerDataPath.resolve(username).resolve(STATS_JSON);
+        Path statsJsonPath = playerDataPath.resolve(username).resolve(STATS_FILENAME);
         if(!Files.exists(statsJsonPath)) {
             myLogger.atSevere().log(langManager.getMessage(LangKey.FILE_NOT_FOUND_LOC, true, statsJsonPath.getFileName().toString(), statsJsonPath.toString()).getAnsiMessage());
             return null;
         }
-        String fileName = STATS_JSON + ": " + username;
+        String fileName = STATS_FILENAME + ": " + username;
         return loadJsonFile(fileName, statsJsonPath, PlayerStats.class, true);
     }
 
     public PlayerHistory getPlayerHistory(String username) {
-        Path historyJsonPath = playerDataPath.resolve(username).resolve(HISTORY_JSON);
+        Path historyJsonPath = playerDataPath.resolve(username).resolve(HISTORY_FILENAME);
         if(!Files.exists(historyJsonPath)) {
             myLogger.atSevere().log(langManager.getMessage(LangKey.FILE_NOT_FOUND_LOC, true, historyJsonPath.getFileName().toString(), historyJsonPath.toString()).getAnsiMessage());
             return null;
         }
-        String fileName = HISTORY_JSON + ": " + username;
+        String fileName = HISTORY_FILENAME + ": " + username;
         return loadJsonFile(fileName, historyJsonPath, PlayerHistory.class, true);
     }
 
     public PlayerMailbox getPlayerMailbox(String username) {
         if(username == null) return null;
-        Path mailJsonPath = playerDataPath.resolve(username).resolve(MAIL_JSON);
+        Path mailJsonPath = playerDataPath.resolve(username).resolve(MAIL_FILENAME);
         if(!Files.exists(mailJsonPath)) {
             myLogger.atSevere().log(langManager.getMessage(LangKey.FILE_NOT_FOUND_LOC, true, mailJsonPath.getFileName().toString(), mailJsonPath.toString()).getAnsiMessage());
             return null;
         }
-        String fileName = MAIL_JSON + ": " + username;
+        String fileName = MAIL_FILENAME + ": " + username;
         return loadJsonFile(fileName, mailJsonPath, PlayerMailbox.class, false);
     }
 
@@ -199,12 +199,12 @@ public class PlayerDataManager {
             return;
         }
         // Player Profile
-        Path profileJson = dataFolder.resolve(PROFILE_JSON);
-        PlayerProfile profile = loadJsonFile(PROFILE_JSON, profileJson, PlayerProfile.class);
+        Path profileJson = dataFolder.resolve(PROFILE_FILENAME);
+        PlayerProfile profile = loadJsonFile(PROFILE_FILENAME, profileJson, PlayerProfile.class);
         addPlayerProfile(username, profile);
         // Player Stats
-        Path statsJson = dataFolder.resolve(STATS_JSON);
-        PlayerStats stats = loadJsonFile(STATS_JSON, statsJson, PlayerStats.class);
+        Path statsJson = dataFolder.resolve(STATS_FILENAME);
+        PlayerStats stats = loadJsonFile(STATS_FILENAME, statsJson, PlayerStats.class);
         addPlayerStats(username, stats);
     }
 
@@ -214,12 +214,12 @@ public class PlayerDataManager {
         UUID playerID = getPlayerUUID(playerRef);
 
         PlayerProfile profile = new PlayerProfile();
-        profile.setUUID(playerID);
+        profile.setUuid(playerID);
         profile.addUsername(username);
         profile.setLanguage("en-us");
         profile.setNickname("");
         profile.setUsernameColorCode("#FFFFFF");
-        profile.setShowNickname(chatConfig.isShowNickNames());
+        profile.setShowNickname(chatConfig.isShowNickname());
         profile.setShowPrefix(chatConfig.isShowPrefix());
         profile.setShowSuffix(chatConfig.isShowSuffix());
         profile.setMaxSuffix(chatConfig.getMaxSuffix());
@@ -273,10 +273,10 @@ public class PlayerDataManager {
         addPlayerProfile(username, profile);
         addPlayerStats(username, stats);
 
-        savePlayerData(username, PROFILE_JSON, profile);
-        savePlayerData(username, STATS_JSON, stats);
-        savePlayerData(username, MAIL_JSON, mailbox);
-        savePlayerData(username, HISTORY_JSON, history);
+        savePlayerData(username, PROFILE_FILENAME, profile);
+        savePlayerData(username, STATS_FILENAME, stats);
+        savePlayerData(username, MAIL_FILENAME, mailbox);
+        savePlayerData(username, HISTORY_FILENAME, history);
 
         updateUserMap(id, username);
     }
@@ -310,8 +310,8 @@ public class PlayerDataManager {
     public void playerLogout(PlayerRef playerRef) {
         String username = playerRef.getUsername();
         savePlayTime(username);
-        savePlayerData(username, PROFILE_JSON, getOnlinePlayerProfile(username));
-        savePlayerData(username, STATS_JSON, getOnlinePlayerStats(username));
+        savePlayerData(username, PROFILE_FILENAME, getOnlinePlayerProfile(username));
+        savePlayerData(username, STATS_FILENAME, getOnlinePlayerStats(username));
 
         removePlayerStats(username);
         removePlayerProfile(username);

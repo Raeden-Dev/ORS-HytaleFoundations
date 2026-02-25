@@ -1,5 +1,6 @@
-package com.raeden.hytale.utils;
+package com.raeden.hytale.modules.chat;
 
+import com.google.gson.annotations.SerializedName;
 import com.google.gson.reflect.TypeToken;
 import com.hypixel.hytale.server.core.Message;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
@@ -13,38 +14,39 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.regex.Pattern;
 
 import static com.raeden.hytale.HytaleFoundations.*;
+import static com.raeden.hytale.core.config.ConfigManager.COLORMAP_FILENAME;
+import static com.raeden.hytale.core.config.ConfigManager.COLORMAP_VERSION;
 import static com.raeden.hytale.core.utils.Permissions.hasPermission;
 import static com.raeden.hytale.core.utils.Permissions.isPlayerAdmin;
 import static com.raeden.hytale.utils.FileManager.loadJsonFile;
 import static com.raeden.hytale.utils.FileManager.saveJsonFile;
 
-public class ColorEngine {
+public class ColorManager {
     // Map for all colors
     private final HytaleFoundations hytaleFoundations;
     private final Path colorFilePath;
-    private final String COLOR_FILE_NAME = "colormap.json";
-    private List<String> SPECIAL_CODES;
-    private Map<String, String> COLOR_MAP = new ConcurrentHashMap<>();
+    private final String colorFileName = COLORMAP_FILENAME;
+    private List<String> specialCodes;
+    private Map<String, String> colorMap = new ConcurrentHashMap<>();
 
     private static final Pattern CODE_PATTERN = Pattern.compile("^&[0-9a-zA-Z]$");
     private static final Pattern HEX_PATTERN = Pattern.compile("^#([A-Fa-f0-9]{6})$");
 
-    public ColorEngine(HytaleFoundations hytaleFoundations) {
+    public ColorManager(HytaleFoundations hytaleFoundations) {
         this.hytaleFoundations = hytaleFoundations;
-        colorFilePath = hytaleFoundations.getDataDirectory().resolve(COLOR_FILE_NAME);
+        colorFilePath = hytaleFoundations.getDataDirectory().resolve(colorFileName);
         initializeColorEngine();
     }
 
     public void initializeColorEngine() {
-        SPECIAL_CODES = new ArrayList<>(List.of("&l", "&o", "&r"));
+        specialCodes = new ArrayList<>(List.of("&l", "&o", "&r"));
         loadDefaultColors();
         if(!Files.exists(colorFilePath)) {
-            myLogger.atInfo().log(langManager.getMessage(LangKey.CREATE_SUCCESS, true, COLOR_FILE_NAME, colorFilePath.toString()).getAnsiMessage());
+            myLogger.atInfo().log(langManager.getMessage(LangKey.CREATE_SUCCESS, true, colorFileName, colorFilePath.toString()).getAnsiMessage());
             saveColorFile(); // Just save the defaults we just loaded
         } else {
             loadColors();
@@ -52,19 +54,19 @@ public class ColorEngine {
     }
     private void loadDefaultColors() {
         for(DefaultColors color : DefaultColors.values()) {
-            COLOR_MAP.put(color.getCode(), color.getHex());
+            colorMap.put(color.getCode(), color.getHex());
         }
     }
     // Saving and Loading
     public void saveColorFile() {
         ColormapHolder colorMapFile = new ColormapHolder();
-        colorMapFile.setColorList(COLOR_MAP);
-        saveJsonFile(COLOR_FILE_NAME, colorFilePath, colorMapFile, true);
-        myLogger.atInfo().log(langManager.getMessage(LangKey.LOAD_SUCCESS, true, COLOR_MAP.size() + " colors!").getAnsiMessage());
+        colorMapFile.setColorList(colorMap);
+        saveJsonFile(colorFileName, colorFilePath, colorMapFile, true);
+        myLogger.atInfo().log(langManager.getMessage(LangKey.LOAD_SUCCESS, true, colorMap.size() + " colors!").getAnsiMessage());
     }
     public void loadColors() {
         Type type = new TypeToken<ColormapHolder>(){}.getType();
-        ColormapHolder colorMapFile = loadJsonFile(COLOR_FILE_NAME, colorFilePath, type, true);
+        ColormapHolder colorMapFile = loadJsonFile(colorFileName, colorFilePath, type, true);
         if(colorMapFile == null || colorMapFile.getColorList() == null) {
             saveColorFile();
             return;
@@ -79,12 +81,12 @@ public class ColorEngine {
                 myLogger.atWarning().log(langManager.getMessage(LangKey.INVALID_COLOR_FORMAT, true, code, hex).getAnsiMessage());
                 continue;
             }
-            if(!COLOR_MAP.containsKey(code)) {
+            if(!colorMap.containsKey(code)) {
                 newColors++;
-            } else if (!COLOR_MAP.get(code).equalsIgnoreCase(hex)) {
+            } else if (!colorMap.get(code).equalsIgnoreCase(hex)) {
                 overwrittenColors++;
             }
-            COLOR_MAP.put(code, hex);
+            colorMap.put(code, hex);
         }
         if(newColors > 0 || overwrittenColors > 0) {
             String msg = String.format("%d custom colors and %d overrides loaded.", newColors, overwrittenColors);
@@ -132,8 +134,8 @@ public class ColorEngine {
             char c = text.charAt(i);
             if(c == '&' && i+1 < length) {
                 String codeKey = "&" + text.charAt(i + 1);
-                boolean isColor = COLOR_MAP.containsKey(codeKey);
-                boolean isSpecial = SPECIAL_CODES.contains(codeKey);
+                boolean isColor = colorMap.containsKey(codeKey);
+                boolean isSpecial = specialCodes.contains(codeKey);
 
                 if(isColor || isSpecial) {
                     if(!currentContent.isEmpty()) {
@@ -153,7 +155,7 @@ public class ColorEngine {
                         if (activeColors.size() == 1 && activeColors.getFirst().equals(DefaultColors.WHITE.getHex())) {
                             activeColors.clear();
                         }
-                        activeColors.add(COLOR_MAP.get(codeKey));
+                        activeColors.add(colorMap.get(codeKey));
                     }
                     i++;
                     continue;
@@ -229,7 +231,7 @@ public class ColorEngine {
 
     public boolean isColorCodeAvailable(String code) {
         if(!isValidColorCode(code)) return false;
-        return COLOR_MAP.containsKey(code) || SPECIAL_CODES.contains(code);
+        return colorMap.containsKey(code) || specialCodes.contains(code);
     }
     private boolean isValidColorCode(String code) {
         return CODE_PATTERN.matcher(code).matches();
@@ -268,19 +270,21 @@ public class ColorEngine {
     }
 
     // Getters and Setters
-    public Map<String, String> getColorMap() {return COLOR_MAP;}
-    public void setColorMap(Map<String, String> COLOR_MAP) {this.COLOR_MAP = COLOR_MAP;}
-    public List<String> getSpecialCodes() {return SPECIAL_CODES;}
-    public String getColorFile() { return COLOR_FILE_NAME;}
+    public Map<String, String> getColorMap() {return colorMap;}
+    public void setColorMap(Map<String, String> COLOR_MAP) {this.colorMap = COLOR_MAP;}
+    public List<String> getSpecialCodes() {return specialCodes;}
+    public String getColorFile() { return colorFileName;}
     public Path getColorFilePath() { return colorFilePath;}
     // Color Map Class
     public static final class ColormapHolder {
-        private final String VERSION = COLORMAP_VERSION;
-        private Map<String, String> COLOR_LIST = new ConcurrentHashMap<>();
+        @SerializedName("VERSION")
+        private final String version = COLORMAP_VERSION;
+        @SerializedName("COLOR_LIST")
+        private Map<String, String> colorList = new ConcurrentHashMap<>();
 
-        public Map<String, String> getColorList() {return COLOR_LIST;}
-        public void setColorList(Map<String, String> colorList) {this.COLOR_LIST = colorList;}
-        public String getVersion() {return VERSION;}
+        public Map<String, String> getColorList() {return colorList;}
+        public void setColorList(Map<String, String> colorList) {this.colorList = colorList;}
+        public String getVersion() {return version;}
     }
 
 }

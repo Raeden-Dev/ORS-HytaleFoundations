@@ -205,11 +205,8 @@ public class CoreCommand extends AbstractCommandCollection {
         }
         @Override
         protected void execute(@Nonnull CommandContext commandContext, @Nonnull Store<EntityStore> store, @Nonnull Ref<EntityStore> ref, @Nonnull PlayerRef playerRef, @Nonnull World world) {
-            System.out.println("[TEST-COMMAND] Testing --> Affix System and Nickname system");
-            String username = commandContext.sender().getDisplayName();
-            AffixManager affixManager = hytaleFoundations.getChatManager().getAffixManager();
-            affixManager.addPrefixToPlayer(username, "df_op");
-            affixManager.addSuffixToPlayer(username, "df_amaze");
+            System.out.println("[TEST-COMMAND] Testing --> Nothing for now!");
+
         }
     }
 }
