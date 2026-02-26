@@ -10,6 +10,7 @@ import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.world.World;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import com.raeden.hytale.HytaleFoundations;
+import com.raeden.hytale.core.player.PlayerProfile;
 
 import javax.annotation.Nonnull;
 
@@ -24,6 +25,11 @@ public class IngorePlayerCommand extends AbstractPlayerCommand {
     }
     @Override
     protected void execute(@Nonnull CommandContext commandContext, @Nonnull Store<EntityStore> store, @Nonnull Ref<EntityStore> ref, @Nonnull PlayerRef playerRef, @Nonnull World world) {
-
+        String targetUsername = commandContext.get(this.targetPlayer);
+        String senderUsername = commandContext.sender().getDisplayName();
+        PlayerProfile targetProfile = hytaleFoundations.getPlayerDataManager().getPlayerProfile(targetUsername);
+        if(targetProfile == null) {
+            
+        }
     }
 }

@@ -62,6 +62,7 @@ public class PlayerProfile {
     private final Map<String, String> activeSuffix = new ConcurrentHashMap<>();
     @SerializedName("BLOCKED_PLAYERS")
     private final List<String> blockedPlayers = new ArrayList<>();
+    private final List<String> ignoredPlayers = new ArrayList<>();
 
     // Rank
     @SerializedName("RANK_ID")
@@ -140,4 +141,6 @@ public class PlayerProfile {
 
     public String getRankId() {return rankId;}
     public void setRankId(String rankId) {this.rankId = rankId;}
+
+    public List<String> getIgnoredPlayers() {return ignoredPlayers;}
 }
