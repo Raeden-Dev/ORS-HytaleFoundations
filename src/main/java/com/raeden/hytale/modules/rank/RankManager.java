@@ -11,6 +11,7 @@ import java.lang.reflect.Type;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -23,6 +24,7 @@ import static com.raeden.hytale.utils.FileManager.saveJsonFile;
 
 public class RankManager {
     private final HytaleFoundations hytaleFoundations;
+    private final Map<String, List<String>> rankGroupMap;
     private final Map<String, Rank> rankMap;
 
     private final String rankFileName = RANK_FILENAME;
@@ -31,6 +33,7 @@ public class RankManager {
     public RankManager(HytaleFoundations hytaleFoundations) {
         this.hytaleFoundations = hytaleFoundations;
         rankMap = new ConcurrentHashMap<>();
+        rankGroupMap = new ConcurrentHashMap<>();
         rankFilePath = hytaleFoundations.getDataDirectory().resolve(rankFileName);
 
         initializeRankManager();
@@ -46,8 +49,11 @@ public class RankManager {
         }
     }
     private void saveRankFile() {
-        RankHolder rankHolder = new RankHolder();
-        rankHolder.rankList = new ArrayList<>(rankMap.values());
+        RankHolder rankHolder = getCurrentRankFile();
+        if(rankHolder == null) rankHolder = new RankHolder();
+        rankHolder.setForceAddAffix(rankHolder.isForceAddAffix());
+        rankHolder.setRankList(new ArrayList<>(rankMap.values()));
+        rankHolder.getRankGroups().putAll(rankGroupMap);
         saveJsonFile(rankFileName, rankFilePath, rankHolder, true);
     }
     public void loadRanks() {
@@ -61,29 +67,41 @@ public class RankManager {
                 }
                 rankMap.put(rank.id, rank);
             }
+            if (newRanks > 0)  myLogger.atInfo().log(langManager.getMessage(LangKey.LOAD_SUCCESS, true, newRanks + " rank(s)").getAnsiMessage());
 
-            if (newRanks > 0) {
-                myLogger.atInfo().log(langManager.getMessage(LangKey.LOAD_SUCCESS, true, newRanks + " ranks").getAnsiMessage());
+            int newChains = 0;
+            for(Map.Entry<String, List<String>> chain : rankHolder.rankGroups.entrySet()) {
+                if(!rankGroupMap.containsKey(chain.getKey())) {
+                    newChains++;
+                }
+                rankGroupMap.put(chain.getKey(), chain.getValue());
             }
+            if (newChains > 0)  myLogger.atInfo().log(langManager.getMessage(LangKey.LOAD_SUCCESS, true, newChains + " rank group(s)").getAnsiMessage());
         } else {
             saveRankFile();
         }
     }
+    private RankHolder getCurrentRankFile() {
+        Type type = new TypeToken<RankHolder>(){}.getType();
+        return loadJsonFile(rankFileName, rankFilePath, type, false);
+    }
     // Player Interaction
-    public void setRank(PlayerRef sender, String targetUsername, String rankId) {
+    public void setRankOfTarget(String targetUsername, String rankId) {
+        setRankOfTarget(null, targetUsername, rankId);
+    }
+    public void setRankOfTarget(PlayerRef sender, String targetUsername, String rankId) {
         Rank rank = getRank(rankId);
         if(rank == null) {
-            if(sender != null) {
-                sender.sendMessage(langManager.getMessage(sender.getUsername(), LangKey.RANK_NOT_FOUND, false, rankId));
-            }
+            if(sender != null) sender.sendMessage(langManager.getMessage(sender.getUsername(), LangKey.RANK_NOT_FOUND, false, rankId));
             return;
         }
         PlayerProfile profile = hytaleFoundations.getPlayerDataManager().getPlayerProfile(targetUsername);
         if(profile == null) {
-           sender.sendMessage(langManager.getMessage(sender.getUsername(), LangKey.PLAYER_NOT_FOUND_MSG,false, targetUsername));
+            if(sender != null) sender.sendMessage(langManager.getMessage(sender.getUsername(), LangKey.PLAYER_NOT_FOUND_MSG,false, targetUsername));
             return;
         }
         profile.setRankId(rankId);
+        if(sender != null) sender.sendMessage(langManager.getMessage(sender.getUsername(), LangKey.RANK_SET_SUCCESS,false, targetUsername, hytaleFoundations.getChatManager().getAffixManager().getAffixDisplay(rank.getChatPrefixId())));
         if(rank.getChatPrefixId() != null && !rank.getChatPrefixId().isEmpty()) {
             hytaleFoundations.getChatManager().getAffixManager().addPrefixToPlayer(sender, targetUsername, rank.getChatPrefixId(), true);
         }
@@ -91,7 +109,37 @@ public class RankManager {
             hytaleFoundations.getChatManager().getAffixManager().addSuffixToPlayer(sender, targetUsername, rank.getChatSuffixId(), true);
         }
     }
+    public void createRankGroup(String groupName, String... rankIds) {
+        createRankGroup(null, groupName, rankIds);
+    }
+    public void createRankGroup(PlayerRef sender, String groupName, String... ranksIds) {
+        Map<String, List<String>> rankGroup = new LinkedHashMap<>();
+        List<String> rankChain = new ArrayList<>();
+        for(String id : ranksIds) {
+            if(!rankMap.containsKey(id)) {
+                if(sender != null) sender.sendMessage(langManager.getMessage(sender.getUsername(), LangKey.RANK_GROUP_IGNORE_RANK, false, id));
+                continue;
+            }
+            rankChain.add(id);
+        }
+        rankGroup.put(groupName, rankChain);
+        if(sender != null) sender.sendMessage(langManager.getMessage(sender.getUsername(), LangKey.RANK_GROUP_CREATE, false, groupName));
+    }
+    public void addRankToGroup(PlayerRef sender, String groupName, String rankId, int position) {
 
+    }
+    public void removeRankFromGroup(PlayerRef sender, String groupName, String rankId) {
+
+    }
+    public void moveRankInGroup(PlayerRef sender, String groupName, String rankId, int position) {
+
+    }
+    public void showRankChain(PlayerRef sender, String groupName) {
+
+    }
+    public void deleteRankGroup(PlayerRef sender, String groupName) {
+
+    }
     // Getters And Setters
     public Rank getRank(String rankId) {return rankMap.get(rankId);}
     public Map<String, Rank> getRankMap() {return rankMap;}

@@ -37,6 +37,7 @@ import com.raeden.hytale.utils.Scheduler;
 import javax.annotation.Nonnull;
 import java.nio.file.Path;
 import java.util.Random;
+import java.util.Scanner;
 
 public class HytaleFoundations extends JavaPlugin {
     public static final HytaleLogger myLogger = HytaleLogger.forEnclosingClass();
@@ -91,12 +92,18 @@ public class HytaleFoundations extends JavaPlugin {
 
         if(configManager.getDefaultConfig().isToggleChatModule()) {
             if(chatManager == null) chatManager = new ChatManager(this, scheduler);
+        } else {
+            if(chatManager != null) chatManager = null;
         }
         if(configManager.getDefaultConfig().isToggleMailModule()) {
             if(mailManager == null) mailManager = new MailManager(this);
+        } else {
+            if(mailManager != null) mailManager = null;
         }
         if(configManager.getDefaultConfig().isToggleRankModule()) {
             if(rankManager == null) rankManager = new RankManager(this);
+        } else {
+            if(rankManager != null) rankManager = null;
         }
     }
 
@@ -118,7 +125,7 @@ public class HytaleFoundations extends JavaPlugin {
         EntityStore.REGISTRY.registerSystem(PlayerDeathListener);
     }
 
-    private void registerCommands() {
+    public void registerCommands() {
         this.getCommandRegistry().registerCommand(new CoreCommand(this));
 
         if(configManager.getDefaultConfig().isToggleAdminModule()) {

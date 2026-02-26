@@ -109,7 +109,7 @@ public enum LangKey {
     AFFIX_ADD_FAIL          ("affix.add.failure",                   "&c&lCould not add affix to &r&e&l{1}&r&c&l!"),
     AFFIX_REMOVE_SUCCESS    ("affix.remove.success",                "&a&lRemoved affix &r{0} &r&a&lof &r&e&l{1}&r&a&l!"),
     AFFIX_REMOVE_FAIL       ("affix.remove.failure",                "&c&lCould not remove affix to &r&e&l{1}&r&c&l!"),
-    AFFIX_REMOVE_ALL       ( "affix.remove.all",                    "&a&lRemoved all {0} of &r&e&l{1}&r&a&l!"),
+    AFFIX_REMOVE_ALL        ("affix.remove.all",                    "&a&lRemoved all {0} of &r&e&l{1}&r&a&l!"),
     AFFIX_REPLACE           ("affix.add.replace",                   "&a&lReplaced affix &r{0} &r&a&lwith &r&e&l{1} &r&a&lfor {2}. (Affix had least priority)"),
     AFFIX_CREATE            ("affix.create",                        "&a&lCreated new affix &r{0}"),
     AFFIX_DELETE            ("affix.delete",                        "&c&lDeleted affix &r{0}"),
@@ -125,9 +125,13 @@ public enum LangKey {
     RANK_DEMOTE             ("rank.demote",                         "&a&lDemoted &r&e&l{0} from &r{1} &r&a&l-> &r{2}"),
     RANK_DEMOTE_CAP         ("rank.demote.cap",                     "&a&lSet rank &r{0} for &r&e&l{1}"),
     RANK_INDEPENDENT        ("rank.independent",                    "&c&lThis rank is independent and devoid of next/previous ranks."),
-    RANK_NOT_FOUND        (  "rank.not_found",                      "&c&lRank with id &r&e&l{0} &r&c&lis not found!"),
+    RANK_NOT_FOUND          ("rank.not_found",                      "&c&lRank with id &r&e&l{0} &r&c&lis not found!"),
     RANK_REMOVE             ("rank.remove",                         "&a&lSet rank &r{0} for &r&e&l{1}"),
-
+    RANK_GROUP_CREATE       ("rank.group.create",                   "&a&lCreated rank group called &r&e&l{0}"),
+    RANK_GROUP_IGNORE_RANK  ("rank.group.ignore_rank",              "&c&lRank with id &r&e&l{0}&r&c&l, doesn't exist, ignoring it."),
+    RANK_GROUP_APPEND       ("rank.group.append",                   "&a&lAdded &r&e&l{0} &r&a&lto rank group &r&e&l{1}"),
+    RANK_GROUP_REMOVE       ("rank.group.remove",                   "&a&lRemove &r&e&l{0} &r&a&lfrom rank group &r&e&l{1}"),
+    RANK_GROUP_MOVE         ("rank.group.move",                     "&a&lMoved &r&e&l{0} &r&a&lfrom position {1} to {2} in rank group &r&e&l{3}"),
 
     STATS_PLAYTIME          ("utility.stats.playtime",              "&a&lTotal playtime of &r&e&l{0}&r&a&l: &r&f&l{1}");
 

@@ -175,6 +175,8 @@ public class CoreCommand extends AbstractCommandCollection {
         protected CompletableFuture<Void> executeAsync(@Nonnull CommandContext commandContext) {
             try {
                 hytaleFoundations.getConfigManager().reloadPlugin();
+                hytaleFoundations.registerManagers();
+                hytaleFoundations.registerCommands();
                 if(commandContext.isPlayer()) {
                     commandContext.sender().sendMessage(langManager.getMessage(commandContext.sender().getDisplayName(), LangKey.PLUGIN_RELOAD_SUCCESS, false, "Hytale Foundations"));
                 } else {

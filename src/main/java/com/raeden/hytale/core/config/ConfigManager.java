@@ -64,6 +64,7 @@ public class ConfigManager {
             hytaleFoundations.getChatManager().getColorEngine().loadColors();
         }
         if(defaultConfig.isToggleMailModule()) this.defaultMailConfig = loadMailConfigData();
+        if(defaultConfig.isToggleRankModule()) hytaleFoundations.getRankManager().loadRanks();
 
     }
 
