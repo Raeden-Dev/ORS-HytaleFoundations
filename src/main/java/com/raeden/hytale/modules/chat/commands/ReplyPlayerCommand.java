@@ -18,7 +18,7 @@ import com.raeden.hytale.modules.chat.ChatManager;
 
 import javax.annotation.Nonnull;
 
-import static com.raeden.hytale.HytaleFoundations.langManager;
+import static com.raeden.hytale.HytaleFoundations.LM;
 import static com.raeden.hytale.core.utils.Permissions.isPlayerAdmin;
 import static com.raeden.hytale.utils.GeneralUtils.findPlayerByName;
 
@@ -43,7 +43,7 @@ public class ReplyPlayerCommand extends AbstractPlayerCommand {
         String receiverUsername = chatManager.getReceiver(senderUsername);
 
         if(receiverUsername == null) {
-            commandContext.sender().sendMessage(langManager.getMessage(senderUsername, LangKey.PM_ERROR_OFFLINE, false));
+            commandContext.sender().sendMessage(LM.getMessage(senderUsername, LangKey.PM_ERROR_OFFLINE, false));
             return;
         }
         PlayerDataManager dataManager = hytaleFoundations.getPlayerDataManager();
@@ -56,25 +56,25 @@ public class ReplyPlayerCommand extends AbstractPlayerCommand {
 
         PlayerRef receiver = findPlayerByName("Reply Command", receiverUsername);
         if(receiver == null) {
-            commandContext.sender().sendMessage(langManager.getMessage(senderUsername, LangKey.PM_ERROR_OFFLINE, false, receiverUsername));
+            commandContext.sender().sendMessage(LM.getMessage(senderUsername, LangKey.PM_ERROR_OFFLINE, false, receiverUsername));
             return;
         }
         if(senderProfile.isMuted() && !isAdmin) {
-            commandContext.sender().sendMessage(langManager.getMessage(senderUsername, LangKey.MUTE_ERROR_CHAT,false, receiverUsername));
+            commandContext.sender().sendMessage(LM.getMessage(senderUsername, LangKey.MUTE_ERROR_CHAT,false, receiverUsername));
             return;
         }
         if(receiverProfile.isMuted() && !isAdmin) {
-            commandContext.sender().sendMessage(langManager.getMessage(senderUsername, LangKey.PM_ERROR_TARGET_MUTED,false, receiverUsername));
+            commandContext.sender().sendMessage(LM.getMessage(senderUsername, LangKey.PM_ERROR_TARGET_MUTED,false, receiverUsername));
             return;
         }
 
         if(receiverProfile.getBlockedPlayers().contains(senderUsername) && !isAdmin) {
-            commandContext.sender().sendMessage(langManager.getMessage(senderUsername, LangKey.PM_ERROR_SENDER_BLOCKED,false, receiverUsername));
+            commandContext.sender().sendMessage(LM.getMessage(senderUsername, LangKey.PM_ERROR_SENDER_BLOCKED,false, receiverUsername));
             return;
         }
 
-        receiver.sendMessage(langManager.getMessage(receiverUsername, LangKey.PM_FORMAT_RECEIVER,false, senderUsername, messageContent));
-        sender.sendMessage(langManager.getMessage(senderUsername, LangKey.PM_FORMAT_SENDER,false, receiverUsername, messageContent));
+        receiver.sendMessage(LM.getMessage(receiverUsername, LangKey.PM_FORMAT_RECEIVER,false, senderUsername, messageContent));
+        sender.sendMessage(LM.getMessage(senderUsername, LangKey.PM_FORMAT_SENDER,false, receiverUsername, messageContent));
 
         senderStats.increaseMessageSent();
     }

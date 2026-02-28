@@ -12,7 +12,7 @@ import com.raeden.hytale.modules.chat.ChatManager;
 import com.raeden.hytale.modules.chat.ColorManager;
 import com.raeden.hytale.utils.TimeUtils;
 
-import static com.raeden.hytale.HytaleFoundations.langManager;
+import static com.raeden.hytale.HytaleFoundations.LM;
 import static com.raeden.hytale.HytaleFoundations.myLogger;
 import static com.raeden.hytale.core.utils.Permissions.isPlayerAdmin;
 
@@ -27,14 +27,14 @@ public class PlayerChatListener {
         PlayerProfile profile = hytaleFoundations.getPlayerDataManager().getOnlinePlayerProfile(playerUsername);
         PlayerStats stats = hytaleFoundations.getPlayerDataManager().getOnlinePlayerStats(playerUsername);
         if(profile == null) {
-            myLogger.atSevere().log(langManager.getMessage(LangKey.NULL_POINTER, true, "PlayerChatListener - profile").getAnsiMessage());
+            myLogger.atSevere().log(LM.getMessage(LangKey.NULL_POINTER, true, "PlayerChatListener - profile").getAnsiMessage());
             return;
         }
 
         if(hytaleFoundations.getConfigManager().getDefaultConfig().isToggleChatModule()) {
             e.setCancelled(true);
             if(profile.isMuted() && !isAdmin) {
-                playerRef.sendMessage(langManager.getMessage(playerUsername, LangKey.MUTE_ERROR_CHAT_TIME,false, TimeUtils.formatDuration(profile.getMuteDuration())));
+                playerRef.sendMessage(LM.getMessage(playerUsername, LangKey.MUTE_ERROR_CHAT_TIME,false, TimeUtils.formatDuration(profile.getMuteDuration())));
                 return;
             }
             String chatContent = e.getContent();

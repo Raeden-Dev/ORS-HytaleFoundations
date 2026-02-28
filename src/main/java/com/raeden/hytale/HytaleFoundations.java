@@ -37,7 +37,6 @@ import com.raeden.hytale.utils.Scheduler;
 import javax.annotation.Nonnull;
 import java.nio.file.Path;
 import java.util.Random;
-import java.util.Scanner;
 
 public class HytaleFoundations extends JavaPlugin {
     public static final HytaleLogger myLogger = HytaleLogger.forEnclosingClass();
@@ -48,7 +47,7 @@ public class HytaleFoundations extends JavaPlugin {
     private Scheduler scheduler;
     private PluginActionManager pluginActionManager;
     private ConfigManager configManager;
-    public static LangManager langManager;
+    public static LangManager LM;
     private PlayerDataManager playerDataManager;
 
     private ChatManager chatManager;
@@ -83,9 +82,9 @@ public class HytaleFoundations extends JavaPlugin {
 
     public void registerManagers() {
         // Main dependencies
-        if(langManager == null) langManager = new LangManager(this);
+        if(LM == null) LM = new LangManager(this);
         if(configManager == null) configManager = new ConfigManager(this);
-        langManager.setDefaultLanguage();
+        LM.setDefaultLanguage();
         if(scheduler == null) scheduler = new Scheduler(this);
         if(pluginActionManager == null) pluginActionManager = new PluginActionManager(this);
         if(playerDataManager == null) playerDataManager = new PlayerDataManager(this);
@@ -163,7 +162,7 @@ public class HytaleFoundations extends JavaPlugin {
     }
 
     public ConfigManager getConfigManager() {return configManager;}
-    public LangManager getLangManager() {return langManager;}
+    public LangManager getLangManager() {return LM;}
     public PlayerDataManager getPlayerDataManager() {return playerDataManager;}
     public ChatManager getChatManager() {return chatManager;}
     public PluginActionManager getPluginActionManager() {return pluginActionManager;}

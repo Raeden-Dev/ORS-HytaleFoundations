@@ -65,7 +65,6 @@ public class ConfigManager {
         }
         if(defaultConfig.isToggleMailModule()) this.defaultMailConfig = loadMailConfigData();
         if(defaultConfig.isToggleRankModule()) hytaleFoundations.getRankManager().loadRanks();
-
     }
 
     // Do not use without try/catch

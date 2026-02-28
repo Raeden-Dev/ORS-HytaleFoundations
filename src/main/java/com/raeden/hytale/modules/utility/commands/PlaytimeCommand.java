@@ -18,7 +18,7 @@ import com.raeden.hytale.utils.TimeUtils;
 
 import javax.annotation.Nonnull;
 
-import static com.raeden.hytale.HytaleFoundations.langManager;
+import static com.raeden.hytale.HytaleFoundations.LM;
 import static com.raeden.hytale.utils.GeneralUtils.findPlayerByName;
 
 public class PlaytimeCommand extends AbstractPlayerCommand {
@@ -44,7 +44,7 @@ public class PlaytimeCommand extends AbstractPlayerCommand {
             PlayerStats stats = dataManager.getOnlinePlayerStats(senderUsername);
             dataManager.savePlayTime(senderUsername);
             String playtime = TimeUtils.formatDuration(stats.getPlayTimeMillis());
-            commandContext.sender().sendMessage(langManager.getMessage(senderUsername, LangKey.STATS_PLAYTIME,false, senderUsername, playtime));
+            commandContext.sender().sendMessage(LM.getMessage(senderUsername, LangKey.STATS_PLAYTIME,false, senderUsername, playtime));
             return;
         }
 
@@ -53,15 +53,15 @@ public class PlaytimeCommand extends AbstractPlayerCommand {
             if(dataManager.doesPlayerDataExist(targetUsername)) {
                 PlayerStats stats = dataManager.getOnlinePlayerStats(targetUsername);
                 String playtime = TimeUtils.formatDuration(stats.getPlayTimeMillis());
-                commandContext.sender().sendMessage(langManager.getMessage(senderUsername, LangKey.STATS_PLAYTIME,false, targetUsername, playtime));
+                commandContext.sender().sendMessage(LM.getMessage(senderUsername, LangKey.STATS_PLAYTIME,false, targetUsername, playtime));
             } else {
-              commandContext.sender().sendMessage(langManager.getMessage(senderUsername, LangKey.PLAYER_NOT_FOUND,false, targetUsername));
+              commandContext.sender().sendMessage(LM.getMessage(senderUsername, LangKey.PLAYER_NOT_FOUND,false, targetUsername));
             }
         } else {
             PlayerStats stats = dataManager.getOnlinePlayerStats(targetUsername);
             dataManager.savePlayTime(targetUsername);
             String playtime = TimeUtils.formatDuration(stats.getPlayTimeMillis());
-            commandContext.sender().sendMessage(langManager.getMessage(senderUsername, LangKey.STATS_PLAYTIME,false, targetUsername, playtime));
+            commandContext.sender().sendMessage(LM.getMessage(senderUsername, LangKey.STATS_PLAYTIME,false, targetUsername, playtime));
         }
     }
 }

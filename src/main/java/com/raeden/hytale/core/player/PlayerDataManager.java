@@ -97,7 +97,7 @@ public class PlayerDataManager {
         for(Map.Entry<UUID, String> entry : users.entrySet()) {
             if(playerID.equals(entry.getKey())) {
                 if(!entry.getValue().equals(username)) {
-                    myLogger.atWarning().log(langManager.getMessage(LangKey.MISMATCH_FOUND, true, USERMAP_FILENAME + " |" + playerID + ", " + entry.getValue() + "[EXPECTED: " + username + "]").getAnsiMessage());
+                    myLogger.atWarning().log(LM.getMessage(LangKey.MISMATCH_FOUND, true, USERMAP_FILENAME + " |" + playerID + ", " + entry.getValue() + "[EXPECTED: " + username + "]").getAnsiMessage());
                     mismatch = true;
                     break;
                 }
@@ -121,7 +121,7 @@ public class PlayerDataManager {
             }
         } catch (IOException e) {
             logError("PlayerDataManager-SavePlayerData", e);
-            myLogger.atSevere().log(langManager.getMessage(LangKey.CREATE_FAILURE,true, "player directory").getAnsiMessage());
+            myLogger.atSevere().log(LM.getMessage(LangKey.CREATE_FAILURE,true, "player directory").getAnsiMessage());
             return;
         }
         Path savePath = playerFolder.resolve(jsonName);
@@ -152,7 +152,7 @@ public class PlayerDataManager {
     public PlayerProfile getPlayerProfileFromFile(String username) {
         Path profileJsonPath = playerDataPath.resolve(username).resolve(PROFILE_FILENAME);
         if(!Files.exists(profileJsonPath)) {
-            myLogger.atSevere().log(langManager.getMessage(LangKey.FILE_NOT_FOUND_LOC, true, profileJsonPath.getFileName().toString(), profileJsonPath.toString()).getAnsiMessage());
+            myLogger.atSevere().log(LM.getMessage(LangKey.FILE_NOT_FOUND_LOC, true, profileJsonPath.getFileName().toString(), profileJsonPath.toString()).getAnsiMessage());
             return null;
         }
         String fileName = PROFILE_FILENAME + ": " + username;
@@ -162,7 +162,7 @@ public class PlayerDataManager {
     public PlayerStats getPlayerStatsFromFile(String username) {
         Path statsJsonPath = playerDataPath.resolve(username).resolve(STATS_FILENAME);
         if(!Files.exists(statsJsonPath)) {
-            myLogger.atSevere().log(langManager.getMessage(LangKey.FILE_NOT_FOUND_LOC, true, statsJsonPath.getFileName().toString(), statsJsonPath.toString()).getAnsiMessage());
+            myLogger.atSevere().log(LM.getMessage(LangKey.FILE_NOT_FOUND_LOC, true, statsJsonPath.getFileName().toString(), statsJsonPath.toString()).getAnsiMessage());
             return null;
         }
         String fileName = STATS_FILENAME + ": " + username;
@@ -172,7 +172,7 @@ public class PlayerDataManager {
     public PlayerHistory getPlayerHistory(String username) {
         Path historyJsonPath = playerDataPath.resolve(username).resolve(HISTORY_FILENAME);
         if(!Files.exists(historyJsonPath)) {
-            myLogger.atSevere().log(langManager.getMessage(LangKey.FILE_NOT_FOUND_LOC, true, historyJsonPath.getFileName().toString(), historyJsonPath.toString()).getAnsiMessage());
+            myLogger.atSevere().log(LM.getMessage(LangKey.FILE_NOT_FOUND_LOC, true, historyJsonPath.getFileName().toString(), historyJsonPath.toString()).getAnsiMessage());
             return null;
         }
         String fileName = HISTORY_FILENAME + ": " + username;
@@ -183,7 +183,7 @@ public class PlayerDataManager {
         if(username == null) return null;
         Path mailJsonPath = playerDataPath.resolve(username).resolve(MAIL_FILENAME);
         if(!Files.exists(mailJsonPath)) {
-            myLogger.atSevere().log(langManager.getMessage(LangKey.FILE_NOT_FOUND_LOC, true, mailJsonPath.getFileName().toString(), mailJsonPath.toString()).getAnsiMessage());
+            myLogger.atSevere().log(LM.getMessage(LangKey.FILE_NOT_FOUND_LOC, true, mailJsonPath.getFileName().toString(), mailJsonPath.toString()).getAnsiMessage());
             return null;
         }
         String fileName = MAIL_FILENAME + ": " + username;
@@ -258,7 +258,7 @@ public class PlayerDataManager {
 
     private void createDefaultPlayerData(PlayerRef playerRef) {
         if(playerRef == null) {
-            myLogger.atSevere().log(langManager.getMessage(LangKey.CREATE_FAILURE,true, "player data!").getAnsiMessage());
+            myLogger.atSevere().log(LM.getMessage(LangKey.CREATE_FAILURE,true, "player data!").getAnsiMessage());
             return;
         }
 

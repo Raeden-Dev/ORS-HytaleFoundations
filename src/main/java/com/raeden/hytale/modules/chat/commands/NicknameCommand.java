@@ -17,7 +17,7 @@ import com.raeden.hytale.lang.LangKey;
 
 import javax.annotation.Nonnull;
 
-import static com.raeden.hytale.HytaleFoundations.langManager;
+import static com.raeden.hytale.HytaleFoundations.LM;
 
 public class NicknameCommand extends AbstractCommandCollection {
     private final HytaleFoundations hytaleFoundations;
@@ -47,14 +47,14 @@ public class NicknameCommand extends AbstractCommandCollection {
             String nickname = commandContext.get(this.nickname);
             PlayerProfile targetProfile = hytaleFoundations.getPlayerDataManager().getPlayerProfile(targetUsername);
             if(targetProfile == null) {
-                commandContext.sender().sendMessage(langManager.getMessage(senderUsername, LangKey.PLAYER_NOT_FOUND_MSG,false, targetUsername));
+                commandContext.sender().sendMessage(LM.getMessage(senderUsername, LangKey.PLAYER_NOT_FOUND_MSG,false, targetUsername));
                 return;
             }
             if(!hytaleFoundations.getChatManager().validateNickname(playerRef, nickname)) {
                 return;
             }
             targetProfile.setNickname(nickname);
-            commandContext.sender().sendMessage(langManager.getMessage(senderUsername, LangKey.NICKNAME_SET,false, targetUsername, nickname));
+            commandContext.sender().sendMessage(LM.getMessage(senderUsername, LangKey.NICKNAME_SET,false, targetUsername, nickname));
         }
     }
     public static class NicknameClearCommand extends AbstractPlayerCommand {
@@ -79,11 +79,11 @@ public class NicknameCommand extends AbstractCommandCollection {
             } else {
                 PlayerProfile targetProfile = hytaleFoundations.getPlayerDataManager().getPlayerProfile(targetPlayer);
                 if(targetProfile == null) {
-                    commandContext.sender().sendMessage(langManager.getMessage(senderUsername, LangKey.PLAYER_NOT_FOUND_MSG,false, targetPlayer));
+                    commandContext.sender().sendMessage(LM.getMessage(senderUsername, LangKey.PLAYER_NOT_FOUND_MSG,false, targetPlayer));
                     return;
                 }
                 targetProfile.setNickname("");
-                commandContext.sender().sendMessage(langManager.getMessage(senderUsername, LangKey.NICKNAME_CLEARED,false, targetPlayer));
+                commandContext.sender().sendMessage(LM.getMessage(senderUsername, LangKey.NICKNAME_CLEARED,false, targetPlayer));
             }
         }
     }

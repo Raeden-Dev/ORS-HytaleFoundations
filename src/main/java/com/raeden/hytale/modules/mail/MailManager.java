@@ -12,7 +12,7 @@ import com.raeden.hytale.lang.LangKey;
 
 import java.util.List;
 
-import static com.raeden.hytale.HytaleFoundations.langManager;
+import static com.raeden.hytale.HytaleFoundations.LM;
 import static com.raeden.hytale.utils.GeneralUtils.findPlayerByName;
 
 public class MailManager {
@@ -32,11 +32,11 @@ public class MailManager {
             mailbox.addMail(mail);
             playerDataManager.savePlayerData(receiver, playerDataManager.MAIL_FILENAME, mailbox, false);
             if(sender != null) {
-                sender.sendMessage(langManager.getMessage(sender.getUsername(), LangKey.MAIL_SEND_SUCCESS, false, receiver));
+                sender.sendMessage(LM.getMessage(sender.getUsername(), LangKey.MAIL_SEND_SUCCESS, false, receiver));
             }
         } else {
             if(sender != null) {
-                sender.sendMessage(langManager.getMessage(sender.getUsername(), LangKey.MAIL_SEND_FAILURE, false, receiver));
+                sender.sendMessage(LM.getMessage(sender.getUsername(), LangKey.MAIL_SEND_FAILURE, false, receiver));
             }
         }
     }
@@ -54,15 +54,11 @@ public class MailManager {
                 unreadMailCount++;
             }
         }
-
-        if(!mailbox.isHasUnreadMail()) {
-            return;
-        }
-
+        if(!mailbox.isHasUnreadMail()) return;
         PlayerRef ref = findPlayerByName(username);
         PacketHandler handler = ref.getPacketHandler();
-        Message pm = langManager.getMessage(LangKey.MAIL_NOTIFY_UNREAD, false, String.valueOf(unreadMailCount));
-        Message sm = langManager.getMessage(LangKey.MAIL_NOTIFY_CHECK, false);
+        Message pm = LM.getMessage(LangKey.MAIL_NOTIFY_UNREAD, false, String.valueOf(unreadMailCount));
+        Message sm = LM.getMessage(LangKey.MAIL_NOTIFY_CHECK, false);
         NotificationUtil.sendNotification(handler, pm, sm,  NotificationStyle.Default);
     }
 

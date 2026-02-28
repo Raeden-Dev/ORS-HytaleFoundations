@@ -6,7 +6,7 @@ import com.raeden.hytale.lang.LangKey;
 import java.util.Map;
 import java.util.concurrent.*;
 
-import static com.raeden.hytale.HytaleFoundations.langManager;
+import static com.raeden.hytale.HytaleFoundations.LM;
 import static com.raeden.hytale.HytaleFoundations.myLogger;
 
 public class Scheduler {
@@ -39,7 +39,7 @@ public class Scheduler {
             }
         }, delay, unit);
         activeSchedulers.put(taskName, future);
-        if (debugMode) myLogger.atInfo().log(langManager.getMessage(LangKey.CREATE_SUCCESS,true, "runTaskLater: " + taskName).getAnsiMessage());
+        if (debugMode) myLogger.atInfo().log(LM.getMessage(LangKey.CREATE_SUCCESS,true, "runTaskLater: " + taskName).getAnsiMessage());
         return future;
     }
 
@@ -48,7 +48,7 @@ public class Scheduler {
         shutdownScheduler(taskName);
         ScheduledFuture<?> future = scheduler.scheduleAtFixedRate(task, initialDelay, period, unit);
         activeSchedulers.put(taskName, future);
-        if (debugMode) myLogger.atInfo().log(langManager.getMessage(LangKey.CREATE_SUCCESS,true, "runTaskTimer: " + taskName).getAnsiMessage());
+        if (debugMode) myLogger.atInfo().log(LM.getMessage(LangKey.CREATE_SUCCESS,true, "runTaskTimer: " + taskName).getAnsiMessage());
         return future;
     }
 
@@ -74,7 +74,7 @@ public class Scheduler {
         if (scheduledTask != null) {
             scheduledTask.cancel(true);
             if(debugMode) {
-                myLogger.atInfo().log(langManager.getMessage(LangKey.STOP_SUCCESS,true, "active scheduler " + scheduleName).getAnsiMessage());
+                myLogger.atInfo().log(LM.getMessage(LangKey.STOP_SUCCESS,true, "active scheduler " + scheduleName).getAnsiMessage());
             }
         }
     }

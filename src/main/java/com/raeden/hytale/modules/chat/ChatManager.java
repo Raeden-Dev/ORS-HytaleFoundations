@@ -18,7 +18,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 
-import static com.raeden.hytale.HytaleFoundations.langManager;
+import static com.raeden.hytale.HytaleFoundations.LM;
 import static com.raeden.hytale.HytaleFoundations.myLogger;
 import static com.raeden.hytale.utils.FileManager.createDirectory;
 import static com.raeden.hytale.utils.FileManager.logError;
@@ -76,8 +76,8 @@ public class ChatManager {
                 .replace("{message}", message);
     }
     public void setupChatFormat() {
-        if(langManager != null) {
-            String chatFormat = langManager.getMessage(LangKey.CHAT_FORMAT).getAnsiMessage();
+        if(LM != null) {
+            String chatFormat = LM.getMessage(LangKey.CHAT_FORMAT).getAnsiMessage();
             if(validateChatFormat(chatFormat)) {
                 this.chatFormat = chatFormat;
             } else {
@@ -120,10 +120,10 @@ public class ChatManager {
                 writer.newLine();
             }
             writer.write("---- END ----");
-            myLogger.atInfo().log(langManager.getMessage(LangKey.LOG_CHAT_EXPORT_SUCCESS,true, fileName, chatLogDir.toString()).getAnsiMessage());
+            myLogger.atInfo().log(LM.getMessage(LangKey.LOG_CHAT_EXPORT_SUCCESS,true, fileName, chatLogDir.toString()).getAnsiMessage());
         } catch (IOException e) {
             FileManager.logError("exportChatLog", e);
-            myLogger.atSevere().log(langManager.getMessage(LangKey.LOG_CHAT_EXPORT_FAIL,true, fileName).getAnsiMessage());
+            myLogger.atSevere().log(LM.getMessage(LangKey.LOG_CHAT_EXPORT_FAIL,true, fileName).getAnsiMessage());
         }
     }
 
@@ -134,7 +134,7 @@ public class ChatManager {
     // Nicknaming
     public boolean validateNickname(PlayerRef caller, String nickname) {
         if(nickname.length() <= 2) {
-            caller.sendMessage(langManager.getMessage(LangKey.NICKNAME_LENGTH, false));
+            caller.sendMessage(LM.getMessage(LangKey.NICKNAME_LENGTH, false));
             return false;
         }
         return true;

@@ -25,16 +25,16 @@ public class FileManager {
         try {
             Files.createDirectories(directoryPath);
             if (showInfo) {
-                if (langManager != null) {
-                    myLogger.atInfo().log(langManager.getMessage(LangKey.DIR_CREATE_SUCCESS_LOC,true, fileName, directoryPath.toString()).getAnsiMessage());
+                if (LM != null) {
+                    myLogger.atInfo().log(LM.getMessage(LangKey.DIR_CREATE_SUCCESS_LOC,true, fileName, directoryPath.toString()).getAnsiMessage());
                 } else {
                     myLogger.atInfo().log("[DIR] Created %s directory at %s", fileName, directoryPath.toString());
                 }
             }
         } catch (IOException e) {
             logError("createDirectory", e);
-            if (langManager != null) {
-                myLogger.atSevere().log(langManager.getMessage(LangKey.DIR_CREATE_FAIL_LOC,true, fileName, directoryPath.toString()).getAnsiMessage());
+            if (LM != null) {
+                myLogger.atSevere().log(LM.getMessage(LangKey.DIR_CREATE_FAIL_LOC,true, fileName, directoryPath.toString()).getAnsiMessage());
             } else {
                 myLogger.atSevere().log("[DIR] Failed to create %s directory at %s", fileName, directoryPath.toString());
             }
@@ -60,16 +60,16 @@ public class FileManager {
                 T myObj = GSON.fromJson(reader, typeOfT);
 
                 if (myObj == null) {
-                    if (langManager != null) {
-                        myLogger.atSevere().log(langManager.getMessage(LangKey.LOAD_FAILURE_LOC,true, fileName, filePath.toString()).getAnsiMessage());
+                    if (LM != null) {
+                        myLogger.atSevere().log(LM.getMessage(LangKey.LOAD_FAILURE_LOC,true, fileName, filePath.toString()).getAnsiMessage());
                     } else {
                         myLogger.atSevere().log("[LOAD] Failed to load " + fileName + " at " + filePath);
                     }
                     return null;
                 } else {
                     if (showInfo) {
-                        if (langManager != null) {
-                            myLogger.atInfo().log(langManager.getMessage(LangKey.LOAD_SUCCESS,true, fileName).getAnsiMessage());
+                        if (LM != null) {
+                            myLogger.atInfo().log(LM.getMessage(LangKey.LOAD_SUCCESS,true, fileName).getAnsiMessage());
                         } else {
                             myLogger.atInfo().log("[LOAD] Loaded " + fileName);
                         }
@@ -78,15 +78,15 @@ public class FileManager {
                 }
             } catch (IOException | JsonSyntaxException e) {
                 logError("loadJsonFile", e);
-                if (langManager != null) {
-                    myLogger.atSevere().log(langManager.getMessage(LangKey.READ_FAILURE_LOC,true, fileName, filePath.toString()).getAnsiMessage());
+                if (LM != null) {
+                    myLogger.atSevere().log(LM.getMessage(LangKey.READ_FAILURE_LOC,true, fileName, filePath.toString()).getAnsiMessage());
                 } else {
                     myLogger.atSevere().log("[READ] Failed to read " + fileName + " at " + filePath);
                 }
             }
         } else {
-            if (langManager != null) {
-                myLogger.atWarning().log(langManager.getMessage(LangKey.FILE_NOT_FOUND_LOC,true, fileName, filePath.toString()).getAnsiMessage());
+            if (LM != null) {
+                myLogger.atWarning().log(LM.getMessage(LangKey.FILE_NOT_FOUND_LOC,true, fileName, filePath.toString()).getAnsiMessage());
             } else {
                 myLogger.atWarning().log("[ERROR] Could not find " + fileName + " at " + filePath);
             }
@@ -109,16 +109,16 @@ public class FileManager {
                 JsonObject jsonObject = JsonParser.parseReader(reader).getAsJsonObject();
 
                 if (jsonObject == null) {
-                    if (langManager != null) {
-                        myLogger.atSevere().log(langManager.getMessage(LangKey.LOAD_FAILURE_LOC,true, fileName, filePath.toString()).getAnsiMessage());
+                    if (LM != null) {
+                        myLogger.atSevere().log(LM.getMessage(LangKey.LOAD_FAILURE_LOC,true, fileName, filePath.toString()).getAnsiMessage());
                     } else {
                         myLogger.atSevere().log("[LOAD] Failed to load " + fileName + " at " + filePath);
                     }
                     return null;
                 } else {
                     if (showInfo) {
-                        if (langManager != null) {
-                            myLogger.atInfo().log(langManager.getMessage(LangKey.LOAD_SUCCESS,true, fileName).getAnsiMessage());
+                        if (LM != null) {
+                            myLogger.atInfo().log(LM.getMessage(LangKey.LOAD_SUCCESS,true, fileName).getAnsiMessage());
                         } else {
                             myLogger.atInfo().log("[LOAD] Loaded " + fileName);
                         }
@@ -127,15 +127,15 @@ public class FileManager {
                 }
             } catch (IOException | JsonSyntaxException e) {
                 logError("getJsonObject", e);
-                if (langManager != null) {
-                    myLogger.atSevere().log(langManager.getMessage(LangKey.LOAD_FAILURE_LOC,true, fileName, filePath.toString()).getAnsiMessage());
+                if (LM != null) {
+                    myLogger.atSevere().log(LM.getMessage(LangKey.LOAD_FAILURE_LOC,true, fileName, filePath.toString()).getAnsiMessage());
                 } else {
                     myLogger.atSevere().log("[LOAD] Failed to load " + fileName + " at " + filePath);
                 }
             }
         } else {
-            if (langManager != null) {
-                myLogger.atWarning().log(langManager.getMessage(LangKey.FILE_NOT_FOUND_LOC,true, fileName, filePath.toString()).getAnsiMessage());
+            if (LM != null) {
+                myLogger.atWarning().log(LM.getMessage(LangKey.FILE_NOT_FOUND_LOC,true, fileName, filePath.toString()).getAnsiMessage());
             } else {
                 myLogger.atWarning().log("[ERROR] Could not find " + fileName + " at " + filePath);
             }
@@ -154,8 +154,8 @@ public class FileManager {
 
     public static <T> void saveJsonFile(String fileName, Path savePath, T dataObject, boolean showInfo) {
         if (dataObject == null) {
-            if (langManager != null) {
-                myLogger.atSevere().log(langManager.getMessage(LangKey.SAVE_FAILURE_LOC,true, fileName, savePath.toString()).getAnsiMessage());
+            if (LM != null) {
+                myLogger.atSevere().log(LM.getMessage(LangKey.SAVE_FAILURE_LOC,true, fileName, savePath.toString()).getAnsiMessage());
             } else {
                 myLogger.atSevere().log("[SAVE] Failed to save " + fileName + " at " + savePath);
             }
@@ -164,16 +164,16 @@ public class FileManager {
         try (BufferedWriter writer = Files.newBufferedWriter(savePath, StandardCharsets.UTF_8, StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING)) {
             GSON.toJson(dataObject, writer);
             if (showInfo) {
-                if (langManager != null) {
-                    myLogger.atInfo().log(langManager.getMessage(LangKey.SAVE_SUCCESS_LOC,true, fileName, savePath.toString()).getAnsiMessage());
+                if (LM != null) {
+                    myLogger.atInfo().log(LM.getMessage(LangKey.SAVE_SUCCESS_LOC,true, fileName, savePath.toString()).getAnsiMessage());
                 } else {
                     myLogger.atInfo().log("[SAVE] Saved " + fileName + " at " + savePath);
                 }
             }
         } catch (IOException e) {
             logError("saveJsonFile", e);
-            if (langManager != null) {
-                myLogger.atSevere().log(langManager.getMessage(LangKey.SAVE_FAILURE_LOC,true, fileName, savePath.toString()).getAnsiMessage());
+            if (LM != null) {
+                myLogger.atSevere().log(LM.getMessage(LangKey.SAVE_FAILURE_LOC,true, fileName, savePath.toString()).getAnsiMessage());
             } else {
                 myLogger.atSevere().log("[SAVE] Failed to save " + fileName + " at " + savePath);
             }
@@ -202,8 +202,8 @@ public class FileManager {
             if(changed) {
                 saveJsonFile(fileName, filePath, existingJsonTree, false);
                 if(showInfo) {
-                    if(langManager != null) {
-                        myLogger.atInfo().log(langManager.getMessage(LangKey.UPDATE_SUCCESS, true, fileName).getAnsiMessage());
+                    if(LM != null) {
+                        myLogger.atInfo().log(LM.getMessage(LangKey.UPDATE_SUCCESS, true, fileName).getAnsiMessage());
                     } else {
                         myLogger.atInfo().log("[UPDATE] Updated " + fileName);
                     }
@@ -211,8 +211,8 @@ public class FileManager {
             }
         } catch (Exception e) {
             logError("updateJsonFile", e);
-            if(langManager != null) {
-                myLogger.atSevere().log(langManager.getMessage(LangKey.UPDATE_FAILURE, true, fileName).getAnsiMessage());
+            if(LM != null) {
+                myLogger.atSevere().log(LM.getMessage(LangKey.UPDATE_FAILURE, true, fileName).getAnsiMessage());
             } else {
                 myLogger.atInfo().log("[UPDATE] Failed to update " + fileName);
             }
@@ -287,14 +287,14 @@ public class FileManager {
             e.printStackTrace(writer);
             writer.println("===============================");
 
-            if (langManager != null) {
-                myLogger.atWarning().log(langManager.getMessage(LangKey.SAVE_SUCCESS_LOC,true, fileName, logFile.toString()).getAnsiMessage());
+            if (LM != null) {
+                myLogger.atWarning().log(LM.getMessage(LangKey.SAVE_SUCCESS_LOC,true, fileName, logFile.toString()).getAnsiMessage());
             } else {
                 System.out.println("Saved error log to: " + logFile.toAbsolutePath());
             }
         } catch (IOException writeEx) {
-            if (langManager != null) {
-                myLogger.atSevere().log(langManager.getMessage(LangKey.SAVE_FAILURE, true, "error log").getAnsiMessage());
+            if (LM != null) {
+                myLogger.atSevere().log(LM.getMessage(LangKey.SAVE_FAILURE, true, "error log").getAnsiMessage());
             } else {
                 myLogger.atSevere().log("Failed to save error log.");
             }

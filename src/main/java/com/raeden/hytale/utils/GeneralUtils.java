@@ -15,7 +15,7 @@ import com.raeden.hytale.lang.LangKey;
 import java.util.Objects;
 import java.util.UUID;
 
-import static com.raeden.hytale.HytaleFoundations.langManager;
+import static com.raeden.hytale.HytaleFoundations.LM;
 import static com.raeden.hytale.HytaleFoundations.myLogger;
 import static com.raeden.hytale.utils.FileManager.logError;
 
@@ -73,7 +73,7 @@ public class GeneralUtils {
             }
         }  catch (Exception e) {
             myLogger.atWarning().log((caller == null ? "" : "[Called by: " + caller + "]") +
-                    langManager.getMessage(LangKey.PLAYER_INV_CHECK_FAIL).getAnsiMessage());
+                    LM.getMessage(LangKey.PLAYER_INV_CHECK_FAIL).getAnsiMessage());
             return false;
         }
     }
@@ -91,7 +91,7 @@ public class GeneralUtils {
                 PlayerRef player = universe.getPlayerByUsername(username, NameMatching.EXACT);
                 if(player == null) {
                     myLogger.atWarning().log((caller == null ? "" : "[Called by: " + caller + "]") +
-                            langManager.getMessage(LangKey.PLAYER_NOT_FOUND, username).getAnsiMessage()
+                            LM.getMessage(LangKey.PLAYER_NOT_FOUND, username).getAnsiMessage()
                     );
                 }
 
@@ -100,7 +100,7 @@ public class GeneralUtils {
         } catch (Exception e) {
             FileManager.logError("findPlayerByName", e);
             myLogger.atWarning().log((caller == null ? "" : "[Called by: " + caller + "]") +
-                    langManager.getMessage(LangKey.PLAYER_NOT_FOUND, username).getAnsiMessage() + e.getMessage());
+                    LM.getMessage(LangKey.PLAYER_NOT_FOUND, username).getAnsiMessage() + e.getMessage());
             return null;
         }
     }
@@ -115,7 +115,7 @@ public class GeneralUtils {
             return playerRef != null && playerRef.getReference() != null && playerRef.getReference().isValid();
         } catch (Exception e) {
             myLogger.atWarning().log((caller == null ? "" : "[Called by: " + caller + "]") +
-                    langManager.getMessage(LangKey.PLAYER_ONLINE_CHECK_FAIL, username).getAnsiMessage() + " - " + e.getMessage());
+                    LM.getMessage(LangKey.PLAYER_ONLINE_CHECK_FAIL, username).getAnsiMessage() + " - " + e.getMessage());
             return false;
         }
     }

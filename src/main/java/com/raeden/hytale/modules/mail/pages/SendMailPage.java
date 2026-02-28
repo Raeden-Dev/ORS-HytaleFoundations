@@ -8,7 +8,6 @@ import com.hypixel.hytale.component.Store;
 import com.hypixel.hytale.protocol.packets.interface_.CustomPageLifetime;
 import com.hypixel.hytale.protocol.packets.interface_.CustomUIEventBindingType;
 import com.hypixel.hytale.protocol.packets.interface_.Page;
-import com.hypixel.hytale.server.core.Message;
 import com.hypixel.hytale.server.core.entity.entities.Player;
 import com.hypixel.hytale.server.core.entity.entities.player.pages.InteractiveCustomUIPage;
 import com.hypixel.hytale.server.core.ui.builder.EventData;
@@ -25,7 +24,7 @@ import javax.annotation.Nonnull;
 import java.util.Arrays;
 import java.util.List;
 
-import static com.raeden.hytale.HytaleFoundations.langManager;
+import static com.raeden.hytale.HytaleFoundations.LM;
 
 public class SendMailPage extends InteractiveCustomUIPage<SendMailPage.SendMailData> {
     private final HytaleFoundations hytaleFoundations;
@@ -103,16 +102,16 @@ public class SendMailPage extends InteractiveCustomUIPage<SendMailPage.SendMailD
 
     private boolean checkIfMailValid(Player player, SendMailData data) {
         if(data.receiverName == null || data.mailBody == null || data.mailSubject == null) {
-            player.sendMessage(langManager.getMessage(player.getDisplayName(), LangKey.MAIL_MISSING_FIELD, false));
+            player.sendMessage(LM.getMessage(player.getDisplayName(), LangKey.MAIL_MISSING_FIELD, false));
             return false;
         }
 
         if(data.receiverName.isEmpty() || data.mailSubject.isEmpty() || data.mailBody.isEmpty()) {
-            player.sendMessage(langManager.getMessage(player.getDisplayName(), LangKey.MAIL_MISSING_FIELD, false));
+            player.sendMessage(LM.getMessage(player.getDisplayName(), LangKey.MAIL_MISSING_FIELD, false));
             return false;
         } else {
             if(!hytaleFoundations.getPlayerDataManager().doesPlayerDataExist(data.receiverName)) {
-                player.sendMessage(langManager.getMessage(player.getDisplayName(), LangKey.PLAYER_NOT_FOUND_MSG, false, data.receiverName));
+                player.sendMessage(LM.getMessage(player.getDisplayName(), LangKey.PLAYER_NOT_FOUND_MSG, false, data.receiverName));
                 return false;
             }
         }

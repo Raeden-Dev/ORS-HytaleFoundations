@@ -46,7 +46,7 @@ public class ColorManager {
         specialCodes = new ArrayList<>(List.of("&l", "&o", "&r"));
         loadDefaultColors();
         if(!Files.exists(colorFilePath)) {
-            myLogger.atInfo().log(langManager.getMessage(LangKey.CREATE_SUCCESS, true, colorFileName, colorFilePath.toString()).getAnsiMessage());
+            myLogger.atInfo().log(LM.getMessage(LangKey.CREATE_SUCCESS, true, colorFileName, colorFilePath.toString()).getAnsiMessage());
             saveColorFile(); // Just save the defaults we just loaded
         } else {
             loadColors();
@@ -62,7 +62,7 @@ public class ColorManager {
         ColormapHolder colorMapFile = new ColormapHolder();
         colorMapFile.setColorList(colorMap);
         saveJsonFile(colorFileName, colorFilePath, colorMapFile, true);
-        myLogger.atInfo().log(langManager.getMessage(LangKey.LOAD_SUCCESS, true, colorMap.size() + " colors!").getAnsiMessage());
+        myLogger.atInfo().log(LM.getMessage(LangKey.LOAD_SUCCESS, true, colorMap.size() + " colors!").getAnsiMessage());
     }
     public void loadColors() {
         Type type = new TypeToken<ColormapHolder>(){}.getType();
@@ -78,7 +78,7 @@ public class ColorManager {
             String code = entry.getKey();
             String hex = entry.getValue();
             if(!validateColor(code, hex)) {
-                myLogger.atWarning().log(langManager.getMessage(LangKey.INVALID_COLOR_FORMAT, true, code, hex).getAnsiMessage());
+                myLogger.atWarning().log(LM.getMessage(LangKey.INVALID_COLOR_FORMAT, true, code, hex).getAnsiMessage());
                 continue;
             }
             if(!colorMap.containsKey(code)) {
@@ -90,7 +90,7 @@ public class ColorManager {
         }
         if(newColors > 0 || overwrittenColors > 0) {
             String msg = String.format("%d custom colors and %d overrides loaded.", newColors, overwrittenColors);
-            myLogger.atInfo().log(langManager.getMessage(LangKey.LOAD_SUCCESS, true, msg).getAnsiMessage());
+            myLogger.atInfo().log(LM.getMessage(LangKey.LOAD_SUCCESS, true, msg).getAnsiMessage());
         }
     }
 

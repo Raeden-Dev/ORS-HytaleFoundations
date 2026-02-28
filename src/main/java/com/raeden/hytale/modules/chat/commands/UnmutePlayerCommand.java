@@ -17,7 +17,7 @@ import com.raeden.hytale.lang.LangKey;
 
 import javax.annotation.Nonnull;
 
-import static com.raeden.hytale.HytaleFoundations.langManager;
+import static com.raeden.hytale.HytaleFoundations.LM;
 import static com.raeden.hytale.core.utils.Permissions.isPlayerAdmin;
 import static com.raeden.hytale.utils.GeneralUtils.findPlayerByName;
 
@@ -41,7 +41,7 @@ public class UnmutePlayerCommand extends AbstractPlayerCommand {
         boolean isTargetOffline = false;
         if(target == null) {
             if(!hytaleFoundations.getPlayerDataManager().doesPlayerDataExist(targetUsername)) {
-                commandContext.sender().sendMessage(langManager.getMessage(senderUsername, LangKey.PLAYER_NOT_FOUND, false, targetUsername));
+                commandContext.sender().sendMessage(LM.getMessage(senderUsername, LangKey.PLAYER_NOT_FOUND, false, targetUsername));
                 return;
             } else {
                 isTargetOffline = true;
@@ -52,10 +52,10 @@ public class UnmutePlayerCommand extends AbstractPlayerCommand {
         if(profile.isMuted()) {
             profile.setMuted(false);
             profile.setMuteDuration(0);
-            commandContext.sender().sendMessage(langManager.getMessage(senderUsername, LangKey.UNMUTE_ACTION_SUCCESS,false, targetUsername));
-            if(target != null) target.sendMessage(langManager.getMessage(targetUsername, LangKey.UNMUTE_NOTIFY_ACTIVE,false, senderUsername));
+            commandContext.sender().sendMessage(LM.getMessage(senderUsername, LangKey.UNMUTE_ACTION_SUCCESS,false, targetUsername));
+            if(target != null) target.sendMessage(LM.getMessage(targetUsername, LangKey.UNMUTE_NOTIFY_ACTIVE,false, senderUsername));
         } else {
-            commandContext.sender().sendMessage(langManager.getMessage(senderUsername, LangKey.UNMUTE_ERROR_NOT_MUTED,false, targetUsername));
+            commandContext.sender().sendMessage(LM.getMessage(senderUsername, LangKey.UNMUTE_ERROR_NOT_MUTED,false, targetUsername));
         }
 
         if(isTargetOffline) {

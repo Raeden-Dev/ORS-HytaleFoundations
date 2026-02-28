@@ -18,7 +18,7 @@ import javax.annotation.Nonnull;
 
 import java.util.List;
 
-import static com.raeden.hytale.HytaleFoundations.langManager;
+import static com.raeden.hytale.HytaleFoundations.LM;
 import static com.raeden.hytale.core.utils.Permissions.isPlayerAdmin;
 import static com.raeden.hytale.utils.GeneralUtils.findPlayerByName;
 
@@ -37,18 +37,17 @@ public class BlockPlayerCommand extends AbstractPlayerCommand {
         String senderUsername = commandContext.sender().getDisplayName();
         String targetUsername = commandContext.get(this.targetPlayer);
 
-        PlayerRef receiver = findPlayerByName("BlockPlayerCommand", targetUsername);
-        if(receiver == null && !hytaleFoundations.getPlayerDataManager().doesPlayerDataExist(targetUsername)) {
-            commandContext.sender().sendMessage(langManager.getMessage(senderUsername, LangKey.PLAYER_NOT_FOUND_MSG, false, targetUsername));
+        PlayerProfile profile = hytaleFoundations.getPlayerDataManager().getPlayerProfile(senderUsername);
+        if(profile == null) {
+            commandContext.sender().sendMessage(LM.getMessage(senderUsername, LangKey.PLAYER_NOT_FOUND_MSG, false, targetUsername));
             return;
         }
-        PlayerProfile profile = hytaleFoundations.getPlayerDataManager().getPlayerProfile(senderUsername);
         List<String> blockedPlayers = profile.getBlockedPlayers();
         if(blockedPlayers.contains(targetUsername)) {
-            commandContext.sender().sendMessage(langManager.getMessage(senderUsername, LangKey.BLOCK_ALREADY,false, targetUsername));
+            commandContext.sender().sendMessage(LM.getMessage(senderUsername, LangKey.BLOCK_ALREADY,false, targetUsername));
         } else {
             profile.addNewBlockedPlayer(targetUsername);
-            commandContext.sender().sendMessage(langManager.getMessage(senderUsername, LangKey.BLOCK_SUCCESS,false, targetUsername));
+            commandContext.sender().sendMessage(LM.getMessage(senderUsername, LangKey.BLOCK_SUCCESS,false, targetUsername));
         }
     }
 }

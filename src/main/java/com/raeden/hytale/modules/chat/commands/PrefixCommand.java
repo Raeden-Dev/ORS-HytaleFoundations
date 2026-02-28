@@ -11,14 +11,10 @@ import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.world.World;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import com.raeden.hytale.HytaleFoundations;
-import com.raeden.hytale.core.player.PlayerProfile;
 import com.raeden.hytale.core.utils.Permissions;
-import com.raeden.hytale.lang.LangKey;
 import com.raeden.hytale.modules.chat.AffixManager;
 
 import javax.annotation.Nonnull;
-
-import static com.raeden.hytale.HytaleFoundations.langManager;
 
 public class PrefixCommand extends AbstractCommandCollection {
     public PrefixCommand(HytaleFoundations hytaleFoundations) {

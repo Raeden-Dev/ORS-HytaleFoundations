@@ -17,7 +17,7 @@ import com.raeden.hytale.lang.LangKey;
 import javax.annotation.Nonnull;
 import java.util.List;
 
-import static com.raeden.hytale.HytaleFoundations.langManager;
+import static com.raeden.hytale.HytaleFoundations.LM;
 import static com.raeden.hytale.core.utils.Permissions.isPlayerAdmin;
 import static com.raeden.hytale.utils.GeneralUtils.findPlayerByName;
 
@@ -36,19 +36,17 @@ public class UnblockPlayerCommand extends AbstractPlayerCommand {
         boolean isAdmin = isPlayerAdmin(commandContext.sender());
         String senderUsername = commandContext.sender().getDisplayName();
         String targetUsername = commandContext.get(this.targetPlayer);
-
-        PlayerRef receiver = findPlayerByName("UnblockPlayerCommand", targetUsername);
-        if(receiver == null && !hytaleFoundations.getPlayerDataManager().doesPlayerDataExist(targetUsername)) {
-            commandContext.sender().sendMessage(langManager.getMessage(senderUsername, LangKey.PLAYER_NOT_FOUND_MSG, false, targetUsername));
+        PlayerProfile profile = hytaleFoundations.getPlayerDataManager().getPlayerProfile(senderUsername);
+        if(profile == null) {
+            commandContext.sender().sendMessage(LM.getMessage(senderUsername, LangKey.PLAYER_NOT_FOUND_MSG, false, targetUsername));
             return;
         }
-        PlayerProfile profile = hytaleFoundations.getPlayerDataManager().getPlayerProfile(senderUsername);
         List<String> blockedPlayers = profile.getBlockedPlayers();
         if(blockedPlayers.contains(targetUsername)) {
             profile.removeBlockedPlayer(targetUsername);
-            commandContext.sender().sendMessage(langManager.getMessage(senderUsername, LangKey.UNBLOCK_SUCCESS,false, targetUsername));
+            commandContext.sender().sendMessage(LM.getMessage(senderUsername, LangKey.UNBLOCK_SUCCESS,false, targetUsername));
         } else {
-            commandContext.sender().sendMessage(langManager.getMessage(senderUsername, LangKey.UNBLOCK_NOT_FOUND,false, targetUsername));
+            commandContext.sender().sendMessage(LM.getMessage(senderUsername, LangKey.UNBLOCK_NOT_FOUND,false, targetUsername));
         }
     }
 }

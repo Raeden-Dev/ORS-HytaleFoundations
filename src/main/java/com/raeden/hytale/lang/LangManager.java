@@ -3,7 +3,6 @@ package com.raeden.hytale.lang;
 import com.hypixel.hytale.server.core.Message;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.raeden.hytale.HytaleFoundations;
-import com.raeden.hytale.core.config.containers.ChatConfig;
 import com.raeden.hytale.core.player.PlayerProfile;
 import com.raeden.hytale.core.utils.Permissions;
 import com.raeden.hytale.modules.chat.ColorManager;
@@ -133,27 +132,19 @@ public class LangManager {
     public Message getMessage(LangKey key, boolean isConsole, String... args) {
         return getMessage(null, key, isConsole, args);
     }
-    public Message getMessage(String username, LangKey key, String... args) {
+    public Message getPlayerMessage(String username, LangKey key, String... args) {
         return getMessage(username, key, false, args);
+    }
+    public Message getConsoleMessage(LangKey key, String... args) {
+        return getMessage(null, key, true, args);
     }
     public Message getMessage(String username, LangKey key, boolean isConsole, String... args) {
         PlayerRef playerRef = username == null ? null : findPlayerByName(username);
         boolean isAdmin = Permissions.isPlayerAdmin(playerRef);
-        String prefixText = ( isAdmin ? getLangString(username, LangKey.CHAT_MSG_PREFIX_ADMIN) : getLangString(username, LangKey.CHAT_MSG_PREFIX));
-        if (prefixText == null) {
-            prefixText = (isAdmin ? LangKey.CHAT_MSG_PREFIX_ADMIN.getDefaultMessage() + " " : LangKey.CHAT_MSG_PREFIX.getDefaultMessage() + " ");
-        } else {
-            prefixText = prefixText + " ";
-        }
-        if(prefixExclusionList.contains(key) && isAdmin) {
-            prefixText = "";
-        }
+        String prefixText = cleanupPrefix(username, key, isAdmin);
         String finalText = getLangString(username, key);
         if (finalText == null) finalText = key.getDefaultMessage();
-
-        if(username != null) {
-            finalText = prefixText + finalText;
-        }
+        if(username != null) finalText = prefixText + finalText;
         if (args != null && args.length > 0) {
             for (int i = 0; i < args.length; i++) {
                 String val = args[i] != null ? args[i] : "null";
@@ -161,6 +152,14 @@ public class LangManager {
             }
         }
         return formatMessage(playerRef, finalText, isConsole);
+    }
+
+    private String cleanupPrefix(String username, LangKey key, boolean isAdmin) {
+        String prefixText = ( isAdmin ? getLangString(username, LangKey.CHAT_MSG_PREFIX_ADMIN) : getLangString(username, LangKey.CHAT_MSG_PREFIX));
+        if (prefixText == null)  prefixText = (isAdmin ? LangKey.CHAT_MSG_PREFIX_ADMIN.getDefaultMessage() + " " : LangKey.CHAT_MSG_PREFIX.getDefaultMessage() + " ");
+        else prefixText = prefixText + " ";
+        if(prefixExclusionList.contains(key) && isAdmin) prefixText = "";
+        return prefixText;
     }
 
     private Message formatMessage(PlayerRef playerRef, String text, boolean isConsole) {
