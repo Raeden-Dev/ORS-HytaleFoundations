@@ -15,7 +15,7 @@ import com.raeden.hytale.utils.TimeUtils;
 
 import javax.annotation.Nonnull;
 
-import static com.raeden.hytale.core.utils.Permissions.isPlayerAdmin;
+import static com.raeden.hytale.core.utils.PermissionManager.isPlayerAdmin;
 
 public class QuickMailCommand extends AbstractPlayerCommand {
     private final HytaleFoundations hytaleFoundations;

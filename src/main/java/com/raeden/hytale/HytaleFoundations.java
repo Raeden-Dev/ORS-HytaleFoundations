@@ -15,6 +15,7 @@ import com.raeden.hytale.core.player.PlayerDataManager;
 import com.raeden.hytale.core.events.playerEvents.PlayerDeathListener;
 import com.raeden.hytale.core.events.playerEvents.PlayerServerDisconnectListener;
 import com.raeden.hytale.core.events.playerEvents.PlayerServerJoinListener;
+import com.raeden.hytale.core.utils.PermissionManager;
 import com.raeden.hytale.lang.LangManager;
 import com.raeden.hytale.modules.admin.commands.AnnounceCommand;
 import com.raeden.hytale.modules.admin.commands.TitleCommand;
@@ -49,6 +50,7 @@ public class HytaleFoundations extends JavaPlugin {
     private ConfigManager configManager;
     public static LangManager LM;
     private PlayerDataManager playerDataManager;
+    private PermissionManager permissionManager;
 
     private ChatManager chatManager;
     private MailManager mailManager;
@@ -84,6 +86,7 @@ public class HytaleFoundations extends JavaPlugin {
         // Main dependencies
         if(LM == null) LM = new LangManager(this);
         if(configManager == null) configManager = new ConfigManager(this);
+        if(permissionManager == null) permissionManager = new PermissionManager(this);
         LM.setDefaultLanguage();
         if(scheduler == null) scheduler = new Scheduler(this);
         if(pluginActionManager == null) pluginActionManager = new PluginActionManager(this);
@@ -164,6 +167,7 @@ public class HytaleFoundations extends JavaPlugin {
     public ConfigManager getConfigManager() {return configManager;}
     public LangManager getLangManager() {return LM;}
     public PlayerDataManager getPlayerDataManager() {return playerDataManager;}
+    public PermissionManager getPermissionManager() {return permissionManager;}
     public ChatManager getChatManager() {return chatManager;}
     public PluginActionManager getPluginActionManager() {return pluginActionManager;}
     public MailManager getMailManager() {return mailManager;}

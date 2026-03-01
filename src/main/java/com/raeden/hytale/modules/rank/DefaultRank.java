@@ -1,7 +1,7 @@
 package com.raeden.hytale.modules.rank;
 
 import com.raeden.hytale.modules.chat.DefaultAffix;
-import static com.raeden.hytale.core.utils.Permissions.PERMISSION_GROUP_PREFIX;
+import static com.raeden.hytale.core.utils.PermissionManager.PERMISSION_GROUP_PREFIX;
 
 public enum DefaultRank {
     OWNER("df_owner", PERMISSION_GROUP_PREFIX + "owner", null, DefaultAffix.OWNER.getId(), null, 100000),

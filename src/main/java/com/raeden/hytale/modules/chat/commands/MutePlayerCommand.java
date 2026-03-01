@@ -12,14 +12,13 @@ import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import com.raeden.hytale.HytaleFoundations;
 import com.raeden.hytale.core.player.PlayerDataManager;
 import com.raeden.hytale.core.player.PlayerProfile;
-import com.raeden.hytale.core.utils.Permissions;
 import com.raeden.hytale.lang.LangKey;
 import com.raeden.hytale.utils.TimeUtils;
 
 import javax.annotation.Nonnull;
 
 import static com.raeden.hytale.HytaleFoundations.LM;
-import static com.raeden.hytale.core.utils.Permissions.isPlayerAdmin;
+import static com.raeden.hytale.core.utils.PermissionManager.isPlayerAdmin;
 import static com.raeden.hytale.utils.GeneralUtils.findPlayerByName;
 
 public class MutePlayerCommand extends AbstractPlayerCommand {
@@ -31,7 +30,7 @@ public class MutePlayerCommand extends AbstractPlayerCommand {
         super("mute", "Mutes a player so they can't speak in chat.");
         this.hytaleFoundations = hytaleFoundations;
         this.setAllowsExtraArguments(true);
-        this.requirePermission(Permissions.HFPermissions.MUTE_PLAYER.getPermission());
+        this.requirePermission(PermissionNodes.MUTE_PLAYER.getPermission());
         targetPlayer = withRequiredArg("Player", "Player to execute command on.", ArgTypes.STRING);
         duration = withRequiredArg("Duration", "Duration of the mute. (d|h|m|s eg. 1d8h5m33s)", ArgTypes.STRING);
     }

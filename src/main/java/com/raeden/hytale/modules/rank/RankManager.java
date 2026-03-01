@@ -379,6 +379,8 @@ public class RankManager {
         private final String version = RANK_VERSION;
         @SerializedName("FORCE_ADD_AFFIX")
         private boolean forceAddAffix;
+        @SerializedName("ALLOW_AFFIX_REPLACEMENT")
+        private boolean allowAffixReplacement;
         @SerializedName("ALLOW_RANK_GROUP_SWITCHING")
         private boolean switchGroupOnCreate;
         @SerializedName("RANK_GROUPS")

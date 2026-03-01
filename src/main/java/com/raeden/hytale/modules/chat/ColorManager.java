@@ -5,7 +5,7 @@ import com.google.gson.reflect.TypeToken;
 import com.hypixel.hytale.server.core.Message;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.raeden.hytale.HytaleFoundations;
-import com.raeden.hytale.core.utils.Permissions;
+import com.raeden.hytale.core.utils.PermissionNodes;
 import com.raeden.hytale.lang.LangKey;
 
 import java.lang.reflect.Type;
@@ -20,8 +20,8 @@ import java.util.regex.Pattern;
 import static com.raeden.hytale.HytaleFoundations.*;
 import static com.raeden.hytale.core.config.ConfigManager.COLORMAP_FILENAME;
 import static com.raeden.hytale.core.config.ConfigManager.COLORMAP_VERSION;
-import static com.raeden.hytale.core.utils.Permissions.hasPermission;
-import static com.raeden.hytale.core.utils.Permissions.isPlayerAdmin;
+import static com.raeden.hytale.core.utils.PermissionManager.hasPermission;
+import static com.raeden.hytale.core.utils.PermissionManager.isPlayerAdmin;
 import static com.raeden.hytale.utils.FileManager.loadJsonFile;
 import static com.raeden.hytale.utils.FileManager.saveJsonFile;
 
@@ -109,7 +109,7 @@ public class ColorManager {
         if(playerRef != null) {
             boolean isAdmin = isPlayerAdmin(playerRef);
             boolean configAllow = hytaleFoundations.getConfigManager().getDefaultChatConfig().isAllowPlayerChatColors();
-            boolean hasPermission = hasPermission(playerRef, Permissions.HFPermissions.CHAT_COLORS.getPermission());
+            boolean hasPermission = hasPermission(playerRef, PermissionNodes.CHAT_COLORS.getPermission());
             if (!isAdmin && (!configAllow || !hasPermission)) {
                 return Message.raw(stripTextOfColorCodes(message)).color(DefaultColors.WHITE.getHex());
             }

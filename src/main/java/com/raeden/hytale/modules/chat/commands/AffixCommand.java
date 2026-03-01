@@ -11,7 +11,6 @@ import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.world.World;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import com.raeden.hytale.HytaleFoundations;
-import com.raeden.hytale.core.utils.Permissions;
 import com.raeden.hytale.lang.LangKey;
 import com.raeden.hytale.modules.chat.AffixManager;
 
@@ -23,7 +22,7 @@ import static com.raeden.hytale.HytaleFoundations.LM;
 public class AffixCommand extends AbstractCommandCollection {
     public AffixCommand(HytaleFoundations hytaleFoundations) {
         super("affix", "Argument for all affix related command");
-        this.requirePermission(Permissions.HFPermissions.AFFIX.getPermission());
+        this.requirePermission(PermissionNodes.AFFIX.getPermission());
         this.addSubCommand(new AffixListCommand(hytaleFoundations));
         this.addSubCommand(new AffixClearCommand(hytaleFoundations));
     }
@@ -51,7 +50,7 @@ public class AffixCommand extends AbstractCommandCollection {
         private final RequiredArg<String> targetPlayer;
         public AffixClearCommand(HytaleFoundations hytaleFoundations) {
             super("clear", "Clear all affix of the target");
-            this.requirePermission(Permissions.HFPermissions.AFFIX.getPermission());
+            this.requirePermission(PermissionNodes.AFFIX.getPermission());
             this.hytaleFoundations = hytaleFoundations;
             targetPlayer = withRequiredArg("player", "Target whose affix to clear.", ArgTypes.STRING);
         }

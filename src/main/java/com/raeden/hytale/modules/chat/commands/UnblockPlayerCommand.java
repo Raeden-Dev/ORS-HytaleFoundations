@@ -11,14 +11,13 @@ import com.hypixel.hytale.server.core.universe.world.World;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import com.raeden.hytale.HytaleFoundations;
 import com.raeden.hytale.core.player.PlayerProfile;
-import com.raeden.hytale.core.utils.Permissions;
 import com.raeden.hytale.lang.LangKey;
 
 import javax.annotation.Nonnull;
 import java.util.List;
 
 import static com.raeden.hytale.HytaleFoundations.LM;
-import static com.raeden.hytale.core.utils.Permissions.isPlayerAdmin;
+import static com.raeden.hytale.core.utils.PermissionManager.isPlayerAdmin;
 import static com.raeden.hytale.utils.GeneralUtils.findPlayerByName;
 
 public class UnblockPlayerCommand extends AbstractPlayerCommand {
@@ -28,7 +27,7 @@ public class UnblockPlayerCommand extends AbstractPlayerCommand {
     public UnblockPlayerCommand(HytaleFoundations hytaleFoundations) {
         super("unblock", "Unblocks a player so they can interact with you again.");
         this.hytaleFoundations = hytaleFoundations;
-        this.requirePermission(Permissions.HFPermissions.BLOCK_PLAYER.getPermission());
+        this.requirePermission(PermissionNodes.BLOCK_PLAYER.getPermission());
         targetPlayer = withRequiredArg("Player", "Player to execute command on.", ArgTypes.STRING);
     }
     @Override

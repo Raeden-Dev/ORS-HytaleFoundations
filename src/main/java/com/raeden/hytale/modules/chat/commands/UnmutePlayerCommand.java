@@ -12,13 +12,12 @@ import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import com.raeden.hytale.HytaleFoundations;
 import com.raeden.hytale.core.player.PlayerDataManager;
 import com.raeden.hytale.core.player.PlayerProfile;
-import com.raeden.hytale.core.utils.Permissions;
 import com.raeden.hytale.lang.LangKey;
 
 import javax.annotation.Nonnull;
 
 import static com.raeden.hytale.HytaleFoundations.LM;
-import static com.raeden.hytale.core.utils.Permissions.isPlayerAdmin;
+import static com.raeden.hytale.core.utils.PermissionManager.isPlayerAdmin;
 import static com.raeden.hytale.utils.GeneralUtils.findPlayerByName;
 
 public class UnmutePlayerCommand extends AbstractPlayerCommand {
@@ -28,7 +27,7 @@ public class UnmutePlayerCommand extends AbstractPlayerCommand {
     public UnmutePlayerCommand(HytaleFoundations hytaleFoundations) {
         super("unmute", "Unmutes a player so they can speak again in chat.");
         this.hytaleFoundations = hytaleFoundations;
-        this.requirePermission(Permissions.HFPermissions.MUTE_PLAYER.getPermission());
+        this.requirePermission(PermissionNodes.MUTE_PLAYER.getPermission());
         targetPlayer = withRequiredArg("Player", "Player to execute command on.", ArgTypes.STRING);
     }
     @Override

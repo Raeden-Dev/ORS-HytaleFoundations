@@ -3,7 +3,6 @@ package com.raeden.hytale.modules.chat.commands;
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
 import com.hypixel.hytale.server.core.command.system.CommandContext;
-import com.hypixel.hytale.server.core.command.system.arguments.types.ArgTypes;
 import com.hypixel.hytale.server.core.command.system.basecommands.AbstractPlayerCommand;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.world.World;
@@ -12,7 +11,7 @@ import com.raeden.hytale.HytaleFoundations;
 
 import javax.annotation.Nonnull;
 
-import static com.raeden.hytale.core.utils.Permissions.isPlayerAdmin;
+import static com.raeden.hytale.core.utils.PermissionManager.isPlayerAdmin;
 
 public class UnmuteAllPlayerCommand extends AbstractPlayerCommand {
     private final HytaleFoundations hytaleFoundations;

@@ -4,7 +4,7 @@ import com.hypixel.hytale.server.core.Message;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.raeden.hytale.HytaleFoundations;
 import com.raeden.hytale.core.player.PlayerProfile;
-import com.raeden.hytale.core.utils.Permissions;
+import com.raeden.hytale.core.utils.PermissionManager;
 import com.raeden.hytale.modules.chat.ColorManager;
 import com.raeden.hytale.modules.chat.DefaultColors;
 
@@ -140,7 +140,7 @@ public class LangManager {
     }
     public Message getMessage(String username, LangKey key, boolean isConsole, String... args) {
         PlayerRef playerRef = username == null ? null : findPlayerByName(username);
-        boolean isAdmin = Permissions.isPlayerAdmin(playerRef);
+        boolean isAdmin = PermissionManager.isPlayerAdmin(playerRef);
         String prefixText = cleanupPrefix(username, key, isAdmin);
         String finalText = getLangString(username, key);
         if (finalText == null) finalText = key.getDefaultMessage();

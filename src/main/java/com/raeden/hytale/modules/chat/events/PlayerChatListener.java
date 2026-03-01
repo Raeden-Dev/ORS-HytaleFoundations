@@ -14,7 +14,7 @@ import com.raeden.hytale.utils.TimeUtils;
 
 import static com.raeden.hytale.HytaleFoundations.LM;
 import static com.raeden.hytale.HytaleFoundations.myLogger;
-import static com.raeden.hytale.core.utils.Permissions.isPlayerAdmin;
+import static com.raeden.hytale.core.utils.PermissionManager.isPlayerAdmin;
 
 public class PlayerChatListener {
     public static void onPlayerChat(PlayerChatEvent e, HytaleFoundations hytaleFoundations) {

@@ -12,7 +12,6 @@ import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import com.raeden.hytale.HytaleFoundations;
 import com.raeden.hytale.core.player.PlayerDataManager;
 import com.raeden.hytale.core.player.PlayerStats;
-import com.raeden.hytale.core.utils.Permissions;
 import com.raeden.hytale.lang.LangKey;
 import com.raeden.hytale.utils.TimeUtils;
 
@@ -28,7 +27,7 @@ public class PlaytimeCommand extends AbstractPlayerCommand {
 
     public PlaytimeCommand(HytaleFoundations plugin) {
         super("playtime", "Shows your or a player's total playtime.");
-        this.requirePermission(Permissions.HFPermissions.PLAYTIME.getPermission());
+        this.requirePermission(PermissionNodes.PLAYTIME.getPermission());
         this.hytaleFoundations = plugin;
         targetPlayer = withOptionalArg("Player", "Target player to check their playtime", ArgTypes.STRING);
     }
