@@ -7,13 +7,13 @@ import com.raeden.hytale.HytaleFoundations;
 import com.raeden.hytale.lang.LangKey;
 import com.raeden.hytale.utils.FileManager;
 
+import java.util.Set;
 import java.util.UUID;
 
 import static com.raeden.hytale.HytaleFoundations.*;
 import static com.raeden.hytale.utils.FileManager.logError;
 
 public class PermissionManager {
-    public static final String PERMISSION_GROUP_PREFIX = "hytalefoundations.";
     private final HytaleFoundations hytaleFoundations;
 
     public PermissionManager(HytaleFoundations hytaleFoundations) {
@@ -46,5 +46,31 @@ public class PermissionManager {
             myLogger.atWarning().log(LM.getMessage(LangKey.CHECK_FAILURE,true, "permission [" + permission + "]").getAnsiMessage());
             return false;
         }
+    }
+
+    public void addPermissionForUser(UUID uuid, String permission) {
+        PermissionsModule permissionsModule = PermissionsModule.get();
+        permissionsModule.addUserPermission(uuid, Set.of(permission));
+    }
+    public void addMultiplePermissionForUser(UUID uuid, Set<String> permissions) {
+        PermissionsModule permissionsModule = PermissionsModule.get();
+        permissionsModule.addUserPermission(uuid, permissions);
+    }
+    public void removePermissionFromUser(UUID uuid, String permission) {
+        PermissionsModule permissionsModule = PermissionsModule.get();
+        permissionsModule.removeUserPermission(uuid, Set.of(permission));
+    }
+
+    public void createPermissionGroup(String name, Set<String> permissions) {
+        PermissionsModule permissionsModule = PermissionsModule.get();
+        permissionsModule.addGroupPermission(name, permissions);
+    }
+    public void addPermissionGroupForUser(UUID uuid, String groupName) {
+        PermissionsModule permissionsModule = PermissionsModule.get();
+        permissionsModule.addUserToGroup(uuid, groupName);
+    }
+    public void removePermissionGroupForUser(UUID uuid, String groupName) {
+        PermissionsModule permissionsModule = PermissionsModule.get();
+        permissionsModule.removeUserFromGroup(uuid, groupName);
     }
 }

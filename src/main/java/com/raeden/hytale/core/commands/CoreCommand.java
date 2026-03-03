@@ -12,7 +12,7 @@ import com.hypixel.hytale.server.core.universe.world.World;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import com.raeden.hytale.HytaleFoundations;
 import com.raeden.hytale.core.pages.HFMainMenu;
-import com.raeden.hytale.core.utils.PermissionNodes;
+import com.raeden.hytale.core.utils.Permissions;
 import com.raeden.hytale.lang.LangKey;
 
 import javax.annotation.Nonnull;
@@ -27,7 +27,7 @@ import static com.raeden.hytale.utils.FileManager.logError;
 public class CoreCommand extends AbstractCommandCollection {
     public CoreCommand(HytaleFoundations hytaleFoundations) {
         super("foundation", "Argument for all Hytale Foundations Command.");
-        this.requirePermission(PermissionNodes.ACCESS.getPermission());
+        this.requirePermission(Permissions.ACCESS.getPermission());
         this.addAliases("hf", "fd");
         this.addSubCommand(new PluginMenuCommand());
         this.addSubCommand(new ReloadPluginCommand(hytaleFoundations));
@@ -42,7 +42,7 @@ public class CoreCommand extends AbstractCommandCollection {
         private final HytaleFoundations hytaleFoundations;
         public HFHelpCommand(HytaleFoundations hytaleFoundations) {
             super("help", "Enquire about how to use Hytale Foundations");
-            this.requirePermission(PermissionNodes.ACCESS.getPermission());
+            this.requirePermission(Permissions.ACCESS.getPermission());
             this.hytaleFoundations = hytaleFoundations;
         }
         @Override
@@ -198,7 +198,7 @@ public class CoreCommand extends AbstractCommandCollection {
         public TestPlayerCommand(HytaleFoundations hytaleFoundations) {
             super("test", "Test any experiment feature. (DEV COMMAND)");
             this.hytaleFoundations = hytaleFoundations;
-            this.requirePermission(PermissionNodes.ADMIN.getPermission());
+            this.requirePermission(Permissions.ADMIN.getPermission());
         }
         @Override
         protected void execute(@Nonnull CommandContext commandContext, @Nonnull Store<EntityStore> store, @Nonnull Ref<EntityStore> ref, @Nonnull PlayerRef playerRef, @Nonnull World world) {

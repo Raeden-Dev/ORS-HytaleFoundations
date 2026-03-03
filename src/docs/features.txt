@@ -217,8 +217,8 @@ Then World1 and World2 will communicate between the same player files. And in
     > [A] /groupchat mute [name] : Mutes a groupchat
 
 8. Rank System:
-    > /rank list
-    > /rank chain set [target] [chain_name] : Sets a certain rank chain for target
+    > ✅ /rank list
+    > ✅ /rank chain set [target] [chain_name] : Sets a certain rank chain for target
     > /rank chain create [name] : Opens rank chain creation GUI
     > /rank create : Opens rank creation UI
     > /rank edit [name_of_rank] [property_name] [new_value] : Edits the property of a rank

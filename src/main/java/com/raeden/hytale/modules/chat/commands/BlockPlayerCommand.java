@@ -11,7 +11,7 @@ import com.hypixel.hytale.server.core.universe.world.World;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import com.raeden.hytale.HytaleFoundations;
 import com.raeden.hytale.core.player.PlayerProfile;
-import com.raeden.hytale.core.utils.PermissionNodes;
+import com.raeden.hytale.core.utils.Permissions;
 import com.raeden.hytale.lang.LangKey;
 
 import javax.annotation.Nonnull;
@@ -29,7 +29,7 @@ public class BlockPlayerCommand extends AbstractPlayerCommand {
     public BlockPlayerCommand(HytaleFoundations hytaleFoundations) {
         super("block", "Blocks a player so they can't interact with you anymore.");
         this.hytaleFoundations = hytaleFoundations;
-        this.requirePermission(PermissionNodes.BLOCK_PLAYER.getPermission());
+        this.requirePermission(Permissions.BLOCK_PLAYER.getPermission());
         targetPlayer = withRequiredArg("Player", "Player to execute command on.", ArgTypes.STRING);
     }
     @Override
