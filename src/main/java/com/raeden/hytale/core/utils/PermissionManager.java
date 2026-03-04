@@ -7,17 +7,32 @@ import com.raeden.hytale.HytaleFoundations;
 import com.raeden.hytale.lang.LangKey;
 import com.raeden.hytale.utils.FileManager;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Set;
 import java.util.UUID;
 
 import static com.raeden.hytale.HytaleFoundations.*;
+import static com.raeden.hytale.core.config.ConfigManager.PERMISSION_FILENAME;
 import static com.raeden.hytale.utils.FileManager.logError;
 
 public class PermissionManager {
     private final HytaleFoundations hytaleFoundations;
 
+    private final String permissionFileName = PERMISSION_FILENAME;
+    private final Path permissionFilePath;
+
     public PermissionManager(HytaleFoundations hytaleFoundations) {
         this.hytaleFoundations = hytaleFoundations;
+        permissionFilePath = hytaleFoundations.getDataDirectory().resolve(permissionFileName);
+    }
+
+    private void initializePermissionManager() {
+        if(Files.exists(permissionFilePath)) {
+
+        } else {
+
+        }
     }
 
     public boolean isPlayerAdmin(PlayerRef playerRef) {

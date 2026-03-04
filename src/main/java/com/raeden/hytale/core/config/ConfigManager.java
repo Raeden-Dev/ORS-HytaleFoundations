@@ -26,6 +26,7 @@ public class ConfigManager {
     public static final String CHAT_FILENAME = "chat.json";
     public static final String COLORMAP_FILENAME = "colormap.json";
     public static final String AFFIX_FILENAME = "affix.json";
+    public static final String PERMISSION_FILENAME = "permissions.json";
 
     public static String CONFIG_VERSION = "v1.0";
     public static String CHAT_CONFIG_VERSION = "v1.0";
