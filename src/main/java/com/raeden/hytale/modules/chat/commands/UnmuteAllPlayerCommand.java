@@ -8,10 +8,7 @@ import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.world.World;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import com.raeden.hytale.HytaleFoundations;
-
 import javax.annotation.Nonnull;
-
-import static com.raeden.hytale.core.utils.PermissionManager.isPlayerAdmin;
 
 public class UnmuteAllPlayerCommand extends AbstractPlayerCommand {
     private final HytaleFoundations hytaleFoundations;
@@ -22,7 +19,7 @@ public class UnmuteAllPlayerCommand extends AbstractPlayerCommand {
     }
     @Override
     protected void execute(@Nonnull CommandContext commandContext, @Nonnull Store<EntityStore> store, @Nonnull Ref<EntityStore> ref, @Nonnull PlayerRef playerRef, @Nonnull World world) {
-        boolean isAdmin = isPlayerAdmin(commandContext.sender());
+        boolean isAdmin = hytaleFoundations.getPermissionManager().isPlayerAdmin(commandContext.sender());
         String senderUsername = commandContext.sender().getDisplayName();
     }
 }

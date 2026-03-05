@@ -19,7 +19,6 @@ import com.raeden.hytale.modules.chat.ChatManager;
 import javax.annotation.Nonnull;
 
 import static com.raeden.hytale.HytaleFoundations.LM;
-import static com.raeden.hytale.core.utils.PermissionManager.isPlayerAdmin;
 import static com.raeden.hytale.utils.GeneralUtils.findPlayerByName;
 
 public class MessagePlayerCommand extends AbstractPlayerCommand {
@@ -38,7 +37,7 @@ public class MessagePlayerCommand extends AbstractPlayerCommand {
     }
     @Override
     protected void execute(@Nonnull CommandContext commandContext, @Nonnull Store<EntityStore> store, @Nonnull Ref<EntityStore> ref, @Nonnull PlayerRef sender, @Nonnull World world) {
-        boolean isAdmin = isPlayerAdmin(commandContext.sender());
+        boolean isAdmin = hytaleFoundations.getPermissionManager().isPlayerAdmin(commandContext.sender());
         String senderUsername = commandContext.sender().getDisplayName();
         String receiverUsername = commandContext.get(this.receiver);
         String[] rawMessage = commandContext.getInputString().split("\\s+", 3);

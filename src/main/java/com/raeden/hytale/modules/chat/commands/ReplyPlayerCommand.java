@@ -19,7 +19,6 @@ import com.raeden.hytale.modules.chat.ChatManager;
 import javax.annotation.Nonnull;
 
 import static com.raeden.hytale.HytaleFoundations.LM;
-import static com.raeden.hytale.core.utils.PermissionManager.isPlayerAdmin;
 import static com.raeden.hytale.utils.GeneralUtils.findPlayerByName;
 
 public class ReplyPlayerCommand extends AbstractPlayerCommand {
@@ -38,7 +37,7 @@ public class ReplyPlayerCommand extends AbstractPlayerCommand {
     protected void execute(@Nonnull CommandContext commandContext, @Nonnull Store<EntityStore> store, @Nonnull Ref<EntityStore> ref, @Nonnull PlayerRef sender, @Nonnull World world) {
         ChatManager chatManager = hytaleFoundations.getChatManager();
 
-        boolean isAdmin = isPlayerAdmin(commandContext.sender());
+        boolean isAdmin = hytaleFoundations.getPermissionManager().isPlayerAdmin(commandContext.sender());
         String senderUsername = commandContext.sender().getDisplayName();
         String receiverUsername = chatManager.getReceiver(senderUsername);
 

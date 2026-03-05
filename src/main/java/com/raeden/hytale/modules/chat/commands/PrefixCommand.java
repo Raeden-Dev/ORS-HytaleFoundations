@@ -11,6 +11,7 @@ import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.world.World;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import com.raeden.hytale.HytaleFoundations;
+import com.raeden.hytale.core.utils.Permissions;
 import com.raeden.hytale.modules.chat.AffixManager;
 
 import javax.annotation.Nonnull;
@@ -19,7 +20,7 @@ public class PrefixCommand extends AbstractCommandCollection {
     public PrefixCommand(HytaleFoundations hytaleFoundations) {
         super("prefix", "Argument for all affix related command");
         this.addAliases("pfx");
-        this.requirePermission(PermissionNodes.AFFIX.getPermission());
+        this.requirePermission(Permissions.AFFIX.getPermission());
         this.addSubCommand(new PrefixAddCommand(hytaleFoundations));
         this.addSubCommand(new PrefixForceAddCommand(hytaleFoundations));
         this.addSubCommand(new PrefixRemoveCommand(hytaleFoundations));
@@ -31,7 +32,7 @@ public class PrefixCommand extends AbstractCommandCollection {
         private final RequiredArg<String> affixId;
         public PrefixAddCommand(HytaleFoundations hytaleFoundations) {
             super("add", "Add a prefix for target player");
-            this.requirePermission(PermissionNodes.AFFIX.getPermission());
+            this.requirePermission(Permissions.AFFIX.getPermission());
             this.hytaleFoundations = hytaleFoundations;
             targetPlayer = withRequiredArg("Player", "The target player", ArgTypes.STRING);
             affixId = withRequiredArg("Affix ID", "ID of the affix to set for target", ArgTypes.STRING);
@@ -50,7 +51,7 @@ public class PrefixCommand extends AbstractCommandCollection {
         private final RequiredArg<String> affixId;
         public PrefixForceAddCommand(HytaleFoundations hytaleFoundations) {
             super("forceadd", "Force add a prefix for target player");
-            this.requirePermission(PermissionNodes.AFFIX.getPermission());
+            this.requirePermission(Permissions.AFFIX.getPermission());
             this.hytaleFoundations = hytaleFoundations;
             targetPlayer = withRequiredArg("Player", "The target player", ArgTypes.STRING);
             affixId = withRequiredArg("Affix ID", "ID of the affix to set for target", ArgTypes.STRING);
@@ -69,7 +70,7 @@ public class PrefixCommand extends AbstractCommandCollection {
         private final RequiredArg<String> affixId;
         public PrefixRemoveCommand(HytaleFoundations hytaleFoundations) {
             super("remove", "Remove a prefix for the target player.");
-            this.requirePermission(PermissionNodes.AFFIX.getPermission());
+            this.requirePermission(Permissions.AFFIX.getPermission());
             this.hytaleFoundations = hytaleFoundations;
             targetPlayer = withRequiredArg("Player", "The target player", ArgTypes.STRING);
             affixId = withRequiredArg("Affix ID", "ID of the affix to set for target", ArgTypes.STRING);
@@ -87,7 +88,7 @@ public class PrefixCommand extends AbstractCommandCollection {
         private final RequiredArg<String> targetPlayer;
         public PrefixClearCommand(HytaleFoundations hytaleFoundations) {
             super("clear", "Clear prefix of the target");
-            this.requirePermission(PermissionNodes.AFFIX.getPermission());
+            this.requirePermission(Permissions.AFFIX.getPermission());
             this.hytaleFoundations = hytaleFoundations;
             targetPlayer = withRequiredArg("player", "Target whose prefix to clear.", ArgTypes.STRING);
         }

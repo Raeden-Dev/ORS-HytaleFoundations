@@ -231,6 +231,7 @@ public class PlayerDataManager {
         profile.setMuted(false);
         profile.setMuteDuration(0);
         profile.setSilenced(false);
+        profile.setRankId("");
 
         return profile;
     }

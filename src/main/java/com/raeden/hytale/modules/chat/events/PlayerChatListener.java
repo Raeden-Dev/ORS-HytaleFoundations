@@ -14,7 +14,6 @@ import com.raeden.hytale.utils.TimeUtils;
 
 import static com.raeden.hytale.HytaleFoundations.LM;
 import static com.raeden.hytale.HytaleFoundations.myLogger;
-import static com.raeden.hytale.core.utils.PermissionManager.isPlayerAdmin;
 
 public class PlayerChatListener {
     public static void onPlayerChat(PlayerChatEvent e, HytaleFoundations hytaleFoundations) {
@@ -22,7 +21,7 @@ public class PlayerChatListener {
         ColorManager colorManager = chatManager.getColorEngine();
         PlayerRef playerRef = e.getSender();
         String playerUsername = playerRef.getUsername();
-        boolean isAdmin = isPlayerAdmin(playerRef);
+        boolean isAdmin = hytaleFoundations.getPermissionManager().isPlayerAdmin(playerRef);
 
         PlayerProfile profile = hytaleFoundations.getPlayerDataManager().getOnlinePlayerProfile(playerUsername);
         PlayerStats stats = hytaleFoundations.getPlayerDataManager().getOnlinePlayerStats(playerUsername);

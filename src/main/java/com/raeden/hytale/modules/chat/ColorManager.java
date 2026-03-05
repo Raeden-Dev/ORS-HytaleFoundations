@@ -20,8 +20,6 @@ import java.util.regex.Pattern;
 import static com.raeden.hytale.HytaleFoundations.*;
 import static com.raeden.hytale.core.config.ConfigManager.COLORMAP_FILENAME;
 import static com.raeden.hytale.core.config.ConfigManager.COLORMAP_VERSION;
-import static com.raeden.hytale.core.utils.PermissionManager.hasPermission;
-import static com.raeden.hytale.core.utils.PermissionManager.isPlayerAdmin;
 import static com.raeden.hytale.utils.FileManager.loadJsonFile;
 import static com.raeden.hytale.utils.FileManager.saveJsonFile;
 
@@ -107,9 +105,9 @@ public class ColorManager {
     public Message parseText(PlayerRef playerRef, String message, boolean isConsole) {
         // No colors for chat [Not Admin, No Permission, Turned off]
         if(playerRef != null) {
-            boolean isAdmin = isPlayerAdmin(playerRef);
+            boolean isAdmin = hytaleFoundations.getPermissionManager().isPlayerAdmin(playerRef);
             boolean configAllow = hytaleFoundations.getConfigManager().getDefaultChatConfig().isAllowPlayerChatColors();
-            boolean hasPermission = hasPermission(playerRef, Permissions.CHAT_COLORS.getPermission());
+            boolean hasPermission = hytaleFoundations.getPermissionManager().hasPermission(playerRef, Permissions.CHAT_COLORS.getPermission());
             if (!isAdmin && (!configAllow || !hasPermission)) {
                 return Message.raw(stripTextOfColorCodes(message)).color(DefaultColors.WHITE.getHex());
             }

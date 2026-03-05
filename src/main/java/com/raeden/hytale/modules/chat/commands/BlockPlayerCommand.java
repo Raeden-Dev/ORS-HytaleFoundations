@@ -15,12 +15,8 @@ import com.raeden.hytale.core.utils.Permissions;
 import com.raeden.hytale.lang.LangKey;
 
 import javax.annotation.Nonnull;
-
 import java.util.List;
-
 import static com.raeden.hytale.HytaleFoundations.LM;
-import static com.raeden.hytale.core.utils.PermissionManager.isPlayerAdmin;
-import static com.raeden.hytale.utils.GeneralUtils.findPlayerByName;
 
 public class BlockPlayerCommand extends AbstractPlayerCommand {
     private final HytaleFoundations hytaleFoundations;

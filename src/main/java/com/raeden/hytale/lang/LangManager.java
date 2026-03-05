@@ -140,7 +140,7 @@ public class LangManager {
     }
     public Message getMessage(String username, LangKey key, boolean isConsole, String... args) {
         PlayerRef playerRef = username == null ? null : findPlayerByName(username);
-        boolean isAdmin = PermissionManager.isPlayerAdmin(playerRef);
+        boolean isAdmin = hytaleFoundations.getPermissionManager().isPlayerAdmin(playerRef);
         String prefixText = cleanupPrefix(username, key, isAdmin);
         String finalText = getLangString(username, key);
         if (finalText == null) finalText = key.getDefaultMessage();

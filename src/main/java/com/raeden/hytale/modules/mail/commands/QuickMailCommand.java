@@ -12,10 +12,7 @@ import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import com.raeden.hytale.HytaleFoundations;
 import com.raeden.hytale.modules.mail.MailManager;
 import com.raeden.hytale.utils.TimeUtils;
-
 import javax.annotation.Nonnull;
-
-import static com.raeden.hytale.core.utils.PermissionManager.isPlayerAdmin;
 
 public class QuickMailCommand extends AbstractPlayerCommand {
     private final HytaleFoundations hytaleFoundations;

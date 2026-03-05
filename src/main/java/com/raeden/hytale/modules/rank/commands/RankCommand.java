@@ -11,6 +11,7 @@ import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.world.World;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import com.raeden.hytale.HytaleFoundations;
+import com.raeden.hytale.core.utils.Permissions;
 import com.raeden.hytale.lang.LangKey;
 import com.raeden.hytale.modules.rank.RankManager;
 
@@ -24,7 +25,7 @@ import static com.raeden.hytale.HytaleFoundations.LM;
 public class RankCommand extends AbstractCommandCollection {
     public RankCommand(HytaleFoundations hytaleFoundations) {
         super("rank", "Agrument for all rank related commands.");
-        this.requirePermission(PermissionNodes.RANK.getPermission());
+        this.requirePermission(Permissions.RANK.getPermission());
         this.addSubCommand(new RankSetCommand(hytaleFoundations));
         this.addSubCommand(new RankListCommand(hytaleFoundations));
         this.addSubCommand(new RankGroupListCommand(hytaleFoundations));
@@ -38,7 +39,7 @@ public class RankCommand extends AbstractCommandCollection {
         private final RequiredArg<String> rankId;
         public RankSetCommand(HytaleFoundations hytaleFoundations) {
             super("set", "Set the rank of a target player.");
-            this.requirePermission(PermissionNodes.RANK_ADMIN.getPermission());
+            this.requirePermission(Permissions.RANK_ADMIN.getPermission());
             this.hytaleFoundations = hytaleFoundations;
             targetPlayer = withRequiredArg("target", "Name of the target player.", ArgTypes.STRING);
             rankId = withRequiredArg("rank ID", "ID of the rank that will be set.", ArgTypes.STRING);
@@ -57,7 +58,7 @@ public class RankCommand extends AbstractCommandCollection {
         private final HytaleFoundations hytaleFoundations;
         public RankListCommand(HytaleFoundations hytaleFoundations) {
             super("list", "Show a list of all available ranks.");
-            this.requirePermission(PermissionNodes.RANK_ADMIN.getPermission());
+            this.requirePermission(Permissions.RANK_ADMIN.getPermission());
             this.hytaleFoundations = hytaleFoundations;
         }
         @Override
@@ -82,7 +83,7 @@ public class RankCommand extends AbstractCommandCollection {
         public RankGroupListCommand(HytaleFoundations hytaleFoundations) {
             super("grouplist", "Show a list of all available rank groups.");
             this.addAliases("glist");
-            this.requirePermission(PermissionNodes.RANK_ADMIN.getPermission());
+            this.requirePermission(Permissions.RANK_ADMIN.getPermission());
             this.hytaleFoundations = hytaleFoundations;
         }
         @Override
@@ -106,7 +107,7 @@ public class RankCommand extends AbstractCommandCollection {
         private final RequiredArg<String> targetPlayer;
         public RankPromoteCommand(HytaleFoundations hytaleFoundations) {
             super("promote", "Promote the target to the next rank in the rank chain.");
-            this.requirePermission(PermissionNodes.RANK_ADMIN.getPermission());
+            this.requirePermission(Permissions.RANK_ADMIN.getPermission());
             this.hytaleFoundations = hytaleFoundations;
             targetPlayer = withRequiredArg("target", "Name of the target player.", ArgTypes.STRING);
         }
@@ -125,7 +126,7 @@ public class RankCommand extends AbstractCommandCollection {
         private final RequiredArg<String> targetPlayer;
         public RankDemoteCommand(HytaleFoundations hytaleFoundations) {
             super("demote", "Set the rank of a target player.");
-            this.requirePermission(PermissionNodes.RANK_ADMIN.getPermission());
+            this.requirePermission(Permissions.RANK_ADMIN.getPermission());
             this.hytaleFoundations = hytaleFoundations;
             targetPlayer = withRequiredArg("target", "Name of the target player.", ArgTypes.STRING);
         }
@@ -142,7 +143,7 @@ public class RankCommand extends AbstractCommandCollection {
     public static class RankGroupCommands extends AbstractCommandCollection {
         public RankGroupCommands(HytaleFoundations hytaleFoundations) {
             super("group", "Sub-Argument for rank group related commands.");
-            this.requirePermission(PermissionNodes.RANK_ADMIN.getPermission());
+            this.requirePermission(Permissions.RANK_ADMIN.getPermission());
             this.addSubCommand(new RankGroupCreateCommand(hytaleFoundations));
             this.addSubCommand(new RankGroupShowCommand(hytaleFoundations));
             this.addSubCommand(new RankGroupAppendCommand(hytaleFoundations));

@@ -12,6 +12,7 @@ import com.hypixel.hytale.server.core.universe.world.World;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import com.raeden.hytale.HytaleFoundations;
 import com.raeden.hytale.core.player.PlayerProfile;
+import com.raeden.hytale.core.utils.Permissions;
 import com.raeden.hytale.lang.LangKey;
 
 import javax.annotation.Nonnull;
@@ -23,7 +24,7 @@ public class NicknameCommand extends AbstractCommandCollection {
     public NicknameCommand(HytaleFoundations hytaleFoundations) {
         super("nick", "Argument to access rest of /nick functions");
         this.hytaleFoundations = hytaleFoundations;
-        this.requirePermission(PermissionNodes.NICK.getPermission());
+        this.requirePermission(Permissions.NICK.getPermission());
         this.setAllowsExtraArguments(true);
         this.addSubCommand(new NicknameSetCommand(hytaleFoundations));
         this.addSubCommand(new NicknameClearCommand(hytaleFoundations));
@@ -35,7 +36,7 @@ public class NicknameCommand extends AbstractCommandCollection {
         public NicknameSetCommand(HytaleFoundations hytaleFoundations) {
             super("set", "Set nickname of other players");
             this.hytaleFoundations = hytaleFoundations;
-            this.requirePermission(PermissionNodes.ADMIN.getPermission());
+            this.requirePermission(Permissions.ADMIN.getPermission());
             targetPlayer = withRequiredArg("Player", "Player to execute command on.", ArgTypes.STRING);
             nickname = withRequiredArg("Nickname", "Nickname to set on target.", ArgTypes.STRING);
         }
@@ -62,7 +63,7 @@ public class NicknameCommand extends AbstractCommandCollection {
         public NicknameClearCommand(HytaleFoundations hytaleFoundations) {
             super("clear", "Set nickname of other players");
             this.hytaleFoundations = hytaleFoundations;
-            this.requirePermission(PermissionNodes.ADMIN.getPermission());
+            this.requirePermission(Permissions.ADMIN.getPermission());
             this.setAllowsExtraArguments(true);
             targetPlayer = withRequiredArg("Player", "Player to execute command on.", ArgTypes.STRING);
         }
