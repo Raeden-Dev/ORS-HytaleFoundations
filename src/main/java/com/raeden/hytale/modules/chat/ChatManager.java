@@ -120,10 +120,10 @@ public class ChatManager {
                 writer.newLine();
             }
             writer.write("---- END ----");
-            myLogger.atInfo().log(LM.getMessage(LangKey.LOG_CHAT_EXPORT_SUCCESS,true, fileName, chatLogDir.toString()).getAnsiMessage());
+            myLogger.atInfo().log(LM.getConsoleMessage(LangKey.LOG_CHAT_EXPORT_SUCCESS,fileName, chatLogDir.toString()).getAnsiMessage());
         } catch (IOException e) {
             FileManager.logError("exportChatLog", e);
-            myLogger.atSevere().log(LM.getMessage(LangKey.LOG_CHAT_EXPORT_FAIL,true, fileName).getAnsiMessage());
+            myLogger.atSevere().log(LM.getConsoleMessage(LangKey.LOG_CHAT_EXPORT_FAIL,fileName).getAnsiMessage());
         }
     }
 
@@ -134,7 +134,7 @@ public class ChatManager {
     // Nicknaming
     public boolean validateNickname(PlayerRef caller, String nickname) {
         if(nickname.length() <= 2) {
-            caller.sendMessage(LM.getMessage(LangKey.NICKNAME_LENGTH, false));
+            caller.sendMessage(LM.getPlayerMessage(caller.getUsername(), LangKey.NICKNAME_LENGTH));
             return false;
         }
         return true;

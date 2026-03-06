@@ -45,7 +45,7 @@ public class AffixManager {
         if (Files.exists(affixFilePath)) {
             loadAffixes();
         } else {
-            myLogger.atInfo().log(LM.getMessage(LangKey.CREATE_SUCCESS, true, affixFileName, affixFilePath.toString()).getAnsiMessage());
+            myLogger.atInfo().log(LM.getConsoleMessage(LangKey.CREATE_SUCCESS, affixFileName, affixFilePath.toString()).getAnsiMessage());
             saveAffixFile();
         }
     }
@@ -67,7 +67,7 @@ public class AffixManager {
             }
 
             if (newAffixes > 0) {
-                myLogger.atInfo().log(LM.getMessage(LangKey.LOAD_SUCCESS, true, newAffixes + " affixes").getAnsiMessage());
+                myLogger.atInfo().log(LM.getConsoleMessage(LangKey.LOAD_SUCCESS, newAffixes + " affixes").getAnsiMessage());
             }
         } else {
             saveAffixFile();
@@ -75,13 +75,13 @@ public class AffixManager {
     }
     // Player Interaction
     public void addPrefixToPlayer(String username, String affixId, boolean forceAdd) {
-        modifyPlayerAffix(null, username, affixId, AffixType.PREFIX, false, forceAdd);
+        modifyPlayerAffix(null, username, affixId, AffixType.PREFIX,false,  forceAdd);
     }
     public void addPrefixToPlayer(PlayerRef caller, String username, String affixId, boolean forceAdd) {
-        modifyPlayerAffix(caller, username, affixId, AffixType.PREFIX, false, forceAdd);
+        modifyPlayerAffix(caller, username, affixId, AffixType.PREFIX,false,  forceAdd);
     }
     public void addSuffixToPlayer(String username, String affixId, boolean forceAdd) {
-        modifyPlayerAffix(null, username, affixId, AffixType.SUFFIX, false, forceAdd);
+        modifyPlayerAffix(null, username, affixId, AffixType.SUFFIX,false,  forceAdd);
     }
     public void addSuffixToPlayer(PlayerRef caller, String username, String affixId, boolean forceAdd) {
         modifyPlayerAffix(caller, username, affixId, AffixType.SUFFIX, false, forceAdd);
@@ -102,39 +102,39 @@ public class AffixManager {
     public void removeAllAffixFromPlayer(PlayerRef caller, String targetUsername) {
         PlayerProfile profile = hytaleFoundations.getPlayerDataManager().getPlayerProfile(targetUsername);
         if (profile == null) {
-            if(caller != null) caller.sendMessage(LM.getMessage(caller.getUsername(),
-                    LangKey.PLAYER_NOT_FOUND, false, targetUsername));
+            if(caller != null) caller.sendMessage(LM.getPlayerMessage(caller.getUsername(),
+                    LangKey.PLAYER_NOT_FOUND, targetUsername));
             return;
         }
         profile.clearActivePrefix();
         profile.clearActiveSuffix();
-        if(caller != null) caller.sendMessage(LM.getMessage(caller.getUsername(),
-                LangKey.AFFIX_REMOVE_ALL, false, "affix(s)",targetUsername));
+        if(caller != null) caller.sendMessage(LM.getPlayerMessage(caller.getUsername(),
+                LangKey.AFFIX_REMOVE_ALL, "affix(s)",targetUsername));
     }
     public void removeAllCertainAffixFromPlayer(PlayerRef caller, String targetUsername, boolean isPrefix) {
         PlayerProfile profile = hytaleFoundations.getPlayerDataManager().getPlayerProfile(targetUsername);
         String targetAffix = isPrefix ? "prefix(es)" : "suffix(es)";
         if (profile == null) {
-            if(caller != null) caller.sendMessage(LM.getMessage(caller.getUsername(),
-                    LangKey.PLAYER_NOT_FOUND_MSG, false, targetUsername));
+            if(caller != null) caller.sendMessage(LM.getPlayerMessage(caller.getUsername(),
+                    LangKey.PLAYER_NOT_FOUND_MSG, targetUsername));
             return;
         }
         if(isPrefix) profile.clearActivePrefix();
         else profile.clearActiveSuffix();
-        if(caller != null) caller.sendMessage(LM.getMessage(caller.getUsername(),
-                LangKey.AFFIX_REMOVE_ALL, false, targetAffix,targetUsername));
+        if(caller != null) caller.sendMessage(LM.getPlayerMessage(caller.getUsername(),
+                LangKey.AFFIX_REMOVE_ALL, targetAffix,targetUsername));
     }
     private void modifyPlayerAffix(PlayerRef caller, String targetUsername, String affixId, AffixType type, boolean remove, boolean forceAdd) {
         PlayerAffix affix = affixMap.get(affixId);
         if (affix == null) {
-            if(caller != null) caller.sendMessage(LM.getMessage(caller.getUsername(),
-                    LangKey.AFFIX_NOT_FOUND, false, affixId));
+            if(caller != null) caller.sendMessage(LM.getPlayerMessage(caller.getUsername(),
+                    LangKey.AFFIX_NOT_FOUND, affixId));
             return;
         }
         PlayerProfile profile = playerDataManager.getPlayerProfile(targetUsername);
         if (profile == null) {
-            if(caller != null) caller.sendMessage(LM.getMessage(caller.getUsername(),
-                    LangKey.PLAYER_NOT_FOUND, false, targetUsername));
+            if(caller != null) caller.sendMessage(LM.getPlayerMessage(caller.getUsername(),
+                    LangKey.PLAYER_NOT_FOUND, targetUsername));
             return;
         }
         boolean isPrefix = (type == AffixType.PREFIX);
@@ -145,11 +145,11 @@ public class AffixManager {
             if(activeMap.containsKey(affixId)) {
                 if(isPrefix) profile.removeActivePrefix(affixId);
                 else profile.removeActiveSuffix(affixId);
-                if(caller != null) caller.sendMessage(LM.getMessage(caller.getUsername(),
-                        LangKey.AFFIX_REMOVE_SUCCESS, false, affix.getDisplayText(), targetUsername));
+                if(caller != null) caller.sendMessage(LM.getPlayerMessage(caller.getUsername(),
+                        LangKey.AFFIX_REMOVE_SUCCESS, affix.getDisplayText(), targetUsername));
             } else {
-                if(caller != null) caller.sendMessage(LM.getMessage(caller.getUsername(),
-                        LangKey.AFFIX_INACTIVE, false, targetUsername,affixTypeString,affix.getDisplayText()));
+                if(caller != null) caller.sendMessage(LM.getPlayerMessage(caller.getUsername(),
+                        LangKey.AFFIX_INACTIVE, targetUsername,affixTypeString,affix.getDisplayText()));
             }
             return;
         }
@@ -157,8 +157,8 @@ public class AffixManager {
             return;
         }
         if (activeMap.containsKey(affixId)) {
-            if(caller != null) caller.sendMessage(LM.getMessage(caller.getUsername(),
-                    LangKey.AFFIX_ACTIVE, false, targetUsername,affixTypeString,affix.getDisplayText()));
+            if(caller != null) caller.sendMessage(LM.getPlayerMessage(caller.getUsername(),
+                    LangKey.AFFIX_ACTIVE, targetUsername,affixTypeString,affix.getDisplayText()));
             return;
         }
         int maxAllowed = isPrefix ? profile.getMaxPrefix() : profile.getMaxSuffix();
@@ -170,18 +170,18 @@ public class AffixManager {
                     else profile.removeActiveSuffix(affixToRemove);
                     if (isPrefix) profile.addToActivePrefix(affixId, affix.getDisplayText());
                     else profile.addToActiveSuffix(affixId, affix.getDisplayText());
-                    if(caller != null) caller.sendMessage(LM.getMessage(caller.getUsername(),
-                            LangKey.AFFIX_REPLACE, false, affixMap.get(affixToRemove).getDisplayText(),affix.getDisplayText(), targetUsername));
+                    if(caller != null) caller.sendMessage(LM.getPlayerMessage(caller.getUsername(),
+                            LangKey.AFFIX_REPLACE, affixMap.get(affixToRemove).getDisplayText(),affix.getDisplayText(), targetUsername));
                 }
             } else {
-                if(caller != null) caller.sendMessage(LM.getMessage(caller.getUsername(),
-                        LangKey.AFFIX_MAX, false, affixTypeString,targetUsername, String.valueOf(profile.getMaxSuffix())));
+                if(caller != null) caller.sendMessage(LM.getPlayerMessage(caller.getUsername(),
+                        LangKey.AFFIX_MAX, affixTypeString,targetUsername, String.valueOf(profile.getMaxSuffix())));
             }
             return;
         }
         if (isPrefix) profile.addToActivePrefix(affixId, affix.getDisplayText());
         else profile.addToActiveSuffix(affixId, affix.getDisplayText());
-        if(caller != null) caller.sendMessage(LM.getMessage(caller.getUsername(), LangKey.AFFIX_ADD_SUCCESS, false, affix.getDisplayText(), targetUsername));
+        if(caller != null) caller.sendMessage(LM.getPlayerMessage(caller.getUsername(), LangKey.AFFIX_ADD_SUCCESS, affix.getDisplayText(), targetUsername));
     }
     public String findAffixWithLeastPriority(Map<String, String> activeAffix) {
         String toRemove = "";

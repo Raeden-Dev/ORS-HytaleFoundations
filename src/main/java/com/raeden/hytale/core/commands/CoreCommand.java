@@ -100,9 +100,9 @@ public class CoreCommand extends AbstractCommandCollection {
                 hytaleFoundations.getConfigManager().getDefaultConfig().setToggleDebug(!hytaleFoundations.getConfigManager().getDefaultConfig().isToggleDebug());
                 String debugStr = hytaleFoundations.getConfigManager().getDefaultConfig().isToggleDebug() ? "On":"Off";
                 if(commandContext.isPlayer()) {
-                    commandContext.sender().sendMessage(LM.getMessage(commandContext.sender().getDisplayName(), LangKey.DEBUG_MODE, false, debugStr));
+                    commandContext.sender().sendMessage(LM.getPlayerMessage(commandContext.sender().getDisplayName(), LangKey.DEBUG_MODE, debugStr));
                 } else {
-                    commandContext.sender().sendMessage(LM.getMessage(LangKey.DEBUG_MODE, true, debugStr));
+                    commandContext.sender().sendMessage(LM.getConsoleMessage(LangKey.DEBUG_MODE, debugStr));
                 }
             } catch (Exception e) {
                 logError(ERROR_LOG_DIRECTORY, "DebugCommand", e);
@@ -144,15 +144,15 @@ public class CoreCommand extends AbstractCommandCollection {
                 try {
                     hytaleFoundations.getLangManager().reloadLanguages();
                     if(commandContext.isPlayer()) {
-                        commandContext.sender().sendMessage(LM.getMessage(commandContext.sender().getDisplayName(), LangKey.PLUGIN_RELOAD_SUCCESS, false, "Languages"));
+                        commandContext.sender().sendMessage(LM.getPlayerMessage(commandContext.sender().getDisplayName(), LangKey.PLUGIN_RELOAD_SUCCESS, "Languages"));
                     } else {
-                        commandContext.sender().sendMessage(LM.getMessage(LangKey.PLUGIN_RELOAD_SUCCESS, true, "Languages"));
+                        commandContext.sender().sendMessage(LM.getConsoleMessage(LangKey.PLUGIN_RELOAD_SUCCESS, "Languages"));
                     }
                 } catch (Exception e) {
                     if(commandContext.isPlayer()) {
-                        commandContext.sender().sendMessage(LM.getMessage(commandContext.sender().getDisplayName(), LangKey.PLUGIN_RELOAD_FAILURE, false, "Languages"));
+                        commandContext.sender().sendMessage(LM.getPlayerMessage(commandContext.sender().getDisplayName(), LangKey.PLUGIN_RELOAD_FAILURE, "Languages"));
                     } else {
-                        commandContext.sender().sendMessage(LM.getMessage(LangKey.PLUGIN_RELOAD_FAILURE, true, "Languages"));
+                        commandContext.sender().sendMessage(LM.getConsoleMessage(LangKey.PLUGIN_RELOAD_FAILURE, "Languages"));
                     }
                     logError(ERROR_LOG_DIRECTORY, "ReloadLangCommand", e);
                 }
@@ -176,15 +176,15 @@ public class CoreCommand extends AbstractCommandCollection {
                 hytaleFoundations.registerManagers();
                 hytaleFoundations.registerCommands();
                 if(commandContext.isPlayer()) {
-                    commandContext.sender().sendMessage(LM.getMessage(commandContext.sender().getDisplayName(), LangKey.PLUGIN_RELOAD_SUCCESS, false, "Hytale Foundations"));
+                    commandContext.sender().sendMessage(LM.getPlayerMessage(commandContext.sender().getDisplayName(), LangKey.PLUGIN_RELOAD_SUCCESS, "Hytale Foundations"));
                 } else {
-                    commandContext.sender().sendMessage(LM.getMessage(LangKey.PLUGIN_RELOAD_SUCCESS, true, "Hytale Foundations"));
+                    commandContext.sender().sendMessage(LM.getConsoleMessage(LangKey.PLUGIN_RELOAD_SUCCESS, "Hytale Foundations"));
                 }
             } catch (Exception e) {
                 if(commandContext.isPlayer()) {
-                    commandContext.sender().sendMessage(LM.getMessage(commandContext.sender().getDisplayName(), LangKey.PLUGIN_RELOAD_FAILURE, false, "Hytale Foundations"));
+                    commandContext.sender().sendMessage(LM.getPlayerMessage(commandContext.sender().getDisplayName(), LangKey.PLUGIN_RELOAD_FAILURE, "Hytale Foundations"));
                 } else {
-                    commandContext.sender().sendMessage(LM.getMessage(LangKey.PLUGIN_RELOAD_FAILURE, true, "Hytale Foundations"));
+                    commandContext.sender().sendMessage(LM.getConsoleMessage(LangKey.PLUGIN_RELOAD_FAILURE, "Hytale Foundations"));
                 }
                 logError(ERROR_LOG_DIRECTORY, "ReloadPluginCommand", e);
             }

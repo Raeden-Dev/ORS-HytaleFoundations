@@ -9,8 +9,11 @@ import com.raeden.hytale.utils.FileManager;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
 import static com.raeden.hytale.HytaleFoundations.*;
 import static com.raeden.hytale.core.config.ConfigManager.PERMISSION_FILENAME;
@@ -22,9 +25,12 @@ public class PermissionManager {
     private final String permissionFileName = PERMISSION_FILENAME;
     private final Path permissionFilePath;
 
+    private final Map<String, String> permissionsList;
+
     public PermissionManager(HytaleFoundations hytaleFoundations) {
         this.hytaleFoundations = hytaleFoundations;
         permissionFilePath = hytaleFoundations.getDataDirectory().resolve(permissionFileName);
+        permissionsList = new ConcurrentHashMap<>();
     }
 
     private void initializePermissionManager() {
@@ -34,6 +40,7 @@ public class PermissionManager {
 
         }
     }
+
 
     public boolean isPlayerAdmin(PlayerRef playerRef) {
         return hasPermission(playerRef, "hytale.command.*");
@@ -58,7 +65,7 @@ public class PermissionManager {
             return permissionsModule.hasPermission(playerID, permission);
         } catch (Exception e) {
             FileManager.logError("PermissionManager-HasPermission", e);
-            myLogger.atWarning().log(LM.getMessage(LangKey.CHECK_FAILURE,true, "permission [" + permission + "]").getAnsiMessage());
+            myLogger.atWarning().log(LM.getConsoleMessage(LangKey.CHECK_FAILURE,"permission [" + permission + "]").getAnsiMessage());
             return false;
         }
     }

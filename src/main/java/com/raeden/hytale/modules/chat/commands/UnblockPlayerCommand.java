@@ -34,15 +34,15 @@ public class UnblockPlayerCommand extends AbstractPlayerCommand {
         String targetUsername = commandContext.get(this.targetPlayer);
         PlayerProfile profile = hytaleFoundations.getPlayerDataManager().getPlayerProfile(senderUsername);
         if(profile == null) {
-            commandContext.sender().sendMessage(LM.getMessage(senderUsername, LangKey.PLAYER_NOT_FOUND_MSG, false, targetUsername));
+            commandContext.sender().sendMessage(LM.getPlayerMessage(senderUsername, LangKey.PLAYER_NOT_FOUND_MSG, targetUsername));
             return;
         }
         List<String> blockedPlayers = profile.getBlockedPlayers();
         if(blockedPlayers.contains(targetUsername)) {
             profile.removeBlockedPlayer(targetUsername);
-            commandContext.sender().sendMessage(LM.getMessage(senderUsername, LangKey.UNBLOCK_SUCCESS,false, targetUsername));
+            commandContext.sender().sendMessage(LM.getPlayerMessage(senderUsername, LangKey.UNBLOCK_SUCCESS,targetUsername));
         } else {
-            commandContext.sender().sendMessage(LM.getMessage(senderUsername, LangKey.UNBLOCK_NOT_FOUND,false, targetUsername));
+            commandContext.sender().sendMessage(LM.getPlayerMessage(senderUsername, LangKey.UNBLOCK_NOT_FOUND,targetUsername));
         }
     }
 }

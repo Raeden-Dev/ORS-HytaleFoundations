@@ -32,11 +32,11 @@ public class MailManager {
             mailbox.addMail(mail);
             playerDataManager.savePlayerData(receiver, playerDataManager.MAIL_FILENAME, mailbox, false);
             if(sender != null) {
-                sender.sendMessage(LM.getMessage(sender.getUsername(), LangKey.MAIL_SEND_SUCCESS, false, receiver));
+                sender.sendMessage(LM.getPlayerMessage(sender.getUsername(), LangKey.MAIL_SEND_SUCCESS, receiver));
             }
         } else {
             if(sender != null) {
-                sender.sendMessage(LM.getMessage(sender.getUsername(), LangKey.MAIL_SEND_FAILURE, false, receiver));
+                sender.sendMessage(LM.getPlayerMessage(sender.getUsername(), LangKey.MAIL_SEND_FAILURE, receiver));
             }
         }
     }
@@ -57,8 +57,8 @@ public class MailManager {
         if(!mailbox.isHasUnreadMail()) return;
         PlayerRef ref = findPlayerByName(username);
         PacketHandler handler = ref.getPacketHandler();
-        Message pm = LM.getMessage(LangKey.MAIL_NOTIFY_UNREAD, false, String.valueOf(unreadMailCount));
-        Message sm = LM.getMessage(LangKey.MAIL_NOTIFY_CHECK, false);
+        Message pm = LM.getMessage(LangKey.MAIL_NOTIFY_UNREAD, String.valueOf(unreadMailCount));
+        Message sm = LM.getMessage(LangKey.MAIL_NOTIFY_CHECK);
         NotificationUtil.sendNotification(handler, pm, sm,  NotificationStyle.Default);
     }
 

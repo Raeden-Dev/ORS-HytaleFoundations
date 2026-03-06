@@ -82,7 +82,7 @@ public class LangManager {
                 writer.newLine();
             }
 
-            myLogger.atInfo().log(getMessage(LangKey.CREATE_SUCCESS, path.getFileName().toString()).getAnsiMessage());
+            myLogger.atInfo().log(getConsoleMessage(LangKey.CREATE_SUCCESS, path.getFileName().toString()).getAnsiMessage());
 
         } catch (IOException e) {
             logError(path, "saveDefaultLangFile", e);
@@ -103,7 +103,7 @@ public class LangManager {
             langCache.put(langCode, langMap);
         }
 
-        myLogger.atInfo().log(getMessage(LangKey.LOAD_SUCCESS, true, langCache.size() + " languages").getAnsiMessage());
+        myLogger.atInfo().log(getConsoleMessage(LangKey.LOAD_SUCCESS, langCache.size() + " languages").getAnsiMessage());
     }
     private Map<String, String> loadLangFile(Path path) {
         Map<String, String> map = new ConcurrentHashMap<>();
@@ -128,9 +128,6 @@ public class LangManager {
 
     public Message getMessage(LangKey key, String... args) {
         return getMessage(null, key, false, args);
-    }
-    public Message getMessage(LangKey key, boolean isConsole, String... args) {
-        return getMessage(null, key, isConsole, args);
     }
     public Message getPlayerMessage(String username, LangKey key, String... args) {
         return getMessage(username, key, false, args);

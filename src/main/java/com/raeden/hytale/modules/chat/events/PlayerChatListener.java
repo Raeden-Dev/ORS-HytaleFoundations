@@ -26,14 +26,14 @@ public class PlayerChatListener {
         PlayerProfile profile = hytaleFoundations.getPlayerDataManager().getOnlinePlayerProfile(playerUsername);
         PlayerStats stats = hytaleFoundations.getPlayerDataManager().getOnlinePlayerStats(playerUsername);
         if(profile == null) {
-            myLogger.atSevere().log(LM.getMessage(LangKey.NULL_POINTER, true, "PlayerChatListener - profile").getAnsiMessage());
+            myLogger.atSevere().log(LM.getConsoleMessage(LangKey.NULL_POINTER, "PlayerChatListener - profile").getAnsiMessage());
             return;
         }
 
         if(hytaleFoundations.getConfigManager().getDefaultConfig().isToggleChatModule()) {
             e.setCancelled(true);
             if(profile.isMuted() && !isAdmin) {
-                playerRef.sendMessage(LM.getMessage(playerUsername, LangKey.MUTE_ERROR_CHAT_TIME,false, TimeUtils.formatDuration(profile.getMuteDuration())));
+                playerRef.sendMessage(LM.getPlayerMessage(playerUsername, LangKey.MUTE_ERROR_CHAT_TIME,TimeUtils.formatDuration(profile.getMuteDuration())));
                 return;
             }
             String chatContent = e.getContent();

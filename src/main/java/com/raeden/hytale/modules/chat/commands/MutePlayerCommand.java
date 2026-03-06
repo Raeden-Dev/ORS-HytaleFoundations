@@ -41,7 +41,7 @@ public class MutePlayerCommand extends AbstractPlayerCommand {
 
         long durationInMillis = TimeUtils.parseDuration(duration);
         if(durationInMillis == 0) {
-            commandContext.sender().sendMessage(LM.getMessage(senderUsername, LangKey.INVALID_TIME_FORMAT, false));
+            commandContext.sender().sendMessage(LM.getPlayerMessage(senderUsername, LangKey.INVALID_TIME_FORMAT));
             return;
         }
 
@@ -49,7 +49,7 @@ public class MutePlayerCommand extends AbstractPlayerCommand {
         boolean isTargetOffline = false;
         if(target == null) {
             if(!hytaleFoundations.getPlayerDataManager().doesPlayerDataExist(targetUsername)) {
-                commandContext.sender().sendMessage(LM.getMessage(senderUsername, LangKey.PLAYER_NOT_FOUND,false, targetUsername));
+                commandContext.sender().sendMessage(LM.getPlayerMessage(senderUsername, LangKey.PLAYER_NOT_FOUND, targetUsername));
                 return;
             } else {
                 isTargetOffline = true;
@@ -62,19 +62,19 @@ public class MutePlayerCommand extends AbstractPlayerCommand {
         profile.setMuteDuration(newMuteDuration);
 
         if(profile.isMuted()) {
-            commandContext.sender().sendMessage(LM.getMessage(senderUsername, LangKey.MUTE_ACTION_INCREASED,false,
+            commandContext.sender().sendMessage(LM.getPlayerMessage(senderUsername, LangKey.MUTE_ACTION_INCREASED,
                     targetUsername, TimeUtils.formatDuration(muteDuration),
                                     TimeUtils.formatDuration(newMuteDuration)));
             if(target != null) {
-               target.sendMessage(LM.getMessage(targetUsername, LangKey.MUTE_NOTIFY_INCREASED,false,
+               target.sendMessage(LM.getPlayerMessage(targetUsername, LangKey.MUTE_NOTIFY_INCREASED,
                         TimeUtils.formatDuration(newMuteDuration), senderUsername));
             }
         } else {
             profile.setMuted(true);
-            commandContext.sender().sendMessage(LM.getMessage(senderUsername, LangKey.MUTE_ACTION_SUCCESS,false, targetUsername,
+            commandContext.sender().sendMessage(LM.getPlayerMessage(senderUsername, LangKey.MUTE_ACTION_SUCCESS, targetUsername,
                     TimeUtils.formatDuration(newMuteDuration)));
             if(target != null) {
-                target.sendMessage(LM.getMessage(targetUsername, LangKey.MUTE_NOTIFY_ACTIVE,false,
+                target.sendMessage(LM.getPlayerMessage(targetUsername, LangKey.MUTE_NOTIFY_ACTIVE,
                         senderUsername, TimeUtils.formatDuration(newMuteDuration)));
             }
         }

@@ -70,10 +70,10 @@ public class RankCommand extends AbstractCommandCollection {
                 commandContext.sender().sendMessage(LM.getPlayerMessage(playerUsername, LangKey.NOTHING_FOUND, "rank", "Empty map"));
                 return;
             }
-            commandContext.sender().sendMessage(LM.getMessage(playerUsername, LangKey.GENERAL_LIST, false, "rank(s)"));
+            commandContext.sender().sendMessage(LM.getPlayerMessage(playerUsername, LangKey.GENERAL_LIST, "rank(s)"));
             for(Map.Entry<String, RankManager.Rank> entry : rankManager.getRankMap().entrySet()) {
                 String rankPrefix = hytaleFoundations.getChatManager().getAffixManager().getAffixDisplay(entry.getValue().getChatPrefixId());
-                commandContext.sender().sendMessage(LM.getMessage(playerUsername, LangKey.GENERAL_LIST_ITEM, false,
+                commandContext.sender().sendMessage(LM.getPlayerMessage(playerUsername, LangKey.GENERAL_LIST_ITEM,
                         rankPrefix + " &r&e&l[ID: " + entry.getKey() + "]"));
             }
         }
@@ -95,9 +95,9 @@ public class RankCommand extends AbstractCommandCollection {
                 commandContext.sender().sendMessage(LM.getPlayerMessage(playerUsername, LangKey.NOTHING_FOUND, "rank group", "Empty map"));
                 return;
             }
-            commandContext.sender().sendMessage(LM.getMessage(playerUsername, LangKey.GENERAL_LIST, false, "rank group(s)"));
+            commandContext.sender().sendMessage(LM.getPlayerMessage(playerUsername, LangKey.GENERAL_LIST, "rank group(s)"));
             for(Map.Entry<String, List<String>> entry : rankManager.getRankGroupMap().entrySet()) {
-                commandContext.sender().sendMessage(LM.getMessage(playerUsername, LangKey.GENERAL_LIST_ITEM, false,
+                commandContext.sender().sendMessage(LM.getPlayerMessage(playerUsername, LangKey.GENERAL_LIST_ITEM,
                         "&e&l" + entry.getKey() + " &r&7[Chain: " + hytaleFoundations.getRankManager().getRankChainText(entry.getKey()) + "]"));
             }
         }
