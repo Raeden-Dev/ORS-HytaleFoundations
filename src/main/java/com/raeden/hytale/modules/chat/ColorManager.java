@@ -44,8 +44,7 @@ public class ColorManager {
         specialCodes = new ArrayList<>(List.of("&l", "&o", "&r"));
         loadDefaultColors();
         if(!Files.exists(colorFilePath)) {
-            myLogger.atInfo().log(LM.getConsoleMessage(LangKey.CREATE_SUCCESS, colorFileName, colorFilePath.toString()).getAnsiMessage());
-            saveColorFile(); // Just save the defaults we just loaded
+            saveColorFile();
         } else {
             loadColors();
         }

@@ -34,6 +34,7 @@ public class ConfigManager {
     public static String COLORMAP_VERSION = "v1.0";
     public static String AFFIX_VERSION = "v1.0";
     public static String RANK_VERSION = "v1.0";
+    public static String PERMISSION_VERSION = "v1.0";
 
     private Config defaultConfig;
     private ChatConfig defaultChatConfig;
@@ -59,6 +60,7 @@ public class ConfigManager {
     public void reloadPlugin() {
         if(!Files.exists(dataDirectory)) loadConfigs();
         this.defaultConfig = loadConfigData();
+        hytaleFoundations.getPermissionManager().loadPermissions();
         if(defaultConfig.isToggleChatModule()) {
             this.defaultChatConfig = loadChatConfigData();
             hytaleFoundations.getChatManager().getAffixManager().loadAffixes();
@@ -84,7 +86,7 @@ public class ConfigManager {
     // Load Configs
     private Config loadConfigData() {
         Path configPath = dataDirectory.resolve(CONFIG_FILENAME);
-        Config config = loadJsonFile(CONFIG_FILENAME, configPath, Config.class, true);
+        Config config = loadJsonFile(CONFIG_FILENAME, configPath, Config.class, false);
         if(config !=  null) {
             updateJsonFile(configPath, config, true);
             return config;
@@ -96,7 +98,7 @@ public class ConfigManager {
 
     private ChatConfig loadChatConfigData() {
         Path chatConfigPath = dataDirectory.resolve(CHAT_FILENAME);
-        ChatConfig chatConfig = loadJsonFile(CHAT_FILENAME, chatConfigPath, ChatConfig.class, true);
+        ChatConfig chatConfig = loadJsonFile(CHAT_FILENAME, chatConfigPath, ChatConfig.class, false);
         if(chatConfig != null) {
             updateJsonFile(chatConfigPath, chatConfig, true);
             return chatConfig;
@@ -108,7 +110,7 @@ public class ConfigManager {
 
     private MailConfig loadMailConfigData() {
         Path mailConfigPath = dataDirectory.resolve(MAIL_FILENAME);
-        MailConfig mailConfig = loadJsonFile(MAIL_FILENAME, mailConfigPath, MailConfig.class, true);
+        MailConfig mailConfig = loadJsonFile(MAIL_FILENAME, mailConfigPath, MailConfig.class, false);
         if(mailConfig != null) {
             updateJsonFile(mailConfigPath, mailConfig, true);
             return mailConfig;

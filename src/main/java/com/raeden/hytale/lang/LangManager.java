@@ -4,7 +4,6 @@ import com.hypixel.hytale.server.core.Message;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.raeden.hytale.HytaleFoundations;
 import com.raeden.hytale.core.player.PlayerProfile;
-import com.raeden.hytale.core.utils.PermissionManager;
 import com.raeden.hytale.modules.chat.ColorManager;
 import com.raeden.hytale.modules.chat.DefaultColors;
 
@@ -29,7 +28,8 @@ public class LangManager {
     private final String FILE_EXTENSION = ".lang";
     private final Path langDir;
     private final Map<String, Map<String, String>> langCache;
-    private final List<LangKey> prefixExclusionList = new ArrayList<>(List.of(LangKey.GENERAL_LIST_ITEM, LangKey.PM_FORMAT_SENDER, LangKey.PM_FORMAT_RECEIVER));
+    private final List<LangKey> prefixExclusionList = new ArrayList<>(List.of(LangKey.LIST_ITEM, LangKey.PM_FORMAT_SENDER, LangKey.PM_FORMAT_RECEIVER, LangKey.LIST_NUMBERED_ITEM,
+            LangKey.PLAYER_INFO_STATS, LangKey.PLAYER_INFO_PROFILE));
 
     public LangManager(HytaleFoundations hytaleFoundations) {
         this.hytaleFoundations = hytaleFoundations;

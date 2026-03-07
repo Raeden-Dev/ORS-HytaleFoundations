@@ -18,21 +18,6 @@ import static com.raeden.hytale.HytaleFoundations.*;
 import static com.raeden.hytale.utils.FileManager.logError;
 
 public class GeneralUtils {
-    public static UUID getPlayerUUID(String username) {
-        return getPlayerUUID(findPlayerByName(username));
-    }
-    public static UUID getPlayerUUID(PlayerRef playerRef) {
-        Ref<EntityStore> ref = playerRef.getReference();
-        Store<EntityStore> store = Objects.requireNonNull(ref).getStore();
-        UUIDComponent uuidComponent = store.getComponent(ref, UUIDComponent.getComponentType());
-
-        if (uuidComponent != null) {
-            return uuidComponent.getUuid();
-        }
-
-        return null;
-    }
-
     public static boolean playerHasInventorySpace(PlayerRef playerRef, int slots) {
         return playerHasInventorySpace(null, playerRef, slots);
     }

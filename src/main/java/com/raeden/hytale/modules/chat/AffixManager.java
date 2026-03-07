@@ -45,7 +45,6 @@ public class AffixManager {
         if (Files.exists(affixFilePath)) {
             loadAffixes();
         } else {
-            myLogger.atInfo().log(LM.getConsoleMessage(LangKey.CREATE_SUCCESS, affixFileName, affixFilePath.toString()).getAnsiMessage());
             saveAffixFile();
         }
     }
@@ -228,7 +227,7 @@ public class AffixManager {
     public Map<String, PlayerAffix> getAffixMap() {return affixMap;}
     public String getAffixDisplay(String id) {
         if(affixMap.containsKey(id)) {
-            return affixMap.get(id).displayText;
+            return affixMap.get(id).getDisplayText();
         }
         return "<UNDEFINED>";
     }

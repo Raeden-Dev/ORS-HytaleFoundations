@@ -84,9 +84,9 @@ public class HytaleFoundations extends JavaPlugin {
 
     public void registerManagers() {
         // Main dependencies
+        if(configManager == null) configManager = new ConfigManager(this);
         if(permissionManager == null) permissionManager = new PermissionManager(this);
         if(LM == null) LM = new LangManager(this);
-        if(configManager == null) configManager = new ConfigManager(this);
         LM.setDefaultLanguage();
         if(scheduler == null) scheduler = new Scheduler(this);
         if(pluginActionManager == null) pluginActionManager = new PluginActionManager(this);
@@ -158,7 +158,7 @@ public class HytaleFoundations extends JavaPlugin {
             this.getCommandRegistry().registerCommand(new RankCommand(this));
         }
         // Utility Commands
-        this.getCommandRegistry().registerCommand(new PlayerInfoCommand());
+        this.getCommandRegistry().registerCommand(new PlayerInfoCommand(this));
         this.getCommandRegistry().registerCommand(new PlaytimeCommand(this));
         this.getCommandRegistry().registerCommand(new AnvilCommand());
 

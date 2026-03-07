@@ -29,7 +29,7 @@ public class RankManager {
     private final String rankFileName = RANK_FILENAME;
     private final Path rankFilePath;
 
-    private RankHolder rankHolder;
+    private RankFile rankFile;
 
     public RankManager(HytaleFoundations hytaleFoundations) {
         this.hytaleFoundations = hytaleFoundations;
@@ -45,38 +45,37 @@ public class RankManager {
         if(Files.exists(rankFilePath)) {
             loadRanks();
         } else {
-            myLogger.atInfo().log(LM.getConsoleMessage(LangKey.CREATE_SUCCESS, rankFileName, rankFilePath.toString()).getAnsiMessage());
             saveDefaultRankFile();
         }
     }
     private void saveDefaultRankFile() {
-        rankHolder = new RankHolder();
-        rankHolder.setForceAddAffix(true);
-        rankHolder.setSwitchGroupOnCreate(true);
-        rankHolder.setRankList(new ArrayList<>(rankMap.values()));
-        rankHolder.getRankGroups().putAll(rankGroupMap);
-        saveJsonFile(rankFileName, rankFilePath, rankHolder, true);
+        rankFile = new RankFile();
+        rankFile.setForceAddAffix(true);
+        rankFile.setSwitchGroupOnCreate(true);
+        rankFile.setRankList(new ArrayList<>(rankMap.values()));
+        rankFile.getRankGroups().putAll(rankGroupMap);
+        saveJsonFile(rankFileName, rankFilePath, rankFile, true);
     }
     public void saveRankFile() {
-        rankHolder = new RankHolder();
-        rankHolder.setForceAddAffix(rankHolder.isForceAddAffix());
-        rankHolder.setRankList(new ArrayList<>(rankMap.values()));
-        rankHolder.getRankGroups().putAll(rankGroupMap);
-        saveJsonFile(rankFileName, rankFilePath, rankHolder, false);
+        rankFile = new RankFile();
+        rankFile.setForceAddAffix(rankFile.isForceAddAffix());
+        rankFile.setRankList(new ArrayList<>(rankMap.values()));
+        rankFile.getRankGroups().putAll(rankGroupMap);
+        saveJsonFile(rankFileName, rankFilePath, rankFile, false);
     }
     public void loadRanks() {
-        Type type = new TypeToken<RankHolder>(){}.getType();
-        RankHolder loadedRankHolder = loadJsonFile(rankFileName, rankFilePath, type, true);
-        if(loadedRankHolder != null && loadedRankHolder.rankList != null) {
+        Type type = new TypeToken<RankFile>(){}.getType();
+        RankFile loadedRankFile = loadJsonFile(rankFileName, rankFilePath, type, true);
+        if(loadedRankFile != null && loadedRankFile.getRankList() != null) {
             int newRanks = 0;
-            for (Rank rank : loadedRankHolder.rankList) {
+            for (Rank rank : loadedRankFile.getRankList()) {
                 if (!rankMap.containsKey(rank.id)) {
                     newRanks++;
                 }
-                rankMap.put(rank.id, rank);
+                rankMap.put(rank.getId(), rank);
             }
             int newChains = 0;
-            for(Map.Entry<String, List<String>> chain : loadedRankHolder.rankGroups.entrySet()) {
+            for(Map.Entry<String, List<String>> chain : loadedRankFile.rankGroups.entrySet()) {
                 if(!rankGroupMap.containsKey(chain.getKey())) {
                     newChains++;
                 }
@@ -88,7 +87,7 @@ public class RankManager {
             }
             if (newRanks > 0)  myLogger.atInfo().log(LM.getConsoleMessage(LangKey.LOAD_SUCCESS, newRanks + " rank(s)").getAnsiMessage());
             if (newChains > 0)  myLogger.atInfo().log(LM.getConsoleMessage(LangKey.LOAD_SUCCESS, newChains + " rank group(s)").getAnsiMessage());
-            rankHolder = loadedRankHolder;
+            rankFile = loadedRankFile;
         } else {
             saveDefaultRankFile();
         }
@@ -145,7 +144,7 @@ public class RankManager {
             }
             Rank rank = rankMap.get(cleanId);
             if(rank.getRankGroup() != null && !rank.getRankGroup().isEmpty()) {
-                if(rankHolder.isSwitchGroupOnCreate()) {
+                if(rankFile.isSwitchGroupOnCreate()) {
                     removeRankFromGroup(null, rank.getRankGroup(), rank.getId());
                     if(sender != null) sender.sendMessage(LM.getPlayerMessage(sender.getUsername(), LangKey.RANK_SWITCH_GROUP,  cleanId, rank.getRankGroup(), groupName));
                 } else {
@@ -237,8 +236,8 @@ public class RankManager {
             return;
         }
         if(sender != null) {
-            sender.sendMessage(LM.getPlayerMessage(sender.getUsername(), LangKey.GENERAL_LIST, "rank(s) in group"));
-            sender.sendMessage(LM.getPlayerMessage(sender.getUsername(), LangKey.GENERAL_LIST_ITEM, "&l" + getRankChainText(groupName)));
+            sender.sendMessage(LM.getPlayerMessage(sender.getUsername(), LangKey.LIST_CONTEXT, "rank(s) in group"));
+            sender.sendMessage(LM.getPlayerMessage(sender.getUsername(), LangKey.LIST_ITEM, "&l" + getRankChainText(groupName)));
         }
     }
     public void deleteRankGroup(PlayerRef sender, String groupName) {
@@ -327,6 +326,11 @@ public class RankManager {
         return String.join(" > ", rankChain);
     }
     public Rank getRank(String rankId) {return rankMap.get(rankId);}
+    public String getRankDisplay(String rankId) {
+        Rank rank = rankMap.get(rankId);
+        if(rank == null) return "";
+        return hytaleFoundations.getChatManager().getAffixManager().getAffixDisplay(rank.getChatPrefixId());
+    }
     public Map<String, Rank> getRankMap() {return rankMap;}
     public Map<String, List<String>> getRankGroupMap() {return rankGroupMap;}
     private Map<String, Rank> getDefaultRankMap() {
@@ -374,7 +378,7 @@ public class RankManager {
         public int getRankPriority() {return rankPriority;}
         public void setRankPriority(int rankPriority) {this.rankPriority = rankPriority;}
     }
-    public static class RankHolder {
+    public static class RankFile {
         @SerializedName("VERSION")
         private final String version = RANK_VERSION;
         @SerializedName("FORCE_ADD_AFFIX")

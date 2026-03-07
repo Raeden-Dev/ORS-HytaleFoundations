@@ -13,6 +13,7 @@ public enum Permissions {
     RANK_ADMIN("hytalefoundations.admin.rank"),
     MAIL("hytalefoundations.mail"),
     MAIL_ADMIN("hytalefoundations.admin.mail"),
+    PLAYER_INFO("hytalefoundations.playerinfo"),
     PLAYER_DATABASE("hytalefoundations.admin.playerdb"),
     ANALYTICS("hytalefoundations.admin.analytics"),
     BLOCK_PLAYER("hytalefoundations.block.player"),

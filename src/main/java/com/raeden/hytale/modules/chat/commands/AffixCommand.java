@@ -39,9 +39,9 @@ public class AffixCommand extends AbstractCommandCollection {
             if(affixManager == null) return;
             if(affixManager.getAffixMap() == null || affixManager.getAffixMap().isEmpty()) return;
             String playerUsername = commandContext.sender().getDisplayName();
-            commandContext.sender().sendMessage(LM.getPlayerMessage(playerUsername, LangKey.GENERAL_LIST, "affix(es)"));
+            commandContext.sender().sendMessage(LM.getPlayerMessage(playerUsername, LangKey.LIST_CONTEXT, "affix(es)"));
             for(Map.Entry<String, AffixManager.PlayerAffix> entry : affixManager.getAffixMap().entrySet()) {
-                commandContext.sender().sendMessage(LM.getPlayerMessage(playerUsername, LangKey.GENERAL_LIST_ITEM,
+                commandContext.sender().sendMessage(LM.getPlayerMessage(playerUsername, LangKey.LIST_ITEM,
                         entry.getValue().getDisplayText() + " &r&e&l[ID: " + entry.getKey() + "]"));
             }
         }

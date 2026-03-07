@@ -29,6 +29,8 @@ public class PlayerProfile {
     private boolean isFlying;
     @SerializedName("IS_ANONYMOUS")
     private boolean isAnonymous;
+    @SerializedName("COLLECT_STATS")
+    private boolean collectStats;
 
     // Convenience
     @SerializedName("HOMES")
@@ -144,4 +146,7 @@ public class PlayerProfile {
     public void setRankId(String rankId) {this.rankId = rankId;}
 
     public List<String> getIgnoredPlayers() {return ignoredPlayers;}
+
+    public boolean isCollectStats() {return collectStats;}
+    public void setCollectStats(boolean collectStats) {this.collectStats = collectStats;}
 }

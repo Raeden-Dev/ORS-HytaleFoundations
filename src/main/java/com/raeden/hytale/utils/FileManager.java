@@ -274,7 +274,7 @@ public class FileManager {
             } catch (IOException ignored) {
             }
         }
-        int ID = random.nextInt(900) + 100;
+        int ID = getTotalFilesInDir(exportPath);
         String fileName = TimeUtils.getFileSafeTime() + "-" + at + "-log_" + ID + ".txt";
         Path logFile = exportPath.resolve(fileName);
         try (PrintWriter writer = new PrintWriter(Files.newBufferedWriter(logFile, StandardCharsets.UTF_8))) {
@@ -301,7 +301,7 @@ public class FileManager {
             writeEx.printStackTrace();
         }
     }
-    private int getTotalFilesInDir(Path location) {
+    private static int getTotalFilesInDir(Path location) {
         int count = 0;
         if(Files.exists(location)) {
             for(File file : Objects.requireNonNull(location.toFile().listFiles())) {
@@ -309,9 +309,9 @@ public class FileManager {
                     count++;
                 }
             }
-            return count;
+            return count + 1;
         } else {
-            return 0;
+            return 1;
         }
     }
 }

@@ -4,6 +4,7 @@ import com.google.gson.reflect.TypeToken;
 import com.hypixel.hytale.server.core.Message;
 import com.hypixel.hytale.server.core.entity.entities.Player;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
+import com.hypixel.hytale.server.core.universe.Universe;
 import com.raeden.hytale.HytaleFoundations;
 import com.raeden.hytale.core.config.containers.ChatConfig;
 import com.raeden.hytale.lang.LangKey;
@@ -18,8 +19,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import static com.raeden.hytale.HytaleFoundations.*;
 import static com.raeden.hytale.utils.FileManager.*;
-import static com.raeden.hytale.utils.GeneralUtils.findPlayerByName;
-import static com.raeden.hytale.utils.GeneralUtils.getPlayerUUID;
+import static com.raeden.hytale.utils.GeneralUtils.*;
 
 public class PlayerDataManager {
     private final HytaleFoundations hytaleFoundations;
@@ -42,12 +42,8 @@ public class PlayerDataManager {
 
         playerProfiles = new ConcurrentHashMap<>();
         playerStats = new ConcurrentHashMap<>();
-        verifyDataPath();
-        createUserMap();
-    }
-
-    private void verifyDataPath() {
         createDirectory(playerDataPath, true);
+        createUserMap();
     }
 
     // User Map
@@ -72,7 +68,8 @@ public class PlayerDataManager {
         users.put(id, username);
 
         Path userMapPath = playerDataPath.resolve(USERMAP_FILENAME);
-        saveJsonFile(USERMAP_FILENAME, userMapPath, users, true);
+        myLogger.atInfo().log(LM.getConsoleMessage(LangKey.UPDATE_SUCCESS, USERMAP_FILENAME).getAnsiMessage());
+        saveJsonFile(USERMAP_FILENAME, userMapPath, users, false);
 
         if (oldUsername != null && !oldUsername.equals(username)) {
             Path oldDataPath = playerDataPath.resolve(oldUsername);
@@ -106,10 +103,43 @@ public class PlayerDataManager {
         }
         if(mismatch) updateUserMap(playerID, username);
     }
+
+    // Saving, Loading and Creating Player Data
+    public void saveAllPlayerData() {
+        Universe universe = Universe.get();
+        for(PlayerRef player : universe.getPlayers()) {
+            verifyUserID(player.getUsername());
+            savePlayerData(player.getUsername(), PROFILE_FILENAME, getOnlinePlayerProfile(player.getUsername()), false);
+            savePlayerData(player.getUsername(), STATS_FILENAME, getOnlinePlayerStats(player.getUsername()), false);
+            // Mailbox and History aren't needed often
+            myLogger.atInfo().log(LM.getConsoleMessage(LangKey.SAVE_PD_SUCCESS, player.getUsername()).getAnsiMessage());
+        }
+    }
+    public void saveTargetPlayerData(String targetUsername) {
+        verifyUserID(targetUsername);
+        if(!isPlayerOnline(targetUsername)) return;
+        savePlayerData(targetUsername, PROFILE_FILENAME, getOnlinePlayerProfile(targetUsername), false);
+        savePlayerData(targetUsername, STATS_FILENAME, getOnlinePlayerStats(targetUsername), false);
+        myLogger.atInfo().log(LM.getConsoleMessage(LangKey.SAVE_PD_SUCCESS, targetUsername).getAnsiMessage());
+    }
+    public void reloadAllPlayerData() {
+        Universe universe = Universe.get();
+        for(PlayerRef player : universe.getPlayers()) {
+            verifyUserID(player.getUsername());
+            loadPlayerData(player.getUsername());
+            myLogger.atInfo().log(LM.getConsoleMessage(LangKey.RELOAD_PLAYER_DATA, player.getUsername()).getAnsiMessage());
+        }
+    }
+    public void reloadTargetPlayerData(String targetUsername) {
+        verifyUserID(targetUsername);
+        if(!isPlayerOnline(targetUsername)) return;
+        loadPlayerData(targetUsername);
+        myLogger.atInfo().log(LM.getConsoleMessage(LangKey.RELOAD_PLAYER_DATA, targetUsername).getAnsiMessage());
+    }
+
     public <T> void savePlayerData(String username, String jsonName, T data) {
         savePlayerData(username, jsonName, data, true);
     }
-    // Saving, Loading and Creating Player Data
     public <T> void savePlayerData(String username, String jsonName, T data, boolean showInfo) {
         if (!jsonName.endsWith(".json")) {
             jsonName += ".json";
@@ -128,6 +158,24 @@ public class PlayerDataManager {
         saveJsonFile(jsonName, savePath, data, showInfo);
     }
     // Getting data online or offline
+    public UUID getPlayerUUID(String targetUsername) {
+        return getPlayerUUID(null, targetUsername);
+    }
+    public UUID getPlayerUUID(PlayerRef sender, String targetUsername) {
+        UUID targetUUID;
+        PlayerRef targetRef = findPlayerByName(targetUsername);
+        if(targetRef == null) {
+            PlayerProfile profile = hytaleFoundations.getPlayerDataManager().getPlayerProfile(targetUsername);
+            if(profile == null) {
+                if(sender != null) sender.sendMessage(LM.getPlayerMessage(sender.getUsername(), LangKey.PLAYER_NOT_FOUND_MSG, targetUsername));
+                return null;
+            }
+            targetUUID = profile.getUuid();
+        } else {
+            targetUUID = targetRef.getUuid();
+        }
+        return targetUUID;
+    }
     public PlayerProfile getPlayerProfile(String username) {
         PlayerRef ref = findPlayerByName(username);
         if(ref != null) {
@@ -211,7 +259,7 @@ public class PlayerDataManager {
     // Create generic profiles
     private PlayerProfile createPlayerProfile(PlayerRef playerRef) {
         String username = playerRef.getUsername();
-        UUID playerID = getPlayerUUID(playerRef);
+        UUID playerID = playerRef.getUuid();
 
         PlayerProfile profile = new PlayerProfile();
         profile.setUuid(playerID);
@@ -232,6 +280,7 @@ public class PlayerDataManager {
         profile.setMuteDuration(0);
         profile.setSilenced(false);
         profile.setRankId("");
+        profile.setCollectStats(true);
 
         return profile;
     }
@@ -319,6 +368,9 @@ public class PlayerDataManager {
     }
 
     // Management and getters
+    public boolean doesPlayerExist(String username) {
+        return (findPlayerByName(username) != null) && doesPlayerDataExist(username);
+    }
     public boolean doesPlayerDataExist(String username) {
         File playerDataFile = playerDataPath.resolve(username).toFile();
         return playerDataFile.exists();
@@ -327,11 +379,11 @@ public class PlayerDataManager {
     public PlayerProfile getOnlinePlayerProfile(String username) { return playerProfiles.get(username);}
     public void addPlayerProfile(String username, PlayerProfile profile) {playerProfiles.put(username, profile);}
     public void removePlayerProfile(String username) { playerProfiles.remove(username);}
-    public Map<String, PlayerProfile> getPlayerProfiles(){return playerProfiles;}
+    public Map<String, PlayerProfile> getPlayerProfileMap(){return playerProfiles;}
 
     public PlayerStats getOnlinePlayerStats(String username) { return playerStats.get(username);}
     public void addPlayerStats(String username, PlayerStats stats) {playerStats.put(username, stats);}
     public void removePlayerStats(String username) { playerStats.remove(username);}
-    public Map<String, PlayerStats> getOnlinePlayerStats(){return playerStats;}
+    public Map<String, PlayerStats> getPlayerStatsMap(){return playerStats;}
 
 }

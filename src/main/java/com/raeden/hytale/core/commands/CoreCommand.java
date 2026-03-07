@@ -3,6 +3,8 @@ package com.raeden.hytale.core.commands;
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
 import com.hypixel.hytale.server.core.command.system.CommandContext;
+import com.hypixel.hytale.server.core.command.system.arguments.system.RequiredArg;
+import com.hypixel.hytale.server.core.command.system.arguments.types.ArgTypes;
 import com.hypixel.hytale.server.core.command.system.basecommands.AbstractAsyncCommand;
 import com.hypixel.hytale.server.core.command.system.basecommands.AbstractCommandCollection;
 import com.hypixel.hytale.server.core.command.system.basecommands.AbstractPlayerCommand;
@@ -34,8 +36,10 @@ public class CoreCommand extends AbstractCommandCollection {
         this.addSubCommand(new UpdatePluginCommand(hytaleFoundations));
         this.addSubCommand(new DebugCommand(hytaleFoundations));
         this.addSubCommand(new TestPlayerCommand(hytaleFoundations));
+        this.addSubCommand(new PlayerDataCommand(hytaleFoundations));
         this.addSubCommand(new LangCommand(hytaleFoundations));
         this.addSubCommand(new HFHelpCommand(hytaleFoundations));
+        this.addSubCommand(new PermissionCommand(hytaleFoundations));
     }
 
     private static class HFHelpCommand extends AbstractPlayerCommand {
@@ -126,6 +130,137 @@ public class CoreCommand extends AbstractCommandCollection {
         }
     }
 
+    private static class PlayerDataCommand extends AbstractCommandCollection {
+        public PlayerDataCommand(HytaleFoundations hytaleFoundations) {
+            super("playerdata", "Argument for all player data related commands.");
+            this.addAliases("pdata");
+            this.addSubCommand(new SaveAllDataCommand(hytaleFoundations));
+            this.addSubCommand(new SaveTargetDataCommand(hytaleFoundations));
+            this.addSubCommand(new ReloadAllDataCommand(hytaleFoundations));
+            this.addSubCommand(new ReloadTargetDataCommand(hytaleFoundations));
+        }
+        public static class SaveAllDataCommand extends AbstractAsyncCommand {
+            private final HytaleFoundations hytaleFoundations;
+            public SaveAllDataCommand(HytaleFoundations hytaleFoundations) {
+                super("saveall","Save data of all players active in the server.");
+                this.addAliases("sall");
+                this.hytaleFoundations = hytaleFoundations;
+            }
+            @Nonnull
+            @Override
+            protected CompletableFuture<Void> executeAsync(@Nonnull CommandContext commandContext) {
+                try {
+                    hytaleFoundations.getPlayerDataManager().saveAllPlayerData();
+                    if(commandContext.isPlayer()) {
+                        commandContext.sender().sendMessage(LM.getPlayerMessage(commandContext.sender().getDisplayName(), LangKey.SAVE_SUCCESS, "all player data"));
+                    } else {
+                        commandContext.sender().sendMessage(LM.getConsoleMessage(LangKey.SAVE_SUCCESS, "all player data"));
+                    }
+                } catch (Exception e) {
+                    if(commandContext.isPlayer()) {
+                        commandContext.sender().sendMessage(LM.getPlayerMessage(commandContext.sender().getDisplayName(), LangKey.SAVE_FAILURE, "all player data"));
+                    } else {
+                        commandContext.sender().sendMessage(LM.getConsoleMessage(LangKey.SAVE_FAILURE, "all player data"));
+                    }
+                    logError(ERROR_LOG_DIRECTORY, "SaveAllDataCommand", e);
+                }
+                return CompletableFuture.completedFuture(null);
+            }
+        }
+        public static class SaveTargetDataCommand extends AbstractAsyncCommand {
+            private final HytaleFoundations hytaleFoundations;
+            private final RequiredArg<String> targetPlayer;
+            public SaveTargetDataCommand(HytaleFoundations hytaleFoundations) {
+                super("save","Save data of target player active in the server.");
+                this.hytaleFoundations = hytaleFoundations;
+                this.targetPlayer = withRequiredArg("Target", "Target player whose data will be saved.", ArgTypes.STRING);
+            }
+            @Nonnull
+            @Override
+            protected CompletableFuture<Void> executeAsync(@Nonnull CommandContext commandContext) {
+                try {
+                    if(hytaleFoundations.getPlayerDataManager().doesPlayerExist(commandContext.get(this.targetPlayer))) {
+                        if(commandContext.isPlayer()) commandContext.sender().sendMessage(LM.getPlayerMessage(commandContext.sender().getDisplayName(), LangKey.PLAYER_NOT_FOUND_MSG, commandContext.get(this.targetPlayer)));
+                        else commandContext.sender().sendMessage(LM.getConsoleMessage(LangKey.PLAYER_NOT_FOUND, commandContext.get(this.targetPlayer)));
+                        return CompletableFuture.completedFuture(null);
+                    }
+                    hytaleFoundations.getPlayerDataManager().saveTargetPlayerData(commandContext.get(this.targetPlayer));
+                    if(commandContext.isPlayer()) {
+                        commandContext.sender().sendMessage(LM.getPlayerMessage(commandContext.sender().getDisplayName(), LangKey.SAVE_SUCCESS, "data of player: " + commandContext.get(this.targetPlayer)));
+                    }
+                } catch (Exception e) {
+                    if(commandContext.isPlayer()) {
+                        commandContext.sender().sendMessage(LM.getPlayerMessage(commandContext.sender().getDisplayName(), LangKey.SAVE_FAILURE, "data of player: " + commandContext.get(this.targetPlayer)));
+                    } else {
+                        commandContext.sender().sendMessage(LM.getConsoleMessage(LangKey.SAVE_FAILURE, "data of player: " + commandContext.get(this.targetPlayer)));
+                    }
+                    logError(ERROR_LOG_DIRECTORY, "SaveTargetDataCommand", e);
+                }
+                return CompletableFuture.completedFuture(null);
+            }
+        }
+        public static class ReloadAllDataCommand extends AbstractAsyncCommand {
+            private final HytaleFoundations hytaleFoundations;
+            public ReloadAllDataCommand(HytaleFoundations hytaleFoundations) {
+                super("reloadall","Reload data of all players active in the server.");
+                this.addAliases("rall");
+                this.hytaleFoundations = hytaleFoundations;
+            }
+            @Nonnull
+            @Override
+            protected CompletableFuture<Void> executeAsync(@Nonnull CommandContext commandContext) {
+                try {
+                    hytaleFoundations.getPlayerDataManager().reloadAllPlayerData();
+                    if(commandContext.isPlayer()) {
+                        commandContext.sender().sendMessage(LM.getPlayerMessage(commandContext.sender().getDisplayName(), LangKey.RELOAD_SUCCESS, "all player data"));
+                    } else {
+                        commandContext.sender().sendMessage(LM.getConsoleMessage(LangKey.RELOAD_SUCCESS, "all player data"));
+                    }
+                } catch (Exception e) {
+                    if(commandContext.isPlayer()) {
+                        commandContext.sender().sendMessage(LM.getPlayerMessage(commandContext.sender().getDisplayName(), LangKey.RELOAD_FAILURE, "all player data"));
+                    } else {
+                        commandContext.sender().sendMessage(LM.getConsoleMessage(LangKey.RELOAD_FAILURE, "all player data"));
+                    }
+                    logError(ERROR_LOG_DIRECTORY, "ReloadAllDataCommand", e);
+                }
+                return CompletableFuture.completedFuture(null);
+            }
+        }
+        public static class ReloadTargetDataCommand extends AbstractAsyncCommand {
+            private final HytaleFoundations hytaleFoundations;
+            private final RequiredArg<String> targetPlayer;
+            public ReloadTargetDataCommand(HytaleFoundations hytaleFoundations) {
+                super("reload","Reload data of target player active in the server.");
+                this.hytaleFoundations = hytaleFoundations;
+                this.targetPlayer = withRequiredArg("Target", "Target player whose data will be reloaded.", ArgTypes.STRING);
+            }
+            @Nonnull
+            @Override
+            protected CompletableFuture<Void> executeAsync(@Nonnull CommandContext commandContext) {
+                try {
+                    if(hytaleFoundations.getPlayerDataManager().doesPlayerExist(commandContext.get(this.targetPlayer))) {
+                        if(commandContext.isPlayer()) commandContext.sender().sendMessage(LM.getPlayerMessage(commandContext.sender().getDisplayName(), LangKey.PLAYER_NOT_FOUND_MSG, commandContext.get(this.targetPlayer)));
+                        else commandContext.sender().sendMessage(LM.getConsoleMessage(LangKey.PLAYER_NOT_FOUND, commandContext.get(this.targetPlayer)));
+                        return CompletableFuture.completedFuture(null);
+                    }
+                    hytaleFoundations.getPlayerDataManager().reloadTargetPlayerData(commandContext.get(this.targetPlayer));
+                    if(commandContext.isPlayer()) {
+                        commandContext.sender().sendMessage(LM.getPlayerMessage(commandContext.sender().getDisplayName(), LangKey.RELOAD_PLAYER_DATA, commandContext.get(this.targetPlayer)));
+                    }
+                } catch (Exception e) {
+                    if(commandContext.isPlayer()) {
+                        commandContext.sender().sendMessage(LM.getPlayerMessage(commandContext.sender().getDisplayName(), LangKey.RELOAD_FAILURE, "data of player: " + commandContext.get(this.targetPlayer)));
+                    } else {
+                        commandContext.sender().sendMessage(LM.getConsoleMessage(LangKey.RELOAD_FAILURE, "data of player: " + commandContext.get(this.targetPlayer)));
+                    }
+                    logError(ERROR_LOG_DIRECTORY, "ReloadTargetDataCommand", e);
+                }
+                return CompletableFuture.completedFuture(null);
+            }
+        }
+    }
+
     private static class LangCommand extends AbstractCommandCollection {
         public LangCommand(HytaleFoundations hytaleFoundations) {
             super("lang", "Argument for all language related commands.");
@@ -144,15 +279,15 @@ public class CoreCommand extends AbstractCommandCollection {
                 try {
                     hytaleFoundations.getLangManager().reloadLanguages();
                     if(commandContext.isPlayer()) {
-                        commandContext.sender().sendMessage(LM.getPlayerMessage(commandContext.sender().getDisplayName(), LangKey.PLUGIN_RELOAD_SUCCESS, "Languages"));
+                        commandContext.sender().sendMessage(LM.getPlayerMessage(commandContext.sender().getDisplayName(), LangKey.RELOAD_SUCCESS, "Languages"));
                     } else {
-                        commandContext.sender().sendMessage(LM.getConsoleMessage(LangKey.PLUGIN_RELOAD_SUCCESS, "Languages"));
+                        commandContext.sender().sendMessage(LM.getConsoleMessage(LangKey.RELOAD_SUCCESS, "Languages"));
                     }
                 } catch (Exception e) {
                     if(commandContext.isPlayer()) {
-                        commandContext.sender().sendMessage(LM.getPlayerMessage(commandContext.sender().getDisplayName(), LangKey.PLUGIN_RELOAD_FAILURE, "Languages"));
+                        commandContext.sender().sendMessage(LM.getPlayerMessage(commandContext.sender().getDisplayName(), LangKey.RELOAD_FAILURE, "Languages"));
                     } else {
-                        commandContext.sender().sendMessage(LM.getConsoleMessage(LangKey.PLUGIN_RELOAD_FAILURE, "Languages"));
+                        commandContext.sender().sendMessage(LM.getConsoleMessage(LangKey.RELOAD_FAILURE, "Languages"));
                     }
                     logError(ERROR_LOG_DIRECTORY, "ReloadLangCommand", e);
                 }
@@ -176,15 +311,15 @@ public class CoreCommand extends AbstractCommandCollection {
                 hytaleFoundations.registerManagers();
                 hytaleFoundations.registerCommands();
                 if(commandContext.isPlayer()) {
-                    commandContext.sender().sendMessage(LM.getPlayerMessage(commandContext.sender().getDisplayName(), LangKey.PLUGIN_RELOAD_SUCCESS, "Hytale Foundations"));
+                    commandContext.sender().sendMessage(LM.getPlayerMessage(commandContext.sender().getDisplayName(), LangKey.RELOAD_SUCCESS, "Hytale Foundations"));
                 } else {
-                    commandContext.sender().sendMessage(LM.getConsoleMessage(LangKey.PLUGIN_RELOAD_SUCCESS, "Hytale Foundations"));
+                    commandContext.sender().sendMessage(LM.getConsoleMessage(LangKey.RELOAD_SUCCESS, "Hytale Foundations"));
                 }
             } catch (Exception e) {
                 if(commandContext.isPlayer()) {
-                    commandContext.sender().sendMessage(LM.getPlayerMessage(commandContext.sender().getDisplayName(), LangKey.PLUGIN_RELOAD_FAILURE, "Hytale Foundations"));
+                    commandContext.sender().sendMessage(LM.getPlayerMessage(commandContext.sender().getDisplayName(), LangKey.RELOAD_FAILURE, "Hytale Foundations"));
                 } else {
-                    commandContext.sender().sendMessage(LM.getConsoleMessage(LangKey.PLUGIN_RELOAD_FAILURE, "Hytale Foundations"));
+                    commandContext.sender().sendMessage(LM.getConsoleMessage(LangKey.RELOAD_FAILURE, "Hytale Foundations"));
                 }
                 logError(ERROR_LOG_DIRECTORY, "ReloadPluginCommand", e);
             }
