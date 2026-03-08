@@ -55,6 +55,7 @@ public class PlayerInfoCommand extends AbstractPlayerCommand {
         if(commandContext.get(this.targetPlayer) == null) {
             profileInfo = getPlayerProfileInfo(hytaleFoundations.getPlayerDataManager().getPlayerProfile(senderUsername));
             statsInfo = getPlayerStatInfo(hytaleFoundations.getPlayerDataManager().getPlayerStats(senderUsername));
+            hytaleFoundations.getPlayerDataManager().savePlayTime(senderUsername);
         } else {
             targetUsername = commandContext.get(this.targetPlayer);
             if(hytaleFoundations.getPlayerDataManager().doesPlayerExist(targetUsername)) {
@@ -63,6 +64,7 @@ public class PlayerInfoCommand extends AbstractPlayerCommand {
             }
             profileInfo = getPlayerProfileInfo(hytaleFoundations.getPlayerDataManager().getPlayerProfile(targetUsername));
             statsInfo = getPlayerStatInfo(hytaleFoundations.getPlayerDataManager().getPlayerStats(targetUsername));
+            hytaleFoundations.getPlayerDataManager().savePlayTime(targetUsername);
         }
         if(profileInfo.isEmpty() || statsInfo.isEmpty()) {
             if(targetUsername == null) commandContext.sender().sendMessage(LM.getPlayerMessage(senderUsername, LangKey.PLAYER_INFO_LOAD_FAIL, senderUsername));
@@ -103,7 +105,6 @@ public class PlayerInfoCommand extends AbstractPlayerCommand {
         profileInfo.put("&b&lVanished: &r&f" + profile.isVanished(), "Admin");
         profileInfo.put("&b&lFlying: &r&f" + profile.isFlying(), "Admin");
         profileInfo.put("&b&lAnonymous: &r&f" + profile.isAnonymous(), "Admin");
-        profileInfo.put("&b&lCollect Stats: &r&f" + profile.isCollectStats(), "Admin");
         profileInfo.put("&b&lHomes Count: &r&f" + profile.getHomes().size(), "Admin");
         profileInfo.put("&b&lBalances Tracked: &r&f" + profile.getBalances().size(), "Admin");
         return profileInfo;
@@ -111,14 +112,17 @@ public class PlayerInfoCommand extends AbstractPlayerCommand {
 
     private Map<String, String> getPlayerStatInfo(PlayerStats stats) {
         Map<String, String> statsInfo = new LinkedHashMap<>();
-        statsInfo.put("&e&lFirst Joined: &r&f" + TimeUtils.formatDuration(stats.getFirstJoined()), "Player");
-        statsInfo.put("&b&lLast Joined: &r&f" + TimeUtils.formatDuration(stats.getLastJoined()), "Admin");
+        statsInfo.put("&e&lFirst Joined: &r&f" + TimeUtils.getDate(stats.getFirstJoined()), "Player");
+        statsInfo.put("&b&lLast Joined: &r&f" + TimeUtils.getDate(stats.getLastJoined()), "Admin");
         statsInfo.put("&e&lTotal Playtime: &r&f" + TimeUtils.formatDuration(stats.getPlayTimeMillis()), "Player");
+        statsInfo.put("&b&lCollect Stats: &r&f" + stats.isCollectStats(), "Admin");
         statsInfo.put("&c&lPlayer Kills: &r&f" + stats.getPlayerKills(), "Player");
         statsInfo.put("&c&lMob Kills: &r&f" + stats.getMobKills(), "Player");
         statsInfo.put("&c&lTotal Deaths: &r&f" + stats.getTotalDeaths(), "Player");
-        statsInfo.put("&c&lDamage Given: &r&f" + stats.getDamageGiven(), "Player");
-        statsInfo.put("&c&lDamage Taken: &r&f" + stats.getDamageTaken(), "Player");
+        statsInfo.put("&c&lDamage Given (PVP): &r&f" + stats.getDamageGivenPvp(), "Player");
+        statsInfo.put("&c&lDamage Taken (PVP): &r&f" + stats.getDamageTakenPvp(), "Player");
+        statsInfo.put("&c&lDamage Given (PVE): &r&f" + stats.getDamageGivenPve(), "Player");
+        statsInfo.put("&c&lDamage Taken (PVE): &r&f" + stats.getDamageTakenPve(), "Player");
         statsInfo.put("&a&lBlocks Broken: &r&f" + stats.getBlocksBroken(), "Player");
         statsInfo.put("&a&lBlocks Placed: &r&f" + stats.getBlocksPlaced(), "Player");
         statsInfo.put("&a&lItems Crafted: &r&f" + stats.getItemsCrafted(), "Player");

@@ -28,6 +28,7 @@ public class PlaytimeCommand extends AbstractPlayerCommand {
 
     public PlaytimeCommand(HytaleFoundations plugin) {
         super("playtime", "Shows your or a player's total playtime.");
+        this.addAliases("ptime");
         this.requirePermission(Permissions.PLAYTIME.getPermission());
         this.hytaleFoundations = plugin;
         targetPlayer = withOptionalArg("Player", "Target player to check their playtime", ArgTypes.STRING);

@@ -280,7 +280,6 @@ public class PlayerDataManager {
         profile.setMuteDuration(0);
         profile.setSilenced(false);
         profile.setRankId("");
-        profile.setCollectStats(true);
 
         return profile;
     }
@@ -290,11 +289,12 @@ public class PlayerDataManager {
         stats.setFirstJoined(0);
         stats.setLastJoined(0);
         stats.setPlayTimeMillis(0);
+        stats.setCollectStats(true);
         stats.setTotalDeaths(0);
         stats.setPlayerKills(0);
         stats.setMobKills(0);
-        stats.setDamageGiven(0);
-        stats.setDamageTaken(0);
+        stats.setDamageGivenPve(0);
+        stats.setDamageTakenPve(0);
         stats.setBlocksBroken(0);
         stats.setBlocksPlaced(0);
         stats.setDistanceWalked(0);
@@ -359,12 +359,14 @@ public class PlayerDataManager {
 
     public void playerLogout(PlayerRef playerRef) {
         String username = playerRef.getUsername();
+        UUID id = playerRef.getUuid();
         savePlayTime(username);
         savePlayerData(username, PROFILE_FILENAME, getOnlinePlayerProfile(username));
         savePlayerData(username, STATS_FILENAME, getOnlinePlayerStats(username));
 
         removePlayerStats(username);
         removePlayerProfile(username);
+        hytaleFoundations.getPlayerMovementListener().removePlayerFromCache(id);
     }
 
     // Management and getters
