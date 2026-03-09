@@ -120,9 +120,6 @@ public class ColorManager {
         if (text == null || text.isEmpty()) return Message.empty();
         Message finalMessage = Message.empty();
         int length = text.length();
-
-        // 1. Removed the default white injection here!
-        // appendSegment handles defaulting to white automatically.
         List<String> activeColors = new ArrayList<>(4);
         boolean isBold = false;
         boolean isItalic = false;
@@ -133,10 +130,8 @@ public class ColorManager {
 
         StringBuilder currentContent = new StringBuilder();
         StringBuilder unappliedCodes = new StringBuilder();
-
         for(int i = 0; i < length; i++) {
             char c = text.charAt(i);
-
             if (ignoreColors) {
                 if (c == ' ') {
                     ignoreColors = false;
@@ -150,7 +145,6 @@ public class ColorManager {
             }
             if(c == '&' && i+1 < length) {
                 String codeKey = "&" + text.charAt(i + 1);
-
                 if (codeKey.equals("&-")) {
                     if (hasValidCodeAfter(text, i + 2)) {
                         if(!currentContent.isEmpty()) {
@@ -165,7 +159,6 @@ public class ColorManager {
                 }
                 boolean isColor = colorMap.containsKey(codeKey);
                 boolean isSpecial = specialCodes.contains(codeKey);
-
                 if(isColor || isSpecial) {
                     if(!currentContent.isEmpty()) {
                         appendSegment(finalMessage, currentContent.toString(), activeColors, isBold, isItalic);
@@ -200,17 +193,9 @@ public class ColorManager {
             textAppendedSinceLastColor = true;
         }
 
-        if (!hasActualText) {
-            return Message.raw(text).color(DefaultColors.WHITE.getHex());
-        }
-
-        if (!unappliedCodes.isEmpty()) {
-            currentContent.append(unappliedCodes);
-        }
-
-        if (!currentContent.isEmpty()) {
-            appendSegment(finalMessage, currentContent.toString(), activeColors, isBold, isItalic);
-        }
+        if (!hasActualText) return Message.raw(text).color(DefaultColors.WHITE.getHex());
+        if (!unappliedCodes.isEmpty()) currentContent.append(unappliedCodes);
+        if (!currentContent.isEmpty()) appendSegment(finalMessage, currentContent.toString(), activeColors, isBold, isItalic);
 
         return finalMessage;
     }
