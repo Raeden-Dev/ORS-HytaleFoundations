@@ -45,7 +45,7 @@ public class PlayerChatListener {
             for(PlayerRef players : Universe.get().getPlayers()) {
                 players.sendMessage(finalMessage);
             }
-            chatManager.addMessageToLog(e.getContent());
+            chatManager.addMessageToLog(e.getSender().getUsername() + ": " + e.getContent());
         }
 
         stats.increaseMessageSent();

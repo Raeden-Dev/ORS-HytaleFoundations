@@ -266,7 +266,7 @@ public class PlayerDataManager {
         profile.addUsername(username);
         profile.setLanguage("en-us");
         profile.setNickname("");
-        profile.setUsernameColorCode("#FFFFFF");
+        profile.setUsernameColorCode("&f");
         profile.setShowNickname(chatConfig.isShowNickname());
         profile.setShowPrefix(chatConfig.isShowPrefix());
         profile.setShowSuffix(chatConfig.isShowSuffix());
@@ -371,10 +371,10 @@ public class PlayerDataManager {
 
     // Management and getters
     public boolean doesPlayerExist(String username) {
-        return (findPlayerByName(username) != null) && doesPlayerDataExist(username);
+        return (findPlayerByName(username) != null) || doesPlayerDataExist(username);
     }
     public boolean doesPlayerDataExist(String username) {
-        File playerDataFile = playerDataPath.resolve(username).toFile();
+        File playerDataFile = playerDataPath.resolve(username + ".json").toFile();
         return playerDataFile.exists();
     }
 

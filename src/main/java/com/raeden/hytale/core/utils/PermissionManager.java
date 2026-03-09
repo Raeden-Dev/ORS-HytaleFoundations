@@ -65,6 +65,7 @@ public class PermissionManager {
     public void loadPermissions() {
         Type type = new TypeToken<PermissionFile>(){}.getType();
         PermissionFile loadedPermissionFile = loadJsonFile(permissionFileName, permissionFilePath, type, true);
+
         if(loadedPermissionFile != null && loadedPermissionFile.getPermissions() != null) {
             int newPermissions = 0;
             for(Map.Entry<String, String> permission : loadedPermissionFile.getPermissions().entrySet()) {
@@ -73,28 +74,33 @@ public class PermissionManager {
                 }
                 permissionMap.put(permission.getKey(), permission.getValue());
             }
+
             int newPermissionGroups = 0;
             int updatedPermissionGroups = 0;
+
             for(Map.Entry<String, Set<String>> permissionGroup : loadedPermissionFile.getPermissionGroups().entrySet()) {
-                Set<String> perms = new HashSet<>();
-                boolean needUpdate = false;
-                if(!permissionGroupMap.containsKey(permissionGroup.getKey())) {
+                String groupName = permissionGroup.getKey();
+                Set<String> loadedPerms = permissionGroup.getValue();
+
+                if(!permissionGroupMap.containsKey(groupName)) {
                     newPermissionGroups++;
+                    permissionGroupMap.put(groupName, new HashSet<>(loadedPerms));
                 } else {
-                    perms = permissionGroupMap.get(permissionGroup.getKey());
-                }
-                if(!perms.isEmpty() && !permissionGroup.getValue().isEmpty()) {
-                    int oldSize = perms.size();
-                    perms.addAll(permissionGroup.getValue());
-                    if(perms.size() != oldSize) {
+                    Set<String> existingPerms = permissionGroupMap.get(groupName);
+                    Set<String> mergedPerms = new HashSet<>(existingPerms);
+                    int oldSize = mergedPerms.size();
+                    mergedPerms.addAll(loadedPerms);
+                    if(mergedPerms.size() != oldSize) {
                         updatedPermissionGroups++;
                     }
+                    permissionGroupMap.put(groupName, mergedPerms);
                 }
-                permissionGroupMap.put(permissionGroup.getKey(), permissionGroup.getValue());
             }
+
             if (newPermissions > 0)  myLogger.atInfo().log(LM.getConsoleMessage(LangKey.LOAD_SUCCESS, newPermissions + " permission(s)").getAnsiMessage());
             if (newPermissionGroups > 0)  myLogger.atInfo().log(LM.getConsoleMessage(LangKey.LOAD_SUCCESS, newPermissionGroups + " permission group(s)").getAnsiMessage());
-            if(updatedPermissionGroups > 0) myLogger.atInfo().log(LM.getConsoleMessage(LangKey.LOAD_SUCCESS, updatedPermissionGroups + " permission group(s) updated").getAnsiMessage());
+            if (updatedPermissionGroups > 0) myLogger.atInfo().log(LM.getConsoleMessage(LangKey.LOAD_SUCCESS, updatedPermissionGroups + " permission group(s) updated").getAnsiMessage());
+
             permissionFile = loadedPermissionFile;
         } else {
             saveDefaultPermissionFile();

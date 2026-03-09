@@ -24,7 +24,6 @@ import static com.raeden.hytale.utils.FileManager.createDirectory;
 import static com.raeden.hytale.utils.FileManager.logError;
 
 public class ChatManager {
-    private final HytaleFoundations hytaleFoundations;
     private final AffixManager affixManager;
     private final Scheduler scheduler;
     private final ColorManager colorManager;
@@ -36,7 +35,6 @@ public class ChatManager {
     private final Path chatLogDir;
 
     public ChatManager(HytaleFoundations hytaleFoundations, Scheduler scheduler) {
-        this.hytaleFoundations = hytaleFoundations;
         this.scheduler = scheduler;
 
         affixManager = new AffixManager(hytaleFoundations);
@@ -65,7 +63,7 @@ public class ChatManager {
         if (chatConfig.isShowNickname() && profile.isShowNickname() && !profile.getNickname().isEmpty()) {
             displayName = profile.getNickname();
         } else {
-            if(colorManager.isColorCodeAvailable(profile.getUsernameColorCode())) {
+            if(colorManager.validateUsernameDisplayColor(profile.getUsername().getLast(), profile.getUsernameColorCode())) {
                 displayName = profile.getUsernameColorCode() + username;
             }
         }
@@ -96,7 +94,7 @@ public class ChatManager {
     private void createChatSaveScheduler() {
         scheduler.runTaskTimer("chatSaveScheduler", () -> {
                 if(messageLog.isEmpty()) return;
-                exportChatLog();
+                    exportChatLog();
                 },
                 chatConfig.getChatLogSaveInterval(),
                 chatConfig.getChatLogSaveInterval(),

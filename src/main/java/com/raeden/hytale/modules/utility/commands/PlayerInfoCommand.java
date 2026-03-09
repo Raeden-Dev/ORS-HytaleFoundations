@@ -87,10 +87,12 @@ public class PlayerInfoCommand extends AbstractPlayerCommand {
         Map<String, String> profileInfo = new LinkedHashMap<>();
         profileInfo.put("&e&lUsername(s): &r&f" + String.join(", ", profile.getUsername()), "Player");
         profileInfo.put("&b&lUUID: &r&f" + profile.getUuid(), "Admin");
-        profileInfo.put("&e&lRank: &r&f" + (profile.getRankId() != null ? hytaleFoundations.getRankManager().getRankDisplay(profile.getRankId()) : "None"), "Player");
+        profileInfo.put("&e&lRank: " + (profile.getRankId() == null || profile.getRankId().isEmpty() ? "&r&f&oNone": " &r&f")
+                + (profile.getRankId() != null ? hytaleFoundations.getRankManager().getRankDisplay(profile.getRankId()) : "None"), "Player");
         profileInfo.put("&b&lLanguage: &r&f" + (profile.getLanguage() != null ? profile.getLanguage() : "Default"), "Admin");
-        profileInfo.put("&e&lNickname: &r&f" + (profile.getNickname() != null ? profile.getNickname() : "None"), "Player");
-        profileInfo.put("&b&lName Color Code: &r&f" + (profile.getUsernameColorCode() != null ? profile.getUsernameColorCode() : "Default"), "Admin");
+        profileInfo.put("&e&lNickname: " + (profile.getNickname() != null  && !profile.getNickname().isEmpty() ? profile.getNickname() : "&r&f&oNone"), "Player");
+        profileInfo.put("&b&lName Color Code: " + (profile.getUsernameColorCode() == null || profile.getUsernameColorCode().isEmpty() ? "": "&r&-")
+                + (profile.getUsernameColorCode() != null ? profile.getUsernameColorCode() : "Default"), "Admin");
         profileInfo.put("&e&lActive Prefixes: &r&f" + profile.getActivePrefix().size() + " / " + profile.getMaxPrefix(), "Player");
         profileInfo.put("&e&lActive Suffixes: &r&f" + profile.getActiveSuffix().size() + " / " + profile.getMaxSuffix(), "Player");
         profileInfo.put("&b&lShow Nickname: &r&f" + profile.isShowNickname(), "Admin");

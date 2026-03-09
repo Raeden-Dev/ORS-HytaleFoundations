@@ -62,12 +62,10 @@ public class CoreCommand extends AbstractCommandCollection {
                     "&72. &r&e&l/hf debug &r&a: Toggles debug mode",
                     "&73. &r&e&l/hf reload &r&a: Reloads all HF configs.",
                     "&74. &r&e&l/hf reload <name> &r&a: Reloads a specific HF config.",
-                    "&75. &r&e&l/hf save playerdata &r&a: Saves data of all online players.",
+                    "&75. &r&e&l/hf playerdata save <target>|saveall|reload <target>|reloadall &r&a: Saves data of all online players.",
                     "&76. &r&e&l/hf colors &r&a: Shows all available color codes."
             ));
-            if(hytaleFoundations.getConfigManager().getDefaultConfig().isToggleDebug()) {
-                messageToSendPlayer.add("&75. &r&e&l/hf save playerdata &r&a: Saves data of all online players.");
-            }
+
             for(String msg : messageToSendPlayer) {
                 if(commandContext.isPlayer()) {
                     commandContext.sender().sendMessage(hytaleFoundations.getChatManager().getColorEngine().parseText(msg));
@@ -179,7 +177,7 @@ public class CoreCommand extends AbstractCommandCollection {
             @Override
             protected CompletableFuture<Void> executeAsync(@Nonnull CommandContext commandContext) {
                 try {
-                    if(hytaleFoundations.getPlayerDataManager().doesPlayerExist(commandContext.get(this.targetPlayer))) {
+                    if(!hytaleFoundations.getPlayerDataManager().doesPlayerExist(commandContext.get(this.targetPlayer))) {
                         if(commandContext.isPlayer()) commandContext.sender().sendMessage(LM.getPlayerMessage(commandContext.sender().getDisplayName(), LangKey.PLAYER_NOT_FOUND_MSG, commandContext.get(this.targetPlayer)));
                         else commandContext.sender().sendMessage(LM.getConsoleMessage(LangKey.PLAYER_NOT_FOUND, commandContext.get(this.targetPlayer)));
                         return CompletableFuture.completedFuture(null);
@@ -239,7 +237,7 @@ public class CoreCommand extends AbstractCommandCollection {
             @Override
             protected CompletableFuture<Void> executeAsync(@Nonnull CommandContext commandContext) {
                 try {
-                    if(hytaleFoundations.getPlayerDataManager().doesPlayerExist(commandContext.get(this.targetPlayer))) {
+                    if(!hytaleFoundations.getPlayerDataManager().doesPlayerExist(commandContext.get(this.targetPlayer))) {
                         if(commandContext.isPlayer()) commandContext.sender().sendMessage(LM.getPlayerMessage(commandContext.sender().getDisplayName(), LangKey.PLAYER_NOT_FOUND_MSG, commandContext.get(this.targetPlayer)));
                         else commandContext.sender().sendMessage(LM.getConsoleMessage(LangKey.PLAYER_NOT_FOUND, commandContext.get(this.targetPlayer)));
                         return CompletableFuture.completedFuture(null);

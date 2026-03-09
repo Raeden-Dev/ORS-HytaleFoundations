@@ -11,6 +11,8 @@ public class ChatConfig {
     @SerializedName("SHOW_CHAT_MSG_PREFIX")
     private boolean showChatMsgPrefix;
 
+    @SerializedName("GRADIENT_CHUNK_SIZE")
+    private int gradientChunkSize;
     @SerializedName("SHOW_NICKNAME")
     private boolean showNickname;
     @SerializedName("SHOW_PREFIX")
@@ -90,4 +92,7 @@ public class ChatConfig {
 
     public boolean isShowChatMsgPrefix() { return showChatMsgPrefix; }
     public void setShowChatMsgPrefix(boolean showChatMsgPrefix) { this.showChatMsgPrefix = showChatMsgPrefix; }
+
+    public int getGradientChunkSize() {return gradientChunkSize;}
+    public void setGradientChunkSize(int gradientChunkSize) {this.gradientChunkSize = gradientChunkSize;}
 }

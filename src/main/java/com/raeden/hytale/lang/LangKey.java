@@ -7,6 +7,7 @@ public enum LangKey {
     MISMATCH_FOUND          ("system.error.mismatch",               "&c&lMismatch found for {0}"),
     INVALID_TIME_FORMAT     ("system.error.invalid_time",           "Time format is incorrect! Correct format: (d|h|m|s eg. 1d8h5m33s)"),
     INVALID_COLOR_FORMAT    ("system.error.invalid_color",          "Skipping invalid color format. Code: {0} | Hex: {1}"),
+    INVALID_DISPLAY_COLOR   ("system.error.invalid_display_color",  "Found invalid color code in username color code of player {0}"),
     SCHEDULER_CREATED       ("system.scheduler.create",             "Created scheduler {0} called by {1}"),
     RELOAD_SUCCESS          ("system.plugin.reload_success",        "&a&lSuccessfully reloaded {0}!"),
     RELOAD_FAILURE          ("system.plugin.reload_failure",        "&c&lFailed to reload {0}!"),
