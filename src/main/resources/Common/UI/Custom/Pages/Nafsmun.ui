@@ -1,0 +1,69 @@
+$C = "../Common.ui";
+
+@PrimaryButtonStyle = TextButtonStyle(
+  Default: (Background: #3a7bd5, LabelStyle: (FontSize: 14, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
+  Hovered: (Background: #4a8be5, LabelStyle: (FontSize: 14, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
+  Pressed: (Background: #2a6bc5, LabelStyle: (FontSize: 14, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center))
+);
+
+$C.@PageOverlay {
+  $C.@Container {
+    Anchor: (Width: 600, Height: 540);
+    Padding: (Full: 20);
+    #Title {
+      Group {
+        $C.@Title {
+          @Text = "NAFSMUN";
+        }
+      }
+    }
+    #Content {
+      LayoutMode: CenterMiddle;
+      Group #Main {
+        LayoutMode: CenterMiddle;
+        Label #ToLabel {
+          Style: (
+            FontSize: 18,
+            TextColor:#b4c8c9,
+            RenderBold: true
+          );
+          Text: "NAFSMUN MESSAGE";
+        }
+        Group {Anchor: (Height: 10);}
+        Group {Anchor: (Height: 3);Background: #2b3542;}
+        Group {Anchor: (Height: 10);}
+        Label #MessageLabel {
+          Style: (
+            FontSize: 14,
+            TextColor:#b4c8c9,
+            RenderBold: true
+          );
+          Anchor: (Height: 10);
+          Text: "Message:";
+        }
+        Group {Anchor: (Height: 15);}
+        MultilineTextField #MessageInput {
+          Anchor: (Height: 100);
+          PlaceholderText: "Write your message here...";
+          PlaceholderStyle: (TextColor: #6e7da1);
+          MaxLines: 32;
+          OutlineColor: #424a5e;
+          OutlineSize: 2;
+          Background: #263047;
+          Padding: 10;
+          ScrollbarStyle: (
+            Spacing: 6,
+            Size: 6
+          );
+        }
+        TextButton #SendButton {
+          Text: "SEND";
+          Anchor: (Width: 130, Height: 36);
+          Style: @PrimaryButtonStyle;
+        }
+      }
+    }
+  }
+}
+
+

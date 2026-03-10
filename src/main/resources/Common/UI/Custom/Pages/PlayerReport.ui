@@ -1,0 +1,143 @@
+$C = "../Common.ui";
+
+@PrimaryButtonStyle = TextButtonStyle(
+  Default: (Background: #3a7bd5, LabelStyle: (FontSize: 14, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
+  Hovered: (Background: #4a8be5, LabelStyle: (FontSize: 14, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
+  Pressed: (Background: #2a6bc5, LabelStyle: (FontSize: 14, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center))
+);
+
+@SecondaryBtnStyle = TextButtonStyle(
+  Default: (Background: #2b3542, LabelStyle: (FontSize: 14, TextColor: #96a9be, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
+  Hovered: (Background: #3b4552, LabelStyle: (FontSize: 14, TextColor: #b6c9de, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
+  Pressed: (Background: #1b2532, LabelStyle: (FontSize: 14, TextColor: #96a9be, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center))
+);
+
+$C.@PageOverlay {
+  $C.@Container {
+    Anchor: (Width: 600, Height: 680);
+    Padding: (Full: 20);
+    #Title {
+      Group {
+        $C.@Title {
+          @Text = "Report Player";
+        }
+      }
+    }
+    #Content {
+      LayoutMode: Top;
+      Group #Main {
+        LayoutMode: Top;
+
+
+        Label #PlayerNameLabel {
+          Style: (FontSize: 14, TextColor:#b4c8c9, RenderBold: true);
+          Anchor: (Height: 10);
+          Text: "Player name:";
+        }
+        Group {Anchor: (Height: 15);}
+        $C.@TextField #PlayerNameInput {
+          Anchor: (Height: 40);
+          PlaceholderText: "Enter the player's name...";
+        }
+        Group {Anchor: (Height: 10);}
+        Group {Anchor: (Height: 3); Background: #2b3542;}
+        Group {Anchor: (Height: 10);}
+
+
+        Label #DateLabel {
+          Style: (FontSize: 14, TextColor:#b4c8c9, RenderBold: true);
+          Anchor: (Height: 10);
+          Text: "Date of Offense:";
+        }
+        Group {Anchor: (Height: 15);}
+        Group #DateRow {
+          LayoutMode: Left;
+          Anchor: (Height: 40);
+          $C.@TextField #DateInput {
+            FlexWeight: 1;
+            PlaceholderText: "YYYY-MM-DD";
+          }
+          Group {Anchor: (Width: 10);}
+          TextButton #TodayButton {
+            Text: "Today";
+            Anchor: (Width: 80, Height: 40);
+            Style: @SecondaryBtnStyle;
+          }
+          Group {Anchor: (Width: 10);}
+          TextButton #ForgotButton {
+            Text: "Forgot";
+            Anchor: (Width: 80, Height: 40);
+            Style: @SecondaryBtnStyle;
+          }
+        }
+        Group {Anchor: (Height: 10);}
+        Group {Anchor: (Height: 3); Background: #2b3542;}
+        Group {Anchor: (Height: 10);}
+
+
+        Label #OffenseTypeLabel {
+          Style: (FontSize: 14, TextColor:#b4c8c9, RenderBold: true);
+          Anchor: (Height: 10);
+          Text: "Offense Type:";
+        }
+        Group {Anchor: (Height: 15);}
+        $C.@DropdownBox #OffenseTypeDropdown {
+          Anchor: (Height: 40);
+          Value: "HACKING";
+
+          DropdownEntry { Value: "HACKING"; Text: "HACKING"; }
+          DropdownEntry { Value: "TOXIC_BEHAVIOUR"; Text: "TOXIC BEHAVIOUR"; }
+          DropdownEntry { Value: "BUG_ABUSE"; Text: "BUG ABUSE"; }
+          DropdownEntry { Value: "SPAMMING"; Text: "SPAMMING"; }
+          DropdownEntry { Value: "OTHER"; Text: "OTHER"; }
+        }
+        Group {Anchor: (Height: 10);}
+        Group {Anchor: (Height: 3); Background: #2b3542;}
+        Group {Anchor: (Height: 10);}
+
+
+        Label #DescriptionLabel {
+          Style: (FontSize: 14, TextColor:#b4c8c9, RenderBold: true);
+          Anchor: (Height: 10);
+          Text: "Description:";
+        }
+        Group {Anchor: (Height: 15);}
+        MultilineTextField #DescriptionInput {
+          Anchor: (Height: 180);
+          PlaceholderText: "Describe the incident as much as you can";
+          PlaceholderStyle: (TextColor: #6e7da1);
+          MaxLines: 30;
+          OutlineColor: #424a5e;
+          OutlineSize: 2;
+          Background: #263047;
+          Padding: 10;
+          ScrollbarStyle: (Spacing: 6, Size: 6);
+        }
+        Group {Anchor: (Height: 20);}
+
+
+        Group #BottomButtons {
+          LayoutMode: Left;
+          Anchor: (Height: 40);
+
+          Group {
+            FlexWeight: 1;
+          }
+
+          TextButton #ReportButton {
+            Text: "REPORT";
+            Anchor: (Width: 130, Height: 36);
+            Style: @PrimaryButtonStyle;
+          }
+          Group {Anchor: (Width: 10);}
+          TextButton #CancelButton {
+            Text: "CANCEL";
+            Anchor: (Width: 130, Height: 36);
+            Style: @SecondaryBtnStyle;
+          }
+        }
+
+      }
+    }
+  }
+}

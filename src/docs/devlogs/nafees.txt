@@ -39,7 +39,7 @@ Example of how to write a devlog:
 
 
 =========
-24/01/26:
+'26:
 =========
 ** Context: Working on the /title, /playtime, /anvil
 ** Goal: to get these features up and running
@@ -61,3 +61,7 @@ Example of how to write a devlog:
 >Implemented the /anvil command with player-type validation and native UI triggers to provide portable anvil access via the essentials.command.anvil permission.
 
 >failed to fix some tiny bugs which Sir Sakib shall look and fix kindly record while doing so.
+
+>made my own UI & successfully ran it
+
+>working on new UIs

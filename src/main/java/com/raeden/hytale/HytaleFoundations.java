@@ -30,6 +30,7 @@ import com.raeden.hytale.modules.mail.MailManager;
 import com.raeden.hytale.modules.chat.commands.*;
 import com.raeden.hytale.modules.chat.events.PlayerChatListener;
 import com.raeden.hytale.modules.mail.commands.MailCommand;
+import com.raeden.hytale.modules.mail.commands.NafsmunCommand;
 import com.raeden.hytale.modules.rank.RankManager;
 import com.raeden.hytale.modules.rank.commands.RankCommand;
 import com.raeden.hytale.modules.utility.commands.*;
@@ -149,6 +150,7 @@ public class HytaleFoundations extends JavaPlugin {
             this.getCommandRegistry().registerCommand(new AffixCommand(this));
             this.getCommandRegistry().registerCommand(new PrefixCommand(this));
             this.getCommandRegistry().registerCommand(new SuffixCommand(this));
+            this.getCommandRegistry().registerCommand(new NafsmunCommand());
         }
         // Admin UI
         if(configManager.getDefaultConfig().isToggleHomesModule()) {
