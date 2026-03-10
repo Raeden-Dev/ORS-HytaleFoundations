@@ -1,4 +1,4 @@
-package com.raeden.hytale.lang;
+package com.raeden.hytale.core.lang;
 
 public enum LangKey {
     // Core System (PLayer Message)

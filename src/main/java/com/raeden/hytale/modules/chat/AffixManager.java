@@ -6,7 +6,7 @@ import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.raeden.hytale.HytaleFoundations;
 import com.raeden.hytale.core.player.PlayerDataManager;
 import com.raeden.hytale.core.player.PlayerProfile;
-import com.raeden.hytale.lang.LangKey;
+import com.raeden.hytale.core.lang.LangKey;
 
 import java.lang.reflect.Type;
 import java.nio.file.Files;

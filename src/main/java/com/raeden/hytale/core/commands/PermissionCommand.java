@@ -16,7 +16,7 @@ import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import com.raeden.hytale.HytaleFoundations;
 import com.raeden.hytale.core.utils.PermissionManager;
 import com.raeden.hytale.core.utils.Permissions;
-import com.raeden.hytale.lang.LangKey;
+import com.raeden.hytale.core.lang.LangKey;
 
 import javax.annotation.Nonnull;
 import java.util.*;

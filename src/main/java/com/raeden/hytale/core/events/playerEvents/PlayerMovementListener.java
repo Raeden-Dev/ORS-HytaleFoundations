@@ -24,7 +24,7 @@ public class PlayerMovementListener {
     }
 
     private void createMovementScheduler() {
-        final double minimumDistance = 0.0025;
+        final double minimumDistance = 1.0;
         final double maximumDistance = 2500.0;
         scheduler.runTaskTimer("MovementTracker", () -> {
             Universe universe = Universe.get();

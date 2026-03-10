@@ -7,7 +7,7 @@ import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.Universe;
 import com.raeden.hytale.HytaleFoundations;
 import com.raeden.hytale.core.config.containers.ChatConfig;
-import com.raeden.hytale.lang.LangKey;
+import com.raeden.hytale.core.lang.LangKey;
 
 import java.io.File;
 import java.io.IOException;

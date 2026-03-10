@@ -7,7 +7,7 @@ import com.hypixel.hytale.server.core.universe.Universe;
 import com.raeden.hytale.HytaleFoundations;
 import com.raeden.hytale.core.player.PlayerProfile;
 import com.raeden.hytale.core.player.PlayerStats;
-import com.raeden.hytale.lang.LangKey;
+import com.raeden.hytale.core.lang.LangKey;
 import com.raeden.hytale.modules.chat.ChatManager;
 import com.raeden.hytale.modules.chat.ColorManager;
 import com.raeden.hytale.utils.TimeUtils;

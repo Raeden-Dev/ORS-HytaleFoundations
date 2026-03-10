@@ -14,7 +14,7 @@ import com.raeden.hytale.core.config.ConfigManager;
 import com.raeden.hytale.core.events.playerEvents.*;
 import com.raeden.hytale.core.player.PlayerDataManager;
 import com.raeden.hytale.core.utils.PermissionManager;
-import com.raeden.hytale.lang.LangManager;
+import com.raeden.hytale.core.lang.LangManager;
 import com.raeden.hytale.modules.admin.commands.AnnounceCommand;
 import com.raeden.hytale.modules.admin.commands.TitleCommand;
 import com.raeden.hytale.modules.admin.commands.VanishCommand;

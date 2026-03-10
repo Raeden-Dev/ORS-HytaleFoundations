@@ -8,7 +8,7 @@ import com.hypixel.hytale.server.core.util.NotificationUtil;
 import com.raeden.hytale.HytaleFoundations;
 import com.raeden.hytale.core.player.PlayerDataManager;
 import com.raeden.hytale.core.player.PlayerMailbox;
-import com.raeden.hytale.lang.LangKey;
+import com.raeden.hytale.core.lang.LangKey;
 
 import java.util.List;
 

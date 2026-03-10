@@ -13,7 +13,7 @@ import com.raeden.hytale.HytaleFoundations;
 import com.raeden.hytale.core.player.PlayerDataManager;
 import com.raeden.hytale.core.player.PlayerProfile;
 import com.raeden.hytale.core.utils.Permissions;
-import com.raeden.hytale.lang.LangKey;
+import com.raeden.hytale.core.lang.LangKey;
 import javax.annotation.Nonnull;
 import static com.raeden.hytale.HytaleFoundations.LM;
 import static com.raeden.hytale.utils.GeneralUtils.findPlayerByName;

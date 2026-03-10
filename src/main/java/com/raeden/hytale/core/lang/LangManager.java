@@ -1,4 +1,4 @@
-package com.raeden.hytale.lang;
+package com.raeden.hytale.core.lang;
 
 import com.hypixel.hytale.server.core.Message;
 import com.hypixel.hytale.server.core.universe.PlayerRef;

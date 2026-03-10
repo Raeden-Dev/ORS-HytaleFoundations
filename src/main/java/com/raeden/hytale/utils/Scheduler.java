@@ -1,7 +1,7 @@
 package com.raeden.hytale.utils;
 
 import com.raeden.hytale.HytaleFoundations;
-import com.raeden.hytale.lang.LangKey;
+import com.raeden.hytale.core.lang.LangKey;
 
 import java.util.Map;
 import java.util.concurrent.*;
