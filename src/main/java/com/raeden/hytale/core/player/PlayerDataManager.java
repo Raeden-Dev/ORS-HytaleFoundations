@@ -4,9 +4,10 @@ import com.google.gson.reflect.TypeToken;
 import com.hypixel.hytale.server.core.Message;
 import com.hypixel.hytale.server.core.entity.entities.Player;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
+import com.hypixel.hytale.server.core.universe.Universe;
 import com.raeden.hytale.HytaleFoundations;
 import com.raeden.hytale.core.config.containers.ChatConfig;
-import com.raeden.hytale.lang.LangKey;
+import com.raeden.hytale.core.lang.LangKey;
 
 import java.io.File;
 import java.io.IOException;
@@ -18,8 +19,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import static com.raeden.hytale.HytaleFoundations.*;
 import static com.raeden.hytale.utils.FileManager.*;
-import static com.raeden.hytale.utils.GeneralUtils.findPlayerByName;
-import static com.raeden.hytale.utils.GeneralUtils.getPlayerUUID;
+import static com.raeden.hytale.utils.GeneralUtils.*;
 
 public class PlayerDataManager {
     private final HytaleFoundations hytaleFoundations;
@@ -42,12 +42,8 @@ public class PlayerDataManager {
 
         playerProfiles = new ConcurrentHashMap<>();
         playerStats = new ConcurrentHashMap<>();
-        verifyDataPath();
-        createUserMap();
-    }
-
-    private void verifyDataPath() {
         createDirectory(playerDataPath, true);
+        createUserMap();
     }
 
     // User Map
@@ -72,7 +68,8 @@ public class PlayerDataManager {
         users.put(id, username);
 
         Path userMapPath = playerDataPath.resolve(USERMAP_FILENAME);
-        saveJsonFile(USERMAP_FILENAME, userMapPath, users, true);
+        myLogger.atInfo().log(LM.getConsoleMessage(LangKey.UPDATE_SUCCESS, USERMAP_FILENAME).getAnsiMessage());
+        saveJsonFile(USERMAP_FILENAME, userMapPath, users, false);
 
         if (oldUsername != null && !oldUsername.equals(username)) {
             Path oldDataPath = playerDataPath.resolve(oldUsername);
@@ -81,7 +78,7 @@ public class PlayerDataManager {
                 try {
                     Files.move(oldDataPath, newDataPath);
                 } catch (IOException e) {
-                    myLogger.atSevere().log(e.getMessage());
+                    logError(ERROR_LOG_DIRECTORY, "updateUserMap", e);
                 }
             }
         }
@@ -97,7 +94,7 @@ public class PlayerDataManager {
         for(Map.Entry<UUID, String> entry : users.entrySet()) {
             if(playerID.equals(entry.getKey())) {
                 if(!entry.getValue().equals(username)) {
-                    myLogger.atWarning().log(LM.getMessage(LangKey.MISMATCH_FOUND, true, USERMAP_FILENAME + " |" + playerID + ", " + entry.getValue() + "[EXPECTED: " + username + "]").getAnsiMessage());
+                    myLogger.atWarning().log(LM.getConsoleMessage(LangKey.MISMATCH_FOUND, USERMAP_FILENAME + " |" + playerID + ", " + entry.getValue() + "[EXPECTED: " + username + "]").getAnsiMessage());
                     mismatch = true;
                     break;
                 }
@@ -106,10 +103,43 @@ public class PlayerDataManager {
         }
         if(mismatch) updateUserMap(playerID, username);
     }
+
+    // Saving, Loading and Creating Player Data
+    public void saveAllPlayerData() {
+        Universe universe = Universe.get();
+        for(PlayerRef player : universe.getPlayers()) {
+            verifyUserID(player.getUsername());
+            savePlayerData(player.getUsername(), PROFILE_FILENAME, getOnlinePlayerProfile(player.getUsername()), false);
+            savePlayerData(player.getUsername(), STATS_FILENAME, getOnlinePlayerStats(player.getUsername()), false);
+            // Mailbox and History aren't needed often
+            myLogger.atInfo().log(LM.getConsoleMessage(LangKey.SAVE_PD_SUCCESS, player.getUsername()).getAnsiMessage());
+        }
+    }
+    public void saveTargetPlayerData(String targetUsername) {
+        verifyUserID(targetUsername);
+        if(!isPlayerOnline(targetUsername)) return;
+        savePlayerData(targetUsername, PROFILE_FILENAME, getOnlinePlayerProfile(targetUsername), false);
+        savePlayerData(targetUsername, STATS_FILENAME, getOnlinePlayerStats(targetUsername), false);
+        myLogger.atInfo().log(LM.getConsoleMessage(LangKey.SAVE_PD_SUCCESS, targetUsername).getAnsiMessage());
+    }
+    public void reloadAllPlayerData() {
+        Universe universe = Universe.get();
+        for(PlayerRef player : universe.getPlayers()) {
+            verifyUserID(player.getUsername());
+            loadPlayerData(player.getUsername());
+            myLogger.atInfo().log(LM.getConsoleMessage(LangKey.RELOAD_PLAYER_DATA, player.getUsername()).getAnsiMessage());
+        }
+    }
+    public void reloadTargetPlayerData(String targetUsername) {
+        verifyUserID(targetUsername);
+        if(!isPlayerOnline(targetUsername)) return;
+        loadPlayerData(targetUsername);
+        myLogger.atInfo().log(LM.getConsoleMessage(LangKey.RELOAD_PLAYER_DATA, targetUsername).getAnsiMessage());
+    }
+
     public <T> void savePlayerData(String username, String jsonName, T data) {
         savePlayerData(username, jsonName, data, true);
     }
-    // Saving, Loading and Creating Player Data
     public <T> void savePlayerData(String username, String jsonName, T data, boolean showInfo) {
         if (!jsonName.endsWith(".json")) {
             jsonName += ".json";
@@ -121,13 +151,31 @@ public class PlayerDataManager {
             }
         } catch (IOException e) {
             logError("PlayerDataManager-SavePlayerData", e);
-            myLogger.atSevere().log(LM.getMessage(LangKey.CREATE_FAILURE,true, "player directory").getAnsiMessage());
+            myLogger.atSevere().log(LM.getConsoleMessage(LangKey.CREATE_FAILURE,"player directory").getAnsiMessage());
             return;
         }
         Path savePath = playerFolder.resolve(jsonName);
         saveJsonFile(jsonName, savePath, data, showInfo);
     }
     // Getting data online or offline
+    public UUID getPlayerUUID(String targetUsername) {
+        return getPlayerUUID(null, targetUsername);
+    }
+    public UUID getPlayerUUID(PlayerRef sender, String targetUsername) {
+        UUID targetUUID;
+        PlayerRef targetRef = findPlayerByName(targetUsername);
+        if(targetRef == null) {
+            PlayerProfile profile = hytaleFoundations.getPlayerDataManager().getPlayerProfile(targetUsername);
+            if(profile == null) {
+                if(sender != null) sender.sendMessage(LM.getPlayerMessage(sender.getUsername(), LangKey.PLAYER_NOT_FOUND_MSG, targetUsername));
+                return null;
+            }
+            targetUUID = profile.getUuid();
+        } else {
+            targetUUID = targetRef.getUuid();
+        }
+        return targetUUID;
+    }
     public PlayerProfile getPlayerProfile(String username) {
         PlayerRef ref = findPlayerByName(username);
         if(ref != null) {
@@ -152,7 +200,7 @@ public class PlayerDataManager {
     public PlayerProfile getPlayerProfileFromFile(String username) {
         Path profileJsonPath = playerDataPath.resolve(username).resolve(PROFILE_FILENAME);
         if(!Files.exists(profileJsonPath)) {
-            myLogger.atSevere().log(LM.getMessage(LangKey.FILE_NOT_FOUND_LOC, true, profileJsonPath.getFileName().toString(), profileJsonPath.toString()).getAnsiMessage());
+            myLogger.atSevere().log(LM.getConsoleMessage(LangKey.FILE_NOT_FOUND_LOC, profileJsonPath.getFileName().toString(), profileJsonPath.toString()).getAnsiMessage());
             return null;
         }
         String fileName = PROFILE_FILENAME + ": " + username;
@@ -162,7 +210,7 @@ public class PlayerDataManager {
     public PlayerStats getPlayerStatsFromFile(String username) {
         Path statsJsonPath = playerDataPath.resolve(username).resolve(STATS_FILENAME);
         if(!Files.exists(statsJsonPath)) {
-            myLogger.atSevere().log(LM.getMessage(LangKey.FILE_NOT_FOUND_LOC, true, statsJsonPath.getFileName().toString(), statsJsonPath.toString()).getAnsiMessage());
+            myLogger.atSevere().log(LM.getConsoleMessage(LangKey.FILE_NOT_FOUND_LOC, statsJsonPath.getFileName().toString(), statsJsonPath.toString()).getAnsiMessage());
             return null;
         }
         String fileName = STATS_FILENAME + ": " + username;
@@ -172,7 +220,7 @@ public class PlayerDataManager {
     public PlayerHistory getPlayerHistory(String username) {
         Path historyJsonPath = playerDataPath.resolve(username).resolve(HISTORY_FILENAME);
         if(!Files.exists(historyJsonPath)) {
-            myLogger.atSevere().log(LM.getMessage(LangKey.FILE_NOT_FOUND_LOC, true, historyJsonPath.getFileName().toString(), historyJsonPath.toString()).getAnsiMessage());
+            myLogger.atSevere().log(LM.getConsoleMessage(LangKey.FILE_NOT_FOUND_LOC, historyJsonPath.getFileName().toString(), historyJsonPath.toString()).getAnsiMessage());
             return null;
         }
         String fileName = HISTORY_FILENAME + ": " + username;
@@ -183,7 +231,7 @@ public class PlayerDataManager {
         if(username == null) return null;
         Path mailJsonPath = playerDataPath.resolve(username).resolve(MAIL_FILENAME);
         if(!Files.exists(mailJsonPath)) {
-            myLogger.atSevere().log(LM.getMessage(LangKey.FILE_NOT_FOUND_LOC, true, mailJsonPath.getFileName().toString(), mailJsonPath.toString()).getAnsiMessage());
+            myLogger.atSevere().log(LM.getConsoleMessage(LangKey.FILE_NOT_FOUND_LOC, mailJsonPath.getFileName().toString(), mailJsonPath.toString()).getAnsiMessage());
             return null;
         }
         String fileName = MAIL_FILENAME + ": " + username;
@@ -211,14 +259,14 @@ public class PlayerDataManager {
     // Create generic profiles
     private PlayerProfile createPlayerProfile(PlayerRef playerRef) {
         String username = playerRef.getUsername();
-        UUID playerID = getPlayerUUID(playerRef);
+        UUID playerID = playerRef.getUuid();
 
         PlayerProfile profile = new PlayerProfile();
         profile.setUuid(playerID);
         profile.addUsername(username);
         profile.setLanguage("en-us");
         profile.setNickname("");
-        profile.setUsernameColorCode("#FFFFFF");
+        profile.setUsernameColorCode("&f");
         profile.setShowNickname(chatConfig.isShowNickname());
         profile.setShowPrefix(chatConfig.isShowPrefix());
         profile.setShowSuffix(chatConfig.isShowSuffix());
@@ -241,11 +289,12 @@ public class PlayerDataManager {
         stats.setFirstJoined(0);
         stats.setLastJoined(0);
         stats.setPlayTimeMillis(0);
+        stats.setCollectStats(true);
         stats.setTotalDeaths(0);
         stats.setPlayerKills(0);
         stats.setMobKills(0);
-        stats.setDamageGiven(0);
-        stats.setDamageTaken(0);
+        stats.setDamageGivenPve(0);
+        stats.setDamageTakenPve(0);
         stats.setBlocksBroken(0);
         stats.setBlocksPlaced(0);
         stats.setDistanceWalked(0);
@@ -259,7 +308,7 @@ public class PlayerDataManager {
 
     private void createDefaultPlayerData(PlayerRef playerRef) {
         if(playerRef == null) {
-            myLogger.atSevere().log(LM.getMessage(LangKey.CREATE_FAILURE,true, "player data!").getAnsiMessage());
+            myLogger.atSevere().log(LM.getConsoleMessage(LangKey.CREATE_FAILURE,"player data.").getAnsiMessage());
             return;
         }
 
@@ -310,28 +359,33 @@ public class PlayerDataManager {
 
     public void playerLogout(PlayerRef playerRef) {
         String username = playerRef.getUsername();
+        UUID id = playerRef.getUuid();
         savePlayTime(username);
         savePlayerData(username, PROFILE_FILENAME, getOnlinePlayerProfile(username));
         savePlayerData(username, STATS_FILENAME, getOnlinePlayerStats(username));
 
         removePlayerStats(username);
         removePlayerProfile(username);
+        hytaleFoundations.getPlayerMovementListener().removePlayerFromCache(id);
     }
 
     // Management and getters
+    public boolean doesPlayerExist(String username) {
+        return (findPlayerByName(username) != null) || doesPlayerDataExist(username);
+    }
     public boolean doesPlayerDataExist(String username) {
-        File playerDataFile = playerDataPath.resolve(username).toFile();
+        File playerDataFile = playerDataPath.resolve(username + ".json").toFile();
         return playerDataFile.exists();
     }
 
     public PlayerProfile getOnlinePlayerProfile(String username) { return playerProfiles.get(username);}
     public void addPlayerProfile(String username, PlayerProfile profile) {playerProfiles.put(username, profile);}
     public void removePlayerProfile(String username) { playerProfiles.remove(username);}
-    public Map<String, PlayerProfile> getPlayerProfiles(){return playerProfiles;}
+    public Map<String, PlayerProfile> getPlayerProfileMap(){return playerProfiles;}
 
     public PlayerStats getOnlinePlayerStats(String username) { return playerStats.get(username);}
     public void addPlayerStats(String username, PlayerStats stats) {playerStats.put(username, stats);}
     public void removePlayerStats(String username) { playerStats.remove(username);}
-    public Map<String, PlayerStats> getOnlinePlayerStats(){return playerStats;}
+    public Map<String, PlayerStats> getPlayerStatsMap(){return playerStats;}
 
 }

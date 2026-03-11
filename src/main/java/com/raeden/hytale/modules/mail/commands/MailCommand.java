@@ -8,6 +8,7 @@ import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.world.World;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import com.raeden.hytale.HytaleFoundations;
+import com.raeden.hytale.core.utils.Permissions;
 
 import javax.annotation.Nonnull;
 
@@ -17,6 +18,7 @@ public class MailCommand extends AbstractPlayerCommand {
     public MailCommand(HytaleFoundations hytaleFoundations) {
         super("mail", "All mail command context.");
         this.hytaleFoundations = hytaleFoundations;
+        this.requirePermission(Permissions.MAIL.getPermission());
         this.addSubCommand(new SendMailCommand(hytaleFoundations));
         this.addSubCommand(new QuickMailCommand(hytaleFoundations));
     }

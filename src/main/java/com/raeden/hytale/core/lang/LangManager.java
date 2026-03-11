@@ -1,10 +1,9 @@
-package com.raeden.hytale.lang;
+package com.raeden.hytale.core.lang;
 
 import com.hypixel.hytale.server.core.Message;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.raeden.hytale.HytaleFoundations;
 import com.raeden.hytale.core.player.PlayerProfile;
-import com.raeden.hytale.core.utils.PermissionManager;
 import com.raeden.hytale.modules.chat.ColorManager;
 import com.raeden.hytale.modules.chat.DefaultColors;
 
@@ -29,7 +28,8 @@ public class LangManager {
     private final String FILE_EXTENSION = ".lang";
     private final Path langDir;
     private final Map<String, Map<String, String>> langCache;
-    private final List<LangKey> prefixExclusionList = new ArrayList<>(List.of(LangKey.GENERAL_LIST_ITEM, LangKey.PM_FORMAT_SENDER, LangKey.PM_FORMAT_RECEIVER));
+    private final List<LangKey> prefixExclusionList = new ArrayList<>(List.of(LangKey.LIST_ITEM, LangKey.PM_FORMAT_SENDER, LangKey.PM_FORMAT_RECEIVER, LangKey.LIST_NUMBERED_ITEM,
+            LangKey.PLAYER_INFO_STATS, LangKey.PLAYER_INFO_PROFILE));
 
     public LangManager(HytaleFoundations hytaleFoundations) {
         this.hytaleFoundations = hytaleFoundations;
@@ -82,7 +82,7 @@ public class LangManager {
                 writer.newLine();
             }
 
-            myLogger.atInfo().log(getMessage(LangKey.CREATE_SUCCESS, path.getFileName().toString()).getAnsiMessage());
+            myLogger.atInfo().log(getConsoleMessage(LangKey.CREATE_SUCCESS, path.getFileName().toString()).getAnsiMessage());
 
         } catch (IOException e) {
             logError(path, "saveDefaultLangFile", e);
@@ -103,7 +103,7 @@ public class LangManager {
             langCache.put(langCode, langMap);
         }
 
-        myLogger.atInfo().log(getMessage(LangKey.LOAD_SUCCESS, true, langCache.size() + " languages").getAnsiMessage());
+        myLogger.atInfo().log(getConsoleMessage(LangKey.LOAD_SUCCESS, langCache.size() + " languages").getAnsiMessage());
     }
     private Map<String, String> loadLangFile(Path path) {
         Map<String, String> map = new ConcurrentHashMap<>();
@@ -128,9 +128,6 @@ public class LangManager {
 
     public Message getMessage(LangKey key, String... args) {
         return getMessage(null, key, false, args);
-    }
-    public Message getMessage(LangKey key, boolean isConsole, String... args) {
-        return getMessage(null, key, isConsole, args);
     }
     public Message getPlayerMessage(String username, LangKey key, String... args) {
         return getMessage(username, key, false, args);

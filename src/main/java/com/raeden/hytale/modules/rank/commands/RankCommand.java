@@ -12,7 +12,7 @@ import com.hypixel.hytale.server.core.universe.world.World;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import com.raeden.hytale.HytaleFoundations;
 import com.raeden.hytale.core.utils.Permissions;
-import com.raeden.hytale.lang.LangKey;
+import com.raeden.hytale.core.lang.LangKey;
 import com.raeden.hytale.modules.rank.RankManager;
 
 import javax.annotation.Nonnull;
@@ -33,27 +33,6 @@ public class RankCommand extends AbstractCommandCollection {
         this.addSubCommand(new RankDemoteCommand(hytaleFoundations));
         this.addSubCommand(new RankGroupCommands(hytaleFoundations));
     }
-    public static class RankSetCommand extends AbstractPlayerCommand {
-        private final HytaleFoundations hytaleFoundations;
-        private final RequiredArg<String> targetPlayer;
-        private final RequiredArg<String> rankId;
-        public RankSetCommand(HytaleFoundations hytaleFoundations) {
-            super("set", "Set the rank of a target player.");
-            this.requirePermission(Permissions.RANK_ADMIN.getPermission());
-            this.hytaleFoundations = hytaleFoundations;
-            targetPlayer = withRequiredArg("target", "Name of the target player.", ArgTypes.STRING);
-            rankId = withRequiredArg("rank ID", "ID of the rank that will be set.", ArgTypes.STRING);
-        }
-        @Override
-        protected void execute(@Nonnull CommandContext commandContext, @Nonnull Store<EntityStore> store, @Nonnull Ref<EntityStore> ref, @Nonnull PlayerRef playerRef, @Nonnull World world) {
-            String targetUsername = commandContext.get(this.targetPlayer);
-            if(targetUsername == null) {
-                commandContext.sender().sendMessage(LM.getPlayerMessage(commandContext.sender().getDisplayName(), LangKey.PLAYER_NOT_FOUND_MSG, commandContext.get(this.targetPlayer)));
-                return;
-            }
-            hytaleFoundations.getRankManager().setRankOfTarget(playerRef, commandContext.get(this.targetPlayer), commandContext.get(this.rankId));
-        }
-    }
     public static class RankListCommand extends AbstractPlayerCommand {
         private final HytaleFoundations hytaleFoundations;
         public RankListCommand(HytaleFoundations hytaleFoundations) {
@@ -70,10 +49,10 @@ public class RankCommand extends AbstractCommandCollection {
                 commandContext.sender().sendMessage(LM.getPlayerMessage(playerUsername, LangKey.NOTHING_FOUND, "rank", "Empty map"));
                 return;
             }
-            commandContext.sender().sendMessage(LM.getMessage(playerUsername, LangKey.GENERAL_LIST, false, "rank(s)"));
+            commandContext.sender().sendMessage(LM.getPlayerMessage(playerUsername, LangKey.LIST_CONTEXT, "rank(s)"));
             for(Map.Entry<String, RankManager.Rank> entry : rankManager.getRankMap().entrySet()) {
                 String rankPrefix = hytaleFoundations.getChatManager().getAffixManager().getAffixDisplay(entry.getValue().getChatPrefixId());
-                commandContext.sender().sendMessage(LM.getMessage(playerUsername, LangKey.GENERAL_LIST_ITEM, false,
+                commandContext.sender().sendMessage(LM.getPlayerMessage(playerUsername, LangKey.LIST_ITEM,
                         rankPrefix + " &r&e&l[ID: " + entry.getKey() + "]"));
             }
         }
@@ -95,11 +74,32 @@ public class RankCommand extends AbstractCommandCollection {
                 commandContext.sender().sendMessage(LM.getPlayerMessage(playerUsername, LangKey.NOTHING_FOUND, "rank group", "Empty map"));
                 return;
             }
-            commandContext.sender().sendMessage(LM.getMessage(playerUsername, LangKey.GENERAL_LIST, false, "rank group(s)"));
+            commandContext.sender().sendMessage(LM.getPlayerMessage(playerUsername, LangKey.LIST_CONTEXT, "rank group(s)"));
             for(Map.Entry<String, List<String>> entry : rankManager.getRankGroupMap().entrySet()) {
-                commandContext.sender().sendMessage(LM.getMessage(playerUsername, LangKey.GENERAL_LIST_ITEM, false,
+                commandContext.sender().sendMessage(LM.getPlayerMessage(playerUsername, LangKey.LIST_ITEM,
                         "&e&l" + entry.getKey() + " &r&7[Chain: " + hytaleFoundations.getRankManager().getRankChainText(entry.getKey()) + "]"));
             }
+        }
+    }
+    public static class RankSetCommand extends AbstractPlayerCommand {
+        private final HytaleFoundations hytaleFoundations;
+        private final RequiredArg<String> targetPlayer;
+        private final RequiredArg<String> rankId;
+        public RankSetCommand(HytaleFoundations hytaleFoundations) {
+            super("set", "Set the rank of a target player.");
+            this.requirePermission(Permissions.RANK_ADMIN.getPermission());
+            this.hytaleFoundations = hytaleFoundations;
+            targetPlayer = withRequiredArg("target", "Name of the target player.", ArgTypes.STRING);
+            rankId = withRequiredArg("rank ID", "ID of the rank that will be set.", ArgTypes.STRING);
+        }
+        @Override
+        protected void execute(@Nonnull CommandContext commandContext, @Nonnull Store<EntityStore> store, @Nonnull Ref<EntityStore> ref, @Nonnull PlayerRef playerRef, @Nonnull World world) {
+            String targetUsername = commandContext.get(this.targetPlayer);
+            if(targetUsername == null) {
+                commandContext.sender().sendMessage(LM.getPlayerMessage(commandContext.sender().getDisplayName(), LangKey.PLAYER_NOT_FOUND_MSG, commandContext.get(this.targetPlayer)));
+                return;
+            }
+            hytaleFoundations.getRankManager().setRankOfTarget(playerRef, commandContext.get(this.targetPlayer), commandContext.get(this.rankId));
         }
     }
     public static class RankPromoteCommand extends AbstractPlayerCommand {

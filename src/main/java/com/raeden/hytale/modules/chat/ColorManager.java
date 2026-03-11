@@ -6,7 +6,7 @@ import com.hypixel.hytale.server.core.Message;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.raeden.hytale.HytaleFoundations;
 import com.raeden.hytale.core.utils.Permissions;
-import com.raeden.hytale.lang.LangKey;
+import com.raeden.hytale.core.lang.LangKey;
 
 import java.lang.reflect.Type;
 import java.nio.file.Files;
@@ -44,8 +44,7 @@ public class ColorManager {
         specialCodes = new ArrayList<>(List.of("&l", "&o", "&r"));
         loadDefaultColors();
         if(!Files.exists(colorFilePath)) {
-            myLogger.atInfo().log(LM.getMessage(LangKey.CREATE_SUCCESS, true, colorFileName, colorFilePath.toString()).getAnsiMessage());
-            saveColorFile(); // Just save the defaults we just loaded
+            saveColorFile();
         } else {
             loadColors();
         }
@@ -60,7 +59,7 @@ public class ColorManager {
         ColormapHolder colorMapFile = new ColormapHolder();
         colorMapFile.setColorList(colorMap);
         saveJsonFile(colorFileName, colorFilePath, colorMapFile, true);
-        myLogger.atInfo().log(LM.getMessage(LangKey.LOAD_SUCCESS, true, colorMap.size() + " colors!").getAnsiMessage());
+        myLogger.atInfo().log(LM.getConsoleMessage(LangKey.LOAD_SUCCESS, colorMap.size() + " colors!").getAnsiMessage());
     }
     public void loadColors() {
         Type type = new TypeToken<ColormapHolder>(){}.getType();
@@ -76,7 +75,7 @@ public class ColorManager {
             String code = entry.getKey();
             String hex = entry.getValue();
             if(!validateColor(code, hex)) {
-                myLogger.atWarning().log(LM.getMessage(LangKey.INVALID_COLOR_FORMAT, true, code, hex).getAnsiMessage());
+                myLogger.atWarning().log(LM.getConsoleMessage(LangKey.INVALID_COLOR_FORMAT, code, hex).getAnsiMessage());
                 continue;
             }
             if(!colorMap.containsKey(code)) {
@@ -88,7 +87,7 @@ public class ColorManager {
         }
         if(newColors > 0 || overwrittenColors > 0) {
             String msg = String.format("%d custom colors and %d overrides loaded.", newColors, overwrittenColors);
-            myLogger.atInfo().log(LM.getMessage(LangKey.LOAD_SUCCESS, true, msg).getAnsiMessage());
+            myLogger.atInfo().log(LM.getConsoleMessage(LangKey.LOAD_SUCCESS, msg).getAnsiMessage());
         }
     }
 
@@ -121,50 +120,96 @@ public class ColorManager {
         if (text == null || text.isEmpty()) return Message.empty();
         Message finalMessage = Message.empty();
         int length = text.length();
-
         List<String> activeColors = new ArrayList<>(4);
-        activeColors.add(DefaultColors.WHITE.getHex());
         boolean isBold = false;
         boolean isItalic = false;
 
+        boolean ignoreColors = false;
+        boolean textAppendedSinceLastColor = false;
+        boolean hasActualText = false;
+
         StringBuilder currentContent = new StringBuilder();
+        StringBuilder unappliedCodes = new StringBuilder();
         for(int i = 0; i < length; i++) {
             char c = text.charAt(i);
+            if (ignoreColors) {
+                if (c == ' ') {
+                    ignoreColors = false;
+                } else {
+                    unappliedCodes.setLength(0);
+                    currentContent.append(c);
+                    hasActualText = true;
+                    textAppendedSinceLastColor = true;
+                    continue;
+                }
+            }
             if(c == '&' && i+1 < length) {
                 String codeKey = "&" + text.charAt(i + 1);
+                if (codeKey.equals("&-")) {
+                    if (hasValidCodeAfter(text, i + 2)) {
+                        if(!currentContent.isEmpty()) {
+                            appendSegment(finalMessage, currentContent.toString(), activeColors, isBold, isItalic);
+                            currentContent.setLength(0);
+                        }
+                        ignoreColors = true;
+                        unappliedCodes.setLength(0);
+                        i++;
+                        continue;
+                    }
+                }
                 boolean isColor = colorMap.containsKey(codeKey);
                 boolean isSpecial = specialCodes.contains(codeKey);
-
                 if(isColor || isSpecial) {
                     if(!currentContent.isEmpty()) {
                         appendSegment(finalMessage, currentContent.toString(), activeColors, isBold, isItalic);
                         currentContent.setLength(0);
                     }
+                    unappliedCodes.append(codeKey);
                     if(isSpecial) {
                         if (codeKey.equalsIgnoreCase("&l")) isBold = true;
                         else if (codeKey.equalsIgnoreCase("&o")) isItalic = true;
                         else if (codeKey.equalsIgnoreCase("&r")) {
                             activeColors.clear();
-                            activeColors.add(DefaultColors.WHITE.getHex());
                             isBold = false;
                             isItalic = false;
                         }
                     } else {
-                        if (activeColors.size() == 1 && activeColors.getFirst().equals(DefaultColors.WHITE.getHex())) {
+                        if (textAppendedSinceLastColor) {
                             activeColors.clear();
+                            isBold = false;
+                            isItalic = false;
                         }
                         activeColors.add(colorMap.get(codeKey));
                     }
+                    textAppendedSinceLastColor = false;
                     i++;
                     continue;
                 }
             }
+
+            unappliedCodes.setLength(0);
             currentContent.append(c);
+            hasActualText = true;
+            textAppendedSinceLastColor = true;
         }
-        if (!currentContent.isEmpty()) {
-            appendSegment(finalMessage, currentContent.toString(), activeColors, isBold, isItalic);
-        }
+
+        if (!hasActualText) return Message.raw(text).color(DefaultColors.WHITE.getHex());
+        if (!unappliedCodes.isEmpty()) currentContent.append(unappliedCodes);
+        if (!currentContent.isEmpty()) appendSegment(finalMessage, currentContent.toString(), activeColors, isBold, isItalic);
+
         return finalMessage;
+    }
+
+    private boolean hasValidCodeAfter(String text, int index) {
+        for (int i = index; i < text.length() - 1; i++) {
+            if (text.charAt(i) == '&') {
+                String code = "&" + text.charAt(i + 1);
+                if (colorMap.containsKey(code) || specialCodes.contains(code)) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     // Helpers
@@ -187,27 +232,37 @@ public class ColorManager {
     }
     public Message gradient(String text, List<String> hexColors, boolean bold, boolean italic) {
         Message builder = Message.empty();
-        int length = text.length();
-        if(hexColors == null || hexColors.isEmpty()) {
+
+        if (hexColors == null || hexColors.isEmpty()) {
             return Message.raw(text).color(DefaultColors.WHITE.getHex()).bold(bold).italic(italic);
         }
-        if (hexColors.size() == 1 || length == 0) {
-            return Message.raw(text).color(hexColors.getFirst()).bold(bold);
+        if (hexColors.size() == 1 || text.isEmpty()) {
+            return Message.raw(text).color(hexColors.getFirst()).bold(bold).italic(italic);
         }
 
+        int smoothness = Math.max(2, hytaleFoundations.getConfigManager().getDefaultChatConfig().getGradientChunkSize());
+        List<String> chunks = new ArrayList<>();
+        for (int i = 0; i < text.length(); i += smoothness) {
+            chunks.add(text.substring(i, Math.min(text.length(), i + smoothness)));
+        }
+        int length = chunks.size();
         for (int i = 0; i < length; i++) {
             double overallProgress = (length > 1) ? (double) i / (length - 1) : 0;
             double segmentWeight = 1.0 / (hexColors.size() - 1);
             int segmentIndex = (int) (overallProgress / segmentWeight);
-            if (segmentIndex >= hexColors.size() - 1) segmentIndex = hexColors.size() - 2;
+
+            if (segmentIndex >= hexColors.size() - 1) {
+                segmentIndex = hexColors.size() - 2;
+            }
+
             double localProgress = (overallProgress - (segmentIndex * segmentWeight)) / segmentWeight;
             int[] startRGB = hexToRGB(hexColors.get(segmentIndex));
             int[] endRGB = hexToRGB(hexColors.get(segmentIndex + 1));
 
-            String colorForChar = interpolateColor(startRGB, endRGB, localProgress);
+            String colorForWord = interpolateColor(startRGB, endRGB, localProgress);
 
-            builder.insert(Message.raw(String.valueOf(text.charAt(i)))
-                    .color(colorForChar)
+            builder.insert(Message.raw(chunks.get(i))
+                    .color(colorForWord)
                     .bold(bold)
                     .italic(italic));
         }
@@ -215,18 +270,39 @@ public class ColorManager {
         return builder;
     }
     public String stripTextOfColorCodes(String text) {
+        if (text == null || text.isEmpty()) return text;
         StringBuilder builder = new StringBuilder();
-        String[] splitMessage = text.split("(?=&)");
-        for(String msg : splitMessage) {
-            if(msg.length() >= 2 && isColorCodeAvailable(msg.substring(0, 2))) {
-                builder.append(msg.substring(2));
-            } else {
-                builder.append(msg);
+        boolean ignoreColors = false;
+        for (int i = 0; i < text.length(); i++) {
+            char c = text.charAt(i);
+
+            if (ignoreColors) {
+                if (c == ' ') {
+                    ignoreColors = false;
+                } else {
+                    builder.append(c);
+                    continue;
+                }
             }
+
+            if (c == '&' && i + 1 < text.length()) {
+                String codeKey = "&" + text.charAt(i + 1);
+                if (codeKey.equals("&-")) {
+                    if (hasValidCodeAfter(text, i + 2)) {
+                        ignoreColors = true;
+                        i++;
+                        continue;
+                    }
+                }
+                if (colorMap.containsKey(codeKey) || specialCodes.contains(codeKey)) {
+                    i++;
+                    continue;
+                }
+            }
+            builder.append(c);
         }
         return builder.toString();
     }
-
     public boolean isColorCodeAvailable(String code) {
         if(!isValidColorCode(code)) return false;
         return colorMap.containsKey(code) || specialCodes.contains(code);
@@ -237,11 +313,25 @@ public class ColorManager {
     private boolean isValidHexCode(String hex) {
         return HEX_PATTERN.matcher(hex).matches();
     }
-
     public boolean validateColor(String code, String hex) {
         return isValidColorCode(code) && isValidHexCode(hex);
     }
-
+    public boolean validateUsernameDisplayColor(String user, String text) {
+        if (text == null || text.isEmpty()) return true;
+        for (int i = 0; i < text.length() - 1; i++) {
+            if (text.charAt(i) == '&') {
+                String code = "&" + text.charAt(i + 1);
+                if (code.equals("&-")) continue;
+                if (isValidColorCode(code)) {
+                    if (!colorMap.containsKey(code) && !specialCodes.contains(code)) {
+                        myLogger.atInfo().log(LM.getConsoleMessage(LangKey.INVALID_DISPLAY_COLOR, user).getAnsiMessage());
+                        return false;
+                    }
+                }
+            }
+        }
+        return true;
+    }
     private String interpolateColor(int[] start, int[] end, double ratio) {
         int r = (int) (start[0] + (end[0] - start[0]) * ratio);
         int g = (int) (start[1] + (end[1] - start[1]) * ratio);

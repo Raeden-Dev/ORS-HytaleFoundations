@@ -11,16 +11,22 @@ public class PlayerStats {
     private long playTimeMillis;
 
     // Stats
+    @SerializedName("COLLECT_STATS")
+    private boolean collectStats;
     @SerializedName("TOTAL_DEATHS")
     private int totalDeaths;
     @SerializedName("PLAYER_KILLS")
     private int playerKills;
     @SerializedName("MOB_KILLS")
     private int mobKills;
-    @SerializedName("DAMAGE_TAKEN")
-    private int damageTaken;
-    @SerializedName("DAMAGE_GIVEN")
-    private int damageGiven;
+    @SerializedName("PVE_DAMAGE_TAKEN")
+    private int damageTakenPve;
+    @SerializedName("PVE_DAMAGE_GIVEN")
+    private int damageGivenPve;
+    @SerializedName("PVP_DAMAGE_TAKEN")
+    private int damageTakenPvp;
+    @SerializedName("PVP_DAMAGE_GIVEN")
+    private int damageGivenPvp;
     @SerializedName("BLOCKS_BROKEN")
     private int blocksBroken;
     @SerializedName("BLOCKS_PLACED")
@@ -45,6 +51,9 @@ public class PlayerStats {
     public long getPlayTimeMillis() {return playTimeMillis;}
     public void setPlayTimeMillis(long playTimeMillis) {this.playTimeMillis = playTimeMillis;}
 
+    public boolean isCollectStats() {return collectStats;}
+    public void setCollectStats(boolean collectStats) {this.collectStats = collectStats;}
+
     public int getTotalDeaths() {return totalDeaths;}
     public void addDeath() { this.totalDeaths++;}
     public void setTotalDeaths(int totalDeaths) {this.totalDeaths = totalDeaths;}
@@ -57,10 +66,12 @@ public class PlayerStats {
     public void addMobKill() {this.mobKills++;}
     public void setMobKills(int mobKills) {this.mobKills = mobKills;}
 
-    public int getDamageTaken() {return damageTaken;}
-    public void setDamageTaken(int damageTaken) {this.damageTaken = damageTaken;}
-    public int getDamageGiven() {return damageGiven;}
-    public void setDamageGiven(int damageGiven) {this.damageGiven = damageGiven;}
+    public int getDamageTakenPve() {return damageTakenPve;}
+    public void setDamageTakenPve(int damageTakenPve) {this.damageTakenPve = damageTakenPve;}
+    public void addDamageTakenPve(int damageTakenPve) {this.damageTakenPve += damageTakenPve;}
+    public int getDamageGivenPve() {return damageGivenPve;}
+    public void setDamageGivenPve(int damageGivenPve) {this.damageGivenPve = damageGivenPve;}
+    public void addDamageGivenPve(int damageGivenPve) {this.damageGivenPve += damageGivenPve;}
 
     public int getBlocksBroken() {return blocksBroken;}
     public void addBlockBreak() {this.blocksBroken++;}
@@ -72,6 +83,7 @@ public class PlayerStats {
 
     public double getDistanceWalked() {return distanceWalked;}
     public void setDistanceWalked(double distanceWalked) {this.distanceWalked = distanceWalked;}
+    public void addDistanceWalked(double distance){this.distanceWalked += distance;}
 
     public int getItemsCrafted() {return itemsCrafted;}
     public void addItemCraft() {itemsCrafted++;}
@@ -87,4 +99,12 @@ public class PlayerStats {
 
     public int getTotalTimesReportedByPlayers() {return totalTimesReportedByPlayers;}
     public void setTotalTimesReportedByPlayers(int totalTimesReportedByPlayers) {this.totalTimesReportedByPlayers = totalTimesReportedByPlayers;}
+
+    public int getDamageTakenPvp() {return damageTakenPvp;}
+    public void setDamageTakenPvp(int damageTakenPvp) {this.damageTakenPvp = damageTakenPvp;}
+    public void addDamageTakenPvp(int damageTakenPvp) {this.damageTakenPvp += damageTakenPvp;}
+
+    public int getDamageGivenPvp() {return damageGivenPvp;}
+    public void setDamageGivenPvp(int damageGivenPvp) {this.damageGivenPvp = damageGivenPvp;}
+    public void addDamageGivenPvp(int damageGivenPvp) {this.damageGivenPvp += damageGivenPvp;}
 }

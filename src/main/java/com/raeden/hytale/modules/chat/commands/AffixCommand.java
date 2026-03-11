@@ -12,7 +12,7 @@ import com.hypixel.hytale.server.core.universe.world.World;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import com.raeden.hytale.HytaleFoundations;
 import com.raeden.hytale.core.utils.Permissions;
-import com.raeden.hytale.lang.LangKey;
+import com.raeden.hytale.core.lang.LangKey;
 import com.raeden.hytale.modules.chat.AffixManager;
 
 import javax.annotation.Nonnull;
@@ -39,9 +39,9 @@ public class AffixCommand extends AbstractCommandCollection {
             if(affixManager == null) return;
             if(affixManager.getAffixMap() == null || affixManager.getAffixMap().isEmpty()) return;
             String playerUsername = commandContext.sender().getDisplayName();
-            commandContext.sender().sendMessage(LM.getMessage(playerUsername, LangKey.GENERAL_LIST, false, "affix(es)"));
+            commandContext.sender().sendMessage(LM.getPlayerMessage(playerUsername, LangKey.LIST_CONTEXT, "affix(es)"));
             for(Map.Entry<String, AffixManager.PlayerAffix> entry : affixManager.getAffixMap().entrySet()) {
-                commandContext.sender().sendMessage(LM.getMessage(playerUsername, LangKey.GENERAL_LIST_ITEM, false,
+                commandContext.sender().sendMessage(LM.getPlayerMessage(playerUsername, LangKey.LIST_ITEM,
                         entry.getValue().getDisplayText() + " &r&e&l[ID: " + entry.getKey() + "]"));
             }
         }

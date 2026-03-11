@@ -6,7 +6,7 @@ import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
 import com.hypixel.hytale.component.query.Query;
 import com.hypixel.hytale.component.system.EntityEventSystem;
-import com.hypixel.hytale.server.core.event.events.ecs.BreakBlockEvent;
+import com.hypixel.hytale.server.core.event.events.ecs.PlaceBlockEvent;
 import com.hypixel.hytale.server.core.inventory.ItemStack;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
@@ -17,32 +17,24 @@ import com.raeden.hytale.core.player.PlayerStats;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-public class PlayerBlockBreakListener extends EntityEventSystem<EntityStore, BreakBlockEvent> {
+public class PlayerBlockPlaceListener extends EntityEventSystem<EntityStore, PlaceBlockEvent> {
     private final HytaleFoundations hytaleFoundations;
-    public PlayerBlockBreakListener(HytaleFoundations hytaleFoundations) {
-        super(BreakBlockEvent.class);
+    public PlayerBlockPlaceListener(HytaleFoundations hytaleFoundations) {
+        super(PlaceBlockEvent.class);
         this.hytaleFoundations = hytaleFoundations;
     }
     @Override
-    public void handle(int i, @Nonnull ArchetypeChunk<EntityStore> archetypeChunk, @Nonnull Store<EntityStore> store, @Nonnull CommandBuffer<EntityStore> commandBuffer, @Nonnull BreakBlockEvent breakBlockEvent) {
-        String blockID = breakBlockEvent.getBlockType().getId();
+    public void handle(int i, @Nonnull ArchetypeChunk<EntityStore> archetypeChunk, @Nonnull Store<EntityStore> store, @Nonnull CommandBuffer<EntityStore> commandBuffer, @Nonnull PlaceBlockEvent placeBlockEvent) {
+        ItemStack block = placeBlockEvent.getItemInHand();
+        if(block == null) return;
+        String blockID = block.getItemId();
         if(blockID.equals("Empty")) return;
-
-        ItemStack item = breakBlockEvent.getItemInHand();
-
         Ref<EntityStore> reference = archetypeChunk.getReferenceTo(i);
         PlayerRef player = store.getComponent(reference, PlayerRef.getComponentType());
         if(player == null) return;
         PlayerStats stats = hytaleFoundations.getPlayerDataManager().getPlayerStats(player.getUsername());
-        if(stats == null || !stats.isCollectStats()) return;
-        stats.addBlockBreak();
-
-        if(item != null) {
-            if(!item.isBroken() && item.getDurability() != 0.0) {
-                if(item.getDurability() <= 1.0) {
-                    stats.addItemBroken();
-                }
-            }
+        if(stats != null && stats.isCollectStats()) {
+            stats.addBlockPlace();
         }
     }
 
