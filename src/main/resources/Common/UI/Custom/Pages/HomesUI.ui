@@ -1,0 +1,50 @@
+$C = "../Common.ui";
+
+$C.@PageOverlay {
+  $C.@Container {
+    Anchor: (Width: 840, Height: 600);
+    Padding: (Full: 20);
+
+    // --- Top Bar (Title & Close Button) ---
+    Group #Header {
+      LayoutMode: Left;
+      Anchor: (Height: 40);
+
+      Group { FlexWeight: 1; }
+
+      Label #Title {
+        Text: "YOUR HOMES";
+        Style: (FontSize: 18, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center);
+      }
+
+      Group { Anchor: (Width: 10); }
+
+      Group {
+        Anchor: (Width: 25, Height: 12);
+        Background: #b4c8c9;
+      }
+
+      Group { FlexWeight: 1; }
+
+      TextButton #CloseButton {
+        Text: "X";
+        Anchor: (Width: 30, Height: 30);
+        Style: (
+          Background: #3b4552,
+          LabelStyle: (FontSize: 14, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)
+        );
+      }
+    }
+
+    Group { Anchor: (Height: 20); }
+    Group { Anchor: (Height: 2); Background: #2b3542; }
+    Group { Anchor: (Height: 20); }
+
+    // --- Main Scrollable Grid (Empty, to be filled by Java) ---
+    ScrollArea #HomesScroll {
+      FlexWeight: 1;
+      ScrollbarStyle: (Spacing: 6, Size: 8);
+      LayoutMode: Top;
+    }
+  }
+}
