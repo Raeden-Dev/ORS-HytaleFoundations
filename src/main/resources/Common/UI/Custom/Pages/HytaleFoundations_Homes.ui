@@ -1,5 +1,11 @@
 $C = "../Common.ui";
 
+@PrimaryButtonStyle = TextButtonStyle(
+  Default: (Background: #3a7bd5, LabelStyle: (FontSize: 14, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
+  Hovered: (Background: #4a8be5, LabelStyle: (FontSize: 14, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
+  Pressed: (Background: #2a6bc5, LabelStyle: (FontSize: 14, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center))
+);
+
 $C.@PageOverlay {
   $C.@Container {
     Anchor: (Width: 840, Height: 600);
@@ -29,10 +35,7 @@ $C.@PageOverlay {
       TextButton #CloseButton {
         Text: "X";
         Anchor: (Width: 30, Height: 30);
-        Style: (
-          Background: #3b4552,
-          LabelStyle: (FontSize: 14, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)
-        );
+        Style: @PrimaryButtonStyle;
       }
     }
 
@@ -40,11 +43,5 @@ $C.@PageOverlay {
     Group { Anchor: (Height: 2); Background: #2b3542; }
     Group { Anchor: (Height: 20); }
 
-    // --- Main Scrollable Grid (Empty, to be filled by Java) ---
-    ScrollArea #HomesScroll {
-      FlexWeight: 1;
-      ScrollbarStyle: (Spacing: 6, Size: 8);
-      LayoutMode: Top;
-    }
   }
 }

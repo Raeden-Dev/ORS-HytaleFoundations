@@ -16,6 +16,7 @@ import com.raeden.hytale.core.player.PlayerDataManager;
 import com.raeden.hytale.core.utils.PermissionManager;
 import com.raeden.hytale.core.lang.LangManager;
 import com.raeden.hytale.modules.admin.commands.AnnounceCommand;
+import com.raeden.hytale.modules.admin.commands.ReportCommand;
 import com.raeden.hytale.modules.admin.commands.TitleCommand;
 import com.raeden.hytale.modules.admin.commands.VanishCommand;
 import com.raeden.hytale.modules.analytics.pluginactions.PluginActionManager;
@@ -24,11 +25,13 @@ import com.raeden.hytale.modules.chat.commands.AffixCommand;
 import com.raeden.hytale.modules.chat.commands.PrefixCommand;
 import com.raeden.hytale.modules.chat.commands.SuffixCommand;
 import com.raeden.hytale.modules.chat.commands.NicknameCommand;
+import com.raeden.hytale.modules.home.commands.HomeCommand;
+import com.raeden.hytale.modules.home.commands.HomesCommand;
 import com.raeden.hytale.modules.mail.MailManager;
 import com.raeden.hytale.modules.chat.commands.*;
 import com.raeden.hytale.modules.chat.events.PlayerChatListener;
 import com.raeden.hytale.modules.mail.commands.MailCommand;
-import com.raeden.hytale.modules.mail.commands.NafsmunCommand;
+import com.raeden.hytale.modules.utility.commands.NafsmunCommand;
 import com.raeden.hytale.modules.rank.RankManager;
 import com.raeden.hytale.modules.rank.commands.RankCommand;
 import com.raeden.hytale.modules.utility.commands.*;
@@ -164,7 +167,7 @@ public class HytaleFoundations extends JavaPlugin {
             this.getCommandRegistry().registerCommand(new AffixCommand(this));
             this.getCommandRegistry().registerCommand(new PrefixCommand(this));
             this.getCommandRegistry().registerCommand(new SuffixCommand(this));
-            this.getCommandRegistry().registerCommand(new NafsmunCommand());
+
         }
         // Admin UI
         if(configManager.getDefaultConfig().isToggleHomesModule()) {
@@ -176,7 +179,14 @@ public class HytaleFoundations extends JavaPlugin {
         // Utility Commands
         this.getCommandRegistry().registerCommand(new PlayerInfoCommand(this));
         this.getCommandRegistry().registerCommand(new PlaytimeCommand(this));
+
+        this.getCommandRegistry().registerCommand(new HomesCommand(this));
+        this.getCommandRegistry().registerCommand(new HomeCommand(this));
+        this.getCommandRegistry().registerCommand(new ReportCommand(this));
+
         this.getCommandRegistry().registerCommand(new AnvilCommand());
+        this.getCommandRegistry().registerCommand(new NafsmunCommand());
+
 
     }
 

@@ -1,4 +1,4 @@
-package com.raeden.hytale.modules.mail.pages;
+package com.raeden.hytale.modules.home.pages;
 
 import com.hypixel.hytale.codec.Codec;
 import com.hypixel.hytale.codec.KeyedCodec;
@@ -44,7 +44,7 @@ public class HomesPage extends InteractiveCustomUIPage<HomesPage.HomesData> {
 
     @Override
     public void build(@Nonnull Ref<EntityStore> ref, @Nonnull UICommandBuilder uiCommandBuilder, @Nonnull UIEventBuilder uiEventBuilder, @Nonnull Store<EntityStore> store) {
-        uiCommandBuilder.append("Pages/HomesUI.ui");
+        uiCommandBuilder.append("Pages/HytaleFoundations_Homes.ui");
 
         uiEventBuilder.addEventBinding(CustomUIEventBindingType.Activating, "#CloseButton", new EventData().append("ClickedButton", CLOSE_BUTTON_ID));
 
