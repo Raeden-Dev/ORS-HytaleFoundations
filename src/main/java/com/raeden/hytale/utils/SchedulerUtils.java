@@ -9,13 +9,13 @@ import java.util.concurrent.*;
 import static com.raeden.hytale.HytaleFoundations.LM;
 import static com.raeden.hytale.HytaleFoundations.myLogger;
 
-public class Scheduler {
+public class SchedulerUtils {
     private final HytaleFoundations hytaleFoundations;
     private final ScheduledExecutorService scheduler;
     private final Map<String, ScheduledFuture<?>> activeSchedulers;
     private final boolean debugMode;
 
-    public Scheduler(HytaleFoundations hytaleFoundations) {
+    public SchedulerUtils(HytaleFoundations hytaleFoundations) {
         this.hytaleFoundations = hytaleFoundations;
         this.scheduler = Executors.newScheduledThreadPool(2);
         activeSchedulers = new ConcurrentHashMap<>();

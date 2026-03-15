@@ -13,6 +13,7 @@ import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.world.World;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import com.raeden.hytale.HytaleFoundations;
+import com.raeden.hytale.core.manager.DefaultCommands;
 import com.raeden.hytale.core.pages.HFMainMenu;
 import com.raeden.hytale.core.utils.Permissions;
 import com.raeden.hytale.core.lang.LangKey;
@@ -24,13 +25,21 @@ import java.util.concurrent.CompletableFuture;
 
 import static com.raeden.hytale.HytaleFoundations.ERROR_LOG_DIRECTORY;
 import static com.raeden.hytale.HytaleFoundations.LM;
-import static com.raeden.hytale.utils.FileManager.logError;
+import static com.raeden.hytale.utils.FileUtils.logError;
 
 public class CoreCommand extends AbstractCommandCollection {
     public CoreCommand(HytaleFoundations hytaleFoundations) {
-        super("foundation", "Argument for all Hytale Foundations Command.");
-        this.requirePermission(Permissions.ACCESS.getPermission());
-        this.addAliases("hf", "fd");
+        String commandName = hytaleFoundations.getCommandManager().getCommandName(DefaultCommands.CORE_COMMAND.name());
+        String permissionNode = hytaleFoundations.getCommandManager().getCommandPermission(DefaultCommands.CORE_COMMAND.name());
+        String[] aliases = hytaleFoundations.getCommandManager().getCommandAliases(DefaultCommands.CORE_COMMAND.name());
+        if(commandName == null || commandName.isEmpty()) commandName = DefaultCommands.CORE_COMMAND.name();
+        if(permissionNode == null || permissionNode.isEmpty()) permissionNode = DefaultCommands.CORE_COMMAND.name();
+        if(aliases == null || aliases.length == 0) aliases = DefaultCommands.CORE_COMMAND.getAliases();
+
+        super(commandName, "Argument for all Hytale Foundations Command.");
+        this.requirePermission(permissionNode);
+        this.addAliases(aliases);
+
         this.addSubCommand(new PluginMenuCommand());
         this.addSubCommand(new ReloadPluginCommand(hytaleFoundations));
         this.addSubCommand(new UpdatePluginCommand(hytaleFoundations));
@@ -307,7 +316,7 @@ public class CoreCommand extends AbstractCommandCollection {
             try {
                 hytaleFoundations.getConfigManager().reloadPlugin();
                 hytaleFoundations.registerManagers();
-                hytaleFoundations.registerCommands();
+                //hytaleFoundations.registerCommands();
                 if(commandContext.isPlayer()) {
                     commandContext.sender().sendMessage(LM.getPlayerMessage(commandContext.sender().getDisplayName(), LangKey.RELOAD_SUCCESS, "Hytale Foundations"));
                 } else {

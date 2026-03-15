@@ -18,7 +18,7 @@ import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 import static com.raeden.hytale.HytaleFoundations.*;
-import static com.raeden.hytale.utils.FileManager.*;
+import static com.raeden.hytale.utils.FileUtils.*;
 import static com.raeden.hytale.utils.GeneralUtils.*;
 
 public class PlayerDataManager {

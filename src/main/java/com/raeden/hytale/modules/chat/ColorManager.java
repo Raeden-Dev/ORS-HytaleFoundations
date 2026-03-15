@@ -20,8 +20,8 @@ import java.util.regex.Pattern;
 import static com.raeden.hytale.HytaleFoundations.*;
 import static com.raeden.hytale.core.config.ConfigManager.COLORMAP_FILENAME;
 import static com.raeden.hytale.core.config.ConfigManager.COLORMAP_VERSION;
-import static com.raeden.hytale.utils.FileManager.loadJsonFile;
-import static com.raeden.hytale.utils.FileManager.saveJsonFile;
+import static com.raeden.hytale.utils.FileUtils.loadJsonFile;
+import static com.raeden.hytale.utils.FileUtils.saveJsonFile;
 
 public class ColorManager {
     // Map for all colors

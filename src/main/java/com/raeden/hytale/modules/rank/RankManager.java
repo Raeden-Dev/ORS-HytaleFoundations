@@ -18,8 +18,8 @@ import java.util.concurrent.ConcurrentHashMap;
 import static com.raeden.hytale.HytaleFoundations.*;
 import static com.raeden.hytale.core.config.ConfigManager.RANK_FILENAME;
 import static com.raeden.hytale.core.config.ConfigManager.RANK_VERSION;
-import static com.raeden.hytale.utils.FileManager.loadJsonFile;
-import static com.raeden.hytale.utils.FileManager.saveJsonFile;
+import static com.raeden.hytale.utils.FileUtils.loadJsonFile;
+import static com.raeden.hytale.utils.FileUtils.saveJsonFile;
 
 public class RankManager {
     private final HytaleFoundations hytaleFoundations;

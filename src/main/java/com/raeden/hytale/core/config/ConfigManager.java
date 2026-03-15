@@ -12,24 +12,30 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.raeden.hytale.HytaleFoundations.*;
-import static com.raeden.hytale.utils.FileManager.*;
+import static com.raeden.hytale.utils.FileUtils.*;
 
 public class ConfigManager {
     private final HytaleFoundations hytaleFoundations;
 
     public static final String CONFIG_FILENAME = "config.json";
+    public static final String PERMISSION_FILENAME = "permissions.json";
+    public static final String COLORMAP_FILENAME = "colormap.json";
+    public static final String COMMAND_FILENAME = "commands.json";
     public static final String MAIL_FILENAME = "mail.json";
     public static final String RANK_FILENAME = "rank.json";
     public static final String PARTY_FILENAME = "party.json";
     public static final String ECONOMY_FILENAME = "economy.json";
+    public static final String HOME_FILENAME = "home.json";
     public static final String CHAT_FILENAME = "chat.json";
-    public static final String COLORMAP_FILENAME = "colormap.json";
+
     public static final String AFFIX_FILENAME = "affix.json";
-    public static final String PERMISSION_FILENAME = "permissions.json";
+
 
     public static String CONFIG_VERSION = "v1.0";
     public static String CHAT_CONFIG_VERSION = "v1.0";
     public static String MAIL_CONFIG_VERSION = "v1.0";
+    public static String HOME_CONFIG_VERSION = "v1.0";
+    public static String ALIAS_CONFIG_VERSION = "v1.0";
     public static String COLORMAP_VERSION = "v1.0";
     public static String AFFIX_VERSION = "v1.0";
     public static String RANK_VERSION = "v1.0";
@@ -60,6 +66,7 @@ public class ConfigManager {
         if(!Files.exists(dataDirectory)) loadConfigs();
         this.defaultConfig = loadConfigData();
         hytaleFoundations.getPermissionManager().loadPermissions();
+        hytaleFoundations.getCommandManager().loadCommands();
         if(defaultConfig.isToggleChatModule()) {
             this.defaultChatConfig = loadChatConfigData();
             hytaleFoundations.getChatManager().getAffixManager().loadAffixes();

@@ -7,7 +7,7 @@ import com.hypixel.hytale.server.core.permissions.PermissionsModule;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.raeden.hytale.HytaleFoundations;
 import com.raeden.hytale.core.lang.LangKey;
-import com.raeden.hytale.utils.FileManager;
+import com.raeden.hytale.utils.FileUtils;
 
 import java.lang.reflect.Type;
 import java.nio.file.Files;
@@ -17,7 +17,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import static com.raeden.hytale.HytaleFoundations.*;
 import static com.raeden.hytale.core.config.ConfigManager.*;
-import static com.raeden.hytale.utils.FileManager.*;
+import static com.raeden.hytale.utils.FileUtils.*;
 
 public class PermissionManager {
     private final HytaleFoundations hytaleFoundations;
@@ -149,7 +149,7 @@ public class PermissionManager {
             PermissionsModule permissionsModule = PermissionsModule.get();
             return permissionsModule.hasPermission(playerID, permission);
         } catch (Exception e) {
-            FileManager.logError("PermissionManager-HasPermission", e);
+            FileUtils.logError("PermissionManager-HasPermission", e);
             myLogger.atWarning().log(LM.getConsoleMessage(LangKey.CHECK_FAILURE,"permission [" + permission + "]").getAnsiMessage());
             return false;
         }
@@ -161,7 +161,7 @@ public class PermissionManager {
             Set<String> playerGroups = permissionsModule.getGroupsForUser(playerID);
             return playerGroups.contains(groupName);
         } catch (Exception e) {
-            FileManager.logError("PermissionManager-HasPermission", e);
+            FileUtils.logError("PermissionManager-HasPermission", e);
             myLogger.atWarning().log(LM.getConsoleMessage(LangKey.CHECK_FAILURE,"permission group [" + groupName + "]").getAnsiMessage());
             return false;
         }

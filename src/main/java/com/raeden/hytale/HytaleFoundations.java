@@ -9,6 +9,7 @@ import com.hypixel.hytale.server.core.event.events.player.PlayerReadyEvent;
 import com.hypixel.hytale.server.core.plugin.JavaPlugin;
 import com.hypixel.hytale.server.core.plugin.JavaPluginInit;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
+import com.raeden.hytale.core.manager.CommandManager;
 import com.raeden.hytale.core.commands.CoreCommand;
 import com.raeden.hytale.core.config.ConfigManager;
 import com.raeden.hytale.core.events.playerEvents.*;
@@ -35,7 +36,7 @@ import com.raeden.hytale.modules.utility.commands.NafsmunCommand;
 import com.raeden.hytale.modules.rank.RankManager;
 import com.raeden.hytale.modules.rank.commands.RankCommand;
 import com.raeden.hytale.modules.utility.commands.*;
-import com.raeden.hytale.utils.Scheduler;
+import com.raeden.hytale.utils.SchedulerUtils;
 
 import javax.annotation.Nonnull;
 import java.nio.file.Path;
@@ -47,12 +48,13 @@ public class HytaleFoundations extends JavaPlugin {
     public static final Gson GSON = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
     public static Path ERROR_LOG_DIRECTORY;
 
-    private Scheduler scheduler;
+    private SchedulerUtils schedulerUtils;
     private PluginActionManager pluginActionManager;
     private ConfigManager configManager;
     public static LangManager LM;
     private PlayerDataManager playerDataManager;
     private PermissionManager permissionManager;
+    private CommandManager commandManager;
 
     private PlayerMovementListener playerMovementListener;
 
@@ -81,8 +83,8 @@ public class HytaleFoundations extends JavaPlugin {
     protected void shutdown() {
         myLogger.atInfo().log("Hytale Foundations is shutting down...");
 
-        if(scheduler != null) {
-            scheduler.shutdown();
+        if(schedulerUtils != null) {
+            schedulerUtils.shutdown();
         }
     }
 
@@ -92,12 +94,13 @@ public class HytaleFoundations extends JavaPlugin {
         if(permissionManager == null) permissionManager = new PermissionManager(this);
         if(LM == null) LM = new LangManager(this);
         LM.setDefaultLanguage();
-        if(scheduler == null) scheduler = new Scheduler(this);
+        if(schedulerUtils == null) schedulerUtils = new SchedulerUtils(this);
         if(pluginActionManager == null) pluginActionManager = new PluginActionManager(this);
         if(playerDataManager == null) playerDataManager = new PlayerDataManager(this);
+        if(commandManager == null) commandManager = new CommandManager(this);
 
         if(configManager.getDefaultConfig().isToggleChatModule()) {
-            if(chatManager == null) chatManager = new ChatManager(this, scheduler);
+            if(chatManager == null) chatManager = new ChatManager(this, schedulerUtils);
         } else {
             if(chatManager != null) chatManager = null;
         }
@@ -127,7 +130,7 @@ public class HytaleFoundations extends JavaPlugin {
             });
         }
 
-        playerMovementListener = new PlayerMovementListener(this, scheduler);
+        playerMovementListener = new PlayerMovementListener(this, schedulerUtils);
 
         PlayerDeathListener deathListener = new PlayerDeathListener(this);
         PlayerBlockBreakListener blockBreakListener = new PlayerBlockBreakListener(this);
@@ -186,14 +189,13 @@ public class HytaleFoundations extends JavaPlugin {
 
         this.getCommandRegistry().registerCommand(new AnvilCommand());
         this.getCommandRegistry().registerCommand(new NafsmunCommand());
-
-
     }
 
     public ConfigManager getConfigManager() {return configManager;}
     public LangManager getLangManager() {return LM;}
     public PlayerDataManager getPlayerDataManager() {return playerDataManager;}
     public PermissionManager getPermissionManager() {return permissionManager;}
+    public CommandManager getCommandManager() {return commandManager;}
     public ChatManager getChatManager() {return chatManager;}
     public PluginActionManager getPluginActionManager() {return pluginActionManager;}
     public MailManager getMailManager() {return mailManager;}
