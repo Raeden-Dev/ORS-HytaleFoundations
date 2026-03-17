@@ -1,7 +1,7 @@
 package com.raeden.hytale.utils;
 
 import com.raeden.hytale.HytaleFoundations;
-import com.raeden.hytale.lang.LangKey;
+import com.raeden.hytale.core.lang.LangKey;
 
 import java.util.Map;
 import java.util.concurrent.*;
@@ -13,7 +13,7 @@ public class Scheduler {
     private final HytaleFoundations hytaleFoundations;
     private final ScheduledExecutorService scheduler;
     private final Map<String, ScheduledFuture<?>> activeSchedulers;
-    private boolean debugMode;
+    private final boolean debugMode;
 
     public Scheduler(HytaleFoundations hytaleFoundations) {
         this.hytaleFoundations = hytaleFoundations;
@@ -39,7 +39,7 @@ public class Scheduler {
             }
         }, delay, unit);
         activeSchedulers.put(taskName, future);
-        if (debugMode) myLogger.atInfo().log(LM.getMessage(LangKey.CREATE_SUCCESS,true, "runTaskLater: " + taskName).getAnsiMessage());
+        if (debugMode) myLogger.atInfo().log(LM.getConsoleMessage(LangKey.CREATE_SUCCESS,"runTaskLater: " + taskName).getAnsiMessage());
         return future;
     }
 
@@ -48,7 +48,7 @@ public class Scheduler {
         shutdownScheduler(taskName);
         ScheduledFuture<?> future = scheduler.scheduleAtFixedRate(task, initialDelay, period, unit);
         activeSchedulers.put(taskName, future);
-        if (debugMode) myLogger.atInfo().log(LM.getMessage(LangKey.CREATE_SUCCESS,true, "runTaskTimer: " + taskName).getAnsiMessage());
+        if (debugMode) myLogger.atInfo().log(LM.getConsoleMessage(LangKey.CREATE_SUCCESS,"runTaskTimer: " + taskName).getAnsiMessage());
         return future;
     }
 
@@ -74,7 +74,7 @@ public class Scheduler {
         if (scheduledTask != null) {
             scheduledTask.cancel(true);
             if(debugMode) {
-                myLogger.atInfo().log(LM.getMessage(LangKey.STOP_SUCCESS,true, "active scheduler " + scheduleName).getAnsiMessage());
+                myLogger.atInfo().log(LM.getConsoleMessage(LangKey.STOP_SUCCESS,"active scheduler " + scheduleName).getAnsiMessage());
             }
         }
     }

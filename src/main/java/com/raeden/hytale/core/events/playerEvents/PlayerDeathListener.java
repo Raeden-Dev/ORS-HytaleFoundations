@@ -12,6 +12,7 @@ import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.Universe;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import com.raeden.hytale.HytaleFoundations;
+import com.raeden.hytale.core.player.PlayerProfile;
 import com.raeden.hytale.core.player.PlayerStats;
 import com.raeden.hytale.utils.FileManager;
 
@@ -35,18 +36,15 @@ public class PlayerDeathListener extends DeathSystems.OnDeathSystem {
     @Override
     public void onComponentAdded(@Nonnull Ref<EntityStore> ref, @Nonnull DeathComponent deathComponent, @Nonnull Store<EntityStore> store, @Nonnull CommandBuffer<EntityStore> commandBuffer) {
         try {
-            Universe universe = Universe.get();
-            if(universe == null) return;
-            ComponentType<EntityStore, PlayerRef> refType = universe.getPlayerRefComponentType();
-            PlayerRef playerRef = store.getComponent(ref, refType);
+            PlayerRef playerRef = store.getComponent(ref, PlayerRef.getComponentType());
             if(playerRef == null) return;
             String playerUsername = playerRef.getUsername();
             PlayerStats stats = hytaleFoundations.getPlayerDataManager().getPlayerStats(playerUsername);
-            if(stats != null) {
+            if(stats != null && stats.isCollectStats()) {
                 stats.addDeath();
             }
         } catch (Exception e) {
-            FileManager.logError("PlayerDeathListener", e);
+            logError("PlayerDeathListener", e);
         }
     }
 

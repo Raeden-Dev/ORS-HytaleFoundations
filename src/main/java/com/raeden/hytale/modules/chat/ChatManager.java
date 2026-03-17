@@ -4,7 +4,7 @@ import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.raeden.hytale.HytaleFoundations;
 import com.raeden.hytale.core.config.containers.ChatConfig;
 import com.raeden.hytale.core.player.PlayerProfile;
-import com.raeden.hytale.lang.LangKey;
+import com.raeden.hytale.core.lang.LangKey;
 import com.raeden.hytale.utils.FileManager;
 import com.raeden.hytale.utils.Scheduler;
 import com.raeden.hytale.utils.TimeUtils;
@@ -24,7 +24,6 @@ import static com.raeden.hytale.utils.FileManager.createDirectory;
 import static com.raeden.hytale.utils.FileManager.logError;
 
 public class ChatManager {
-    private final HytaleFoundations hytaleFoundations;
     private final AffixManager affixManager;
     private final Scheduler scheduler;
     private final ColorManager colorManager;
@@ -36,7 +35,6 @@ public class ChatManager {
     private final Path chatLogDir;
 
     public ChatManager(HytaleFoundations hytaleFoundations, Scheduler scheduler) {
-        this.hytaleFoundations = hytaleFoundations;
         this.scheduler = scheduler;
 
         affixManager = new AffixManager(hytaleFoundations);
@@ -65,7 +63,7 @@ public class ChatManager {
         if (chatConfig.isShowNickname() && profile.isShowNickname() && !profile.getNickname().isEmpty()) {
             displayName = profile.getNickname();
         } else {
-            if(colorManager.isColorCodeAvailable(profile.getUsernameColorCode())) {
+            if(colorManager.validateUsernameDisplayColor(profile.getUsername().getLast(), profile.getUsernameColorCode())) {
                 displayName = profile.getUsernameColorCode() + username;
             }
         }
@@ -96,7 +94,7 @@ public class ChatManager {
     private void createChatSaveScheduler() {
         scheduler.runTaskTimer("chatSaveScheduler", () -> {
                 if(messageLog.isEmpty()) return;
-                exportChatLog();
+                    exportChatLog();
                 },
                 chatConfig.getChatLogSaveInterval(),
                 chatConfig.getChatLogSaveInterval(),
@@ -120,10 +118,10 @@ public class ChatManager {
                 writer.newLine();
             }
             writer.write("---- END ----");
-            myLogger.atInfo().log(LM.getMessage(LangKey.LOG_CHAT_EXPORT_SUCCESS,true, fileName, chatLogDir.toString()).getAnsiMessage());
+            myLogger.atInfo().log(LM.getConsoleMessage(LangKey.LOG_CHAT_EXPORT_SUCCESS,fileName, chatLogDir.toString()).getAnsiMessage());
         } catch (IOException e) {
             FileManager.logError("exportChatLog", e);
-            myLogger.atSevere().log(LM.getMessage(LangKey.LOG_CHAT_EXPORT_FAIL,true, fileName).getAnsiMessage());
+            myLogger.atSevere().log(LM.getConsoleMessage(LangKey.LOG_CHAT_EXPORT_FAIL,fileName).getAnsiMessage());
         }
     }
 
@@ -134,7 +132,7 @@ public class ChatManager {
     // Nicknaming
     public boolean validateNickname(PlayerRef caller, String nickname) {
         if(nickname.length() <= 2) {
-            caller.sendMessage(LM.getMessage(LangKey.NICKNAME_LENGTH, false));
+            caller.sendMessage(LM.getPlayerMessage(caller.getUsername(), LangKey.NICKNAME_LENGTH));
             return false;
         }
         return true;

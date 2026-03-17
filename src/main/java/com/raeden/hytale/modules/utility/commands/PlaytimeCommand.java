@@ -13,7 +13,7 @@ import com.raeden.hytale.HytaleFoundations;
 import com.raeden.hytale.core.player.PlayerDataManager;
 import com.raeden.hytale.core.player.PlayerStats;
 import com.raeden.hytale.core.utils.Permissions;
-import com.raeden.hytale.lang.LangKey;
+import com.raeden.hytale.core.lang.LangKey;
 import com.raeden.hytale.utils.TimeUtils;
 
 import javax.annotation.Nonnull;
@@ -28,6 +28,7 @@ public class PlaytimeCommand extends AbstractPlayerCommand {
 
     public PlaytimeCommand(HytaleFoundations plugin) {
         super("playtime", "Shows your or a player's total playtime.");
+        this.addAliases("ptime");
         this.requirePermission(Permissions.PLAYTIME.getPermission());
         this.hytaleFoundations = plugin;
         targetPlayer = withOptionalArg("Player", "Target player to check their playtime", ArgTypes.STRING);
@@ -44,7 +45,7 @@ public class PlaytimeCommand extends AbstractPlayerCommand {
             PlayerStats stats = dataManager.getOnlinePlayerStats(senderUsername);
             dataManager.savePlayTime(senderUsername);
             String playtime = TimeUtils.formatDuration(stats.getPlayTimeMillis());
-            commandContext.sender().sendMessage(LM.getMessage(senderUsername, LangKey.STATS_PLAYTIME,false, senderUsername, playtime));
+            commandContext.sender().sendMessage(LM.getPlayerMessage(senderUsername, LangKey.STATS_PLAYTIME,senderUsername, playtime));
             return;
         }
 
@@ -53,15 +54,15 @@ public class PlaytimeCommand extends AbstractPlayerCommand {
             if(dataManager.doesPlayerDataExist(targetUsername)) {
                 PlayerStats stats = dataManager.getOnlinePlayerStats(targetUsername);
                 String playtime = TimeUtils.formatDuration(stats.getPlayTimeMillis());
-                commandContext.sender().sendMessage(LM.getMessage(senderUsername, LangKey.STATS_PLAYTIME,false, targetUsername, playtime));
+                commandContext.sender().sendMessage(LM.getPlayerMessage(senderUsername, LangKey.STATS_PLAYTIME,targetUsername, playtime));
             } else {
-              commandContext.sender().sendMessage(LM.getMessage(senderUsername, LangKey.PLAYER_NOT_FOUND,false, targetUsername));
+              commandContext.sender().sendMessage(LM.getPlayerMessage(senderUsername, LangKey.PLAYER_NOT_FOUND,targetUsername));
             }
         } else {
             PlayerStats stats = dataManager.getOnlinePlayerStats(targetUsername);
             dataManager.savePlayTime(targetUsername);
             String playtime = TimeUtils.formatDuration(stats.getPlayTimeMillis());
-            commandContext.sender().sendMessage(LM.getMessage(senderUsername, LangKey.STATS_PLAYTIME,false, targetUsername, playtime));
+            commandContext.sender().sendMessage(LM.getPlayerMessage(senderUsername, LangKey.STATS_PLAYTIME,targetUsername, playtime));
         }
     }
 }

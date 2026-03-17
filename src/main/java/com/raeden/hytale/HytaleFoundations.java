@@ -11,12 +11,10 @@ import com.hypixel.hytale.server.core.plugin.JavaPluginInit;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import com.raeden.hytale.core.commands.CoreCommand;
 import com.raeden.hytale.core.config.ConfigManager;
+import com.raeden.hytale.core.events.playerEvents.*;
 import com.raeden.hytale.core.player.PlayerDataManager;
-import com.raeden.hytale.core.events.playerEvents.PlayerDeathListener;
-import com.raeden.hytale.core.events.playerEvents.PlayerServerDisconnectListener;
-import com.raeden.hytale.core.events.playerEvents.PlayerServerJoinListener;
 import com.raeden.hytale.core.utils.PermissionManager;
-import com.raeden.hytale.lang.LangManager;
+import com.raeden.hytale.core.lang.LangManager;
 import com.raeden.hytale.modules.admin.commands.AnnounceCommand;
 import com.raeden.hytale.modules.admin.commands.TitleCommand;
 import com.raeden.hytale.modules.admin.commands.VanishCommand;
@@ -53,6 +51,8 @@ public class HytaleFoundations extends JavaPlugin {
     private PlayerDataManager playerDataManager;
     private PermissionManager permissionManager;
 
+    private PlayerMovementListener playerMovementListener;
+
     private ChatManager chatManager;
     private MailManager mailManager;
     private RankManager rankManager;
@@ -85,9 +85,9 @@ public class HytaleFoundations extends JavaPlugin {
 
     public void registerManagers() {
         // Main dependencies
+        if(configManager == null) configManager = new ConfigManager(this);
         if(permissionManager == null) permissionManager = new PermissionManager(this);
         if(LM == null) LM = new LangManager(this);
-        if(configManager == null) configManager = new ConfigManager(this);
         LM.setDefaultLanguage();
         if(scheduler == null) scheduler = new Scheduler(this);
         if(pluginActionManager == null) pluginActionManager = new PluginActionManager(this);
@@ -124,8 +124,22 @@ public class HytaleFoundations extends JavaPlugin {
             });
         }
 
-        PlayerDeathListener PlayerDeathListener = new PlayerDeathListener(this);
-        EntityStore.REGISTRY.registerSystem(PlayerDeathListener);
+        playerMovementListener = new PlayerMovementListener(this, scheduler);
+
+        PlayerDeathListener deathListener = new PlayerDeathListener(this);
+        PlayerBlockBreakListener blockBreakListener = new PlayerBlockBreakListener(this);
+        PlayerBlockPlaceListener blockPlaceListener = new PlayerBlockPlaceListener(this);
+        PlayerMobKillListener mobKillListener = new PlayerMobKillListener(this);
+        PlayerKillListener killListener = new PlayerKillListener(this);
+        PlayerDamageListener damageListener = new PlayerDamageListener(this);
+        PlayerItemCraftListener craftListener = new PlayerItemCraftListener(this);
+        EntityStore.REGISTRY.registerSystem(deathListener);
+        EntityStore.REGISTRY.registerSystem(blockBreakListener);
+        EntityStore.REGISTRY.registerSystem(blockPlaceListener);
+        EntityStore.REGISTRY.registerSystem(mobKillListener);
+        EntityStore.REGISTRY.registerSystem(killListener);
+        EntityStore.REGISTRY.registerSystem(damageListener);
+        EntityStore.REGISTRY.registerSystem(craftListener);
     }
 
     public void registerCommands() {
@@ -160,7 +174,7 @@ public class HytaleFoundations extends JavaPlugin {
             this.getCommandRegistry().registerCommand(new RankCommand(this));
         }
         // Utility Commands
-        this.getCommandRegistry().registerCommand(new PlayerInfoCommand());
+        this.getCommandRegistry().registerCommand(new PlayerInfoCommand(this));
         this.getCommandRegistry().registerCommand(new PlaytimeCommand(this));
         this.getCommandRegistry().registerCommand(new AnvilCommand());
 
@@ -174,4 +188,7 @@ public class HytaleFoundations extends JavaPlugin {
     public PluginActionManager getPluginActionManager() {return pluginActionManager;}
     public MailManager getMailManager() {return mailManager;}
     public RankManager getRankManager() {return rankManager;}
+
+    public PlayerMovementListener getPlayerMovementListener() {return playerMovementListener;}
+
 }

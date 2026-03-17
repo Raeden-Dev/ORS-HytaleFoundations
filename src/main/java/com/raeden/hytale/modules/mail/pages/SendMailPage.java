@@ -16,7 +16,7 @@ import com.hypixel.hytale.server.core.ui.builder.UIEventBuilder;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import com.raeden.hytale.HytaleFoundations;
-import com.raeden.hytale.lang.LangKey;
+import com.raeden.hytale.core.lang.LangKey;
 import com.raeden.hytale.modules.mail.MailManager;
 import com.raeden.hytale.utils.TimeUtils;
 
@@ -102,16 +102,16 @@ public class SendMailPage extends InteractiveCustomUIPage<SendMailPage.SendMailD
 
     private boolean checkIfMailValid(Player player, SendMailData data) {
         if(data.receiverName == null || data.mailBody == null || data.mailSubject == null) {
-            player.sendMessage(LM.getMessage(player.getDisplayName(), LangKey.MAIL_MISSING_FIELD, false));
+            player.sendMessage(LM.getPlayerMessage(player.getDisplayName(), LangKey.MAIL_MISSING_FIELD));
             return false;
         }
 
         if(data.receiverName.isEmpty() || data.mailSubject.isEmpty() || data.mailBody.isEmpty()) {
-            player.sendMessage(LM.getMessage(player.getDisplayName(), LangKey.MAIL_MISSING_FIELD, false));
+            player.sendMessage(LM.getPlayerMessage(player.getDisplayName(), LangKey.MAIL_MISSING_FIELD));
             return false;
         } else {
             if(!hytaleFoundations.getPlayerDataManager().doesPlayerDataExist(data.receiverName)) {
-                player.sendMessage(LM.getMessage(player.getDisplayName(), LangKey.PLAYER_NOT_FOUND_MSG, false, data.receiverName));
+                player.sendMessage(LM.getPlayerMessage(player.getDisplayName(), LangKey.PLAYER_NOT_FOUND_MSG, data.receiverName));
                 return false;
             }
         }

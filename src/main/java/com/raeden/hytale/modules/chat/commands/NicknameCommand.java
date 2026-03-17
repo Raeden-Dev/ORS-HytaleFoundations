@@ -13,7 +13,7 @@ import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import com.raeden.hytale.HytaleFoundations;
 import com.raeden.hytale.core.player.PlayerProfile;
 import com.raeden.hytale.core.utils.Permissions;
-import com.raeden.hytale.lang.LangKey;
+import com.raeden.hytale.core.lang.LangKey;
 
 import javax.annotation.Nonnull;
 
@@ -47,14 +47,14 @@ public class NicknameCommand extends AbstractCommandCollection {
             String nickname = commandContext.get(this.nickname);
             PlayerProfile targetProfile = hytaleFoundations.getPlayerDataManager().getPlayerProfile(targetUsername);
             if(targetProfile == null) {
-                commandContext.sender().sendMessage(LM.getMessage(senderUsername, LangKey.PLAYER_NOT_FOUND_MSG,false, targetUsername));
+                commandContext.sender().sendMessage(LM.getPlayerMessage(senderUsername, LangKey.PLAYER_NOT_FOUND_MSG,targetUsername));
                 return;
             }
             if(!hytaleFoundations.getChatManager().validateNickname(playerRef, nickname)) {
                 return;
             }
             targetProfile.setNickname(nickname);
-            commandContext.sender().sendMessage(LM.getMessage(senderUsername, LangKey.NICKNAME_SET,false, targetUsername, nickname));
+            commandContext.sender().sendMessage(LM.getPlayerMessage(senderUsername, LangKey.NICKNAME_SET,targetUsername, nickname));
         }
     }
     public static class NicknameClearCommand extends AbstractPlayerCommand {
@@ -79,28 +79,13 @@ public class NicknameCommand extends AbstractCommandCollection {
             } else {
                 PlayerProfile targetProfile = hytaleFoundations.getPlayerDataManager().getPlayerProfile(targetPlayer);
                 if(targetProfile == null) {
-                    commandContext.sender().sendMessage(LM.getMessage(senderUsername, LangKey.PLAYER_NOT_FOUND_MSG,false, targetPlayer));
+                    commandContext.sender().sendMessage(LM.getPlayerMessage(senderUsername, LangKey.PLAYER_NOT_FOUND_MSG,targetPlayer));
                     return;
                 }
                 targetProfile.setNickname("");
-                commandContext.sender().sendMessage(LM.getMessage(senderUsername, LangKey.NICKNAME_CLEARED,false, targetPlayer));
+                commandContext.sender().sendMessage(LM.getPlayerMessage(senderUsername, LangKey.NICKNAME_CLEARED,targetPlayer));
             }
         }
     }
 
 }
-// ~DEPRECATED
-//@Override
-//protected void execute(@Nonnull CommandContext commandContext, @Nonnull Store<EntityStore> store, @Nonnull Ref<EntityStore> ref, @Nonnull PlayerRef playerRef, @Nonnull World world) {
-//    String senderUsername = commandContext.sender().getDisplayName();
-//    String[] rawMessage = commandContext.getInputString().split("\\s+", 2);
-//    if(rawMessage.length == 1) return;
-//    String nicknameContent = rawMessage[1];
-//    if(!hytaleFoundations.getChatManager().validateNickname(playerRef, nicknameContent)) {
-//        return;
-//    }
-//    PlayerProfile senderProfile = hytaleFoundations.getPlayerDataManager().getPlayerProfile(senderUsername);
-//    if(senderProfile != null) {
-//        senderProfile.setNickname(nicknameContent);
-//    }
-//}

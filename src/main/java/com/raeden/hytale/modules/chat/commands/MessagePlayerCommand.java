@@ -13,7 +13,7 @@ import com.raeden.hytale.HytaleFoundations;
 import com.raeden.hytale.core.player.PlayerDataManager;
 import com.raeden.hytale.core.player.PlayerProfile;
 import com.raeden.hytale.core.player.PlayerStats;
-import com.raeden.hytale.lang.LangKey;
+import com.raeden.hytale.core.lang.LangKey;
 import com.raeden.hytale.modules.chat.ChatManager;
 
 import javax.annotation.Nonnull;
@@ -45,7 +45,7 @@ public class MessagePlayerCommand extends AbstractPlayerCommand {
 
         PlayerRef receiver = findPlayerByName("Message Command", receiverUsername);
         if(receiver == null) {
-            commandContext.sender().sendMessage(LM.getMessage(senderUsername, LangKey.PM_ERROR_OFFLINE,false, receiverUsername));
+            commandContext.sender().sendMessage(LM.getPlayerMessage(senderUsername, LangKey.PM_ERROR_OFFLINE, receiverUsername));
             return;
         }
 
@@ -56,26 +56,26 @@ public class MessagePlayerCommand extends AbstractPlayerCommand {
         PlayerProfile receiverProfile = dataManager.getOnlinePlayerProfile(receiverUsername);
 
         if(senderProfile.isMuted() && !isAdmin) {
-            commandContext.sender().sendMessage(LM.getMessage(senderUsername, LangKey.MUTE_ERROR_CHAT,false, receiverUsername));
+            commandContext.sender().sendMessage(LM.getPlayerMessage(senderUsername, LangKey.MUTE_ERROR_CHAT, receiverUsername));
             return;
         }
         if(receiverProfile.isMuted() && !isAdmin) {
-            commandContext.sender().sendMessage(LM.getMessage(senderUsername, LangKey.PM_ERROR_TARGET_MUTED,false, receiverUsername));
+            commandContext.sender().sendMessage(LM.getPlayerMessage(senderUsername, LangKey.PM_ERROR_TARGET_MUTED, receiverUsername));
             return;
         }
 
         if(receiverProfile.getBlockedPlayers().contains(senderUsername) && !isAdmin) {
-            commandContext.sender().sendMessage(LM.getMessage(senderUsername, LangKey.PM_ERROR_SENDER_BLOCKED,false, receiverUsername));
+            commandContext.sender().sendMessage(LM.getPlayerMessage(senderUsername, LangKey.PM_ERROR_SENDER_BLOCKED, receiverUsername));
             return;
         }
 
         if(receiverUsername.equals(senderUsername) && !isAdmin) {
-            commandContext.sender().sendMessage(LM.getMessage(senderUsername, LangKey.PM_ERROR_SELF,false));
+            commandContext.sender().sendMessage(LM.getPlayerMessage(senderUsername, LangKey.PM_ERROR_SELF));
             return;
         }
 
-        receiver.sendMessage(LM.getMessage(receiverUsername, LangKey.PM_FORMAT_RECEIVER,false, senderUsername, messageContent));
-        sender.sendMessage(LM.getMessage(senderUsername, LangKey.PM_FORMAT_SENDER,false, receiverUsername, messageContent));
+        receiver.sendMessage(LM.getPlayerMessage(receiverUsername, LangKey.PM_FORMAT_RECEIVER, senderUsername, messageContent));
+        sender.sendMessage(LM.getPlayerMessage(senderUsername, LangKey.PM_FORMAT_SENDER, receiverUsername, messageContent));
 
         // Need to add for admins
         senderStats.increaseMessageSent();

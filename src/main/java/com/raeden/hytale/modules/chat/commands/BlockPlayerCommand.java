@@ -12,7 +12,7 @@ import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import com.raeden.hytale.HytaleFoundations;
 import com.raeden.hytale.core.player.PlayerProfile;
 import com.raeden.hytale.core.utils.Permissions;
-import com.raeden.hytale.lang.LangKey;
+import com.raeden.hytale.core.lang.LangKey;
 
 import javax.annotation.Nonnull;
 import java.util.List;
@@ -35,15 +35,15 @@ public class BlockPlayerCommand extends AbstractPlayerCommand {
 
         PlayerProfile profile = hytaleFoundations.getPlayerDataManager().getPlayerProfile(senderUsername);
         if(profile == null) {
-            commandContext.sender().sendMessage(LM.getMessage(senderUsername, LangKey.PLAYER_NOT_FOUND_MSG, false, targetUsername));
+            commandContext.sender().sendMessage(LM.getPlayerMessage(senderUsername, LangKey.PLAYER_NOT_FOUND_MSG, targetUsername));
             return;
         }
         List<String> blockedPlayers = profile.getBlockedPlayers();
         if(blockedPlayers.contains(targetUsername)) {
-            commandContext.sender().sendMessage(LM.getMessage(senderUsername, LangKey.BLOCK_ALREADY,false, targetUsername));
+            commandContext.sender().sendMessage(LM.getPlayerMessage(senderUsername, LangKey.BLOCK_ALREADY,targetUsername));
         } else {
             profile.addNewBlockedPlayer(targetUsername);
-            commandContext.sender().sendMessage(LM.getMessage(senderUsername, LangKey.BLOCK_SUCCESS,false, targetUsername));
+            commandContext.sender().sendMessage(LM.getPlayerMessage(senderUsername, LangKey.BLOCK_SUCCESS,targetUsername));
         }
     }
 }
