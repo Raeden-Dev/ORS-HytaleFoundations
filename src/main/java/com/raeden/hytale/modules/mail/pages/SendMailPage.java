@@ -47,7 +47,7 @@ public class SendMailPage extends InteractiveCustomUIPage<SendMailPage.SendMailD
                         .append(new KeyedCodec<>("ClickedButton", Codec.STRING), (SendMailData obj, String val) -> obj.clickedButton = val, (SendMailData obj) -> obj.clickedButton).add()
                         .build();
     }
-    public SendMailPage(HytaleFoundations hytaleFoundations, PlayerRef playerRef) {
+    public SendMailPage(Object hytaleFoundations, PlayerRef playerRef) {
         super(playerRef, CustomPageLifetime.CanDismiss, SendMailData.CODEC);
         this.hytaleFoundations = hytaleFoundations;
     }

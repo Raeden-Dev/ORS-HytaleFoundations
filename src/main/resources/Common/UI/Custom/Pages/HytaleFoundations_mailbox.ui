@@ -1,0 +1,219 @@
+$C = "../Common.ui";
+
+@PrimaryButtonStyle = TextButtonStyle(
+  Default: (Background: #3a7bd5, LabelStyle: (FontSize: 14, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
+  Hovered: (Background: #4a8be5, LabelStyle: (FontSize: 14, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
+  Pressed: (Background: #2a6bc5, LabelStyle: (FontSize: 14, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center))
+);
+
+@SecondaryBtnStyle = TextButtonStyle(
+  Default: (Background: #2b3542, LabelStyle: (FontSize: 14, TextColor: #96a9be, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
+  Hovered: (Background: #3b4552, LabelStyle: (FontSize: 14, TextColor: #b6c9de, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
+  Pressed: (Background: #1b2532, LabelStyle: (FontSize: 14, TextColor: #96a9be, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center))
+);
+
+$C.@PageOverlay {
+  $C.@Container {
+    Anchor: (Width: 900, Height: 560);
+    Padding: (Full: 20);
+
+    #Title {
+      Group {
+        $C.@Title {
+          @Text = "MAILBOX";
+        }
+      }
+    }
+
+    #Content {
+      LayoutMode: Left;
+
+      Group #Main {
+        LayoutMode: Left;
+
+
+        Group #MailListSection {
+          Anchor: (Width: 260);
+          LayoutMode: Top;
+
+          ScrollableGroup #MailList {
+            Anchor: (Height: 440);
+            Background: #1f2738;
+            Padding: 6;
+
+            LayoutMode: Top;
+
+            ScrollbarStyle: (
+              Spacing: 6,
+              Size: 6
+            );
+
+            // Mail Item Template
+            Group #MailItem {
+              Anchor: (Height: 60);
+              Background: #2b3542;
+              Padding: 10;
+
+              LayoutMode: Left;
+
+              Label {
+                Text: "✉";
+                Style: (FontSize: 16, TextColor: #96a9be);
+                Anchor: (Width: 20);
+              }
+
+              Group {Anchor: (Width: 10);}
+
+              Label {
+                Text: "Sender";
+                Style: (
+                  FontSize: 14,
+                  TextColor: #ffffff,
+                  RenderBold: true
+                );
+              }
+            }
+          }
+
+          Group {Anchor: (Height: 10);}
+
+          TextButton #DeleteAllButton {
+            Text: "DELETE ALL";
+            Anchor: (Height: 36);
+            Style: @SecondaryBtnStyle;
+          }
+        }
+
+        Group {Anchor: (Width: 15);}
+
+
+        Group #MailViewSection {
+          FlexWeight: 1;
+          LayoutMode: Top;
+
+
+          Label #FromLabel {
+            Text: "From: Server";
+            Style: (
+              FontSize: 14,
+              TextColor: #b4c8c9,
+              RenderBold: true
+            );
+            Anchor: (Height: 20);
+          }
+
+          Group {Anchor: (Height: 8);}
+
+
+          TextField #SubjectDisplay {
+            Anchor: (Height: 40);
+            Background: #1f2738;
+            Text: "Welcome Gift!";
+            Style: (
+              FontSize: 14,
+              TextColor: #4bd865,
+              RenderBold: true
+            );
+          }
+
+          Group {Anchor: (Height: 5);}
+
+          Label #DateLabel {
+            Text: "2026-02-03";
+            Style: (
+              FontSize: 12,
+              TextColor: #96a9be
+            );
+            Anchor: (Height: 15);
+          }
+
+          Group {Anchor: (Height: 10);}
+
+
+          MultilineTextField #MessageView {
+            Anchor: (Height: 180);
+            Text: "Here are some starter items to help you journey!";
+            Background: #e6e0d4;
+            OutlineColor: #424a5e;
+            OutlineSize: 2;
+            Padding: 10;
+            MaxLines: 20;
+          }
+
+          Group {Anchor: (Height: 10);}
+
+
+          Label {
+            Text: "Attachment:";
+            Style: (
+              FontSize: 13,
+              TextColor: #b4c8c9,
+              RenderBold: true
+            );
+            Anchor: (Height: 15);
+          }
+
+          Group {Anchor: (Height: 8);}
+
+
+          Group #AttachmentRow {
+            LayoutMode: Left;
+            Anchor: (Height: 60);
+
+            Group #Item1 {
+              Anchor: (Width: 50, Height: 50);
+              Background: #2b3542;
+            }
+
+            Group {Anchor: (Width: 10);}
+
+            Group #Item2 {
+              Anchor: (Width: 50, Height: 50);
+              Background: #2b3542;
+            }
+
+            Group {
+              FlexWeight: 1;
+            }
+
+            TextButton #CollectButton {
+              Text: "COLLECT";
+              Anchor: (Width: 120, Height: 36);
+              Style: @PrimaryButtonStyle;
+            }
+          }
+
+          Group {Anchor: (Height: 15);}
+
+
+          Group #BottomButtons {
+            LayoutMode: Left;
+            Anchor: (Height: 40);
+
+            TextButton #ReplyButton {
+              Text: "REPLY";
+              Anchor: (Width: 120, Height: 36);
+              Style: @SecondaryBtnStyle;
+            }
+
+            Group {Anchor: (Width: 10);}
+
+            TextButton #MarkUnreadButton {
+              Text: "MARK UNREAD";
+              Anchor: (Width: 150, Height: 36);
+              Style: @SecondaryBtnStyle;
+            }
+
+            Group {Anchor: (Width: 10);}
+
+            TextButton #DeleteButton {
+              Text: "DELETE";
+              Anchor: (Width: 120, Height: 36);
+              Style: @SecondaryBtnStyle;
+            }
+          }
+        }
+      }
+    }
+  }
+}

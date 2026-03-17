@@ -62,6 +62,22 @@ public class MailManager {
         NotificationUtil.sendNotification(handler, pm, sm,  NotificationStyle.Default);
     }
 
+    public void deleteAllMails(PlayerRef playerRef) {
+    }
+
+    public String getSenderFromMail(PlayerRef playerRef, String selectedMailId) {
+        return selectedMailId;
+    }
+
+    public void markAsUnread(PlayerRef playerRef, String selectedMailId) {
+    }
+
+    public void collectAttachments(PlayerRef playerRef, String selectedMailId) {
+    }
+
+    public void deleteMail(PlayerRef playerRef, String selectedMailId) {
+    }
+
     public static class Mail {
         private final String from;
         private final String to;

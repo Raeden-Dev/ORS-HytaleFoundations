@@ -56,7 +56,7 @@ public class PlayerReportPage extends InteractiveCustomUIPage<PlayerReportData> 
     @Override
     public void build(@Nonnull Ref<EntityStore> ref, @Nonnull UICommandBuilder uiCommandBuilder, @Nonnull UIEventBuilder uiEventBuilder, @Nonnull Store<EntityStore> store) {
         // Assuming your UI file is placed here
-        uiCommandBuilder.append("Pages/PlayerReport.ui");
+        uiCommandBuilder.append("Pages/HytaleFoundations_PlayerReport.ui");
 
         // Bind the main Report button to capture all form fields
         uiEventBuilder.addEventBinding(

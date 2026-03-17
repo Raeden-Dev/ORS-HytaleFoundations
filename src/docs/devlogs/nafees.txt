@@ -65,3 +65,4 @@ Example of how to write a devlog:
 >made my own UI & successfully ran it
 
 >working on new UIs
+> testing fixing UIs
