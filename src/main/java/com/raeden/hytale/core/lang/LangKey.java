@@ -25,6 +25,10 @@ public enum LangKey {
     DIR_CREATE_SUCCESS_LOC  ("system.dir.create.success_loc",       "[DIR] Created {0} directory at {1}"),
     DIR_CREATE_FAIL_LOC     ("system.dir.create.fail_loc",          "[DIR] Failed to create {0} at {1}"),
 
+    REGISTER_SUCCESS         ("system.data.register.success",       "[INFO] Registered {0}"),
+    REGISTER_FAILURE         ("system.data.register.failure",       "[ERROR] Failed to register {0}"),
+    PROCESS_SUCCESS         ("system.data.process.success",         "[INFO] Processed {0}"),
+    PROCESS_FAILURE         ("system.data.process.failure",         "[ERROR] Failed to process {0}"),
     CREATE_SUCCESS          ("system.data.create.success",          "[INFO] Created {0}"),
     CREATE_FAILURE          ("system.data.create.fail",             "[ERROR] Failed to create {0}"),
     SAVE_SUCCESS            ("system.data.save.success",            "[SAVE] Saved {0}"),

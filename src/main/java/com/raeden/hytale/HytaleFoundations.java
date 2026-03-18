@@ -9,7 +9,7 @@ import com.hypixel.hytale.server.core.event.events.player.PlayerReadyEvent;
 import com.hypixel.hytale.server.core.plugin.JavaPlugin;
 import com.hypixel.hytale.server.core.plugin.JavaPluginInit;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
-import com.raeden.hytale.core.manager.CommandManager;
+import com.raeden.hytale.core.alias.CommandAliasManager;
 import com.raeden.hytale.core.commands.CoreCommand;
 import com.raeden.hytale.core.config.ConfigManager;
 import com.raeden.hytale.core.events.playerEvents.*;
@@ -54,7 +54,7 @@ public class HytaleFoundations extends JavaPlugin {
     public static LangManager LM;
     private PlayerDataManager playerDataManager;
     private PermissionManager permissionManager;
-    private CommandManager commandManager;
+    private CommandAliasManager commandAliasManager;
 
     private PlayerMovementListener playerMovementListener;
 
@@ -97,7 +97,7 @@ public class HytaleFoundations extends JavaPlugin {
         if(schedulerUtils == null) schedulerUtils = new SchedulerUtils(this);
         if(pluginActionManager == null) pluginActionManager = new PluginActionManager(this);
         if(playerDataManager == null) playerDataManager = new PlayerDataManager(this);
-        if(commandManager == null) commandManager = new CommandManager(this);
+        if(commandAliasManager == null) commandAliasManager = new CommandAliasManager(this, this.getCommandRegistry());
 
         if(configManager.getDefaultConfig().isToggleChatModule()) {
             if(chatManager == null) chatManager = new ChatManager(this, schedulerUtils);
@@ -195,7 +195,7 @@ public class HytaleFoundations extends JavaPlugin {
     public LangManager getLangManager() {return LM;}
     public PlayerDataManager getPlayerDataManager() {return playerDataManager;}
     public PermissionManager getPermissionManager() {return permissionManager;}
-    public CommandManager getCommandManager() {return commandManager;}
+    public CommandAliasManager getCommandManager() {return commandAliasManager;}
     public ChatManager getChatManager() {return chatManager;}
     public PluginActionManager getPluginActionManager() {return pluginActionManager;}
     public MailManager getMailManager() {return mailManager;}

@@ -178,8 +178,7 @@ public class ConfigManager {
         config.setToggleEconomyModule(true);
         config.setToggleAnalyticsModule(true);
         config.setToggleDiscordModule(true);
-        config.addDataCluster("hub",List.of("world"));
-        config.addDataCluster("gamemode_1",List.of("world_gm1_hub","world_gm1_arena"));
+        config.addDataCluster("hub",List.of("default"));
         return config;
     }
 
