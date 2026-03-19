@@ -19,9 +19,7 @@ import javax.annotation.Nonnull;
 import java.lang.reflect.Type;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 import static com.raeden.hytale.HytaleFoundations.LM;
@@ -59,25 +57,54 @@ public class CommandAliasManager {
         }
     }
 
-    private void unknownCommandMessage(CommandContext commandContext) {
+    public void unknownCommandMessage(String commandName, CommandContext commandContext) {
         if(commandContext.isPlayer()) {
-            commandContext.sendMessage(Message.raw("Unknown command. Type /help for help.").color("#FF5555"));
+            commandContext.sender().sendMessage(LM.getConsoleMessage(LangKey.COMMAND_NOT_FOUND, commandName));
         }
     }
 
     // Loading and Saving
     public void loadCommands() {
+        System.out.println(commandRegistry.getRegistrations());
         Type type = new TypeToken<CommandFile>(){}.getType();
         CommandFile loadedCommandFile = loadJsonFile(commandFileName, commandFilePath, type, true);
-        if(loadedCommandFile != null && loadedCommandFile.getAliasMap() != null) {
+        Map<String, Command> tempCommandMap = new ConcurrentHashMap<>(commandMap);
+        commandMap.clear();
+        if(loadedCommandFile != null && loadedCommandFile.getCommandMap() != null) {
             int newCommands = 0;
-            for(Map.Entry<String, Command> entry : loadedCommandFile.getAliasMap().entrySet()) {
-                if(!commandMap.containsKey(entry.getKey())) {
+            int updatedCommands = 0;
+            int newAliases = 0;
+            for(Map.Entry<String, Command> entry : loadedCommandFile.getCommandMap().entrySet()) {
+                boolean isPresentInMap = tempCommandMap.containsKey(entry.getKey());
+                Command loadedCommand = tempCommandMap.get(entry.getKey());
+                if(!isPresentInMap) {
                     newCommands++;
+                }
+                if(isPresentInMap) {
+                    // Mismatch for target Commands
+                    boolean mismatchTargetCommand = loadedCommand.getTargetCommand().equalsIgnoreCase(entry.getValue().getTargetCommand());
+                    boolean mismatchNameAlias = loadedCommand.getNameAlias().equalsIgnoreCase(entry.getValue().getNameAlias());
+                    boolean mismatchPerms = loadedCommand.getPermission().equalsIgnoreCase(entry.getValue().getPermission());
+                    if(!mismatchTargetCommand || !mismatchNameAlias || !mismatchPerms) {
+                        updatedCommands++;
+                    }
+                }
+                // Load new aliases
+                if(tempCommandMap.containsKey(entry.getKey())) {
+                    if(loadedCommand.getAliases().length > 0) {
+                        List<String> aliases = Arrays.stream(loadedCommand.getAliases()).toList();
+                        for(String alias : entry.getValue().getAliases()) {
+                            if(!aliases.contains(alias)) {
+                                newAliases++;
+                            }
+                        }
+                    }
                 }
                 commandMap.put(entry.getKey(), entry.getValue());
             }
             if(newCommands > 0) myLogger.atInfo().log(LM.getConsoleMessage(LangKey.LOAD_SUCCESS, newCommands + " command(s)").getAnsiMessage());
+            if(updatedCommands > 0) myLogger.atInfo().log(LM.getConsoleMessage(LangKey.UPDATE_SUCCESS, updatedCommands + " command(s)").getAnsiMessage());
+            if(newAliases > 0) myLogger.atInfo().log(LM.getConsoleMessage(LangKey.LOAD_SUCCESS, newAliases + " command alias(es)").getAnsiMessage());
             commandFile = loadedCommandFile;
             registerDynamicCommands();
         } else {
@@ -106,15 +133,32 @@ public class CommandAliasManager {
             Command command = entry.getValue();
             String key = entry.getKey();
 
-            if(!registeredCommands.contains(command.getTargetCommand())) {
-                DynamicCommand newCommand = new DynamicCommand(command.getNameAlias(), command.getTargetCommand(),
+            String commandName = command.getNameAlias().toLowerCase();
+            if(!registeredCommands.contains(commandName)) {
+                DynamicCommand newCommand = new DynamicCommand(this, key, command.getNameAlias(), command.getTargetCommand(),
                         command.getPermission(), command.getAliases());
                 try {
                     commandRegistry.registerCommand(newCommand);
-                    registeredCommands.add(command.getTargetCommand());
+                    registeredCommands.add(commandName);
                     commandCount++;
                 } catch (Exception e) {
                     logError("registerDynamicCommands", e);
+                }
+            }
+            if (command.getAliases() != null) {
+                for (String alias : command.getAliases()) {
+                    String aliasLower = alias.toLowerCase();
+                    if (!registeredCommands.contains(aliasLower)) {
+                        DynamicCommand newAliasCmd = new DynamicCommand(this, key, aliasLower, command.getTargetCommand(),
+                                command.getPermission());
+                        try {
+                            commandRegistry.registerCommand(newAliasCmd);
+                            registeredCommands.add(aliasLower);
+                            commandCount++;
+                        } catch (Exception e) {
+                            logError("registerDynamicCommands", e);
+                        }
+                    }
                 }
             }
         }
@@ -138,6 +182,8 @@ public class CommandAliasManager {
         if (commandMap == null || !commandMap.containsKey(commandKey)) return null;
         return commandMap.get(commandKey).getAliases();
     }
+    public boolean isRegisteredCommand(String key) {return registeredCommands.contains(key);}
+    public Map<String, Command> getCommandMap() { return commandMap;}
     public Map<String, Command> getDefaultCommandMap() {
         Map<String, Command> map = new LinkedHashMap<>();
         for(DefaultCommands cmd : DefaultCommands.values()) {
@@ -148,11 +194,17 @@ public class CommandAliasManager {
     }
 
     public static class DynamicCommand extends AbstractPlayerCommand {
+        private final CommandAliasManager commandAliasManager;
+        private final String triggerWord;
+        private final String commandKey;
         private final String targetCommand;
-        public DynamicCommand(String triggerName, String targetCommand, String permission, String... aliases) {
-            super(triggerName, "Alias for /" + targetCommand, false);
+        public DynamicCommand(CommandAliasManager commandAliasManager, String commandKey, String nameAlias, String targetCommand, String permission, String... aliases) {
+            super(nameAlias, "Alias for /" + targetCommand, false);
             this.setAllowsExtraArguments(true);
             this.targetCommand = targetCommand;
+            this.commandAliasManager = commandAliasManager;
+            this.commandKey = commandKey;
+            this.triggerWord = nameAlias;
 
             if (permission != null && !permission.isEmpty()) {
                 this.requirePermission(permission);
@@ -163,6 +215,26 @@ public class CommandAliasManager {
         }
         @Override
         protected void execute(@Nonnull CommandContext commandContext, @Nonnull Store<EntityStore> store, @Nonnull Ref<EntityStore> ref, @Nonnull PlayerRef playerRef, @Nonnull World world) {
+            Command liveCommand = commandAliasManager.getCommandMap().get(commandKey);
+            boolean isCommandValid = false;
+            if(liveCommand != null) {
+                if(liveCommand.getNameAlias().equalsIgnoreCase(triggerWord)) {
+                    isCommandValid = true;
+                }
+                else if (liveCommand.getAliases() != null) {
+                    for (String liveAlias : liveCommand.getAliases()) {
+                        if (liveAlias.equalsIgnoreCase(triggerWord)) {
+                            isCommandValid = true;
+                            break;
+                        }
+                    }
+                }
+            }
+            if(!isCommandValid) {
+                commandAliasManager.unknownCommandMessage(commandContext.getInputString(), commandContext);
+                return;
+            }
+
             String rawInput = commandContext.getInputString();
             String extraArgs = "";
             int spaceIdx = rawInput.indexOf(' ');
@@ -217,6 +289,6 @@ public class CommandAliasManager {
 
         public Command getAlias(String name) {return aliasMap.get(name);}
         public void setAliasMap(Map<String, Command> map) {this.aliasMap = map;}
-        public Map<String, Command> getAliasMap() {return aliasMap;}
+        public Map<String, Command> getCommandMap() {return aliasMap;}
     }
 }

@@ -97,9 +97,9 @@ public class PermissionManager {
                 }
             }
 
-            if (newPermissions > 0)  myLogger.atInfo().log(LM.getConsoleMessage(LangKey.LOAD_SUCCESS, newPermissions + " permission(s)").getAnsiMessage());
-            if (newPermissionGroups > 0)  myLogger.atInfo().log(LM.getConsoleMessage(LangKey.LOAD_SUCCESS, newPermissionGroups + " permission group(s)").getAnsiMessage());
-            if (updatedPermissionGroups > 0) myLogger.atInfo().log(LM.getConsoleMessage(LangKey.LOAD_SUCCESS, updatedPermissionGroups + " permission group(s) updated").getAnsiMessage());
+            if (newPermissions > 0)  myLogger.atInfo().log("Loaded " + newPermissions + " permission(s)");
+            if (newPermissionGroups > 0)  myLogger.atInfo().log("Loaded " + newPermissionGroups + " permission group(s)");
+            if (updatedPermissionGroups > 0) myLogger.atInfo().log("Loaded " + updatedPermissionGroups + "updated permission group(s)");
 
             permissionFile = loadedPermissionFile;
         } else {

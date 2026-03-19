@@ -17,6 +17,7 @@ public enum LangKey {
     LIST_ITEM               ("message.info.list_item",              "&7&l  - &r{0}"),
     LIST_NUMBERED_ITEM      ("message.info.number_item",            "&7&l   &r&e&l{0}. &r{1}"),
 
+
     // Core System (Logging)
     NULL_POINTER            ("system.error.null",                   "[ERROR] Unexpected null error at {0}"),
     FILE_NOT_FOUND          ("system.file.not_found",               "[ERROR] Could not find file {0}"),
@@ -71,6 +72,15 @@ public enum LangKey {
     PERMISSION_NOT_FOUND    ("permission.not_found",                "&c&lPermission &r&e&l{0} &r&c&lwas not found!"),
     PLAYER_PERM_LIST        ("permission.player.perm_list",         "&a&lPermission list of &r&e&l{0}&r&a&l:"),
     PLAYER_PERM_GROUP_LIST  ("permission.player.perm_group_list",   "&a&lPermission group list of &r&e&l{0}&r&a&l:"),
+
+    // Command Management
+    COMMAND_NOT_FOUND       ("system.commands.not_found",           "&fCommand not found! {0}"),
+    COMMANDS_RESET          ("system.commands.reset",               "&c&lAll commands were reset to their original name, permission and aliases."),
+    COMMAND_UPDATE_NAME     ("system.commands.update.name",         "&a&lUpdated trigger name of command &r&e&l{0} &r&a&lto &r&e&l{1}."),
+    COMMAND_UPDATE_PERM     ("system.commands.update.permission",   "&a&lUpdated permission of command &r&e&l{0} &r&a&lto &r&e&l{1}."),
+    COMMAND_ADD_ALIASES     ("system.commands.alias.add",           "&a&lAdded new alias to command &r&e&l{0}."),
+    COMMAND_REMOVE_ALIASES  ("system.commands.alias.remove",        "&c&lRemoved alias &r&e&l{0} of command &r&e&l{1}."),
+
 
     // Logs
     LOG_CHAT_EXPORT_SUCCESS ("log.chat.export.success",             "[{0}] >> Exported Chat Log."),
