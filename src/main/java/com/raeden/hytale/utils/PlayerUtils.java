@@ -14,7 +14,7 @@ import com.raeden.hytale.core.lang.LangKey;
 import static com.raeden.hytale.HytaleFoundations.*;
 import static com.raeden.hytale.utils.FileUtils.logError;
 
-public class GeneralUtils {
+public class PlayerUtils {
     public static boolean playerHasInventorySpace(PlayerRef playerRef, int slots) {
         return playerHasInventorySpace(null, playerRef, slots);
     }

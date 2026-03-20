@@ -4,6 +4,7 @@ import com.raeden.hytale.core.utils.Permissions;
 
 public enum DefaultCommands {
     CORE_COMMAND("foundation","foundation", Permissions.ADMIN.getPermission(), "hf", "fd"),
+    COMMAND_MANAGER_COMMAND("commandmanager","commandmanager", Permissions.ADMIN.getPermission(), "cm", "alias"),
     RANK_COMMAND("rank","rank", Permissions.RANK.getPermission(), "rk"),
     HOME_COMMAND("home","home", Permissions.HOME.getPermission()),
     HOMES_COMMAND("homes","homes", Permissions.HOME.getPermission()),

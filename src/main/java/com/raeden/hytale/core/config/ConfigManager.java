@@ -35,7 +35,7 @@ public class ConfigManager {
     public static String CHAT_CONFIG_VERSION = "v1.0";
     public static String MAIL_CONFIG_VERSION = "v1.0";
     public static String HOME_CONFIG_VERSION = "v1.0";
-    public static String ALIAS_CONFIG_VERSION = "v1.0";
+    public static String COMMANDS_CONFIG_VERSION = "v1.0";
     public static String COLORMAP_VERSION = "v1.0";
     public static String AFFIX_VERSION = "v1.0";
     public static String RANK_VERSION = "v1.0";
@@ -168,7 +168,8 @@ public class ConfigManager {
         config.setLang("en-us.json");
         config.setDataStorageType("json");
         config.setPlayerDataSaveInterval(15);
-        config.setToggleDebug(true);
+        config.setGenerateDefaultData(true);
+        config.setDebugMode(true);
         config.setToggleAdminModule(true);
         config.setToggleChatModule(true);
         config.setToggleMailModule(true);

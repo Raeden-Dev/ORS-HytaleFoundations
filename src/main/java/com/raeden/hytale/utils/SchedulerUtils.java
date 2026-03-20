@@ -19,7 +19,7 @@ public class SchedulerUtils {
         this.hytaleFoundations = hytaleFoundations;
         this.scheduler = Executors.newScheduledThreadPool(2);
         activeSchedulers = new ConcurrentHashMap<>();
-        debugMode = hytaleFoundations.getConfigManager().getDefaultConfig().isToggleDebug();
+        debugMode = hytaleFoundations.getConfigManager().getDefaultConfig().isDebugMode();
     }
 
     // Run a task off main thread

@@ -13,7 +13,6 @@ import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.world.World;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import com.raeden.hytale.HytaleFoundations;
-import com.raeden.hytale.core.alias.DefaultCommands;
 import com.raeden.hytale.core.pages.HFMainMenu;
 import com.raeden.hytale.core.utils.Permissions;
 import com.raeden.hytale.core.lang.LangKey;
@@ -101,8 +100,8 @@ public class CoreCommand extends AbstractCommandCollection {
         @Override
         protected CompletableFuture<Void> executeAsync(@Nonnull CommandContext commandContext) {
             try {
-                hytaleFoundations.getConfigManager().getDefaultConfig().setToggleDebug(!hytaleFoundations.getConfigManager().getDefaultConfig().isToggleDebug());
-                String debugStr = hytaleFoundations.getConfigManager().getDefaultConfig().isToggleDebug() ? "On":"Off";
+                hytaleFoundations.getConfigManager().getDefaultConfig().setDebugMode(!hytaleFoundations.getConfigManager().getDefaultConfig().isDebugMode());
+                String debugStr = hytaleFoundations.getConfigManager().getDefaultConfig().isDebugMode() ? "On":"Off";
                 if(commandContext.isPlayer()) {
                     commandContext.sender().sendMessage(LM.getPlayerMessage(commandContext.sender().getDisplayName(), LangKey.DEBUG_MODE, debugStr));
                 } else {

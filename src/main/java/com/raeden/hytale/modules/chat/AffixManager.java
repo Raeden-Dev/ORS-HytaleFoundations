@@ -19,7 +19,7 @@ import static com.raeden.hytale.core.config.ConfigManager.AFFIX_FILENAME;
 import static com.raeden.hytale.core.config.ConfigManager.AFFIX_VERSION;
 import static com.raeden.hytale.utils.FileUtils.loadJsonFile;
 import static com.raeden.hytale.utils.FileUtils.saveJsonFile;
-import static com.raeden.hytale.utils.GeneralUtils.findPlayerByName;
+import static com.raeden.hytale.utils.PlayerUtils.findPlayerByName;
 
 public class AffixManager {
     private final HytaleFoundations hytaleFoundations;

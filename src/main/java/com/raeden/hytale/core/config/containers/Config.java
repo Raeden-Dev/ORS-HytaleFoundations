@@ -10,36 +10,38 @@ public class Config {
     private String version;
     @SerializedName("LANG")
     private String lang;
-    @SerializedName("DATA_STORAGE_TYPE")
+    @SerializedName("data_storage_type")
     private String dataStorageType;
-    @SerializedName("PLAYER_DATA_SAVE_INTERVAL")
+    @SerializedName("player_data_save_interval")
     private int playerDataSaveInterval; // LOGOUT, 5M, 10M, 30M, 1H
+    @SerializedName("generate_default_data")
+    private boolean generateDefaultData;
 
-    @SerializedName("DEBUG_MODE")
+    @SerializedName("debug_mode")
     private boolean debugMode;
-    @SerializedName("LOG_ACTIONS")
+    @SerializedName("log_actions")
     private boolean logActions;
 
-    @SerializedName("TOGGLE_ADMIN_MODULE")
+    @SerializedName("module_admin")
     private boolean toggleAdminModule;
-    @SerializedName("TOGGLE_CHAT_MODULE")
+    @SerializedName("module_chat")
     private boolean toggleChatModule;
-    @SerializedName("TOGGLE_RANK_MODULE")
+    @SerializedName("module_rank")
     private boolean toggleRankModule;
-    @SerializedName("TOGGLE_HOMES_MODULE")
+    @SerializedName("module_homes")
     private boolean toggleHomesModule;
-    @SerializedName("TOGGLE_MAIL_MODULE")
+    @SerializedName("module_mail")
     private boolean toggleMailModule;
-    @SerializedName("TOGGLE_PARTY_MODULE")
+    @SerializedName("module_party")
     private boolean togglePartyModule;
-    @SerializedName("TOGGLE_ECONOMY_MODULE")
+    @SerializedName("module_economy")
     private boolean toggleEconomyModule;
-    @SerializedName("TOGGLE_ANALYTICS_MODULE")
+    @SerializedName("module_analytics")
     private boolean toggleAnalyticsModule;
-    @SerializedName("TOGGLE_DISCORD_MODULE")
+    @SerializedName("module_discord")
     private boolean toggleDiscordModule;
 
-    @SerializedName("DATA_CLUSTERS")
+    @SerializedName("data_clusters")
     private final Map<String, List<String>> dataClusters = new ConcurrentHashMap<>();
 
     // --- Getters and Setters ---
@@ -56,8 +58,8 @@ public class Config {
     public int getPlayerDataSaveInterval() { return playerDataSaveInterval; }
     public void setPlayerDataSaveInterval(int playerDataSaveInterval) { this.playerDataSaveInterval = playerDataSaveInterval; }
 
-    public boolean isToggleDebug() { return debugMode; }
-    public void setToggleDebug(boolean debugMode) { this.debugMode = debugMode; }
+    public boolean isDebugMode() { return debugMode; }
+    public void setDebugMode(boolean debugMode) { this.debugMode = debugMode; }
 
     public boolean isLogActions() { return logActions; }
     public void setLogActions(boolean logActions) { this.logActions = logActions; }
@@ -91,4 +93,7 @@ public class Config {
 
     public void addDataCluster(String name, List<String> worlds) { dataClusters.put(name, worlds); }
     public Map<String, List<String>> getDataClusters() { return dataClusters; }
+
+    public boolean isGenerateDefaultData() {return generateDefaultData;}
+    public void setGenerateDefaultData(boolean generateDefaultData) {this.generateDefaultData = generateDefaultData;}
 }

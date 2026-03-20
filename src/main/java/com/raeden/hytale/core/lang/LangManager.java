@@ -1,6 +1,8 @@
 package com.raeden.hytale.core.lang;
 
 import com.hypixel.hytale.server.core.Message;
+import com.hypixel.hytale.server.core.command.system.CommandContext;
+import com.hypixel.hytale.server.core.command.system.CommandSender;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.raeden.hytale.HytaleFoundations;
 import com.raeden.hytale.core.player.PlayerProfile;
@@ -19,7 +21,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import static com.raeden.hytale.HytaleFoundations.*;
 import static com.raeden.hytale.utils.FileUtils.*;
-import static com.raeden.hytale.utils.GeneralUtils.findPlayerByName;
+import static com.raeden.hytale.utils.PlayerUtils.findPlayerByName;
 
 public class LangManager {
     private final HytaleFoundations hytaleFoundations;
@@ -81,9 +83,6 @@ public class LangManager {
                 writer.write(configKey + " = " + defaultVal);
                 writer.newLine();
             }
-
-            myLogger.atInfo().log(getConsoleMessage(LangKey.CREATE_SUCCESS, path.getFileName().toString()).getAnsiMessage());
-
         } catch (IOException e) {
             logError(path, "saveDefaultLangFile", e);
         }
@@ -126,14 +125,19 @@ public class LangManager {
         return map;
     }
 
-    public Message getMessage(LangKey key, String... args) {
-        return getMessage(null, key, false, args);
-    }
+    public Message getMessage(LangKey key, String... args) {return getMessage(null, key, false, args);}
     public Message getPlayerMessage(String username, LangKey key, String... args) {
         return getMessage(username, key, false, args);
     }
     public Message getConsoleMessage(LangKey key, String... args) {
         return getMessage(null, key, true, args);
+    }
+    public Message getAbstractMessage(CommandContext ctx, LangKey key, String... args) {
+        if(ctx.isPlayer()) {
+            return getPlayerMessage(ctx.sender().getDisplayName(), key, args);
+        } else {
+            return getConsoleMessage(key, args);
+        }
     }
     public Message getMessage(String username, LangKey key, boolean isConsole, String... args) {
         PlayerRef playerRef = username == null ? null : findPlayerByName(username);

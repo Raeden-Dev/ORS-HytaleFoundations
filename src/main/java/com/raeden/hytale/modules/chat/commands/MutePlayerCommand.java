@@ -17,7 +17,7 @@ import com.raeden.hytale.core.lang.LangKey;
 import com.raeden.hytale.utils.TimeUtils;
 import javax.annotation.Nonnull;
 import static com.raeden.hytale.HytaleFoundations.LM;
-import static com.raeden.hytale.utils.GeneralUtils.findPlayerByName;
+import static com.raeden.hytale.utils.PlayerUtils.findPlayerByName;
 
 public class MutePlayerCommand extends AbstractPlayerCommand {
     private final HytaleFoundations hytaleFoundations;

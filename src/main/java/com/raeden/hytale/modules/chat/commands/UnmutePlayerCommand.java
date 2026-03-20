@@ -16,7 +16,7 @@ import com.raeden.hytale.core.utils.Permissions;
 import com.raeden.hytale.core.lang.LangKey;
 import javax.annotation.Nonnull;
 import static com.raeden.hytale.HytaleFoundations.LM;
-import static com.raeden.hytale.utils.GeneralUtils.findPlayerByName;
+import static com.raeden.hytale.utils.PlayerUtils.findPlayerByName;
 
 public class UnmutePlayerCommand extends AbstractPlayerCommand {
     private final HytaleFoundations hytaleFoundations;

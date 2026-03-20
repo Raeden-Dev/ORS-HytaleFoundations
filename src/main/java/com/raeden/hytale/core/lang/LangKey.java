@@ -26,8 +26,8 @@ public enum LangKey {
     DIR_CREATE_SUCCESS_LOC  ("system.dir.create.success_loc",       "[DIR] Created {0} directory at {1}"),
     DIR_CREATE_FAIL_LOC     ("system.dir.create.fail_loc",          "[DIR] Failed to create {0} at {1}"),
 
-    REGISTER_SUCCESS         ("system.data.register.success",       "[INFO] Registered {0}"),
-    REGISTER_FAILURE         ("system.data.register.failure",       "[ERROR] Failed to register {0}"),
+    REGISTER_SUCCESS        ("system.data.register.success",        "[INFO] Registered {0}"),
+    REGISTER_FAILURE        ("system.data.register.failure",        "[ERROR] Failed to register {0}"),
     PROCESS_SUCCESS         ("system.data.process.success",         "[INFO] Processed {0}"),
     PROCESS_FAILURE         ("system.data.process.failure",         "[ERROR] Failed to process {0}"),
     CREATE_SUCCESS          ("system.data.create.success",          "[INFO] Created {0}"),
@@ -42,6 +42,8 @@ public enum LangKey {
     LOAD_FAILURE_LOC        ("system.data.load.fail_loc",           "[LOAD] Failed to load {0} at {1}"),
     READ_FAILURE_LOC        ("system.data.read.fail_loc",           "[READ] Failed to read {0} at {1}"),
     CHECK_FAILURE           ("system.data.check.fail",              "[INFO] Failed to check {0}"),
+    REMOVE_SUCCESS          ("system.data.remove.success",          "[INFO] Removed {0}"),
+    REMOVE_FAILURE          ("system.data.remove.failure",          "[ERROR] Failed to remove {0}"),
 
     DEBUG_MODE              ("system.process.debug",                "&a&lDebug Mode: &r&e&l{0}"),
     PENDING_UPDATE          ("system.data.update.pending",          "[UPDATE] An update is available for {0}"),
@@ -74,13 +76,26 @@ public enum LangKey {
     PLAYER_PERM_GROUP_LIST  ("permission.player.perm_group_list",   "&a&lPermission group list of &r&e&l{0}&r&a&l:"),
 
     // Command Management
-    COMMAND_NOT_FOUND       ("system.commands.not_found",           "&fCommand not found! {0}"),
+    DEFAULT_COMMAND_NF      ("system.commands.default_not_found",   "&fCommand not found! {0}"),
+    COMMAND_ALIAS_CREATE    ("system.commands.create",              "&a&lCreated new command alias called &r&e&l{0}"),
+    COMMAND_ALIAS_DELETE    ("system.commands.delete",              "&c&lDeleted command alias called &r&e&l{0}"),
+    COMMAND_ALIAS_EDIT      ("system.commands.edit",                "&e&lEdited command alias called &r&f&l{0}"),
+    COMMAND_NOT_FOUND       ("system.commands.not_found",           "&c&lCommand called &r&e&l{0} &r&c&ldoesn't exist!"),
+    COMMAND_ID_NOT_FOUND    ("system.commands.id_not_found",        "&c&lCommand alias with ID &r&e&l{0} &r&c&lnot found!"),
+    COMMANDS_UPDATED        ("system.commands.update",              "&a&lUpdated {0} command(s)."),
     COMMANDS_RESET          ("system.commands.reset",               "&c&lAll commands were reset to their original name, permission and aliases."),
-    COMMAND_UPDATE_NAME     ("system.commands.update.name",         "&a&lUpdated trigger name of command &r&e&l{0} &r&a&lto &r&e&l{1}."),
-    COMMAND_UPDATE_PERM     ("system.commands.update.permission",   "&a&lUpdated permission of command &r&e&l{0} &r&a&lto &r&e&l{1}."),
+    COMMAND_REGISTER        ("system.commands.register",            "&a&lRegistered {0} command(s)."),
+    COMMAND_REGISTER_ALIAS  ("system.commands.alias.register",      "&a&lRegistered {0} command alias(es)."),
+    COMMAND_UPDATE_MULTIPLE ("system.commands.change.multiple",     "&c&lCommand {0} was updated. &r&7(Changes: {1})"),
+    COMMAND_UPDATE_TARGET   ("system.commands.change.target",       "&a&lChanged target name of command &r&e&l{0} &r&a&lto &r&e&l{1}. &r&7(Previously: {2})"),
+    COMMANDS_MISMATCH_TARGET("system.commands.mismatch.target",     "&c&lMismatch found for target command of command {0}. &r&7(Current: {1} | New: {2})"),
+    COMMAND_UPDATE_NAME     ("system.commands.change.name",         "&a&lChanged trigger name of command &r&e&l{0} &r&a&lto &r&e&l{1}. &r&7(Previously: {2})"),
+    COMMAND_UPDATE_PERM     ("system.commands.change.permission",   "&a&lChanged permission of command &r&e&l{0} &r&a&lto &r&e&l{1}. &r&7(Previously: {2})"),
+    COMMAND_CHANGE_ALIASES  ("system.commands.alias.change",        "&a&lChanged alias(es) of command &r&e&l{0}."),
     COMMAND_ADD_ALIASES     ("system.commands.alias.add",           "&a&lAdded new alias to command &r&e&l{0}."),
     COMMAND_REMOVE_ALIASES  ("system.commands.alias.remove",        "&c&lRemoved alias &r&e&l{0} of command &r&e&l{1}."),
 
+    // Reporting System
 
     // Logs
     LOG_CHAT_EXPORT_SUCCESS ("log.chat.export.success",             "[{0}] >> Exported Chat Log."),
