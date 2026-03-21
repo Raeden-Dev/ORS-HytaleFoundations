@@ -28,7 +28,7 @@ public class PlayerDataManager {
     public final String STATS_FILENAME = "stats.json";
     public final String MAIL_FILENAME = "mailbox.json";
     public final String HISTORY_FILENAME = "history.json";
-    private final Path playerDataPath;
+    private final Map<String, Path> playerDataPaths;
 
     private final Map<String, PlayerProfile> playerProfiles;
     private final Map<String, PlayerStats> playerStats;
@@ -38,31 +38,39 @@ public class PlayerDataManager {
     public PlayerDataManager(HytaleFoundations hytaleFoundations) {
         this.hytaleFoundations = hytaleFoundations;
         this.chatConfig = hytaleFoundations.getConfigManager().getDefaultChatConfig();
-        playerDataPath = hytaleFoundations.getDataDirectory().resolve("data").resolve("players");
+        playerDataPaths = new ConcurrentHashMap<>();
 
         playerProfiles = new ConcurrentHashMap<>();
         playerStats = new ConcurrentHashMap<>();
-        createDirectory(playerDataPath, true);
-        createUserMap();
+        validatePlayerDataPaths();
+        createUsermaps();
+    }
+
+    // data paths
+    public void validatePlayerDataPaths() {
+        playerDataPaths.putAll(hytaleFoundations.getConfigManager().createDataDirectories("players"));
     }
 
     // User Map
-    private void createUserMap() {
-        Path userMapPath = playerDataPath.resolve(USERMAP_FILENAME);
-        Map<UUID, String> users = new ConcurrentHashMap<>();
-        if(!Files.exists(userMapPath)) {
-            saveJsonFile(USERMAP_FILENAME, userMapPath, users, true);
+    private void createUsermaps() {
+        for(Map.Entry<String, Path> entry : playerDataPaths.entrySet()) {
+            Path usermapPath = entry.getValue().resolve(USERMAP_FILENAME);
+            Map<UUID, String> users = new ConcurrentHashMap<>();
+            if(!Files.exists(usermapPath)) {
+                saveJsonFile(USERMAP_FILENAME, usermapPath, users, true);
+            }
         }
     }
 
-    private Map<UUID, String> loadUserMap() {
-        Path userMapPath = playerDataPath.resolve(USERMAP_FILENAME);
+    private Map<UUID, String> loadUsermap(String dataGroup) {
+        if(!playerDataPaths.containsKey(dataGroup)) return null;
+        Path userMapPath = playerDataPaths.get(dataGroup).resolve(USERMAP_FILENAME);
         Type type = new TypeToken<Map<UUID, String>>(){}.getType();
         return loadJsonFile(USERMAP_FILENAME, userMapPath, type);
     }
 
-    private void updateUserMap(UUID id, String username) {
-        Map<UUID, String> users = loadUserMap();
+    private void updateUsermap(UUID id, String username) {
+        Map<UUID, String> users = loadUsermap();
         if(users == null) users = new ConcurrentHashMap<>();
         String oldUsername = users.get(id);
         users.put(id, username);
@@ -85,7 +93,7 @@ public class PlayerDataManager {
     }
 
     private void verifyUserID(String username) {
-        Map<UUID, String> users = loadUserMap();
+        Map<UUID, String> users = loadUsermap();
         if(users == null) return;
 
         UUID playerID = getPlayerUUID(username);
@@ -101,7 +109,7 @@ public class PlayerDataManager {
                 break;
             }
         }
-        if(mismatch) updateUserMap(playerID, username);
+        if(mismatch) updateUsermap(playerID, username);
     }
 
     // Saving, Loading and Creating Player Data
@@ -328,7 +336,7 @@ public class PlayerDataManager {
         savePlayerData(username, MAIL_FILENAME, mailbox);
         savePlayerData(username, HISTORY_FILENAME, history);
 
-        updateUserMap(id, username);
+        updateUsermap(id, username);
     }
 
     public void savePlayTime(String username) {

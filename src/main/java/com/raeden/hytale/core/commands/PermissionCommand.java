@@ -14,8 +14,8 @@ import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.world.World;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import com.raeden.hytale.HytaleFoundations;
-import com.raeden.hytale.core.utils.PermissionManager;
-import com.raeden.hytale.core.utils.Permissions;
+import com.raeden.hytale.core.permission.PermissionManager;
+import com.raeden.hytale.core.permission.Permissions;
 import com.raeden.hytale.core.lang.LangKey;
 
 import javax.annotation.Nonnull;

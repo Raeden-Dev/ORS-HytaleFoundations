@@ -14,7 +14,7 @@ import com.hypixel.hytale.server.core.universe.world.World;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import com.raeden.hytale.HytaleFoundations;
 import com.raeden.hytale.core.pages.HFMainMenu;
-import com.raeden.hytale.core.utils.Permissions;
+import com.raeden.hytale.core.permission.Permissions;
 import com.raeden.hytale.core.lang.LangKey;
 
 import javax.annotation.Nonnull;
@@ -28,7 +28,7 @@ import static com.raeden.hytale.utils.FileUtils.logError;
 
 public class CoreCommand extends AbstractCommandCollection {
     public CoreCommand(HytaleFoundations hytaleFoundations) {
-        super("foundation", "Argument for all Hytale Foundations Command.");
+        super("foundation", "Argument for all Hytale Foundations core commandd.");
         this.requirePermission(Permissions.ACCESS.getPermission());
         this.addAliases("hf","fd");
 
@@ -102,11 +102,7 @@ public class CoreCommand extends AbstractCommandCollection {
             try {
                 hytaleFoundations.getConfigManager().getDefaultConfig().setDebugMode(!hytaleFoundations.getConfigManager().getDefaultConfig().isDebugMode());
                 String debugStr = hytaleFoundations.getConfigManager().getDefaultConfig().isDebugMode() ? "On":"Off";
-                if(commandContext.isPlayer()) {
-                    commandContext.sender().sendMessage(LM.getPlayerMessage(commandContext.sender().getDisplayName(), LangKey.DEBUG_MODE, debugStr));
-                } else {
-                    commandContext.sender().sendMessage(LM.getConsoleMessage(LangKey.DEBUG_MODE, debugStr));
-                }
+                commandContext.sender().sendMessage(LM.getAbstractMessage(commandContext, LangKey.DEBUG_MODE, debugStr));
             } catch (Exception e) {
                 logError(ERROR_LOG_DIRECTORY, "DebugCommand", e);
             }
@@ -150,17 +146,9 @@ public class CoreCommand extends AbstractCommandCollection {
             protected CompletableFuture<Void> executeAsync(@Nonnull CommandContext commandContext) {
                 try {
                     hytaleFoundations.getPlayerDataManager().saveAllPlayerData();
-                    if(commandContext.isPlayer()) {
-                        commandContext.sender().sendMessage(LM.getPlayerMessage(commandContext.sender().getDisplayName(), LangKey.SAVE_SUCCESS, "all player data"));
-                    } else {
-                        commandContext.sender().sendMessage(LM.getConsoleMessage(LangKey.SAVE_SUCCESS, "all player data"));
-                    }
+                    commandContext.sender().sendMessage(LM.getAbstractMessage(commandContext, LangKey.SAVE_SUCCESS, "all player data"));
                 } catch (Exception e) {
-                    if(commandContext.isPlayer()) {
-                        commandContext.sender().sendMessage(LM.getPlayerMessage(commandContext.sender().getDisplayName(), LangKey.SAVE_FAILURE, "all player data"));
-                    } else {
-                        commandContext.sender().sendMessage(LM.getConsoleMessage(LangKey.SAVE_FAILURE, "all player data"));
-                    }
+                    commandContext.sender().sendMessage(LM.getAbstractMessage(commandContext, LangKey.SAVE_FAILURE, "all player data"));
                     logError(ERROR_LOG_DIRECTORY, "SaveAllDataCommand", e);
                 }
                 return CompletableFuture.completedFuture(null);
@@ -179,14 +167,11 @@ public class CoreCommand extends AbstractCommandCollection {
             protected CompletableFuture<Void> executeAsync(@Nonnull CommandContext commandContext) {
                 try {
                     if(!hytaleFoundations.getPlayerDataManager().doesPlayerExist(commandContext.get(this.targetPlayer))) {
-                        if(commandContext.isPlayer()) commandContext.sender().sendMessage(LM.getPlayerMessage(commandContext.sender().getDisplayName(), LangKey.PLAYER_NOT_FOUND_MSG, commandContext.get(this.targetPlayer)));
-                        else commandContext.sender().sendMessage(LM.getConsoleMessage(LangKey.PLAYER_NOT_FOUND, commandContext.get(this.targetPlayer)));
+                        commandContext.sender().sendMessage(LM.getAbstractMessage(commandContext, LangKey.PLAYER_NOT_FOUND, commandContext.get(this.targetPlayer)));
                         return CompletableFuture.completedFuture(null);
                     }
                     hytaleFoundations.getPlayerDataManager().saveTargetPlayerData(commandContext.get(this.targetPlayer));
-                    if(commandContext.isPlayer()) {
-                        commandContext.sender().sendMessage(LM.getPlayerMessage(commandContext.sender().getDisplayName(), LangKey.SAVE_SUCCESS, "data of player: " + commandContext.get(this.targetPlayer)));
-                    }
+                    commandContext.sender().sendMessage(LM.getAbstractMessage(commandContext, LangKey.SAVE_SUCCESS, "data of player: " + commandContext.get(this.targetPlayer)));
                 } catch (Exception e) {
                     if(commandContext.isPlayer()) {
                         commandContext.sender().sendMessage(LM.getPlayerMessage(commandContext.sender().getDisplayName(), LangKey.SAVE_FAILURE, "data of player: " + commandContext.get(this.targetPlayer)));

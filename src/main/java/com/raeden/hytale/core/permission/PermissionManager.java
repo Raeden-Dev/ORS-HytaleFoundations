@@ -1,4 +1,4 @@
-package com.raeden.hytale.core.utils;
+package com.raeden.hytale.core.permission;
 
 import com.google.gson.annotations.SerializedName;
 import com.google.gson.reflect.TypeToken;

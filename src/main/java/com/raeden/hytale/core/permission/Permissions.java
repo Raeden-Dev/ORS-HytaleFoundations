@@ -1,4 +1,4 @@
-package com.raeden.hytale.core.utils;
+package com.raeden.hytale.core.permission;
 
 public enum Permissions {
     ACCESS("hytalefoundations.access"),

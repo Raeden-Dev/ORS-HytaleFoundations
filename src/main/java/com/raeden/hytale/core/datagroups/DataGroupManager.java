@@ -1,10 +1,10 @@
-package com.raeden.hytale.core.clusters;
+package com.raeden.hytale.core.datagroups;
 
 import com.raeden.hytale.HytaleFoundations;
 
-public class DataClusterManager {
+public class DataGroupManager {
     private final HytaleFoundations hytaleFoundations;
-    public DataClusterManager(HytaleFoundations hytaleFoundations) {
+    public DataGroupManager(HytaleFoundations hytaleFoundations) {
         this.hytaleFoundations = hytaleFoundations;
     }
 

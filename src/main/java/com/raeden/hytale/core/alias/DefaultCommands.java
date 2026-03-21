@@ -1,6 +1,6 @@
 package com.raeden.hytale.core.alias;
 
-import com.raeden.hytale.core.utils.Permissions;
+import com.raeden.hytale.core.permission.Permissions;
 
 public enum DefaultCommands {
     CORE_COMMAND("foundation","foundation", Permissions.ADMIN.getPermission(), "hf", "fd"),

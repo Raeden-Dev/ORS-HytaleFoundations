@@ -1,5 +1,7 @@
 package com.raeden.hytale.core.config;
 
+import com.hypixel.hytale.server.core.universe.Universe;
+import com.hypixel.hytale.server.core.universe.world.World;
 import com.raeden.hytale.HytaleFoundations;
 import com.raeden.hytale.core.config.containers.ChatConfig;
 import com.raeden.hytale.core.config.containers.Config;
@@ -10,6 +12,9 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 import static com.raeden.hytale.HytaleFoundations.*;
 import static com.raeden.hytale.utils.FileUtils.*;
@@ -179,8 +184,29 @@ public class ConfigManager {
         config.setToggleEconomyModule(true);
         config.setToggleAnalyticsModule(true);
         config.setToggleDiscordModule(true);
-        config.addDataCluster("hub",List.of("default"));
+        createDefaultDataGroup(config);
         return config;
+    }
+
+    public void createDefaultDataGroup(Config config) {
+        if(config == null) return;
+        Universe universe = Universe.get();
+        Set<String> worlds = universe.getWorlds().keySet();
+        defaultConfig.addDataGroup("default", worlds.stream().toList());
+    }
+
+    public Map<String, Path> createDataDirectories(String dataType) {
+        Map<String, Path> pathInfo = new ConcurrentHashMap<>();
+        Set<String> dataGroups = defaultConfig.getDataGroups().keySet();
+        if(dataGroups.isEmpty()) {
+            createDefaultDataGroup(defaultConfig);
+        }
+        for(String group : dataGroups) {
+            Path dataPath = hytaleFoundations.getDataDirectory().resolve(group).resolve(dataType);
+            pathInfo.put(group, dataPath);
+            createDirectory(dataPath, true);
+        }
+        return pathInfo;
     }
 
     public Config getDefaultConfig() {return defaultConfig;}

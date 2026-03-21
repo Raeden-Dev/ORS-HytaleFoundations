@@ -14,7 +14,7 @@ import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import com.raeden.hytale.HytaleFoundations;
 import com.raeden.hytale.core.alias.CommandAliasManager;
 import com.raeden.hytale.core.lang.LangKey;
-import com.raeden.hytale.core.utils.Permissions;
+import com.raeden.hytale.core.permission.Permissions;
 
 import javax.annotation.Nonnull;
 import java.nio.file.Files;
@@ -67,7 +67,6 @@ public class AliasCommand extends AbstractCommandCollection {
         @Override
         protected void execute(@Nonnull CommandContext commandContext, @Nonnull Store<EntityStore> store, @Nonnull Ref<EntityStore> ref, @Nonnull PlayerRef playerRef, @Nonnull World world) {
             CommandAliasManager commandManager = hytaleFoundations.getCommandManager();
-            String playerUsername = commandContext.sender().getDisplayName();
             if(commandManager == null) return;
             try {
                 Files.delete(commandManager.getCommandFilePath());
@@ -131,11 +130,11 @@ public class AliasCommand extends AbstractCommandCollection {
             String targetCommand = commandContext.get(this.targetCommand);
             if(commandManager == null) return;
             if(!commandManager.getCommandMap().containsKey(commandID)) {
-                commandContext.sender().sendMessage(LM.getAbstractMessage(commandContext, LangKey.COMMAND_ID_NOT_FOUND, commandID));
+                commandContext.sender().sendMessage(LM.getPlayerMessage(playerUsername, LangKey.COMMAND_ID_NOT_FOUND, commandID));
                 return;
             }
             if(!commandManager.getRegisteredCommands().containsKey(targetCommand)) {
-                commandContext.sender().sendMessage(LM.getAbstractMessage(commandContext, LangKey.COMMAND_NOT_FOUND, targetCommand));
+                commandContext.sender().sendMessage(LM.getPlayerMessage(playerUsername, LangKey.COMMAND_NOT_FOUND, targetCommand));
                 return;
             }
             try {
@@ -145,7 +144,7 @@ public class AliasCommand extends AbstractCommandCollection {
                         commandContext.get(this.permission),
                         aliases.toArray(String[]::new));
                 commandManager.createAliasCommand(commandID, command);
-                commandContext.sender().sendMessage(LM.getAbstractMessage(commandContext, LangKey.COMMAND_ALIAS_CREATE, commandID));
+                commandContext.sender().sendMessage(LM.getPlayerMessage(playerUsername, LangKey.COMMAND_ALIAS_CREATE, commandID));
             } catch (Exception e) {
                 logError("AliasCreateCommand", e);
             }
@@ -167,12 +166,12 @@ public class AliasCommand extends AbstractCommandCollection {
             String commandID = commandContext.get(this.id);
             if(commandManager == null) return;
             if(!commandManager.getCommandMap().containsKey(commandID)) {
-                commandContext.sender().sendMessage(LM.getAbstractMessage(commandContext, LangKey.COMMAND_ID_NOT_FOUND, commandID));
+                commandContext.sender().sendMessage(LM.getPlayerMessage(playerUsername, LangKey.COMMAND_ID_NOT_FOUND, commandID));
                 return;
             }
             try {
                 commandManager.deleteAliasCommand(commandID);
-                commandContext.sender().sendMessage(LM.getAbstractMessage(commandContext, LangKey.COMMAND_ALIAS_CREATE, commandID));
+                commandContext.sender().sendMessage(LM.getPlayerMessage(playerUsername, LangKey.COMMAND_ALIAS_CREATE, commandID));
             } catch (Exception e) {
                 logError("AliasDeleteCommand", e);
             }
@@ -201,7 +200,8 @@ public class AliasCommand extends AbstractCommandCollection {
             String commandID = commandContext.get(this.id);
             if(commandManager == null) return;
             if(!commandManager.getCommandMap().containsKey(commandID)) {
-                commandContext.sender().sendMessage(LM.getAbstractMessage(commandContext, LangKey.COMMAND_ID_NOT_FOUND, commandID));
+                commandContext.sender().sendMessage(LM.getPlayerMessage(commandContext.sender().getDisplayName(),
+                        LangKey.COMMAND_ID_NOT_FOUND, commandID));
                 return;
             }
             try {
@@ -214,7 +214,8 @@ public class AliasCommand extends AbstractCommandCollection {
                         aliases.toArray(String[]::new));
                 commandManager.editAliasCommand(commandID, updatedCommand);
                 if(!commandManager.isSameCommand(oldCommand, updatedCommand)) commandContext.sender()
-                        .sendMessage(LM.getAbstractMessage(commandContext, LangKey.COMMAND_ALIAS_EDIT, commandID));
+                        .sendMessage(LM.getPlayerMessage(commandContext.sender().getDisplayName(),
+                                LangKey.COMMAND_ALIAS_EDIT, commandID));
             } catch (Exception e) {
                 logError("AliasEditCommand", e);
             }

@@ -12,7 +12,7 @@ import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import com.raeden.hytale.HytaleFoundations;
 import com.raeden.hytale.core.player.PlayerDataManager;
 import com.raeden.hytale.core.player.PlayerProfile;
-import com.raeden.hytale.core.utils.Permissions;
+import com.raeden.hytale.core.permission.Permissions;
 import com.raeden.hytale.core.lang.LangKey;
 import com.raeden.hytale.utils.TimeUtils;
 import javax.annotation.Nonnull;
@@ -27,7 +27,6 @@ public class MutePlayerCommand extends AbstractPlayerCommand {
     public MutePlayerCommand(HytaleFoundations hytaleFoundations) {
         super("mute", "Mutes a player so they can't speak in chat.");
         this.hytaleFoundations = hytaleFoundations;
-        this.setAllowsExtraArguments(true);
         this.requirePermission(Permissions.MUTE_PLAYER.getPermission());
         targetPlayer = withRequiredArg("Player", "Player to execute command on.", ArgTypes.STRING);
         duration = withRequiredArg("Duration", "Duration of the mute. (d|h|m|s eg. 1d8h5m33s)", ArgTypes.STRING);
@@ -36,8 +35,7 @@ public class MutePlayerCommand extends AbstractPlayerCommand {
     protected void execute(@Nonnull CommandContext commandContext, @Nonnull Store<EntityStore> store, @Nonnull Ref<EntityStore> ref, @Nonnull PlayerRef playerRef, @Nonnull World world) {
         String senderUsername = commandContext.sender().getDisplayName();
         String targetUsername = commandContext.get(this.targetPlayer);
-        String[] rawMessage = commandContext.getInputString().split("\\s+", 3);
-        String duration = rawMessage[2];
+        String duration = commandContext.get(this.duration);
 
         long durationInMillis = TimeUtils.parseDuration(duration);
         if(durationInMillis == 0) {
@@ -45,18 +43,13 @@ public class MutePlayerCommand extends AbstractPlayerCommand {
             return;
         }
 
-        PlayerRef target = findPlayerByName("Mute Player Command", targetUsername);
-        boolean isTargetOffline = false;
-        if(target == null) {
-            if(!hytaleFoundations.getPlayerDataManager().doesPlayerDataExist(targetUsername)) {
-                commandContext.sender().sendMessage(LM.getPlayerMessage(senderUsername, LangKey.PLAYER_NOT_FOUND, targetUsername));
-                return;
-            } else {
-                isTargetOffline = true;
-            }
-        }
+        PlayerRef target = findPlayerByName(targetUsername);
         PlayerDataManager dataManager = hytaleFoundations.getPlayerDataManager();
         PlayerProfile profile = dataManager.getPlayerProfile(targetUsername);
+        if(profile == null) {
+            commandContext.sender().sendMessage(LM.getPlayerMessage(senderUsername, LangKey.PLAYER_NOT_FOUND, targetUsername));
+            return;
+        }
         long muteDuration = profile.getMuteDuration();
         long newMuteDuration = muteDuration + durationInMillis;
         profile.setMuteDuration(newMuteDuration);
@@ -79,8 +72,6 @@ public class MutePlayerCommand extends AbstractPlayerCommand {
             }
         }
 
-        if(isTargetOffline) {
-            dataManager.savePlayerData(targetUsername, dataManager.PROFILE_FILENAME, profile);
-        }
+        if(target == null) dataManager.savePlayerData(targetUsername, dataManager.PROFILE_FILENAME, profile);
     }
 }

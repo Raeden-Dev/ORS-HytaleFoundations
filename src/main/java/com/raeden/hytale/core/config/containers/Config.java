@@ -41,10 +41,8 @@ public class Config {
     @SerializedName("module_discord")
     private boolean toggleDiscordModule;
 
-    @SerializedName("data_clusters")
-    private final Map<String, List<String>> dataClusters = new ConcurrentHashMap<>();
-
-    // --- Getters and Setters ---
+    @SerializedName("data_groups")
+    private final Map<String, List<String>> dataGroups = new ConcurrentHashMap<>();
 
     public String getVersion() { return version; }
     public void setVersion(String version) { this.version = version; }
@@ -91,8 +89,8 @@ public class Config {
     public boolean isToggleDiscordModule() { return toggleDiscordModule; }
     public void setToggleDiscordModule(boolean toggleDiscordModule) { this.toggleDiscordModule = toggleDiscordModule; }
 
-    public void addDataCluster(String name, List<String> worlds) { dataClusters.put(name, worlds); }
-    public Map<String, List<String>> getDataClusters() { return dataClusters; }
+    public void addDataGroup(String name, List<String> worlds) { dataGroups.put(name, worlds); }
+    public Map<String, List<String>> getDataGroups() { return dataGroups; }
 
     public boolean isGenerateDefaultData() {return generateDefaultData;}
     public void setGenerateDefaultData(boolean generateDefaultData) {this.generateDefaultData = generateDefaultData;}
