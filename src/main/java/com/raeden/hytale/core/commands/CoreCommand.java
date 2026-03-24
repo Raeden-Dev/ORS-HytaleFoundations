@@ -25,6 +25,7 @@ import java.util.concurrent.CompletableFuture;
 import static com.raeden.hytale.HytaleFoundations.ERROR_LOG_DIRECTORY;
 import static com.raeden.hytale.HytaleFoundations.LM;
 import static com.raeden.hytale.utils.FileUtils.logError;
+import static com.raeden.hytale.utils.PlayerUtils.findPlayerByName;
 
 public class CoreCommand extends AbstractCommandCollection {
     public CoreCommand(HytaleFoundations hytaleFoundations) {
@@ -69,7 +70,7 @@ public class CoreCommand extends AbstractCommandCollection {
 
             for(String msg : messageToSendPlayer) {
                 if(commandContext.isPlayer()) {
-                    commandContext.sender().sendMessage(hytaleFoundations.getChatManager().getColorEngine().parseText(msg));
+                    commandContext.sender().sendMessage(hytaleFoundations.getChatManager().getColorManager().parseText(msg));
                 }
             }
         }
@@ -168,6 +169,11 @@ public class CoreCommand extends AbstractCommandCollection {
                 try {
                     if(!hytaleFoundations.getPlayerDataManager().doesPlayerExist(commandContext.get(this.targetPlayer))) {
                         commandContext.sender().sendMessage(LM.getAbstractMessage(commandContext, LangKey.PLAYER_NOT_FOUND, commandContext.get(this.targetPlayer)));
+                        return CompletableFuture.completedFuture(null);
+                    }
+                    PlayerRef playerRef = findPlayerByName(commandContext.get(this.targetPlayer));
+                    if(playerRef == null) {
+                        commandContext.sender().sendMessage(LM.getConsoleMessage(LangKey.SAVE_FAILURE, "data of player: " + commandContext.get(this.targetPlayer)));
                         return CompletableFuture.completedFuture(null);
                     }
                     hytaleFoundations.getPlayerDataManager().saveTargetPlayerData(commandContext.get(this.targetPlayer));

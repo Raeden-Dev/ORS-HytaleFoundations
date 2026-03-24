@@ -22,7 +22,7 @@ import java.util.List;
 import java.util.Map;
 
 import static com.raeden.hytale.HytaleFoundations.LM;
-import static com.raeden.hytale.core.config.ConfigManager.COMMAND_FILENAME;
+import static com.raeden.hytale.core.config.ConfigManager.COMMAND_FILE_NAME;
 import static com.raeden.hytale.utils.FileUtils.logError;
 
 public class AliasCommand extends AbstractCommandCollection {
@@ -51,10 +51,10 @@ public class AliasCommand extends AbstractCommandCollection {
             if(commandManager == null) return;
             try {
                 commandManager.loadCommands();
-                commandContext.sender().sendMessage(LM.getPlayerMessage(playerUsername, LangKey.RELOAD_SUCCESS, COMMAND_FILENAME));
+                commandContext.sender().sendMessage(LM.getPlayerMessage(playerUsername, LangKey.RELOAD_SUCCESS, COMMAND_FILE_NAME));
             } catch (Exception e) {
                 logError("AliasReloadCommand", e);
-                commandContext.sender().sendMessage(LM.getPlayerMessage(playerUsername, LangKey.RELOAD_FAILURE, COMMAND_FILENAME));
+                commandContext.sender().sendMessage(LM.getPlayerMessage(playerUsername, LangKey.RELOAD_FAILURE, COMMAND_FILE_NAME));
             }
         }
     }

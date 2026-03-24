@@ -18,7 +18,7 @@ import static com.raeden.hytale.HytaleFoundations.myLogger;
 public class PlayerChatListener {
     public static void onPlayerChat(PlayerChatEvent e, HytaleFoundations hytaleFoundations) {
         ChatManager chatManager = hytaleFoundations.getChatManager();
-        ColorManager colorManager = chatManager.getColorEngine();
+        ColorManager colorManager = chatManager.getColorManager();
         PlayerRef playerRef = e.getSender();
         String playerUsername = playerRef.getUsername();
         boolean isAdmin = hytaleFoundations.getPermissionManager().isPlayerAdmin(playerRef);

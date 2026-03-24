@@ -11,7 +11,6 @@ import com.raeden.hytale.utils.FileUtils;
 
 import java.lang.reflect.Type;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -22,16 +21,12 @@ import static com.raeden.hytale.utils.FileUtils.*;
 public class PermissionManager {
     private final HytaleFoundations hytaleFoundations;
 
-    private final String permissionFileName = PERMISSION_FILENAME;
-    private final Path permissionFilePath;
-
     private final Map<String, String> permissionMap;
     private final Map<String, Set<String>> permissionGroupMap;
     private PermissionFile permissionFile;
 
     public PermissionManager(HytaleFoundations hytaleFoundations) {
         this.hytaleFoundations = hytaleFoundations;
-        permissionFilePath = hytaleFoundations.getDataDirectory().resolve(permissionFileName);
         permissionMap = new ConcurrentHashMap<>();
         permissionGroupMap = new ConcurrentHashMap<>();
         initializePermissionManager();
@@ -39,7 +34,7 @@ public class PermissionManager {
 
     // Initialization and Loading
     private void initializePermissionManager() {
-        if(Files.exists(permissionFilePath)) {
+        if(Files.exists(PERMISSION_FILE_PATH)) {
             loadPermissions();
         } else {
             saveDefaultPermissionFile();
@@ -50,7 +45,7 @@ public class PermissionManager {
         permissionFile = new PermissionFile();
         permissionFile.setPermissionGroups(permissionGroupMap);
         permissionFile.setPermissions(permissionMap);
-        saveJsonFile(permissionFileName, permissionFilePath, permissionFile, false);
+        saveJsonFile(PERMISSION_FILE_NAME, PERMISSION_FILE_PATH, permissionFile, false);
     }
 
     private void saveDefaultPermissionFile() {
@@ -59,12 +54,12 @@ public class PermissionManager {
         permissionFile = new PermissionFile();
         permissionFile.setPermissions(getDefaultPermissions());
         permissionFile.setPermissionGroups(getDefaultPermissionGroups());
-        saveJsonFile(permissionFileName, permissionFilePath, permissionFile, true);
+        saveJsonFile(PERMISSION_FILE_NAME, PERMISSION_FILE_PATH, permissionFile, true);
     }
 
     public void loadPermissions() {
         Type type = new TypeToken<PermissionFile>(){}.getType();
-        PermissionFile loadedPermissionFile = loadJsonFile(permissionFileName, permissionFilePath, type, true);
+        PermissionFile loadedPermissionFile = loadJsonFile(PERMISSION_FILE_NAME, PERMISSION_FILE_PATH, type, true);
 
         if(loadedPermissionFile != null && loadedPermissionFile.getPermissions() != null) {
             int newPermissions = 0;

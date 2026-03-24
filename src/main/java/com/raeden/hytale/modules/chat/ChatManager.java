@@ -94,7 +94,7 @@ public class ChatManager {
     private void createChatSaveScheduler() {
         schedulerUtils.runTaskTimer("chatSaveScheduler", () -> {
                 if(messageLog.isEmpty()) return;
-                    exportChatLog();
+                exportChatLog();
                 },
                 chatConfig.getChatLogSaveInterval(),
                 chatConfig.getChatLogSaveInterval(),
@@ -162,6 +162,6 @@ public class ChatManager {
                 TimeUnit.MINUTES);
     }
 
-    public ColorManager getColorEngine() {return colorManager;}
+    public ColorManager getColorManager() {return colorManager;}
     public AffixManager getAffixManager() {return affixManager;}
 }

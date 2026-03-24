@@ -13,6 +13,7 @@ import com.raeden.hytale.core.alias.CommandAliasManager;
 import com.raeden.hytale.core.alias.commands.AliasCommand;
 import com.raeden.hytale.core.commands.CoreCommand;
 import com.raeden.hytale.core.config.ConfigManager;
+import com.raeden.hytale.core.datagroups.DataGroupManager;
 import com.raeden.hytale.core.events.playerEvents.*;
 import com.raeden.hytale.core.player.PlayerDataManager;
 import com.raeden.hytale.core.permission.PermissionManager;
@@ -56,6 +57,7 @@ public class HytaleFoundations extends JavaPlugin {
     private PlayerDataManager playerDataManager;
     private PermissionManager permissionManager;
     private CommandAliasManager commandAliasManager;
+    private DataGroupManager dataGroupManager;
 
     private PlayerMovementListener playerMovementListener;
 
@@ -69,7 +71,7 @@ public class HytaleFoundations extends JavaPlugin {
 
     @Override
     protected void setup() {
-        myLogger.atInfo().log("Hytale Foundations loading...");
+        myLogger.atInfo().log("Loading Hytale Foundations...");
         ERROR_LOG_DIRECTORY = this.getDataDirectory().resolve("logs").resolve("error_logs");
         registerManagers();
         registerCommands();
@@ -92,6 +94,8 @@ public class HytaleFoundations extends JavaPlugin {
     public void registerManagers() {
         // Main dependencies
         if(configManager == null) configManager = new ConfigManager(this);
+        if(dataGroupManager == null) dataGroupManager = new DataGroupManager(this);
+        dataGroupManager.createDefaultDataGroup(configManager.getDefaultConfig());
         if(permissionManager == null) permissionManager = new PermissionManager(this);
         if(LM == null) LM = new LangManager(this);
         LM.setDefaultLanguage();
@@ -198,6 +202,7 @@ public class HytaleFoundations extends JavaPlugin {
     public PlayerDataManager getPlayerDataManager() {return playerDataManager;}
     public PermissionManager getPermissionManager() {return permissionManager;}
     public CommandAliasManager getCommandManager() {return commandAliasManager;}
+    public DataGroupManager getDataGroupManager() { return dataGroupManager;}
     public ChatManager getChatManager() {return chatManager;}
     public PluginActionManager getPluginActionManager() {return pluginActionManager;}
     public MailManager getMailManager() {return mailManager;}

@@ -23,8 +23,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import static com.raeden.hytale.HytaleFoundations.LM;
 import static com.raeden.hytale.HytaleFoundations.myLogger;
-import static com.raeden.hytale.core.config.ConfigManager.COMMANDS_CONFIG_VERSION;
-import static com.raeden.hytale.core.config.ConfigManager.COMMAND_FILENAME;
+import static com.raeden.hytale.core.config.ConfigManager.*;
 import static com.raeden.hytale.utils.FileUtils.*;
 
 public class CommandAliasManager {
@@ -35,10 +34,6 @@ public class CommandAliasManager {
     private final Set<String> registeredCommandAliases;
 
     private final boolean debug;
-
-    private final String commandFileName = COMMAND_FILENAME;
-    private final Path commandFilePath;
-
     private CommandFile commandFile;
 
     public CommandAliasManager(HytaleFoundations hytaleFoundations, CommandRegistry commandRegistry) {
@@ -47,7 +42,6 @@ public class CommandAliasManager {
         commandMap = new ConcurrentHashMap<>();
         registeredCommands = new ConcurrentHashMap<>();
         registeredCommandAliases = ConcurrentHashMap.newKeySet();
-        commandFilePath = hytaleFoundations.getDataDirectory().resolve(commandFileName);
 
         debug = hytaleFoundations.getConfigManager().getDefaultConfig().isDebugMode();
 
@@ -56,7 +50,7 @@ public class CommandAliasManager {
 
     public void initializeCommandAliasManager() {
         commandMap.putAll(getDefaultCommandMap());
-        if(Files.exists(commandFilePath)) {
+        if(Files.exists(COMMAND_FILE_PATH)) {
             loadCommands();
         } else {
             saveDefaultCommands();
@@ -64,10 +58,10 @@ public class CommandAliasManager {
     }
 
     // Loading and Saving
-    public void saveCommands() {
+    public void saveCommandFile() {
         commandFile = new CommandFile();
         commandFile.setAliasMap(commandMap);
-        saveJsonFile(commandFileName, commandFilePath, commandFile, false);
+        saveJsonFile(COMMAND_FILE_NAME, COMMAND_FILE_PATH, commandFile, false);
         registerDynamicCommands();
     }
 
@@ -75,14 +69,14 @@ public class CommandAliasManager {
         commandFile = new CommandFile();
         Map<String, Command> cmap = new LinkedHashMap<>(getDefaultCommandMap());
         if(hytaleFoundations.getConfigManager().getDefaultConfig().isGenerateDefaultData()) commandFile.setAliasMap(cmap);
-        saveJsonFile(commandFileName, commandFilePath, commandFile, true);
+        saveJsonFile(COMMAND_FILE_NAME, COMMAND_FILE_PATH, commandFile, true);
         myLogger.atInfo().log(LM.getConsoleMessage(LangKey.LOAD_SUCCESS, commandMap.size() + " default command(s).").getAnsiMessage());
         registerDynamicCommands();
     }
 
     public void loadCommands() {
         Type type = new TypeToken<CommandFile>(){}.getType();
-        CommandFile loadedCommandFile = loadJsonFile(commandFileName, commandFilePath, type, true);
+        CommandFile loadedCommandFile = loadJsonFile(COMMAND_FILE_NAME, COMMAND_FILE_PATH, type, true);
         Map<String, Command> tempCommandMap = new ConcurrentHashMap<>(commandMap);
         commandMap.clear();
         if(loadedCommandFile != null && loadedCommandFile.getCommandMap() != null) {
@@ -224,7 +218,7 @@ public class CommandAliasManager {
                 }
             }
         }
-        saveCommands();
+        saveCommandFile();
     }
     public void deleteAliasCommand(String commandID) {
         if(!commandMap.containsKey(commandID)) return;
@@ -234,7 +228,7 @@ public class CommandAliasManager {
         if(!aliases.isEmpty()) {
             aliases.forEach(registeredCommandAliases::remove);
         }
-        saveCommands();
+        saveCommandFile();
     }
     public void editAliasCommand(String commandID, Command updatedCommand) {
         if(!commandMap.containsKey(commandID)) return;
@@ -250,7 +244,7 @@ public class CommandAliasManager {
         registeredCommands.put(updatedCommand.getUsage(), updatedCommand.getTargetCommand());
         registeredCommandAliases.addAll(Arrays.asList(updatedCommand.getAliases()));
         commandMap.put(commandID, updatedCommand);
-        saveCommands();
+        saveCommandFile();
     }
 
     // Helper classes
@@ -308,8 +302,6 @@ public class CommandAliasManager {
         }
         return map;
     }
-
-    public Path getCommandFilePath() { return commandFilePath;}
 
     public static class DynamicCommand extends AbstractPlayerCommand {
         private final CommandAliasManager commandAliasManager;

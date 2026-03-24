@@ -2,7 +2,6 @@ package com.raeden.hytale.core.lang;
 
 import com.hypixel.hytale.server.core.Message;
 import com.hypixel.hytale.server.core.command.system.CommandContext;
-import com.hypixel.hytale.server.core.command.system.CommandSender;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.raeden.hytale.HytaleFoundations;
 import com.raeden.hytale.core.player.PlayerProfile;
@@ -165,7 +164,7 @@ public class LangManager {
 
     private Message formatMessage(PlayerRef playerRef, String text, boolean isConsole) {
         try {
-            ColorManager engine = hytaleFoundations.getChatManager().getColorEngine();
+            ColorManager engine = hytaleFoundations.getChatManager().getColorManager();
             return engine.parseText(playerRef, text, isConsole);
         } catch (NullPointerException e) {
             String cleanText = text.replaceAll("(?i)&[0-9a-z]", "");

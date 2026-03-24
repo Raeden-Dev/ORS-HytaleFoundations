@@ -16,8 +16,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import static com.raeden.hytale.HytaleFoundations.*;
-import static com.raeden.hytale.core.config.ConfigManager.RANK_FILENAME;
-import static com.raeden.hytale.core.config.ConfigManager.RANK_VERSION;
+import static com.raeden.hytale.core.config.ConfigManager.*;
 import static com.raeden.hytale.utils.FileUtils.loadJsonFile;
 import static com.raeden.hytale.utils.FileUtils.saveJsonFile;
 
@@ -26,23 +25,19 @@ public class RankManager {
     private final Map<String, List<String>> rankGroupMap;
     private final Map<String, Rank> rankMap;
 
-    private final String rankFileName = RANK_FILENAME;
-    private final Path rankFilePath;
-
     private RankFile rankFile;
 
     public RankManager(HytaleFoundations hytaleFoundations) {
         this.hytaleFoundations = hytaleFoundations;
         rankMap = new ConcurrentHashMap<>();
         rankGroupMap = new ConcurrentHashMap<>();
-        rankFilePath = hytaleFoundations.getDataDirectory().resolve(rankFileName);
 
         initializeRankManager();
     }
     // Initialization and Loading
     private void initializeRankManager() {
         rankMap.putAll(getDefaultRankMap());
-        if(Files.exists(rankFilePath)) {
+        if(Files.exists(RANK_FILE_PATH)) {
             loadRanks();
         } else {
             saveDefaultRankFile();
@@ -54,18 +49,18 @@ public class RankManager {
         rankFile.setSwitchGroupOnCreate(true);
         rankFile.setRankList(new ArrayList<>(rankMap.values()));
         rankFile.getRankGroups().putAll(rankGroupMap);
-        saveJsonFile(rankFileName, rankFilePath, rankFile, true);
+        saveJsonFile(RANK_FILE_NAME, RANK_FILE_PATH, rankFile, true);
     }
     public void saveRankFile() {
         rankFile = new RankFile();
         rankFile.setForceAddAffix(rankFile.isForceAddAffix());
         rankFile.setRankList(new ArrayList<>(rankMap.values()));
         rankFile.getRankGroups().putAll(rankGroupMap);
-        saveJsonFile(rankFileName, rankFilePath, rankFile, false);
+        saveJsonFile(RANK_FILE_NAME, RANK_FILE_PATH, rankFile, false);
     }
     public void loadRanks() {
         Type type = new TypeToken<RankFile>(){}.getType();
-        RankFile loadedRankFile = loadJsonFile(rankFileName, rankFilePath, type, true);
+        RankFile loadedRankFile = loadJsonFile(RANK_FILE_NAME, RANK_FILE_PATH, type, true);
         if(loadedRankFile != null && loadedRankFile.getRankList() != null) {
             int newRanks = 0;
             for (Rank rank : loadedRankFile.getRankList()) {
@@ -381,11 +376,11 @@ public class RankManager {
     public static class RankFile {
         @SerializedName("VERSION")
         private final String version = RANK_VERSION;
-        @SerializedName("FORCE_ADD_AFFIX")
+        @SerializedName("force_add_affix")
         private boolean forceAddAffix;
-        @SerializedName("ALLOW_AFFIX_REPLACEMENT")
+        @SerializedName("allow_affix_replacement")
         private boolean allowAffixReplacement;
-        @SerializedName("ALLOW_RANK_GROUP_SWITCHING")
+        @SerializedName("allow_rank_group_switching")
         private boolean switchGroupOnCreate;
         @SerializedName("RANK_GROUPS")
         private final Map<String, List<String>> rankGroups = new ConcurrentHashMap<>();

@@ -1,7 +1,7 @@
 package com.raeden.hytale.core.lang;
 
 public enum LangKey {
-    // Core System (PLayer Message)
+    // Core System (Player Message)
     CHAT_MSG_PREFIX         ("system.prefix",                       "&l|&r"),
     CHAT_MSG_PREFIX_ADMIN   ("system.prefix_admin",                 "&7&l[&r&b&a&lHytaleFoundations&r&7&l]&r"),
     MISMATCH_FOUND          ("system.error.mismatch",               "&c&lMismatch found for {0}"),
