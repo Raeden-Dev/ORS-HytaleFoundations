@@ -439,8 +439,8 @@ public class PlayerDataManager {
             myLogger.atWarning().log(LM.getConsoleMessage(LangKey.CHECK_FAILURE, "data group of " + username).getAnsiMessage());
             return false;
         }
-        File playerDataFile = playerDataPaths.get(dataGroup).resolve(username + ".json").toFile();
-        return playerDataFile.exists();
+        File playerFolder = playerDataPaths.get(dataGroup).resolve(username).toFile();
+        return playerFolder.exists() && playerFolder.isDirectory();
     }
 
     public String getPlayerDataGroup(String username) {

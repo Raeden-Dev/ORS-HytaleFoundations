@@ -36,7 +36,7 @@ $C.@PageOverlay {
           Anchor: (Width: 260);
           LayoutMode: Top;
 
-          ScrollableGroup #MailList {
+          Group #MailList {
             Anchor: (Height: 440);
             Background: #1f2738;
             Padding: 6;
@@ -105,7 +105,7 @@ $C.@PageOverlay {
           Group {Anchor: (Height: 8);}
 
 
-          TextField #SubjectDisplay {
+          Label #SubjectDisplay {
             Anchor: (Height: 40);
             Background: #1f2738;
             Text: "Welcome Gift!";
@@ -132,7 +132,7 @@ $C.@PageOverlay {
 
           MultilineTextField #MessageView {
             Anchor: (Height: 180);
-            Text: "Here are some starter items to help you journey!";
+            PlaceholderText: "Here are some starter items to help you journey!";
             Background: #e6e0d4;
             OutlineColor: #424a5e;
             OutlineSize: 2;

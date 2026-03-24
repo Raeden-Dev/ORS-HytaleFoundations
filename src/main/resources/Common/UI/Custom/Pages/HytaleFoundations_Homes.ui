@@ -6,120 +6,42 @@ $C = "../Common.ui";
   Pressed: (Background: #2a6bc5, LabelStyle: (FontSize: 14, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center))
 );
 
-@SecondaryBtnStyle = TextButtonStyle(
-  Default: (Background: #2b3542, LabelStyle: (FontSize: 14, TextColor: #96a9be, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
-  Hovered: (Background: #3b4552, LabelStyle: (FontSize: 14, TextColor: #b6c9de, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
-  Pressed: (Background: #1b2532, LabelStyle: (FontSize: 14, TextColor: #96a9be, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center))
-);
-
 $C.@PageOverlay {
-
   $C.@Container {
-
-    Anchor: (Width: 640, Height: 520);
+    Anchor: (Width: 840, Height: 600);
     Padding: (Full: 20);
 
-    #Title {
+    // --- Top Bar (Title & Close Button) ---
+    Group #Header {
+      LayoutMode: Left;
+      Anchor: (Height: 40);
+
+      Group { FlexWeight: 1; }
+
+      Label #Title {
+        Text: "YOUR HOMES";
+        Style: (FontSize: 18, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center);
+      }
+
+      Group { Anchor: (Width: 10); }
+
       Group {
-        $C.@Title {
-          @Text = "Your Homes";
-        }
+        Anchor: (Width: 25, Height: 12);
+        Background: #b4c8c9;
+      }
+
+      Group { FlexWeight: 1; }
+
+      TextButton #CloseButton {
+        Text: "X";
+        Anchor: (Width: 30, Height: 30);
+        Style: @PrimaryButtonStyle;
       }
     }
 
-    #Content {
-      LayoutMode: Top;
-
-      Group #HomesScroll {
-        FlexWeight: 1;
-        LayoutMode: TopScrolling;
-        ScrollbarStyle: $C.;@DefaultScrollbarStyle;
-
-        Group #HomesGrid {
-          LayoutMode: LeftWrap;
-
-          Anchor: (Left: 0, Right: 0);
-
-          Padding: (Left: 4);
-
-          #HomeCardTemplate {
-
-            Group {
-
-              Anchor: (Width: 150, Height: 110, Right: 10, Bottom: 10);
-
-              Background: #263047;
-
-              Padding: (Top: 10, Bottom: 10, Left: 10, Right: 10);
-
-              Group {
-                LayoutMode: Top;
-                FlexWeight: 1;
-
-                Label #HomeName {
-                  Style: (
-                    FontSize: 16,
-                    RenderBold: true,
-                    TextColor: #55FF55,
-                    HorizontalAlignment: Start
-                  );
-                  Text: "Home";
-                }
-
-                Group { Anchor: (Height: 6); }
-
-                Label #HomeWorld {
-                  Style: (
-                    FontSize: 11,
-                    TextColor: #AAAAAA,
-                    HorizontalAlignment: Start
-                  );
-                  Text: "World: default";
-                }
-
-                Label #HomeCoords {
-                  Style: (
-                    FontSize: 11,
-                    TextColor: #AAAAAA,
-                    HorizontalAlignment: Start
-                  );
-                  Text: "-4073, 1532";
-                }
-
-              }
-
-              Group #HomeActions {
-
-                LayoutMode: Left;
-
-                Anchor: (Height: 32);
-
-                TextButton #GoButton {
-                  Text: "GO";
-                  Anchor: (Width: 60, Height: 28);
-                  Style: @PrimaryButtonStyle;
-                }
-
-                Group { Anchor: (Width: 6); }
-
-                TextButton #EditButton {
-                  Text: "EDIT";
-                  Anchor: (Width: 70, Height: 28);
-                  Style: @SecondaryBtnStyle;
-                }
-
-              }
-
-            }
-
-          }
-
-        }
-
-      }
-
-    }
+    Group { Anchor: (Height: 20); }
+    Group { Anchor: (Height: 2); Background: #2b3542; }
+    Group { Anchor: (Height: 20); }
 
   }
-
 }

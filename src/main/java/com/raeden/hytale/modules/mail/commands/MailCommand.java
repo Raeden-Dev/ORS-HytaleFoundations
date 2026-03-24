@@ -14,6 +14,7 @@ import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import com.raeden.hytale.HytaleFoundations;
 import com.raeden.hytale.core.permission.Permissions;
 import com.raeden.hytale.modules.mail.MailManager;
+import com.raeden.hytale.modules.mail.pages.MailBoxPage;
 import com.raeden.hytale.modules.mail.pages.SendMailPage;
 import com.raeden.hytale.utils.TimeUtils;
 
@@ -28,6 +29,21 @@ public class MailCommand extends AbstractCommandCollection {
         this.requirePermission(Permissions.MAIL.getPermission());
         this.addSubCommand(new SendMailCommand(hytaleFoundations));
         this.addSubCommand(new QuickMailCommand(hytaleFoundations));
+        this.addSubCommand(new MailInboxCommand(hytaleFoundations));
+    }
+    public static class MailInboxCommand extends AbstractPlayerCommand {
+        private final HytaleFoundations hytaleFoundations;
+        public MailInboxCommand(HytaleFoundations hytaleFoundations) {
+            super("inbox", "Opens your mailbox");
+            this.hytaleFoundations = hytaleFoundations;
+        }
+        @Override
+        protected void execute(@Nonnull CommandContext commandContext, @Nonnull Store<EntityStore> store, @Nonnull Ref<EntityStore> ref, @Nonnull PlayerRef playerRef, @Nonnull World world) {
+            Player player = store.getComponent(ref, Player.getComponentType());
+            MailBoxPage mailBoxPage = new MailBoxPage(hytaleFoundations, playerRef);
+            if(player == null) return;
+            player.getPageManager().openCustomPage(ref, store, mailBoxPage);
+        }
     }
     public static class SendMailCommand extends AbstractPlayerCommand {
         private final HytaleFoundations hytaleFoundations;

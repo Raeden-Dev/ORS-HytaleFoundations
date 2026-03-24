@@ -95,7 +95,6 @@ public class HytaleFoundations extends JavaPlugin {
         // Main dependencies
         if(configManager == null) configManager = new ConfigManager(this);
         if(dataGroupManager == null) dataGroupManager = new DataGroupManager(this);
-        dataGroupManager.createDefaultDataGroup(configManager.getDefaultConfig());
         if(permissionManager == null) permissionManager = new PermissionManager(this);
         if(LM == null) LM = new LangManager(this);
         LM.setDefaultLanguage();
