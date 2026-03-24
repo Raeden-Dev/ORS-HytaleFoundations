@@ -11,14 +11,14 @@ import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.world.World;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import com.raeden.hytale.HytaleFoundations;
-import com.raeden.hytale.core.utils.Permissions;
+import com.raeden.hytale.core.permission.Permissions;
 import com.raeden.hytale.modules.chat.AffixManager;
 
 import javax.annotation.Nonnull;
 
 public class PrefixCommand extends AbstractCommandCollection {
     public PrefixCommand(HytaleFoundations hytaleFoundations) {
-        super("prefix", "Argument for all affix related command");
+        super("prefix", "Argument for all prefix related command");
         this.addAliases("pfx");
         this.requirePermission(Permissions.AFFIX.getPermission());
         this.addSubCommand(new PrefixAddCommand(hytaleFoundations));

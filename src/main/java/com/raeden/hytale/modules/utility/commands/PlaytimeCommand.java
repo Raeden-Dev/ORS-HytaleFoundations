@@ -12,14 +12,14 @@ import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import com.raeden.hytale.HytaleFoundations;
 import com.raeden.hytale.core.player.PlayerDataManager;
 import com.raeden.hytale.core.player.PlayerStats;
-import com.raeden.hytale.core.utils.Permissions;
+import com.raeden.hytale.core.permission.Permissions;
 import com.raeden.hytale.core.lang.LangKey;
 import com.raeden.hytale.utils.TimeUtils;
 
 import javax.annotation.Nonnull;
 
 import static com.raeden.hytale.HytaleFoundations.LM;
-import static com.raeden.hytale.utils.GeneralUtils.findPlayerByName;
+import static com.raeden.hytale.utils.PlayerUtils.findPlayerByName;
 
 public class PlaytimeCommand extends AbstractPlayerCommand {
 

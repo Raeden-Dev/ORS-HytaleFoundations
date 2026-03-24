@@ -14,15 +14,15 @@ import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.world.World;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import com.raeden.hytale.HytaleFoundations;
-import com.raeden.hytale.core.utils.PermissionManager;
-import com.raeden.hytale.core.utils.Permissions;
+import com.raeden.hytale.core.permission.PermissionManager;
+import com.raeden.hytale.core.permission.Permissions;
 import com.raeden.hytale.core.lang.LangKey;
 
 import javax.annotation.Nonnull;
 import java.util.*;
 
 import static com.raeden.hytale.HytaleFoundations.LM;
-import static com.raeden.hytale.utils.GeneralUtils.findPlayerByName;
+import static com.raeden.hytale.utils.PlayerUtils.findPlayerByName;
 
 public class PermissionCommand extends AbstractCommandCollection {
     public PermissionCommand(HytaleFoundations hytaleFoundations) {

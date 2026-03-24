@@ -16,7 +16,7 @@ import java.util.Objects;
 
 import static com.raeden.hytale.HytaleFoundations.*;
 
-public class FileManager {
+public class FileUtils {
     // Creating a directory
     public static void createDirectory(Path directoryPath, boolean showInfo) {
         if (Files.exists(directoryPath)) return;

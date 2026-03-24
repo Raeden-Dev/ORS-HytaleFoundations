@@ -4,7 +4,7 @@ import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.Universe;
 import com.raeden.hytale.HytaleFoundations;
 import com.raeden.hytale.core.player.PlayerStats;
-import com.raeden.hytale.utils.Scheduler;
+import com.raeden.hytale.utils.SchedulerUtils;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
@@ -12,13 +12,13 @@ import java.util.concurrent.TimeUnit;
 
 public class PlayerMovementListener {
     private final HytaleFoundations hytaleFoundations;
-    private final Scheduler scheduler;
+    private final SchedulerUtils schedulerUtils;
 
     private final Map<UUID, Vector3d> lastPositions;
 
-    public PlayerMovementListener(HytaleFoundations hytaleFoundations, Scheduler scheduler) {
+    public PlayerMovementListener(HytaleFoundations hytaleFoundations, SchedulerUtils schedulerUtils) {
         this.hytaleFoundations = hytaleFoundations;
-        this.scheduler = scheduler;
+        this.schedulerUtils = schedulerUtils;
         lastPositions = new ConcurrentHashMap<>();
         createMovementScheduler();
     }
@@ -26,7 +26,7 @@ public class PlayerMovementListener {
     private void createMovementScheduler() {
         final double minimumDistance = 1.0;
         final double maximumDistance = 2500.0;
-        scheduler.runTaskTimer("MovementTracker", () -> {
+        schedulerUtils.runTaskTimer("MovementTracker", () -> {
             Universe universe = Universe.get();
             if(universe == null) return;
             for(PlayerRef player : universe.getPlayers()) {

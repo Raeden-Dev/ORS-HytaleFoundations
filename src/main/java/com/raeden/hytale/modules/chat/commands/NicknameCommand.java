@@ -12,7 +12,7 @@ import com.hypixel.hytale.server.core.universe.world.World;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import com.raeden.hytale.HytaleFoundations;
 import com.raeden.hytale.core.player.PlayerProfile;
-import com.raeden.hytale.core.utils.Permissions;
+import com.raeden.hytale.core.permission.Permissions;
 import com.raeden.hytale.core.lang.LangKey;
 
 import javax.annotation.Nonnull;
@@ -22,7 +22,7 @@ import static com.raeden.hytale.HytaleFoundations.LM;
 public class NicknameCommand extends AbstractCommandCollection {
     private final HytaleFoundations hytaleFoundations;
     public NicknameCommand(HytaleFoundations hytaleFoundations) {
-        super("nick", "Argument to access rest of /nick functions");
+        super("nick", "Argument for all nick related commands.");
         this.hytaleFoundations = hytaleFoundations;
         this.requirePermission(Permissions.NICK.getPermission());
         this.setAllowsExtraArguments(true);

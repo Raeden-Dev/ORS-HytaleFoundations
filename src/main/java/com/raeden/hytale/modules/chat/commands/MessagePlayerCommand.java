@@ -19,7 +19,7 @@ import com.raeden.hytale.modules.chat.ChatManager;
 import javax.annotation.Nonnull;
 
 import static com.raeden.hytale.HytaleFoundations.LM;
-import static com.raeden.hytale.utils.GeneralUtils.findPlayerByName;
+import static com.raeden.hytale.utils.PlayerUtils.findPlayerByName;
 
 public class MessagePlayerCommand extends AbstractPlayerCommand {
     private final HytaleFoundations hytaleFoundations;

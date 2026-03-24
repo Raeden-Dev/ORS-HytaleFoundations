@@ -5,8 +5,8 @@ import com.raeden.hytale.HytaleFoundations;
 import com.raeden.hytale.core.config.containers.ChatConfig;
 import com.raeden.hytale.core.player.PlayerProfile;
 import com.raeden.hytale.core.lang.LangKey;
-import com.raeden.hytale.utils.FileManager;
-import com.raeden.hytale.utils.Scheduler;
+import com.raeden.hytale.utils.FileUtils;
+import com.raeden.hytale.utils.SchedulerUtils;
 import com.raeden.hytale.utils.TimeUtils;
 
 import java.io.BufferedWriter;
@@ -20,12 +20,12 @@ import java.util.concurrent.TimeUnit;
 
 import static com.raeden.hytale.HytaleFoundations.LM;
 import static com.raeden.hytale.HytaleFoundations.myLogger;
-import static com.raeden.hytale.utils.FileManager.createDirectory;
-import static com.raeden.hytale.utils.FileManager.logError;
+import static com.raeden.hytale.utils.FileUtils.createDirectory;
+import static com.raeden.hytale.utils.FileUtils.logError;
 
 public class ChatManager {
     private final AffixManager affixManager;
-    private final Scheduler scheduler;
+    private final SchedulerUtils schedulerUtils;
     private final ColorManager colorManager;
     private final ChatConfig chatConfig;
     private String chatFormat;
@@ -34,8 +34,8 @@ public class ChatManager {
 
     private final Path chatLogDir;
 
-    public ChatManager(HytaleFoundations hytaleFoundations, Scheduler scheduler) {
-        this.scheduler = scheduler;
+    public ChatManager(HytaleFoundations hytaleFoundations, SchedulerUtils schedulerUtils) {
+        this.schedulerUtils = schedulerUtils;
 
         affixManager = new AffixManager(hytaleFoundations);
         chatConfig = hytaleFoundations.getConfigManager().getDefaultChatConfig();
@@ -92,9 +92,9 @@ public class ChatManager {
     }
     // Chat Logging
     private void createChatSaveScheduler() {
-        scheduler.runTaskTimer("chatSaveScheduler", () -> {
+        schedulerUtils.runTaskTimer("chatSaveScheduler", () -> {
                 if(messageLog.isEmpty()) return;
-                    exportChatLog();
+                exportChatLog();
                 },
                 chatConfig.getChatLogSaveInterval(),
                 chatConfig.getChatLogSaveInterval(),
@@ -120,7 +120,7 @@ public class ChatManager {
             writer.write("---- END ----");
             myLogger.atInfo().log(LM.getConsoleMessage(LangKey.LOG_CHAT_EXPORT_SUCCESS,fileName, chatLogDir.toString()).getAnsiMessage());
         } catch (IOException e) {
-            FileManager.logError("exportChatLog", e);
+            FileUtils.logError("exportChatLog", e);
             myLogger.atSevere().log(LM.getConsoleMessage(LangKey.LOG_CHAT_EXPORT_FAIL,fileName).getAnsiMessage());
         }
     }
@@ -156,12 +156,12 @@ public class ChatManager {
         activeMessengers.remove(receiver);
     }
     private void clearActiveMessageCache() {
-        scheduler.runTaskTimer("clearActiveMessageCache", activeMessengers::clear,
+        schedulerUtils.runTaskTimer("clearActiveMessageCache", activeMessengers::clear,
                 chatConfig.getPvtMsgClearInterval(),
                 chatConfig.getPvtMsgClearInterval(),
                 TimeUnit.MINUTES);
     }
 
-    public ColorManager getColorEngine() {return colorManager;}
+    public ColorManager getColorManager() {return colorManager;}
     public AffixManager getAffixManager() {return affixManager;}
 }

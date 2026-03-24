@@ -8,7 +8,7 @@ import java.nio.file.Path;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import static com.raeden.hytale.utils.FileManager.createDirectory;
+import static com.raeden.hytale.utils.FileUtils.createDirectory;
 
 public class PluginActionManager {
     private final HytaleFoundations hytaleFoundations;

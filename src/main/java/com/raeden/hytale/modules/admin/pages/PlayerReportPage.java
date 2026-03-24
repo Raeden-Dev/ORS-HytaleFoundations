@@ -1,4 +1,4 @@
-package com.raeden.hytale.modules.mail.pages;
+package com.raeden.hytale.modules.admin.pages;
 
 import com.hypixel.hytale.codec.Codec;
 import com.hypixel.hytale.codec.KeyedCodec;
@@ -16,8 +16,8 @@ import com.hypixel.hytale.server.core.ui.builder.UIEventBuilder;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import com.raeden.hytale.HytaleFoundations;
-import com.raeden.hytale.lang.LangKey;
-import com.raeden.hytale.modules.mail.pages.PlayerReportPage.PlayerReportData;
+import com.raeden.hytale.core.lang.LangKey;
+import com.raeden.hytale.modules.admin.pages.PlayerReportPage.PlayerReportData;
 import javax.annotation.Nonnull;
 
 import static com.raeden.hytale.HytaleFoundations.LM;
