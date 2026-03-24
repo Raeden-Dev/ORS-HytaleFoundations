@@ -18,18 +18,20 @@ import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 import static com.raeden.hytale.HytaleFoundations.*;
-import static com.raeden.hytale.utils.FileManager.*;
-import static com.raeden.hytale.utils.GeneralUtils.*;
+import static com.raeden.hytale.utils.FileUtils.*;
+import static com.raeden.hytale.utils.PlayerUtils.*;
 
 public class PlayerDataManager {
     private final HytaleFoundations hytaleFoundations;
+    private final String PATH_NAME = "players";
     public final String USERMAP_FILENAME = "usermap.json";
     public final String PROFILE_FILENAME = "profile.json";
     public final String STATS_FILENAME = "stats.json";
     public final String MAIL_FILENAME = "mailbox.json";
     public final String HISTORY_FILENAME = "history.json";
-    private final Path playerDataPath;
 
+    private final Map<String, String> playerWorld;
+    private final Map<String, Path> playerDataPaths;
     private final Map<String, PlayerProfile> playerProfiles;
     private final Map<String, PlayerStats> playerStats;
 
@@ -38,42 +40,58 @@ public class PlayerDataManager {
     public PlayerDataManager(HytaleFoundations hytaleFoundations) {
         this.hytaleFoundations = hytaleFoundations;
         this.chatConfig = hytaleFoundations.getConfigManager().getDefaultChatConfig();
-        playerDataPath = hytaleFoundations.getDataDirectory().resolve("data").resolve("players");
 
+        playerWorld = new ConcurrentHashMap<>();
+        playerDataPaths = new ConcurrentHashMap<>();
         playerProfiles = new ConcurrentHashMap<>();
         playerStats = new ConcurrentHashMap<>();
-        createDirectory(playerDataPath, true);
-        createUserMap();
+
+        validatePlayerDataPaths();
+    }
+
+    // data paths
+    public void validatePlayerDataPaths() {
+        hytaleFoundations.getDataGroupManager().createDataDirectories(PATH_NAME);
+        playerDataPaths.putAll(hytaleFoundations.getDataGroupManager().getDataDirPaths(PATH_NAME));
+        createUsermaps();
     }
 
     // User Map
-    private void createUserMap() {
-        Path userMapPath = playerDataPath.resolve(USERMAP_FILENAME);
-        Map<UUID, String> users = new ConcurrentHashMap<>();
-        if(!Files.exists(userMapPath)) {
-            saveJsonFile(USERMAP_FILENAME, userMapPath, users, true);
+    private void createUsermaps() {
+        for(Map.Entry<String, Path> entry : playerDataPaths.entrySet()) {
+            Path usermapPath = entry.getValue().resolve(USERMAP_FILENAME);
+            Map<UUID, String> users = new ConcurrentHashMap<>();
+            if(!Files.exists(usermapPath)) {
+                saveJsonFile(USERMAP_FILENAME, usermapPath, users, true);
+            }
         }
     }
 
-    private Map<UUID, String> loadUserMap() {
-        Path userMapPath = playerDataPath.resolve(USERMAP_FILENAME);
+    private Map<UUID, String> loadUsermap(String dataGroup) {
+        if(!playerDataPaths.containsKey(dataGroup)) return null;
+        Path userMapPath = playerDataPaths.get(dataGroup).resolve(USERMAP_FILENAME);
         Type type = new TypeToken<Map<UUID, String>>(){}.getType();
         return loadJsonFile(USERMAP_FILENAME, userMapPath, type);
     }
 
-    private void updateUserMap(UUID id, String username) {
-        Map<UUID, String> users = loadUserMap();
+    private void updateUsermap(UUID id, String username) {
+        String dataGroup = getPlayerDataGroup(username);
+        if(dataGroup == null || dataGroup.isEmpty()) {
+            myLogger.atWarning().log(LM.getConsoleMessage(LangKey.CHECK_FAILURE, "data group of " + username).getAnsiMessage());
+            return;
+        }
+        Map<UUID, String> users = loadUsermap(dataGroup);
         if(users == null) users = new ConcurrentHashMap<>();
         String oldUsername = users.get(id);
         users.put(id, username);
 
-        Path userMapPath = playerDataPath.resolve(USERMAP_FILENAME);
+        Path userMapPath = playerDataPaths.get(dataGroup).resolve(USERMAP_FILENAME);
         myLogger.atInfo().log(LM.getConsoleMessage(LangKey.UPDATE_SUCCESS, USERMAP_FILENAME).getAnsiMessage());
         saveJsonFile(USERMAP_FILENAME, userMapPath, users, false);
 
         if (oldUsername != null && !oldUsername.equals(username)) {
-            Path oldDataPath = playerDataPath.resolve(oldUsername);
-            Path newDataPath = playerDataPath.resolve(username);
+            Path oldDataPath = playerDataPaths.get(dataGroup).resolve(oldUsername);
+            Path newDataPath = playerDataPaths.get(dataGroup).resolve(username);
             if (Files.exists(oldDataPath)) {
                 try {
                     Files.move(oldDataPath, newDataPath);
@@ -85,7 +103,12 @@ public class PlayerDataManager {
     }
 
     private void verifyUserID(String username) {
-        Map<UUID, String> users = loadUserMap();
+        String dataGroup = getPlayerDataGroup(username);
+        if(dataGroup == null || dataGroup.isEmpty()) {
+            myLogger.atWarning().log(LM.getConsoleMessage(LangKey.CHECK_FAILURE, "data group of " + username).getAnsiMessage());
+            return;
+        }
+        Map<UUID, String> users = loadUsermap(dataGroup);
         if(users == null) return;
 
         UUID playerID = getPlayerUUID(username);
@@ -101,17 +124,18 @@ public class PlayerDataManager {
                 break;
             }
         }
-        if(mismatch) updateUserMap(playerID, username);
+        if(mismatch) updateUsermap(playerID, username);
     }
 
     // Saving, Loading and Creating Player Data
     public void saveAllPlayerData() {
         Universe universe = Universe.get();
         for(PlayerRef player : universe.getPlayers()) {
+            if(player == null || player.getWorldUuid() == null) continue;
+            String dataGroup = Objects.requireNonNull(universe.getWorld(player.getWorldUuid())).getName();
             verifyUserID(player.getUsername());
             savePlayerData(player.getUsername(), PROFILE_FILENAME, getOnlinePlayerProfile(player.getUsername()), false);
             savePlayerData(player.getUsername(), STATS_FILENAME, getOnlinePlayerStats(player.getUsername()), false);
-            // Mailbox and History aren't needed often
             myLogger.atInfo().log(LM.getConsoleMessage(LangKey.SAVE_PD_SUCCESS, player.getUsername()).getAnsiMessage());
         }
     }
@@ -141,10 +165,15 @@ public class PlayerDataManager {
         savePlayerData(username, jsonName, data, true);
     }
     public <T> void savePlayerData(String username, String jsonName, T data, boolean showInfo) {
+        String dataGroup = getPlayerDataGroup(username);
+        if(dataGroup == null || dataGroup.isEmpty()) {
+            myLogger.atWarning().log(LM.getConsoleMessage(LangKey.CHECK_FAILURE, "data group of " + username).getAnsiMessage());
+            return;
+        }
         if (!jsonName.endsWith(".json")) {
             jsonName += ".json";
         }
-        Path playerFolder = playerDataPath.resolve(username);
+        Path playerFolder = playerDataPaths.get(dataGroup).resolve(username);
         try {
             if (!Files.exists(playerFolder)) {
                 Files.createDirectories(playerFolder);
@@ -164,6 +193,7 @@ public class PlayerDataManager {
     public UUID getPlayerUUID(PlayerRef sender, String targetUsername) {
         UUID targetUUID;
         PlayerRef targetRef = findPlayerByName(targetUsername);
+
         if(targetRef == null) {
             PlayerProfile profile = hytaleFoundations.getPlayerDataManager().getPlayerProfile(targetUsername);
             if(profile == null) {
@@ -198,7 +228,12 @@ public class PlayerDataManager {
     }
     // Getting data from Files
     public PlayerProfile getPlayerProfileFromFile(String username) {
-        Path profileJsonPath = playerDataPath.resolve(username).resolve(PROFILE_FILENAME);
+        String dataGroup = getPlayerDataGroup(username);
+        if(dataGroup == null || dataGroup.isEmpty()) {
+            myLogger.atWarning().log(LM.getConsoleMessage(LangKey.CHECK_FAILURE, "data group of " + username).getAnsiMessage());
+            return null;
+        }
+        Path profileJsonPath = playerDataPaths.get(dataGroup).resolve(username).resolve(PROFILE_FILENAME);
         if(!Files.exists(profileJsonPath)) {
             myLogger.atSevere().log(LM.getConsoleMessage(LangKey.FILE_NOT_FOUND_LOC, profileJsonPath.getFileName().toString(), profileJsonPath.toString()).getAnsiMessage());
             return null;
@@ -208,7 +243,12 @@ public class PlayerDataManager {
     }
 
     public PlayerStats getPlayerStatsFromFile(String username) {
-        Path statsJsonPath = playerDataPath.resolve(username).resolve(STATS_FILENAME);
+        String dataGroup = getPlayerDataGroup(username);
+        if(dataGroup == null || dataGroup.isEmpty()) {
+            myLogger.atWarning().log(LM.getConsoleMessage(LangKey.CHECK_FAILURE, "data group of " + username).getAnsiMessage());
+            return null;
+        }
+        Path statsJsonPath = playerDataPaths.get(dataGroup).resolve(username).resolve(STATS_FILENAME);
         if(!Files.exists(statsJsonPath)) {
             myLogger.atSevere().log(LM.getConsoleMessage(LangKey.FILE_NOT_FOUND_LOC, statsJsonPath.getFileName().toString(), statsJsonPath.toString()).getAnsiMessage());
             return null;
@@ -218,7 +258,12 @@ public class PlayerDataManager {
     }
 
     public PlayerHistory getPlayerHistory(String username) {
-        Path historyJsonPath = playerDataPath.resolve(username).resolve(HISTORY_FILENAME);
+        String dataGroup = getPlayerDataGroup(username);
+        if(dataGroup == null || dataGroup.isEmpty()) {
+            myLogger.atWarning().log(LM.getConsoleMessage(LangKey.CHECK_FAILURE, "data group of " + username).getAnsiMessage());
+            return null;
+        }
+        Path historyJsonPath = playerDataPaths.get(dataGroup).resolve(username).resolve(HISTORY_FILENAME);
         if(!Files.exists(historyJsonPath)) {
             myLogger.atSevere().log(LM.getConsoleMessage(LangKey.FILE_NOT_FOUND_LOC, historyJsonPath.getFileName().toString(), historyJsonPath.toString()).getAnsiMessage());
             return null;
@@ -228,8 +273,13 @@ public class PlayerDataManager {
     }
 
     public PlayerMailbox getPlayerMailbox(String username) {
+        String dataGroup = getPlayerDataGroup(username);
+        if(dataGroup == null || dataGroup.isEmpty()) {
+            myLogger.atWarning().log(LM.getConsoleMessage(LangKey.CHECK_FAILURE, "data group of " + username).getAnsiMessage());
+            return null;
+        }
         if(username == null) return null;
-        Path mailJsonPath = playerDataPath.resolve(username).resolve(MAIL_FILENAME);
+        Path mailJsonPath = playerDataPaths.get(dataGroup).resolve(username).resolve(MAIL_FILENAME);
         if(!Files.exists(mailJsonPath)) {
             myLogger.atSevere().log(LM.getConsoleMessage(LangKey.FILE_NOT_FOUND_LOC, mailJsonPath.getFileName().toString(), mailJsonPath.toString()).getAnsiMessage());
             return null;
@@ -240,17 +290,21 @@ public class PlayerDataManager {
 
     // Load Player Data
     public void loadPlayerData(String username) {
+        String dataGroup = getPlayerDataGroup(username);
+        if(dataGroup == null || dataGroup.isEmpty()) {
+            myLogger.atWarning().log(LM.getConsoleMessage(LangKey.CHECK_FAILURE, "data group of " + username).getAnsiMessage());
+            return;
+        }
         verifyUserID(username);
-        Path dataFolder = playerDataPath.resolve(username);
+        Path dataFolder = playerDataPaths.get(dataGroup).resolve(username);
         if(!Files.exists(dataFolder)) {
             createDefaultPlayerData(findPlayerByName(username));
             return;
         }
-        // Player Profile
         Path profileJson = dataFolder.resolve(PROFILE_FILENAME);
         PlayerProfile profile = loadJsonFile(PROFILE_FILENAME, profileJson, PlayerProfile.class);
         addPlayerProfile(username, profile);
-        // Player Stats
+
         Path statsJson = dataFolder.resolve(STATS_FILENAME);
         PlayerStats stats = loadJsonFile(STATS_FILENAME, statsJson, PlayerStats.class);
         addPlayerStats(username, stats);
@@ -308,12 +362,12 @@ public class PlayerDataManager {
 
     private void createDefaultPlayerData(PlayerRef playerRef) {
         if(playerRef == null) {
-            myLogger.atSevere().log(LM.getConsoleMessage(LangKey.CREATE_FAILURE,"player data.").getAnsiMessage());
+            myLogger.atSevere().log(LM.getConsoleMessage(LangKey.CREATE_FAILURE,"player data").getAnsiMessage());
             return;
         }
 
         String username = playerRef.getUsername();
-        UUID id = getPlayerUUID(username);
+        UUID id = playerRef.getUuid();
 
         PlayerProfile profile = createPlayerProfile(playerRef);
         PlayerStats stats = createPlayerStats();
@@ -328,7 +382,7 @@ public class PlayerDataManager {
         savePlayerData(username, MAIL_FILENAME, mailbox);
         savePlayerData(username, HISTORY_FILENAME, history);
 
-        updateUserMap(id, username);
+        updateUsermap(id, username);
     }
 
     public void savePlayTime(String username) {
@@ -345,16 +399,22 @@ public class PlayerDataManager {
 
     // Login / Logout used by Events
     public void playerLogin(Player player) {
-        String username = player.getDisplayName();
-        loadPlayerData(username);
-        PlayerStats stats = getOnlinePlayerStats(username);
-        PlayerProfile profile = getOnlinePlayerProfile(username);
-        if(stats.getPlayTimeMillis() == 0) {
-            player.sendMessage(Message.raw("Welcome " + player.getDisplayName() + " to the server!"));
-            stats.setFirstJoined(System.currentTimeMillis());
+        try {
+            String username = player.getDisplayName();
+            playerWorld.put(username, Objects.requireNonNull(player.getWorld()).getName());
+
+            loadPlayerData(username);
+            PlayerStats stats = getOnlinePlayerStats(username);
+            PlayerProfile profile = getOnlinePlayerProfile(username);
+            if(stats.getPlayTimeMillis() == 0) {
+                player.sendMessage(Message.raw("Welcome " + player.getDisplayName() + " to the server!"));
+                stats.setFirstJoined(System.currentTimeMillis());
+            }
+            stats.setLastJoined(System.currentTimeMillis());
+            profile.setSessionStart(System.currentTimeMillis());
+        } catch (Exception e) {
+            logError("playerLogin", e);
         }
-        stats.setLastJoined(System.currentTimeMillis());
-        profile.setSessionStart(System.currentTimeMillis());
     }
 
     public void playerLogout(PlayerRef playerRef) {
@@ -374,8 +434,17 @@ public class PlayerDataManager {
         return (findPlayerByName(username) != null) || doesPlayerDataExist(username);
     }
     public boolean doesPlayerDataExist(String username) {
-        File playerDataFile = playerDataPath.resolve(username + ".json").toFile();
+        String dataGroup = getPlayerDataGroup(username);
+        if(dataGroup == null || dataGroup.isEmpty()) {
+            myLogger.atWarning().log(LM.getConsoleMessage(LangKey.CHECK_FAILURE, "data group of " + username).getAnsiMessage());
+            return false;
+        }
+        File playerDataFile = playerDataPaths.get(dataGroup).resolve(username + ".json").toFile();
         return playerDataFile.exists();
+    }
+
+    public String getPlayerDataGroup(String username) {
+        return hytaleFoundations.getDataGroupManager().getDataGroupOfWorld(playerWorld.get(username));
     }
 
     public PlayerProfile getOnlinePlayerProfile(String username) { return playerProfiles.get(username);}

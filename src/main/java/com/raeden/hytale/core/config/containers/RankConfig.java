@@ -11,11 +11,11 @@ import java.util.concurrent.ConcurrentHashMap;
 import static com.raeden.hytale.core.config.ConfigManager.RANK_VERSION;
 
 public class RankConfig {
-    @SerializedName("VERSION")
+    @SerializedName("version")
     private final String version = RANK_VERSION;
-    @SerializedName("FORCE_ADD_AFFIX")
+    @SerializedName("force_add_affix")
     private boolean forceAddAffix;
-    @SerializedName("RANK_LIST")
+    @SerializedName("rank_list")
     private List<RankManager.Rank> rankList = new ArrayList<>();
 
     public String getVersion() {return version;}

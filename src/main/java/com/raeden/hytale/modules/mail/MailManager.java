@@ -13,7 +13,7 @@ import com.raeden.hytale.core.lang.LangKey;
 import java.util.List;
 
 import static com.raeden.hytale.HytaleFoundations.LM;
-import static com.raeden.hytale.utils.GeneralUtils.findPlayerByName;
+import static com.raeden.hytale.utils.PlayerUtils.findPlayerByName;
 
 public class MailManager {
     private final HytaleFoundations hytaleFoundations;

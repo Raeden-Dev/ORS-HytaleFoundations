@@ -6,41 +6,41 @@ import java.util.List;
 
 public class ChatConfig {
 
-    @SerializedName("VERSION")
+    @SerializedName("version")
     private String version;
-    @SerializedName("SHOW_CHAT_MSG_PREFIX")
+    @SerializedName("show_chat_msg_prefix")
     private boolean showChatMsgPrefix;
 
-    @SerializedName("GRADIENT_CHUNK_SIZE")
+    @SerializedName("gradient_chunk_size")
     private int gradientChunkSize;
-    @SerializedName("SHOW_NICKNAME")
+    @SerializedName("show_nickname")
     private boolean showNickname;
-    @SerializedName("SHOW_PREFIX")
+    @SerializedName("show_prefix")
     private boolean showPrefix;
-    @SerializedName("SHOW_SUFFIX")
+    @SerializedName("show_suffix")
     private boolean showSuffix;
-    @SerializedName("MAX_PREFIX")
+    @SerializedName("max_prefix")
     private int maxPrefix;
-    @SerializedName("MAX_SUFFIX")
+    @SerializedName("max_suffix")
     private int maxSuffix;
 
-    @SerializedName("ALLOW_PLAYER_CHAT_COLORS")
+    @SerializedName("allow_player_chat_colors")
     private boolean allowPlayerChatColors;
-    @SerializedName("TOGGLE_CENSOR_WORD_LIST")
+    @SerializedName("toggle_censor_word_list")
     private boolean toggleCensorWordList;
-    @SerializedName("CENSOR_CURSE_WORDS")
+    @SerializedName("censor_curse_words")
     private boolean censorCurseWords;
-    @SerializedName("REMOVE_LINKS")
+    @SerializedName("remove_links")
     private boolean removeLinks;
-    @SerializedName("REMOVE_IPS")
+    @SerializedName("remove_ips")
     private boolean removeIps;
-    @SerializedName("PVT_MSG_CACHE_CLEAR_INTERVAL")
+    @SerializedName("pvt_msg_cache_clear_interval")
     private int pvtMsgCacheClearInterval; // LOGOUT + 5M, 10M, 30M, 1H
-    @SerializedName("CHAT_LOG_SAVE_INTERVAL")
+    @SerializedName("chat_log_save_interval")
     private int chatLogSaveInterval; // On shutdown + 5M, 10M, 30M, 1H
-    @SerializedName("CURSE_WORD_LIST")
+    @SerializedName("curse_word_list")
     private List<String> curseWordList = new ArrayList<>();
-    @SerializedName("CENSOR_WORD_LIST")
+    @SerializedName("censor_word_list")
     private List<String> censorWordList = new ArrayList<>();
 
     // --- Getters and Setters ---

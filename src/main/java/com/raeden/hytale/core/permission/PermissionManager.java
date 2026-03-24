@@ -1,4 +1,4 @@
-package com.raeden.hytale.core.utils;
+package com.raeden.hytale.core.permission;
 
 import com.google.gson.annotations.SerializedName;
 import com.google.gson.reflect.TypeToken;
@@ -7,23 +7,19 @@ import com.hypixel.hytale.server.core.permissions.PermissionsModule;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.raeden.hytale.HytaleFoundations;
 import com.raeden.hytale.core.lang.LangKey;
-import com.raeden.hytale.utils.FileManager;
+import com.raeden.hytale.utils.FileUtils;
 
 import java.lang.reflect.Type;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 import static com.raeden.hytale.HytaleFoundations.*;
 import static com.raeden.hytale.core.config.ConfigManager.*;
-import static com.raeden.hytale.utils.FileManager.*;
+import static com.raeden.hytale.utils.FileUtils.*;
 
 public class PermissionManager {
     private final HytaleFoundations hytaleFoundations;
-
-    private final String permissionFileName = PERMISSION_FILENAME;
-    private final Path permissionFilePath;
 
     private final Map<String, String> permissionMap;
     private final Map<String, Set<String>> permissionGroupMap;
@@ -31,7 +27,6 @@ public class PermissionManager {
 
     public PermissionManager(HytaleFoundations hytaleFoundations) {
         this.hytaleFoundations = hytaleFoundations;
-        permissionFilePath = hytaleFoundations.getDataDirectory().resolve(permissionFileName);
         permissionMap = new ConcurrentHashMap<>();
         permissionGroupMap = new ConcurrentHashMap<>();
         initializePermissionManager();
@@ -39,7 +34,7 @@ public class PermissionManager {
 
     // Initialization and Loading
     private void initializePermissionManager() {
-        if(Files.exists(permissionFilePath)) {
+        if(Files.exists(PERMISSION_FILE_PATH)) {
             loadPermissions();
         } else {
             saveDefaultPermissionFile();
@@ -50,7 +45,7 @@ public class PermissionManager {
         permissionFile = new PermissionFile();
         permissionFile.setPermissionGroups(permissionGroupMap);
         permissionFile.setPermissions(permissionMap);
-        saveJsonFile(permissionFileName, permissionFilePath, permissionFile, false);
+        saveJsonFile(PERMISSION_FILE_NAME, PERMISSION_FILE_PATH, permissionFile, false);
     }
 
     private void saveDefaultPermissionFile() {
@@ -59,12 +54,12 @@ public class PermissionManager {
         permissionFile = new PermissionFile();
         permissionFile.setPermissions(getDefaultPermissions());
         permissionFile.setPermissionGroups(getDefaultPermissionGroups());
-        saveJsonFile(permissionFileName, permissionFilePath, permissionFile, true);
+        saveJsonFile(PERMISSION_FILE_NAME, PERMISSION_FILE_PATH, permissionFile, true);
     }
 
     public void loadPermissions() {
         Type type = new TypeToken<PermissionFile>(){}.getType();
-        PermissionFile loadedPermissionFile = loadJsonFile(permissionFileName, permissionFilePath, type, true);
+        PermissionFile loadedPermissionFile = loadJsonFile(PERMISSION_FILE_NAME, PERMISSION_FILE_PATH, type, true);
 
         if(loadedPermissionFile != null && loadedPermissionFile.getPermissions() != null) {
             int newPermissions = 0;
@@ -97,9 +92,9 @@ public class PermissionManager {
                 }
             }
 
-            if (newPermissions > 0)  myLogger.atInfo().log(LM.getConsoleMessage(LangKey.LOAD_SUCCESS, newPermissions + " permission(s)").getAnsiMessage());
-            if (newPermissionGroups > 0)  myLogger.atInfo().log(LM.getConsoleMessage(LangKey.LOAD_SUCCESS, newPermissionGroups + " permission group(s)").getAnsiMessage());
-            if (updatedPermissionGroups > 0) myLogger.atInfo().log(LM.getConsoleMessage(LangKey.LOAD_SUCCESS, updatedPermissionGroups + " permission group(s) updated").getAnsiMessage());
+            if (newPermissions > 0)  myLogger.atInfo().log("Loaded " + newPermissions + " permission(s)");
+            if (newPermissionGroups > 0)  myLogger.atInfo().log("Loaded " + newPermissionGroups + " permission group(s)");
+            if (updatedPermissionGroups > 0) myLogger.atInfo().log("Loaded " + updatedPermissionGroups + "updated permission group(s)");
 
             permissionFile = loadedPermissionFile;
         } else {
@@ -149,7 +144,7 @@ public class PermissionManager {
             PermissionsModule permissionsModule = PermissionsModule.get();
             return permissionsModule.hasPermission(playerID, permission);
         } catch (Exception e) {
-            FileManager.logError("PermissionManager-HasPermission", e);
+            FileUtils.logError("PermissionManager-HasPermission", e);
             myLogger.atWarning().log(LM.getConsoleMessage(LangKey.CHECK_FAILURE,"permission [" + permission + "]").getAnsiMessage());
             return false;
         }
@@ -161,7 +156,7 @@ public class PermissionManager {
             Set<String> playerGroups = permissionsModule.getGroupsForUser(playerID);
             return playerGroups.contains(groupName);
         } catch (Exception e) {
-            FileManager.logError("PermissionManager-HasPermission", e);
+            FileUtils.logError("PermissionManager-HasPermission", e);
             myLogger.atWarning().log(LM.getConsoleMessage(LangKey.CHECK_FAILURE,"permission group [" + groupName + "]").getAnsiMessage());
             return false;
         }

@@ -1,4 +1,4 @@
-package com.raeden.hytale.core.utils;
+package com.raeden.hytale.core.permission;
 
 public enum Permissions {
     ACCESS("hytalefoundations.access"),
@@ -9,6 +9,7 @@ public enum Permissions {
     PREFIX("hytalefoundations.prefix"),
     SUFFIX("hytalefoundations.suffix"),
     VANISH("hytalefoundations.admin.vanish"),
+    HOME("hytalefoundations.home"),
     RANK("hytalefoundations.rank"),
     RANK_ADMIN("hytalefoundations.admin.rank"),
     MAIL("hytalefoundations.mail"),

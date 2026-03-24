@@ -39,6 +39,7 @@ public class PlayerStats {
     private int itemsBroken;
 
     // Chat
+
     @SerializedName("TOTAL_MESSAGES_SENT")
     private long totalMessagesSent;
     @SerializedName("TOTAL_TIMES_REPORTED_BY_PLAYERS")

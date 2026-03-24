@@ -5,19 +5,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MailConfig {
-    @SerializedName("VERSION")
+    @SerializedName("version")
     private String version;
-    @SerializedName("MAX_INBOX_SIZE")
+    @SerializedName("max_inbox_size")
     private int maxInboxSize;
-    @SerializedName("MAX_MAIL_LINES")
+    @SerializedName("max_mail_lines")
     private int maxMailLines;
-    @SerializedName("MAX_MAIL_PER_DAY")
+    @SerializedName("max_mail_per_day")
     private int maxMailPerDay;
-    @SerializedName("ALLOW_GIFTING")
+    @SerializedName("allow_gifts")
     private boolean allowGifting;
-    @SerializedName("MAX_GIFT_PER_MAIL")
+    @SerializedName("max_gift_per_mail")
     private int maxGiftPerMail;
-    @SerializedName("BLACKLISTED_GIFTS")
+    @SerializedName("blacklisted_gifts")
     private final List<String> blacklistedGifts = new ArrayList<>();
 
     // --- Getters and Setters ---

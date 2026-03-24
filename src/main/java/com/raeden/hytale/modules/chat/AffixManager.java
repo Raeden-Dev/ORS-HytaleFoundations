@@ -15,18 +15,14 @@ import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 import static com.raeden.hytale.HytaleFoundations.*;
-import static com.raeden.hytale.core.config.ConfigManager.AFFIX_FILENAME;
-import static com.raeden.hytale.core.config.ConfigManager.AFFIX_VERSION;
-import static com.raeden.hytale.utils.FileManager.loadJsonFile;
-import static com.raeden.hytale.utils.FileManager.saveJsonFile;
-import static com.raeden.hytale.utils.GeneralUtils.findPlayerByName;
+import static com.raeden.hytale.core.config.ConfigManager.*;
+import static com.raeden.hytale.utils.FileUtils.loadJsonFile;
+import static com.raeden.hytale.utils.FileUtils.saveJsonFile;
+import static com.raeden.hytale.utils.PlayerUtils.findPlayerByName;
 
 public class AffixManager {
     private final HytaleFoundations hytaleFoundations;
     private final PlayerDataManager playerDataManager;
-    private final String affixFileName = AFFIX_FILENAME;
-    private final Path affixFilePath;
-
     private final Map<String, PlayerAffix> affixMap;
 
     public enum AffixType { PREFIX, SUFFIX }
@@ -34,7 +30,6 @@ public class AffixManager {
     public AffixManager(HytaleFoundations hytaleFoundations) {
         this.hytaleFoundations = hytaleFoundations;
         playerDataManager = hytaleFoundations.getPlayerDataManager();
-        affixFilePath = hytaleFoundations.getDataDirectory().resolve(affixFileName);
         affixMap = new ConcurrentHashMap<>();
 
         initializeAffixManager();
@@ -42,20 +37,20 @@ public class AffixManager {
     // Initialization and Loading
     private void initializeAffixManager() {
         affixMap.putAll(getDefaultAffixMap());
-        if (Files.exists(affixFilePath)) {
+        if (Files.exists(AFFIX_FILE_PATH)) {
             loadAffixes();
         } else {
             saveAffixFile();
         }
     }
-    private void saveAffixFile() {
+    public void saveAffixFile() {
         AffixHolder affixHolder = new AffixHolder();
         affixHolder.affixList = new ArrayList<>(affixMap.values());
-        saveJsonFile(affixFileName, affixFilePath, affixHolder, true);
+        saveJsonFile(AFFIX_FILE_NAME, AFFIX_FILE_PATH, affixHolder, true);
     }
     public void loadAffixes() {
         Type type = new TypeToken<AffixHolder>(){}.getType();
-        AffixHolder affixHolder = loadJsonFile(affixFileName, affixFilePath, type, true);
+        AffixHolder affixHolder = loadJsonFile(AFFIX_FILE_NAME, AFFIX_FILE_PATH, type, true);
         if(affixHolder != null && affixHolder.affixList != null) {
             int newAffixes = 0;
             for (PlayerAffix affix : affixHolder.affixList) {
