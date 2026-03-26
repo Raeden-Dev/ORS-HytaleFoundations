@@ -1,0 +1,74 @@
+$C = "../Common.ui";
+
+@PrimaryButtonStyle = TextButtonStyle(
+  Default: (Background: #4caf50, LabelStyle: (FontSize: 14, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
+  Hovered: (Background: #5fdc60),
+  Pressed: (Background: #3a9b40)
+);
+
+@SecondaryBtnStyle = TextButtonStyle(
+  Default: (Background: #c94c4c, LabelStyle: (FontSize: 14, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
+  Hovered: (Background: #e05c5c),
+  Pressed: (Background: #a83a3a)
+);
+
+$C.@PageOverlay {
+  $C.@Container {
+    Anchor: (Width: 420, Height: 520);
+    Padding: (Full: 20);
+
+    #Title {
+      Group {
+        $C.@Title { @Text = "Create Alias"; }
+      }
+    }
+
+    #Content {
+      LayoutMode: Top;
+
+      Label { Text: "Alias Name:"; }
+      $C.@TextField #AliasNameInput { Anchor:(Height:40); }
+
+      Group { Anchor:(Height:10); }
+
+      Label { Text: "Target Command:"; }
+      $C.@TextField #CommandInput { Anchor:(Height:40); }
+
+      Group { Anchor:(Height:10); }
+
+      Label { Text: "New Alias:"; }
+      $C.@TextField #NewAliasInput { Anchor:(Height:40); }
+
+      Group { Anchor:(Height:10); }
+
+      Label { Text: "Permission:"; }
+      $C.@TextField #PermissionInput { Anchor:(Height:40); }
+
+      Group { Anchor:(Height:10); }
+
+      Label { Text: "Aliases:"; }
+      $C.@TextField #AliasesInput { Anchor:(Height:40); }
+
+      Group { FlexWeight:1; }
+
+      Group {
+        LayoutMode: Left;
+        Anchor:(Height:40);
+
+        TextButton #CreateButton {
+          Text:"CREATE";
+          Anchor:(Width:140);
+          Style:@PrimaryButtonStyle;
+        }
+
+        Group { FlexWeight:1; }
+
+        TextButton #CancelButton {
+          Text:"CANCEL";
+          Anchor:(Width:140);
+          Style:@SecondaryBtnStyle;
+        }
+      }
+    }
+  }
+}

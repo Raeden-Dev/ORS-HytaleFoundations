@@ -1,0 +1,77 @@
+$C = "../Common.ui";
+
+@PrimaryButtonStyle = TextButtonStyle(
+  Default: (Background: #4caf50, LabelStyle: (FontSize: 14, TextColor: #ffffff, RenderBold: true)),
+  Hovered: (Background: #5fdc60),
+  Pressed: (Background: #3a9b40)
+);
+
+@SecondaryBtnStyle = TextButtonStyle(
+  Default: (Background: #c94c4c, LabelStyle: (FontSize: 14, TextColor: #ffffff, RenderBold: true)),
+  Hovered: (Background: #e05c5c),
+  Pressed: (Background: #a83a3a)
+);
+
+$C.@PageOverlay {
+  $C.@Container {
+    Anchor: (Width: 700, Height: 520);
+    Padding: (Full: 20);
+
+    #Title {
+      Group { $C.@Title { @Text = "Config Menu"; } }
+    }
+
+    #Content {
+      LayoutMode: Left;
+
+      // LEFT MENU
+      Group {
+        Anchor:(Width:180);
+        LayoutMode: Top;
+
+        TextButton #GlobalConfig { Text:"Global Config"; Anchor:(Height:40); }
+        Group { Anchor:(Height:10); }
+
+        TextButton #ChatConfig { Text:"Chat Config"; Anchor:(Height:40); }
+        Group { Anchor:(Height:10); }
+
+        TextButton #MailConfig { Text:"Mail Config"; Anchor:(Height:40); }
+      }
+
+      // RIGHT PANEL
+      Group {
+        FlexWeight:1;
+        LayoutMode: Top;
+
+        Label { Text:"Chat Configuration"; Style:(FontSize:16,RenderBold:true); }
+
+        Group { Anchor:(Height:10); }
+
+        Label #PrefixState { Text:"Chat Prefixes: Enabled"; }
+        TextButton #PrefixToggle { Text:"Toggle"; }
+
+        Label #SuffixState { Text:"Chat Suffixes: Disabled"; }
+        TextButton #SuffixToggle { Text:"Toggle"; }
+
+        Label #FilterState { Text:"Cuss Filter: Enabled"; }
+        TextButton #FilterToggle { Text:"Toggle"; }
+
+        Group { FlexWeight:1; }
+
+        Group {
+          LayoutMode: Left;
+
+          TextButton #ResetButton { Text:"RESET"; Style:@SecondaryBtnStyle; }
+
+          Group { FlexWeight:1; }
+
+          TextButton #SaveButton { Text:"SAVE"; Style:@PrimaryButtonStyle; }
+
+          Group { Anchor:(Width:10); }
+
+          TextButton #CancelButton { Text:"CANCEL"; Style:@SecondaryBtnStyle; }
+        }
+      }
+    }
+  }
+}
