@@ -1,0 +1,70 @@
+$C = "../Common.ui";
+
+@PrimaryButtonStyle = TextButtonStyle(
+  Default: (Background: #3a7bd5, LabelStyle: (FontSize: 13, TextColor: #ffffff, RenderBold: true)),
+  Hovered: (Background: #4a8be5),
+  Pressed: (Background: #2a6bc5)
+);
+
+@SecondaryBtnStyle = TextButtonStyle(
+  Default: (Background: #2b3542, LabelStyle: (FontSize: 13, TextColor: #96a9be, RenderBold: true)),
+  Hovered: (Background: #3b4552),
+  Pressed: (Background: #1b2532)
+);
+
+$C.@PageOverlay {
+  $C.@Container {
+    Anchor: (Width: 520, Height: 520);
+    Padding: (Full: 15);
+
+    #Title {
+      Group {
+        $C.@Title {
+          @Text = "Available Affixes";
+        }
+      }
+    }
+
+    #Content {
+      LayoutMode: Top;
+
+
+      Group #AffixList {
+        LayoutMode: TopScrolling;
+        FlexWeight: 1;
+        ScrollbarStyle: $C.;@DefaultScrollbarStyle;
+
+        Group #AffixItems {
+          LayoutMode: Top;
+        }
+      }
+
+      Group { Anchor:(Height:10); }
+
+
+      Label #CurrentAffix {
+        Text: "CURRENTLY APPLIED AFFIX: [None]";
+        Style:(FontSize:13,TextColor:#ffd27f,RenderBold:true,HorizontalAlignment:Center);
+        Anchor:(Height:20);
+      }
+
+      Group { Anchor:(Height:10); }
+
+
+      Group {
+        LayoutMode: Left;
+        Anchor:(Height:40);
+
+        Group { FlexWeight:1; }
+
+        TextButton #CloseButton {
+          Text:"CLOSE";
+          Anchor:(Width:140,Height:36);
+          Style:@SecondaryBtnStyle;
+        }
+
+        Group { FlexWeight:1; }
+      }
+    }
+  }
+}
