@@ -1,0 +1,27 @@
+$C = "../../Common.ui";
+
+Group #StaffAbusePage {
+  Visible: false;
+  LayoutMode: Top;
+
+  Label { Style: (FontSize: 14, TextColor:#b4c8c9, RenderBold: true); Anchor: (Height: 10); Text: "Staff Name:"; }
+  Group {Anchor: (Height: 15);}
+  $C.@TextField #StaffNameInput { Anchor: (Height: 40); PlaceholderText: "Enter the staff member's name..."; }
+  Group {Anchor: (Height: 10);}
+
+  Label { Style: (FontSize: 14, TextColor:#b4c8c9, RenderBold: true); Anchor: (Height: 10); Text: "Abuse Type:"; }
+  Group {Anchor: (Height: 15);}
+  $C.@DropdownBox #StaffAbuseDropdown {
+    Anchor: (Height: 40); Value: "OTHER";
+    DropdownEntry { Value: "HARASSMENT"; Text: "Harassment"; }
+    DropdownEntry { Value: "RACISM"; Text: "Racism"; }
+    DropdownEntry { Value: "TOXIC_BEHAVIOUR"; Text: "Toxic Behaviour"; }
+    DropdownEntry { Value: "TROLLING"; Text: "Trolling"; }
+    DropdownEntry { Value: "ADVERTISEMENT"; Text: "Advertisement"; }
+    DropdownEntry { Value: "GRIEFING"; Text: "Griefing"; }
+    DropdownEntry { Value: "EXTORTION"; Text: "Extortion"; }
+    DropdownEntry { Value: "THREATS"; Text: "Threats"; }
+    DropdownEntry { Value: "OTHER"; Text: "Other"; }
+  }
+  Group {Anchor: (Height: 10);}
+}

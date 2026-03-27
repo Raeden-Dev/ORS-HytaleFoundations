@@ -8,7 +8,7 @@ import java.util.List;
 
 public class PlayerHistory {
     @SerializedName("PLAYER_OFFENCES")
-    private List<ReportManager> offences = new ArrayList<>();
-    public List<ReportManager> getOffences() {return offences;}
-    public void setOffences(List<ReportManager> offences) {this.offences = offences;}
+    private List<ReportManager.PlayerOffence> offences = new ArrayList<>();
+    public List<ReportManager.PlayerOffence> getOffences() {return offences;}
+    public void setOffences(List<ReportManager.PlayerOffence> offences) {this.offences = offences;}
 }

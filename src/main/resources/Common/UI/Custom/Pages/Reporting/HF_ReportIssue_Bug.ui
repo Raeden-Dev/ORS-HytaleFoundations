@@ -1,0 +1,21 @@
+$C = "../../Common.ui";
+
+Group #BugPage {
+  Visible: false;
+  LayoutMode: Top;
+
+  Label { Style: (FontSize: 14, TextColor:#b4c8c9, RenderBold: true); Anchor: (Height: 10); Text: "Severity:"; }
+  Group {Anchor: (Height: 15);}
+  $C.@DropdownBox #BugSeverityDropdown {
+    Anchor: (Height: 40); Value: "MINOR";
+    DropdownEntry { Value: "MINOR"; Text: "Minor"; }
+    DropdownEntry { Value: "MAJOR"; Text: "Major"; }
+    DropdownEntry { Value: "SERVER_CRASH"; Text: "Server Crash"; }
+  }
+  Group {Anchor: (Height: 10);}
+
+  Label { Style: (FontSize: 14, TextColor:#b4c8c9, RenderBold: true); Anchor: (Height: 10); Text: "Triggered When:"; }
+  Group {Anchor: (Height: 15);}
+  $C.@TextField #BugTriggerInput { Anchor: (Height: 40); PlaceholderText: "What actions caused this?"; }
+  Group {Anchor: (Height: 10);}
+}

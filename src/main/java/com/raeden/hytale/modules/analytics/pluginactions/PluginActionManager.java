@@ -8,11 +8,11 @@ import java.nio.file.Path;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import static com.raeden.hytale.core.config.ConfigManager.ACTION_LOG_PATH;
 import static com.raeden.hytale.utils.FileUtils.createDirectory;
 
 public class PluginActionManager {
     private final HytaleFoundations hytaleFoundations;
-    private final Path pluginActionPath;
 
     private String dateToday;
     private File logFile;
@@ -20,13 +20,12 @@ public class PluginActionManager {
 
     public PluginActionManager(HytaleFoundations hytaleFoundations) {
         this.hytaleFoundations = hytaleFoundations;
-        pluginActionPath = hytaleFoundations.getDataDirectory().resolve("logs").resolve("action_logs");
         actionLogs = new ConcurrentHashMap<>();
         initializeActionManager();
     }
 
     private void initializeActionManager() {
-        createDirectory(pluginActionPath, true);
+        createDirectory(ACTION_LOG_PATH, true);
         fixDate();
     }
 

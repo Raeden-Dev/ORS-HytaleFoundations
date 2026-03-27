@@ -15,6 +15,7 @@ import java.nio.file.StandardOpenOption;
 import java.util.Objects;
 
 import static com.raeden.hytale.HytaleFoundations.*;
+import static com.raeden.hytale.core.config.ConfigManager.ERROR_LOG_FILE_NAME;
 
 public class FileUtils {
     // Creating a directory
@@ -275,7 +276,7 @@ public class FileUtils {
             }
         }
         int ID = getTotalFilesInDir(exportPath);
-        String fileName = TimeUtils.getFileSafeTime() + "-" + at + "-log_" + ID + ".txt";
+        String fileName = ERROR_LOG_FILE_NAME.replace("{at}", at).replace("{id}", String.valueOf(ID));
         Path logFile = exportPath.resolve(fileName);
         try (PrintWriter writer = new PrintWriter(Files.newBufferedWriter(logFile, StandardCharsets.UTF_8))) {
             writer.println("========== ERROR LOG ==========");

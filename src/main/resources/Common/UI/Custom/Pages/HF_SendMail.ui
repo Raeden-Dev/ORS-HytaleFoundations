@@ -80,10 +80,7 @@ $C.@PageOverlay {
             OutlineSize: 2;
             Background: #263047;
             Padding: 10;
-            ScrollbarStyle: (
-              Spacing: 6,
-              Size: 6
-            );
+            ScrollbarStyle: $C.@DefaultScrollbarStyle;
           }
           Group {Anchor: (Height: 10);}
           Group #BottomButtons {

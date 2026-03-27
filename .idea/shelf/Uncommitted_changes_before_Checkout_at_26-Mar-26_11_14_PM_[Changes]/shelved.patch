@@ -1,0 +1,73 @@
+Index: src/main/java/com/raeden/hytale/modules/utility/pages/ConfigMenuPage.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.raeden.hytale.modules.utility.pages;\r\nimport com.hypixel.hytale.protocol.packets.interface_.Page;\r\nimport com.hypixel.hytale.server.core.entity.entities.player.pages.InteractiveCustomUIPage;\r\nimport com.hypixel.hytale.codec.Codec;\r\nimport com.hypixel.hytale.codec.KeyedCodec;\r\nimport com.hypixel.hytale.codec.builder.BuilderCodec;\r\nimport com.hypixel.hytale.component.Ref;\r\nimport com.hypixel.hytale.component.Store;\r\nimport com.hypixel.hytale.protocol.packets.interface_.CustomPageLifetime;\r\nimport com.hypixel.hytale.protocol.packets.interface_.CustomUIEventBindingType;\r\nimport com.hypixel.hytale.server.core.Message;\r\nimport com.hypixel.hytale.server.core.entity.entities.Player;\r\nimport com.hypixel.hytale.server.core.ui.builder.EventData;\r\nimport com.hypixel.hytale.server.core.ui.builder.UICommandBuilder;\r\nimport com.hypixel.hytale.server.core.ui.builder.UIEventBuilder;\r\nimport com.hypixel.hytale.server.core.universe.PlayerRef;\r\nimport com.hypixel.hytale.server.core.universe.world.storage.EntityStore;\r\nimport com.raeden.hytale.HytaleFoundations;\r\n\r\nimport javax.annotation.Nonnull;\r\nimport java.util.HashMap;\r\nimport java.util.Map;\r\n\r\npublic class ConfigMenuPage extends InteractiveCustomUIPage<ConfigMenuPage.Data> {\r\n\r\n    private boolean prefix = true;\r\n    private boolean suffix = false;\r\n    private boolean filter = true;\r\n\r\n    public static class Data {\r\n        public String clicked;\r\n\r\n        public static final BuilderCodec<Data> CODEC =\r\n                BuilderCodec.builder(Data.class, Data::new)\r\n                        .append(new KeyedCodec<>(\"Clicked\", Codec.STRING),\r\n                                (d, v) -> d.clicked = v,\r\n                                d -> d.clicked).add()\r\n                        .build();\r\n    }\r\n\r\n    public ConfigMenuPage(PlayerRef ref) {\r\n        super(ref, CustomPageLifetime.CanDismiss, Data.CODEC);\r\n    }\r\n\r\n    @Override\r\n    public void build(@Nonnull Ref<EntityStore> ref,\r\n                      @Nonnull UICommandBuilder cmd,\r\n                      @Nonnull UIEventBuilder events,\r\n                      @Nonnull Store<EntityStore> store) {\r\n\r\n        cmd.append(\"Pages/ConfigMenu.ui\");\r\n\r\n        bind(events, \"#PrefixToggle\", \"PREFIX\");\r\n        bind(events, \"#SuffixToggle\", \"SUFFIX\");\r\n        bind(events, \"#FilterToggle\", \"FILTER\");\r\n\r\n        bind(events, \"#SaveButton\", \"SAVE\");\r\n        bind(events, \"#CancelButton\", \"CANCEL\");\r\n        bind(events, \"#ResetButton\", \"RESET\");\r\n\r\n        cmd.append(\"#PrefixState { Text: \\\"Chat Prefixes: \" + (prefix ? \"Enabled\" : \"Disabled\") + \"\\\"; }\");\r\n        cmd.append(\"#SuffixState { Text: \\\"Chat Suffixes: \" + (suffix ? \"Enabled\" : \"Disabled\") + \"\\\"; }\");\r\n        cmd.append(\"#FilterState { Text: \\\"Cuss Filter: \" + (filter ? \"Enabled\" : \"Disabled\") + \"\\\"; }\");\r\n    }\r\n\r\n    @Override\r\n    public void handleDataEvent(@Nonnull Ref<EntityStore> ref,\r\n                                @Nonnull Store<EntityStore> store,\r\n                                @Nonnull Data data) {\r\n\r\n        Player p = store.getComponent(ref, Player.getComponentType());\r\n\r\n        if (data.clicked == null) return;\r\n\r\n        switch (data.clicked) {\r\n            case \"PREFIX\" -> prefix = !prefix;\r\n            case \"SUFFIX\" -> suffix = !suffix;\r\n            case \"FILTER\" -> filter = !filter;\r\n\r\n            case \"RESET\" -> {\r\n                prefix = true;\r\n                suffix = false;\r\n                filter = true;\r\n            }\r\n\r\n            case \"SAVE\" -> p.sendMessage(Message.parse(\"Settings saved!\"));\r\n\r\n            case \"CANCEL\" -> p.getPageManager().setPage(ref, store, Page.None);\r\n        }\r\n\r\n        p.getPageManager().setPage(ref, store,\r\n                new ConfigMenuPage((p.getPlayerRef()));\r\n    }\r\n    private void bind(UIEventBuilder e, String id, String key) {\r\n        e.addEventBinding(CustomUIEventBindingType.Activating,\r\n                id,\r\n                new EventData().append(\"Clicked\", key));\r\n    }\r\n}
+===================================================================
+diff --git a/src/main/java/com/raeden/hytale/modules/utility/pages/ConfigMenuPage.java b/src/main/java/com/raeden/hytale/modules/utility/pages/ConfigMenuPage.java
+--- a/src/main/java/com/raeden/hytale/modules/utility/pages/ConfigMenuPage.java	(revision cca1f507a6c5e05e3da93af25ddce7063b06af97)
++++ b/src/main/java/com/raeden/hytale/modules/utility/pages/ConfigMenuPage.java	(date 1774545077624)
+@@ -48,7 +48,7 @@
+                       @Nonnull UIEventBuilder events,
+                       @Nonnull Store<EntityStore> store) {
+ 
+-        cmd.append("Pages/ConfigMenu.ui");
++        cmd.append("Pages/HytaleFoundations_ConfigMenu.ui");
+ 
+         bind(events, "#PrefixToggle", "PREFIX");
+         bind(events, "#SuffixToggle", "SUFFIX");
+@@ -68,8 +68,10 @@
+                                 @Nonnull Store<EntityStore> store,
+                                 @Nonnull Data data) {
+ 
+-        Player p = store.getComponent(ref, Player.getComponentType());
++        Player player = store.getComponent(ref, Player.getComponentType());
++        PlayerRef playerRef = store.getComponent(ref, PlayerRef.getComponentType());
+ 
++        if(playerRef == null || player == null) return;
+         if (data.clicked == null) return;
+ 
+         switch (data.clicked) {
+@@ -83,13 +85,13 @@
+                 filter = true;
+             }
+ 
+-            case "SAVE" -> p.sendMessage(Message.parse("Settings saved!"));
++            case "SAVE" -> player.sendMessage(Message.parse("Settings saved!"));
+ 
+-            case "CANCEL" -> p.getPageManager().setPage(ref, store, Page.None);
++            case "CANCEL" -> player.getPageManager().setPage(ref, store, Page.None);
+         }
+ 
+-        p.getPageManager().setPage(ref, store,
+-                new ConfigMenuPage((p.getPlayerRef()));
++        ConfigMenuPage page = new ConfigMenuPage(playerRef);
++        player.getPageManager().openCustomPage(ref, store, page);
+     }
+     private void bind(UIEventBuilder e, String id, String key) {
+         e.addEventBinding(CustomUIEventBindingType.Activating,
+Index: src/main/java/com/raeden/hytale/modules/utility/pages/CreateAliasPage.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.raeden.hytale.modules.utility.pages;\r\n\r\nimport com.hypixel.hytale.protocol.packets.interface_.Page;\r\nimport com.hypixel.hytale.server.core.entity.entities.player.pages.InteractiveCustomUIPage;\r\nimport com.hypixel.hytale.codec.Codec;\r\nimport com.hypixel.hytale.codec.KeyedCodec;\r\nimport com.hypixel.hytale.codec.builder.BuilderCodec;\r\nimport com.hypixel.hytale.component.Ref;\r\nimport com.hypixel.hytale.component.Store;\r\nimport com.hypixel.hytale.protocol.packets.interface_.CustomPageLifetime;\r\nimport com.hypixel.hytale.protocol.packets.interface_.CustomUIEventBindingType;\r\nimport com.hypixel.hytale.server.core.Message;\r\nimport com.hypixel.hytale.server.core.entity.entities.Player;\r\nimport com.hypixel.hytale.server.core.ui.builder.EventData;\r\nimport com.hypixel.hytale.server.core.ui.builder.UICommandBuilder;\r\nimport com.hypixel.hytale.server.core.ui.builder.UIEventBuilder;\r\nimport com.hypixel.hytale.server.core.universe.PlayerRef;\r\nimport com.hypixel.hytale.server.core.universe.world.storage.EntityStore;\r\nimport com.raeden.hytale.HytaleFoundations;\r\n\r\nimport javax.annotation.Nonnull;\r\nimport java.util.HashMap;\r\nimport java.util.Map;\r\n\r\npublic class CreateAliasPage extends InteractiveCustomUIPage<CreateAliasPage.Data> {\r\n\r\n    public static class Data {\r\n        public String clicked;\r\n\r\n        public static final BuilderCodec<Data> CODEC =\r\n                BuilderCodec.builder(Data.class, Data::new)\r\n                        .append(new KeyedCodec<>(\"Clicked\", Codec.STRING),\r\n                                (d, v) -> d.clicked = v,\r\n                                d -> d.clicked).add()\r\n                        .build();\r\n    }\r\n\r\n    public CreateAliasPage(PlayerRef ref) {\r\n        super(ref, CustomPageLifetime.CanDismiss, Data.CODEC);\r\n    }\r\n\r\n    @Override\r\n    public void build(@Nonnull Ref<EntityStore> ref,\r\n                      @Nonnull UICommandBuilder cmd,\r\n                      @Nonnull UIEventBuilder events,\r\n                      @Nonnull Store<EntityStore> store) {\r\n\r\n        cmd.append(\"Pages/CreateAlias.ui\");\r\n\r\n        events.addEventBinding(CustomUIEventBindingType.Activating, \"#CreateButton\",\r\n                new EventData().append(\"Clicked\", \"CREATE\"));\r\n\r\n        events.addEventBinding(CustomUIEventBindingType.Activating, \"#CancelButton\",\r\n                new EventData().append(\"Clicked\", \"CANCEL\"));\r\n    }\r\n\r\n    @Override\r\n    public void handleDataEvent(@Nonnull Ref<EntityStore> ref,\r\n                                @Nonnull Store<EntityStore> store,\r\n                                @Nonnull Data data) {\r\n\r\n        Player p = store.getComponent(ref, Player.getComponentType());\r\n\r\n        if (data.clicked == null) return;\r\n\r\n        if (data.clicked.equals(\"CREATE\")) {\r\n            p.sendMessage(Message.parse(\"Alias created!\"));\r\n        }\r\n\r\n        if (data.clicked.equals(\"CANCEL\")) p.getPageManager().setPage(ref, store, Page.None);\r\n    }\r\n}
+===================================================================
+diff --git a/src/main/java/com/raeden/hytale/modules/utility/pages/CreateAliasPage.java b/src/main/java/com/raeden/hytale/modules/utility/pages/CreateAliasPage.java
+--- a/src/main/java/com/raeden/hytale/modules/utility/pages/CreateAliasPage.java	(revision cca1f507a6c5e05e3da93af25ddce7063b06af97)
++++ b/src/main/java/com/raeden/hytale/modules/utility/pages/CreateAliasPage.java	(date 1774545077620)
+@@ -45,7 +45,7 @@
+                       @Nonnull UIEventBuilder events,
+                       @Nonnull Store<EntityStore> store) {
+ 
+-        cmd.append("Pages/CreateAlias.ui");
++        cmd.append("Pages/HytaleFoundations_CreateAlias.ui");
+ 
+         events.addEventBinding(CustomUIEventBindingType.Activating, "#CreateButton",
+                 new EventData().append("Clicked", "CREATE"));
+diff --git a/src/main/resources/Common/UI/Custom/Pages/FoundationsMainMenu.ui b/src/main/resources/Common/UI/Custom/Pages/HytaleFoundations_MainMenu.ui
+rename from src/main/resources/Common/UI/Custom/Pages/FoundationsMainMenu.ui
+rename to src/main/resources/Common/UI/Custom/Pages/HytaleFoundations_MainMenu.ui
+diff --git a/src/main/resources/Common/UI/Custom/Pages/ConfigMenu.ui b/src/main/resources/Common/UI/Custom/Pages/HytaleFoundations_ConfigMenu.ui
+rename from src/main/resources/Common/UI/Custom/Pages/ConfigMenu.ui
+rename to src/main/resources/Common/UI/Custom/Pages/HytaleFoundations_ConfigMenu.ui
+diff --git a/src/main/resources/Common/UI/Custom/Pages/CreateAlias.ui b/src/main/resources/Common/UI/Custom/Pages/HytaleFoundations_CreateAlias.ui
+rename from src/main/resources/Common/UI/Custom/Pages/CreateAlias.ui
+rename to src/main/resources/Common/UI/Custom/Pages/HytaleFoundations_CreateAlias.ui

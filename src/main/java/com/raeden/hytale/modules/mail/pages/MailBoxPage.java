@@ -61,7 +61,7 @@ public class MailBoxPage extends InteractiveCustomUIPage<MailBoxPage.MailBoxData
                       @Nonnull UIEventBuilder uiEventBuilder,
                       @Nonnull Store<EntityStore> store) {
 
-        uiCommandBuilder.append("Pages/HytaleFoundations_Mailbox.ui");
+        uiCommandBuilder.append("Pages/HF_Mailbox.ui");
 
 
         uiEventBuilder.addEventBinding(

@@ -15,49 +15,49 @@ import static com.raeden.hytale.HytaleFoundations.*;
 import static com.raeden.hytale.utils.FileUtils.logError;
 
 public class PlayerUtils {
-    public static boolean playerHasInventorySpace(PlayerRef playerRef, int slots) {
-        return playerHasInventorySpace(null, playerRef, slots);
-    }
-    public static boolean playerHasInventorySpace(String caller, PlayerRef playerRef, int slots) {
-        if(slots <= 0) {
-            return true;
-        }
-
-        try {
-            if(playerRef == null) {
-                return false;
-            }
-
-            Ref<EntityStore> entityStoreRef = playerRef.getReference();
-            if(entityStoreRef != null && entityStoreRef.isValid()) {
-                Store<EntityStore> store = entityStoreRef.getStore();
-                Player player = store.getComponent(entityStoreRef, Player.getComponentType());
-                if(player == null) {
-                    return false;
-                } else {
-                    ItemContainer inventory = player.getInventory().getCombinedEverything();
-                    int availableSlots = 0;
-                    short totalSlots = inventory.getCapacity();
-
-                    for(short i = 0; i < totalSlots; ++i) {
-                        ItemStack item = inventory.getItemStack(i);
-                        if(item == null || item.isEmpty()) {
-                            ++availableSlots;
-                        }
-                    }
-
-                    return availableSlots >= slots;
-                }
-            } else {
-                return false;
-            }
-        }  catch (Exception e) {
-            logError(ERROR_LOG_DIRECTORY, "playerHasInventorySpace", e);
-            myLogger.atWarning().log((caller == null ? "" : "[Called by: " + caller + "]") +
-                    LM.getConsoleMessage(LangKey.PLAYER_INV_CHECK_FAIL).getAnsiMessage());
-            return false;
-        }
-    }
+//    public static boolean playerHasInventorySpace(PlayerRef playerRef, int slots) {
+//        return playerHasInventorySpace(null, playerRef, slots);
+//    }
+//    public static boolean playerHasInventorySpace(String caller, PlayerRef playerRef, int slots) {
+//        if(slots <= 0) {
+//            return true;
+//        }
+//
+//        try {
+//            if(playerRef == null) {
+//                return false;
+//            }
+//
+//            Ref<EntityStore> entityStoreRef = playerRef.getReference();
+//            if(entityStoreRef != null && entityStoreRef.isValid()) {
+//                Store<EntityStore> store = entityStoreRef.getStore();
+//                Player player = store.getComponent(entityStoreRef, Player.getComponentType());
+//                if(player == null) {
+//                    return false;
+//                } else {
+//                    ItemContainer inventory = player.getInventory().getStorage();
+//                    int availableSlots = 0;
+//                    short totalSlots = inventory.getCapacity();
+//
+//                    for(short i = 0; i < totalSlots; ++i) {
+//                        ItemStack item = inventory.getItemStack(i);
+//                        if(item == null || item.isEmpty()) {
+//                            ++availableSlots;
+//                        }
+//                    }
+//
+//                    return availableSlots >= slots;
+//                }
+//            } else {
+//                return false;
+//            }
+//        }  catch (Exception e) {
+//            logError(ERROR_LOG_DIRECTORY, "playerHasInventorySpace", e);
+//            myLogger.atWarning().log((caller == null ? "" : "[Called by: " + caller + "]") +
+//                    LM.getConsoleMessage(LangKey.PLAYER_INV_CHECK_FAIL).getAnsiMessage());
+//            return false;
+//        }
+//    }
     public static PlayerRef findPlayerByName(String username) {
         return findPlayerByName(null, username);
     }

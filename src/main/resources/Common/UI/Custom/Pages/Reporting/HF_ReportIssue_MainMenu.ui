@@ -1,0 +1,92 @@
+$C = "../../Common.ui";
+
+@PrimaryButtonStyle = TextButtonStyle(
+  Default: (Background: #3a7bd5, LabelStyle: (FontSize: 14, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
+  Hovered: (Background: #4a8be5, LabelStyle: (FontSize: 14, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
+  Pressed: (Background: #2a6bc5, LabelStyle: (FontSize: 14, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center))
+);
+@SecondaryBtnStyle = TextButtonStyle(
+  Default: (Background: #2b3542, LabelStyle: (FontSize: 14, TextColor: #96a9be, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
+  Hovered: (Background: #3b4552, LabelStyle: (FontSize: 14, TextColor: #b6c9de, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center))
+);
+
+$C.@PageOverlay {
+  $C.@Container #MainContainer {
+    Anchor: (Width: 650, Height: 700);
+    Padding: (Full: 20);
+
+    #Title { Group { $C.@Title { @Text = "IssueReport Server Issue"; } } }
+
+    #Content {
+      LayoutMode: Top;
+
+      Label { Style: (FontSize: 14, TextColor:#b4c8c9, RenderBold: true); Anchor: (Height: 10); Text: "Issue Type:"; }
+      Group {Anchor: (Height: 15);}
+      $C.@DropdownBox #IssueTypeDropdown {
+        Anchor: (Height: 40); Value: "NONE";
+        DropdownEntry { Value: "NONE"; Text: "Select an Issue..."; }
+        DropdownEntry { Value: "PLAYER_ABUSE"; Text: "Player Abuse"; }
+        DropdownEntry { Value: "STAFF_ABUSE"; Text: "Staff Abuse"; }
+        DropdownEntry { Value: "BUG"; Text: "Bug"; }
+        DropdownEntry { Value: "GLITCH"; Text: "Glitch"; }
+        DropdownEntry { Value: "SERVER_LAG"; Text: "Server Lag"; }
+        DropdownEntry { Value: "PURCHASE"; Text: "Purchase"; }
+        DropdownEntry { Value: "OTHER"; Text: "Other"; }
+      }
+      Group {Anchor: (Height: 10);}
+      Group {Anchor: (Height: 3); Background: #2b3542;}
+      Group {Anchor: (Height: 10);}
+
+      Group #PlaceholderContainer {}
+      Group #PlayerAbuseContainer {}
+      Group #StaffAbuseContainer {}
+      Group #BugContainer {}
+      Group #GlitchContainer {}
+      Group #ServerLagContainer {}
+      Group #PurchaseContainer {}
+      Group #OtherContainer {}
+
+      Group #SharedFormElements {
+        Visible: false;
+        LayoutMode: Top;
+
+        Label { Style: (FontSize: 14, TextColor:#b4c8c9, RenderBold: true); Anchor: (Height: 10); Text: "Date of Event / Offense:"; }
+        Group {Anchor: (Height: 15);}
+        Group {
+          LayoutMode: Left; Anchor: (Height: 40);
+          $C.@TextField #DateInput { FlexWeight: 1; PlaceholderText: "DD-MM-YYYY"; }
+          Group {Anchor: (Width: 10);}
+          TextButton #TodayButton { Text: "Today"; Anchor: (Width: 80, Height: 40); Style: @SecondaryBtnStyle; }
+          Group {Anchor: (Width: 10);}
+          TextButton #ForgotButton { Text: "Forgot"; Anchor: (Width: 80, Height: 40); Style: @SecondaryBtnStyle; }
+        }
+        Group {Anchor: (Height: 10);}
+        Group {Anchor: (Height: 3); Background: #2b3542;}
+        Group {Anchor: (Height: 10);}
+
+        Label { Style: (FontSize: 14, TextColor:#b4c8c9, RenderBold: true); Anchor: (Height: 10); Text: "Description:"; }
+        Group {Anchor: (Height: 15);}
+        MultilineTextField #DescriptionInput {
+          Anchor: (Height: 120);
+          PlaceholderText: "Describe the incident here in detail...";
+          PlaceholderStyle: (TextColor: #6e7da1);
+          Background: #263047;
+          OutlineColor: #424a5e;
+          OutlineSize: 2;
+          Padding: 10;
+          MaxLines: 20;
+          ScrollbarStyle: $C.@DefaultScrollbarStyle;
+        }
+        Group {Anchor: (Height: 20);}
+
+        Group {
+          LayoutMode: Left; Anchor: (Height: 40);
+          Group { FlexWeight: 1; }
+          TextButton #ReportButton { Text: "REPORT"; Anchor: (Width: 130, Height: 36); Style: @PrimaryButtonStyle; }
+          Group {Anchor: (Width: 10);}
+          TextButton #CancelButton { Text: "CANCEL"; Anchor: (Width: 130, Height: 36); Style: @SecondaryBtnStyle; }
+        }
+      }
+    }
+  }
+}

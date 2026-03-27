@@ -98,9 +98,10 @@ public enum LangKey {
     // Reporting System
 
     // Logs
-    LOG_CHAT_EXPORT_SUCCESS ("log.chat.export.success",             "[{0}] >> Exported Chat Log."),
-    LOG_CHAT_EXPORT_FAIL    ("log.chat.export.fail",                "[{0}] >> Failed to export chat Log."),
-    LOG_CACHE_CLEAR_MSG     ("log.cache.clear.messenger",           "[{0}] >> Cleared active private messenger cache..."),
+    LOG_EXPORT_SUCCESS      ("log.chat.export.success",             "[LOG] >> Exported {0} Log. (File: {1})"),
+    LOG_EXPORT_FAIL         ("log.chat.export.fail",                "[LOG] >> Failed to export {0} Log. (File: {1})"),
+    LOG_UPDATE_SUCCESS      ("log.chat.update.success",             "[LOG] >> Updated {0} Log. (File: {1})"),
+    LOG_UPDATE_FAIL        ("log.chat.update.fail",                 "[LOG] >> Failed to update {0} Log. (File: {1})"),
 
     // Chat format
     CHAT_FORMAT             ("chat.format.default",                 "{prefix} {player} {suffix} » {message}"),
@@ -141,6 +142,11 @@ public enum LangKey {
     MAIL_SEND_SUCCESS       ("mail.send.success",                   "&a&lMail sent to &r&e&l{0} &r&a&lsuccessfully!"),
     MAIL_SEND_FAILURE       ("mail.send.fail",                      "&c&lFailed to send mail to &r&e&l{0}&r&c&l!"),
     MAIL_MISSING_FIELD      ("mail.send.empty_field",               "&c&lPlease fill out all fields to send the mail."),
+
+    // Report System
+    REPORT_SEND_SUCCESS       ("report.send.success",                   "&a&lA report about &r&e&l{0} &r&a&lis created successfully!"),
+    REPORT_SEND_FAILURE       ("report.send.fail",                      "&c&lFailed to create a report about &r&e&l{0}&r&c&l!"),
+    REPORT_MISSING_FIELD      ("report.send.empty_field",               "&c&lPlease fill out all fields to send the report."),
 
     // Nickname System
     NICKNAME_DISABLED       ("nickname.disabled",                   "&c&lChanging &r&e&lnickname &r&c&lis disabled!"),

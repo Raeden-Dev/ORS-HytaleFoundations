@@ -13,6 +13,6 @@ public class HFMainMenu extends BasicCustomUIPage {
 
     @Override
     public void build(UICommandBuilder uiCommandBuilder) {
-        uiCommandBuilder.append("Pages/HytaleFoundations_MainMenu.ui");
+        uiCommandBuilder.append("Pages/HF_MainMenu.ui");
     }
 }
