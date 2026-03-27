@@ -20,7 +20,7 @@
             <artifactId>hytale-server</artifactId>
             <version>1.0-SNAPSHOT</version>
             <scope>system</scope>
-            <systemPath>D:/Hytale_Modding/Server/HytaleServer.jar</systemPath>
+            <systemPath>F:/1.one_raid_studios/1.hytale_projects/0.local_server/Server/HytaleServer.jar</systemPath>
         </dependency>
     </dependencies>
 </project>

@@ -1,0 +1,32 @@
+$C = "../../Common.ui";
+
+Group #PlayerAbusePage {
+  Visible: false;
+  LayoutMode: Top;
+
+  Label { Style: (FontSize: 14, TextColor:#b4c8c9, RenderBold: true); Anchor: (Height: 10); Text: "Player Name:"; }
+  Group {Anchor: (Height: 15);}
+  $C.@TextField #PlayerNameInput { Anchor: (Height: 40); PlaceholderText: "Enter the player's name..."; }
+  Group {Anchor: (Height: 10);}
+
+  Label { Style: (FontSize: 14, TextColor:#b4c8c9, RenderBold: true); Anchor: (Height: 10); Text: "Abuse Type:"; }
+  Group {Anchor: (Height: 15);}
+  $C.@DropdownBox #PlayerAbuseDropdown {
+    Anchor: (Height: 40); Value: "OTHER";
+    DropdownEntry { Value: "HACKING"; Text: "Hacking"; }
+    DropdownEntry { Value: "XRAYING"; Text: "Xraying"; }
+    DropdownEntry { Value: "BUG_ABUSE"; Text: "Bug Abuse"; }
+    DropdownEntry { Value: "GLITCH_ABUSE"; Text: "Glitch Abuse"; }
+    DropdownEntry { Value: "ADVERTISEMENT"; Text: "Advertisement"; }
+    DropdownEntry { Value: "TOXIC_BEHAVIOUR"; Text: "Toxic Behaviour"; }
+    DropdownEntry { Value: "RACISM"; Text: "Racism"; }
+    DropdownEntry { Value: "SPAMMING"; Text: "Spamming"; }
+    DropdownEntry { Value: "HARASSMENT"; Text: "Harassment"; }
+    DropdownEntry { Value: "IMPERSONATION"; Text: "Impersonation"; }
+    DropdownEntry { Value: "HATE_SPEECH"; Text: "Hate Speech"; }
+    DropdownEntry { Value: "GRIEFING"; Text: "Griefing"; }
+    DropdownEntry { Value: "CUSSING"; Text: "Excessive Cussing"; }
+    DropdownEntry { Value: "OTHER"; Text: "Other"; }
+  }
+  Group {Anchor: (Height: 10);}
+}

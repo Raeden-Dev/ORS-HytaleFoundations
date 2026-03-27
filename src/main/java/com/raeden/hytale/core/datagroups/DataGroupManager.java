@@ -23,10 +23,9 @@ public class DataGroupManager {
     public DataGroupManager(HytaleFoundations hytaleFoundations) {
         this.hytaleFoundations = hytaleFoundations;
         worldGroupInfo = new ConcurrentHashMap<>();
-        initializeDataGroupManager();
-    }
-
-    private void initializeDataGroupManager() {
+        if (hytaleFoundations.getConfigManager().getDefaultConfig().getDataGroups().isEmpty()) {
+            createDefaultDataGroup(hytaleFoundations.getConfigManager().getDefaultConfig());
+        }
         loadWorldDataGroups();
     }
 
@@ -65,6 +64,8 @@ public class DataGroupManager {
         Set<String> dataGroups = hytaleFoundations.getConfigManager().getDefaultConfig().getDataGroups().keySet();
         if(dataGroups.isEmpty()) {
             createDefaultDataGroup(hytaleFoundations.getConfigManager().getDefaultConfig());
+            loadWorldDataGroups();
+            dataGroups = hytaleFoundations.getConfigManager().getDefaultConfig().getDataGroups().keySet();
         }
         for(String group : dataGroups) {
             Path dataPath = hytaleFoundations.getDataDirectory().resolve("data").resolve(group).resolve(dataType);
@@ -85,7 +86,9 @@ public class DataGroupManager {
     }
 
     public String getDataGroupOfWorld(String worldName) {
-        if(worldGroupInfo == null|| !worldGroupInfo.containsKey(worldName)) return "";
+        if(worldGroupInfo == null || !worldGroupInfo.containsKey(worldName)) {
+            return "default";
+        }
         return worldGroupInfo.get(worldName);
     }
 }

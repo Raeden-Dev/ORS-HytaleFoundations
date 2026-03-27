@@ -18,6 +18,7 @@ import com.raeden.hytale.core.events.playerEvents.*;
 import com.raeden.hytale.core.player.PlayerDataManager;
 import com.raeden.hytale.core.permission.PermissionManager;
 import com.raeden.hytale.core.lang.LangManager;
+import com.raeden.hytale.modules.admin.AdminFunctionsManager;
 import com.raeden.hytale.modules.admin.commands.AnnounceCommand;
 import com.raeden.hytale.modules.admin.commands.ReportCommand;
 import com.raeden.hytale.modules.admin.commands.TitleCommand;
@@ -61,6 +62,7 @@ public class HytaleFoundations extends JavaPlugin {
 
     private PlayerMovementListener playerMovementListener;
 
+    private AdminFunctionsManager adminFunctionsManager;
     private ChatManager chatManager;
     private MailManager mailManager;
     private RankManager rankManager;
@@ -95,7 +97,6 @@ public class HytaleFoundations extends JavaPlugin {
         // Main dependencies
         if(configManager == null) configManager = new ConfigManager(this);
         if(dataGroupManager == null) dataGroupManager = new DataGroupManager(this);
-        dataGroupManager.createDefaultDataGroup(configManager.getDefaultConfig());
         if(permissionManager == null) permissionManager = new PermissionManager(this);
         if(LM == null) LM = new LangManager(this);
         LM.setDefaultLanguage();
@@ -103,6 +104,12 @@ public class HytaleFoundations extends JavaPlugin {
         if(pluginActionManager == null) pluginActionManager = new PluginActionManager(this);
         if(playerDataManager == null) playerDataManager = new PlayerDataManager(this);
         if(commandAliasManager == null) commandAliasManager = new CommandAliasManager(this, this.getCommandRegistry());
+
+        if(configManager.getDefaultConfig().isToggleAdminModule()) {
+            if(adminFunctionsManager == null) adminFunctionsManager = new AdminFunctionsManager(this);
+        } else {
+            if(adminFunctionsManager != null) adminFunctionsManager = null;
+        }
 
         if(configManager.getDefaultConfig().isToggleChatModule()) {
             if(chatManager == null) chatManager = new ChatManager(this, schedulerUtils);
@@ -207,7 +214,7 @@ public class HytaleFoundations extends JavaPlugin {
     public PluginActionManager getPluginActionManager() {return pluginActionManager;}
     public MailManager getMailManager() {return mailManager;}
     public RankManager getRankManager() {return rankManager;}
-
+    public AdminFunctionsManager getAdminFunctionsManager() { return adminFunctionsManager;}
     public PlayerMovementListener getPlayerMovementListener() {return playerMovementListener;}
 
 }

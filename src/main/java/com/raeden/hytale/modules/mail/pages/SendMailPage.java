@@ -47,14 +47,14 @@ public class SendMailPage extends InteractiveCustomUIPage<SendMailPage.SendMailD
                         .append(new KeyedCodec<>("ClickedButton", Codec.STRING), (SendMailData obj, String val) -> obj.clickedButton = val, (SendMailData obj) -> obj.clickedButton).add()
                         .build();
     }
-    public SendMailPage(Object hytaleFoundations, PlayerRef playerRef) {
+    public SendMailPage(HytaleFoundations hytaleFoundations, PlayerRef playerRef) {
         super(playerRef, CustomPageLifetime.CanDismiss, SendMailData.CODEC);
         this.hytaleFoundations = hytaleFoundations;
     }
 
     @Override
     public void build(@Nonnull Ref<EntityStore> ref, @Nonnull UICommandBuilder uiCommandBuilder, @Nonnull UIEventBuilder uiEventBuilder, @Nonnull Store<EntityStore> store) {
-        uiCommandBuilder.append("Pages/HytaleFoundations_SendMail.ui");
+        uiCommandBuilder.append("Pages/HF_SendMail.ui");
         uiEventBuilder.addEventBinding(
                 CustomUIEventBindingType.Activating,
                 "#SendButton",
@@ -101,6 +101,7 @@ public class SendMailPage extends InteractiveCustomUIPage<SendMailPage.SendMailD
     }
 
     private boolean checkIfMailValid(Player player, SendMailData data) {
+        if(data == null || player == null) return false;
         if(data.receiverName == null || data.mailBody == null || data.mailSubject == null) {
             player.sendMessage(LM.getPlayerMessage(player.getDisplayName(), LangKey.MAIL_MISSING_FIELD));
             return false;

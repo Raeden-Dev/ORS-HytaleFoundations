@@ -13,13 +13,14 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.nio.file.Path;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 
 import static com.raeden.hytale.HytaleFoundations.LM;
 import static com.raeden.hytale.HytaleFoundations.myLogger;
+import static com.raeden.hytale.core.config.ConfigManager.CHAT_LOG_FILE_NAME;
+import static com.raeden.hytale.core.config.ConfigManager.CHAT_LOG_PATH;
 import static com.raeden.hytale.utils.FileUtils.createDirectory;
 import static com.raeden.hytale.utils.FileUtils.logError;
 
@@ -32,15 +33,11 @@ public class ChatManager {
     private final Map<String, String> activeMessengers;
     private final Map<String, String> messageLog; // Time string + Message
 
-    private final Path chatLogDir;
-
     public ChatManager(HytaleFoundations hytaleFoundations, SchedulerUtils schedulerUtils) {
         this.schedulerUtils = schedulerUtils;
 
         affixManager = new AffixManager(hytaleFoundations);
         chatConfig = hytaleFoundations.getConfigManager().getDefaultChatConfig();
-
-        chatLogDir = hytaleFoundations.getDataDirectory().resolve("logs").resolve("chat_logs");
         activeMessengers = new ConcurrentHashMap<>();
         messageLog = new ConcurrentHashMap<>();
         // Color Engine
@@ -48,7 +45,7 @@ public class ChatManager {
 
         setupChatFormat();
 
-        createDirectory(chatLogDir, true);
+        createDirectory(CHAT_LOG_PATH, true);
         if(chatConfig.getChatLogSaveInterval() != 0) {
             createChatSaveScheduler();
         }
@@ -104,8 +101,8 @@ public class ChatManager {
     private void exportChatLog() {
         if(messageLog.isEmpty()) return;
 
-        String fileName = TimeUtils.getFileSafeTime() + "_chatlog" + ".txt";
-        File logFile = new File(chatLogDir.toString(), fileName);
+        String fileName = CHAT_LOG_FILE_NAME;
+        File logFile = new File(CHAT_LOG_PATH.toString(), fileName);
 
         try(BufferedWriter writer = new BufferedWriter(new FileWriter(logFile))) {
             writer.write("---- CHAT LOG ----");
@@ -117,11 +114,11 @@ public class ChatManager {
                 writer.write("["+entry.getKey()+"] " + entry.getValue());
                 writer.newLine();
             }
-            writer.write("---- END ----");
-            myLogger.atInfo().log(LM.getConsoleMessage(LangKey.LOG_CHAT_EXPORT_SUCCESS,fileName, chatLogDir.toString()).getAnsiMessage());
+            writer.write("---- x ----");
+            myLogger.atInfo().log(LM.getConsoleMessage(LangKey.LOG_EXPORT_SUCCESS,fileName, "chat", fileName).getAnsiMessage());
         } catch (IOException e) {
             FileUtils.logError("exportChatLog", e);
-            myLogger.atSevere().log(LM.getConsoleMessage(LangKey.LOG_CHAT_EXPORT_FAIL,fileName).getAnsiMessage());
+            myLogger.atSevere().log(LM.getConsoleMessage(LangKey.LOG_EXPORT_FAIL, "chat", fileName).getAnsiMessage());
         }
     }
 

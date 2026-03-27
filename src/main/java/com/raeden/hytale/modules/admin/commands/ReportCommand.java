@@ -10,14 +10,13 @@ import com.hypixel.hytale.server.core.universe.world.World;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import com.raeden.hytale.HytaleFoundations;
 import com.raeden.hytale.modules.admin.pages.PlayerReportPage;
-import com.raeden.hytale.modules.home.pages.HomesPage;
 
 import javax.annotation.Nonnull;
 
 public class ReportCommand extends AbstractPlayerCommand {
     private final HytaleFoundations hytaleFoundations;
     public ReportCommand(HytaleFoundations hytaleFoundations) {
-        super("report", "Report a player who broke any server rule.");
+        super("report", "IssueReport a player who broke any server rule.");
         this.hytaleFoundations = hytaleFoundations;
     }
     @Override

@@ -1,4 +1,4 @@
-package com.raeden.hytale.modules.mail.pages;
+package com.raeden.hytale.modules.home.pages;
 
 import com.hypixel.hytale.codec.Codec;
 import com.hypixel.hytale.codec.KeyedCodec;
@@ -21,7 +21,7 @@ import com.raeden.hytale.HytaleFoundations;
 import javax.annotation.Nonnull;
 import java.util.List;
 
-public class HomePage extends InteractiveCustomUIPage<HomePage.HomePageData> {
+public class HomesPage extends InteractiveCustomUIPage<HomesPage.HomePageData> {
 
     private final HytaleFoundations plugin;
 
@@ -41,7 +41,7 @@ public class HomePage extends InteractiveCustomUIPage<HomePage.HomePageData> {
                         .build();
     }
 
-    public HomePage(HytaleFoundations plugin, PlayerRef playerRef) {
+    public HomesPage(HytaleFoundations plugin, PlayerRef playerRef) {
         super(playerRef, CustomPageLifetime.CanDismiss, HomePageData.CODEC);
         this.plugin = plugin;
     }

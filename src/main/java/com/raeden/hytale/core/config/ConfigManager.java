@@ -5,6 +5,7 @@ import com.raeden.hytale.core.config.containers.ChatConfig;
 import com.raeden.hytale.core.config.containers.Config;
 import com.raeden.hytale.core.config.containers.MailConfig;
 import com.raeden.hytale.modules.chat.ColorManager;
+import com.raeden.hytale.utils.TimeUtils;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -28,6 +29,11 @@ public class ConfigManager {
     public static final String CHAT_FILE_NAME = "chat.json";
     public static final String AFFIX_FILE_NAME = "affix.json";
 
+    public static final String REPORT_LOG_FILE_NAME = "{player}_{type}_report-{id}.txt";
+    public static final String PUNISHMENT_LOG_FILE_NAME = "{player}_punishment-{id}.txt";
+    public static final String CHAT_LOG_FILE_NAME = "chat_log_"+ TimeUtils.getFileSafeTime() +".txt";
+    public static final String ERROR_LOG_FILE_NAME = "error_log{id}_{at}_"+ TimeUtils.getFileSafeTime()  +".txt";
+
     public static final String CONFIG_VERSION = "v1.0";
     public static final String CHAT_CONFIG_VERSION = "v1.0";
     public static final String MAIL_CONFIG_VERSION = "v1.0";
@@ -49,6 +55,11 @@ public class ConfigManager {
     public static Path RANK_FILE_PATH;
     public static Path PERMISSION_FILE_PATH;
 
+    public static Path ACTION_LOG_PATH;
+    public static Path CHAT_LOG_PATH;
+    public static Path REPORT_LOG_PATH;
+    public static Path PUNISHMENT_LOG_PATH;
+
     private Config defaultConfig;
     private ChatConfig defaultChatConfig;
     private MailConfig defaultMailConfig;
@@ -66,6 +77,11 @@ public class ConfigManager {
         AFFIX_FILE_PATH = dataDirectory.resolve(AFFIX_FILE_NAME);
         RANK_FILE_PATH = dataDirectory.resolve(RANK_FILE_NAME);
         PERMISSION_FILE_PATH = dataDirectory.resolve(PERMISSION_FILE_NAME);
+
+        ACTION_LOG_PATH = dataDirectory.resolve("logs").resolve("action_logs");
+        CHAT_LOG_PATH = dataDirectory.resolve("logs").resolve("chat_logs");
+        REPORT_LOG_PATH = dataDirectory.resolve("logs").resolve("report_logs");
+        PUNISHMENT_LOG_PATH = dataDirectory.resolve("logs").resolve("punishment_logs");
 
         loadConfigs();
     }

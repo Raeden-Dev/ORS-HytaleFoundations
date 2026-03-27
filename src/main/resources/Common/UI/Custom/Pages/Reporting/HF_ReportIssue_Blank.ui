@@ -1,0 +1,9 @@
+Group #PlaceholderPage {
+  Visible: true;
+  Anchor: (Height: 100);
+  LayoutMode: CenterMiddle;
+  Label {
+    Style: (FontSize: 16, TextColor:#6e7da1, RenderBold: true);
+    Text: "Select issue type to continue...";
+  }
+}

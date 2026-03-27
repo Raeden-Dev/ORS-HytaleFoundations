@@ -1,0 +1,22 @@
+$C = "../../Common.ui";
+
+Group #PurchasePage {
+  Visible: false;
+  LayoutMode: Top;
+
+  Label { Style: (FontSize: 14, TextColor:#b4c8c9, RenderBold: true); Anchor: (Height: 10); Text: "Problem:"; }
+  Group {Anchor: (Height: 15);}
+  $C.@DropdownBox #PurchaseProblemDropdown {
+    Anchor: (Height: 40); Value: "NOT_RECEIVED";
+    DropdownEntry { Value: "NOT_RECEIVED"; Text: "Not Received"; }
+    DropdownEntry { Value: "MISSING_ITEMS"; Text: "Missing Items"; }
+    DropdownEntry { Value: "PURCHASE_FAILED"; Text: "Purchase Failed"; }
+    DropdownEntry { Value: "REFUND"; Text: "Refund"; }
+    DropdownEntry { Value: "OTHER"; Text: "Other"; }
+  }
+  Group {Anchor: (Height: 10);}
+  Label { Style: (FontSize: 14, TextColor:#b4c8c9, RenderBold: true); Anchor: (Height: 10); Text: "Transaction ID:"; }
+  Group {Anchor: (Height: 15);}
+  $C.@TextField #TransactionID { Anchor: (Height: 40); PlaceholderText: "Enter your order's transaction ID..."; }
+  Group {Anchor: (Height: 10);}
+}

@@ -23,6 +23,7 @@ import java.util.Map;
 
 import static com.raeden.hytale.HytaleFoundations.LM;
 import static com.raeden.hytale.core.config.ConfigManager.COMMAND_FILE_NAME;
+import static com.raeden.hytale.core.config.ConfigManager.COMMAND_FILE_PATH;
 import static com.raeden.hytale.utils.FileUtils.logError;
 
 public class AliasCommand extends AbstractCommandCollection {
@@ -69,7 +70,7 @@ public class AliasCommand extends AbstractCommandCollection {
             CommandAliasManager commandManager = hytaleFoundations.getCommandManager();
             if(commandManager == null) return;
             try {
-                Files.delete(commandManager.getCommandFilePath());
+                Files.delete(COMMAND_FILE_PATH);
                 commandManager.saveDefaultCommands();
             } catch (Exception e) {
                 logError("AliasResetCommand", e);

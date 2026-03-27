@@ -61,7 +61,7 @@ public class MailBoxPage extends InteractiveCustomUIPage<MailBoxPage.MailBoxData
                       @Nonnull UIEventBuilder uiEventBuilder,
                       @Nonnull Store<EntityStore> store) {
 
-        uiCommandBuilder.append("Pages/HytaleFoundations_mailbox.ui");
+        uiCommandBuilder.append("Pages/HF_Mailbox.ui");
 
 
         uiEventBuilder.addEventBinding(
@@ -155,11 +155,8 @@ public class MailBoxPage extends InteractiveCustomUIPage<MailBoxPage.MailBoxData
         }
         if (REPLY_BUTTON_ID.equals(data.clickedButton)) {
             String receiver = mailManager.getSenderFromMail(playerRef, data.selectedMailId);
-
-            Object HytaleFoundations = null;
-            player.getPageManager().setPage(ref,
-                    store,
-                    new SendMailPage(HytaleFoundations, playerRef));
+            SendMailPage page = new SendMailPage(hytaleFoundations, playerRef);
+            player.getPageManager().openCustomPage(ref, store, page);
         }
     }
 }

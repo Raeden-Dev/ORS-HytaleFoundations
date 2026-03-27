@@ -1,0 +1,11 @@
+$C = "../../Common.ui";
+
+Group #OtherPage {
+  Visible: false;
+  LayoutMode: Top;
+
+  Label { Style: (FontSize: 14, TextColor:#b4c8c9, RenderBold: true); Anchor: (Height: 10); Text: "Context:"; }
+  Group {Anchor: (Height: 15);}
+  $C.@TextField #OtherContextInput { Anchor: (Height: 40); PlaceholderText: "Brief context of the issue..."; }
+  Group {Anchor: (Height: 10);}
+}
