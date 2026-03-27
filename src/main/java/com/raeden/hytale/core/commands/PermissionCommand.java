@@ -8,6 +8,7 @@ import com.hypixel.hytale.server.core.command.system.arguments.system.RequiredAr
 import com.hypixel.hytale.server.core.command.system.arguments.types.ArgTypes;
 import com.hypixel.hytale.server.core.command.system.basecommands.AbstractCommandCollection;
 import com.hypixel.hytale.server.core.command.system.basecommands.AbstractPlayerCommand;
+import com.hypixel.hytale.server.core.entity.entities.Player;
 import com.hypixel.hytale.server.core.permissions.PermissionsModule;
 import com.hypixel.hytale.server.core.permissions.provider.PermissionProvider;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
@@ -17,6 +18,7 @@ import com.raeden.hytale.HytaleFoundations;
 import com.raeden.hytale.core.permission.PermissionManager;
 import com.raeden.hytale.core.permission.Permissions;
 import com.raeden.hytale.core.lang.LangKey;
+import com.raeden.hytale.modules.utility.pages.PermissionsListPage;
 
 import javax.annotation.Nonnull;
 import java.util.*;
@@ -37,8 +39,24 @@ public class PermissionCommand extends AbstractCommandCollection {
         this.addSubCommand(new PermissionRemoveAllCommand(hytaleFoundations));
         this.addSubCommand(new PermissionGroupAddCommand(hytaleFoundations));
         this.addSubCommand(new PermissionGroupRemoveCommand(hytaleFoundations));
+        this.addSubCommand(new PermissionListGuiCommand(hytaleFoundations));
     }
+    private static class PermissionListGuiCommand extends AbstractPlayerCommand {
+        private final HytaleFoundations hytaleFoundations;
+        public PermissionListGuiCommand(HytaleFoundations hytaleFoundations) {
+            super("gui", "Test any experiment feature. (DEV COMMAND)");
+            this.hytaleFoundations = hytaleFoundations;
+            this.requirePermission(Permissions.ADMIN.getPermission());
+        }
+        @Override
+        protected void execute(@Nonnull CommandContext commandContext, @Nonnull Store<EntityStore> store, @Nonnull Ref<EntityStore> ref, @Nonnull PlayerRef playerRef, @Nonnull World world) {
+//            Player player = store.getComponent(ref, Player.getComponentType());
+//            PermissionsListPage page = new PermissionsListPage(playerRef);
+//            if(player == null) return;
+//            player.getPageManager().openCustomPage(ref, store, page);
 
+        }
+    }
     public static class PermissionListCommand extends AbstractPlayerCommand {
         private final HytaleFoundations hytaleFoundations;
         public PermissionListCommand(HytaleFoundations hytaleFoundations) {

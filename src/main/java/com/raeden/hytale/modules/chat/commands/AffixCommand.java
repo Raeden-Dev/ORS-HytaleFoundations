@@ -7,6 +7,7 @@ import com.hypixel.hytale.server.core.command.system.arguments.system.RequiredAr
 import com.hypixel.hytale.server.core.command.system.arguments.types.ArgTypes;
 import com.hypixel.hytale.server.core.command.system.basecommands.AbstractCommandCollection;
 import com.hypixel.hytale.server.core.command.system.basecommands.AbstractPlayerCommand;
+import com.hypixel.hytale.server.core.entity.entities.Player;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.world.World;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
@@ -14,6 +15,7 @@ import com.raeden.hytale.HytaleFoundations;
 import com.raeden.hytale.core.permission.Permissions;
 import com.raeden.hytale.core.lang.LangKey;
 import com.raeden.hytale.modules.chat.AffixManager;
+import com.raeden.hytale.modules.utility.pages.AffixListPage;
 
 import javax.annotation.Nonnull;
 import java.util.Map;
@@ -26,6 +28,7 @@ public class AffixCommand extends AbstractCommandCollection {
         this.requirePermission(Permissions.AFFIX.getPermission());
         this.addSubCommand(new AffixListCommand(hytaleFoundations));
         this.addSubCommand(new AffixClearCommand(hytaleFoundations));
+        this.addSubCommand(new AffixGuiCommand(hytaleFoundations));
     }
     public static class AffixListCommand extends AbstractPlayerCommand {
         private final HytaleFoundations hytaleFoundations;
@@ -44,6 +47,23 @@ public class AffixCommand extends AbstractCommandCollection {
                 commandContext.sender().sendMessage(LM.getPlayerMessage(playerUsername, LangKey.LIST_ITEM,
                         entry.getValue().getDisplayText() + " &r&e&l[ID: " + entry.getKey() + "]"));
             }
+        }
+    }
+
+    public static class AffixGuiCommand extends AbstractPlayerCommand {
+        private final HytaleFoundations hytaleFoundations;
+        public AffixGuiCommand(HytaleFoundations hytaleFoundations) {
+            super("gui", "Show list of all available affixes in gui");
+            this.hytaleFoundations = hytaleFoundations;
+        }
+        @Override
+        protected void execute(@Nonnull CommandContext commandContext, @Nonnull Store<EntityStore> store, @Nonnull Ref<EntityStore> ref, @Nonnull PlayerRef playerRef, @Nonnull World world) {
+            AffixManager affixManager = hytaleFoundations.getChatManager().getAffixManager();
+            if(affixManager == null) return;
+//            Player player = store.getComponent(ref, Player.getComponentType());
+//            if(player == null) return;
+//            AffixListPage page = new AffixListPage(playerRef);
+//            player.getPageManager().openCustomPage(ref, store, page);
         }
     }
     public static class AffixClearCommand extends AbstractPlayerCommand {

@@ -8,6 +8,7 @@ import com.hypixel.hytale.server.core.command.system.arguments.system.RequiredAr
 import com.hypixel.hytale.server.core.command.system.arguments.types.ArgTypes;
 import com.hypixel.hytale.server.core.command.system.basecommands.AbstractCommandCollection;
 import com.hypixel.hytale.server.core.command.system.basecommands.AbstractPlayerCommand;
+import com.hypixel.hytale.server.core.entity.entities.Player;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.world.World;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
@@ -15,6 +16,8 @@ import com.raeden.hytale.HytaleFoundations;
 import com.raeden.hytale.core.alias.CommandAliasManager;
 import com.raeden.hytale.core.lang.LangKey;
 import com.raeden.hytale.core.permission.Permissions;
+import com.raeden.hytale.modules.utility.pages.ConfigMenuPage;
+import com.raeden.hytale.core.alias.CreateAliasPage;
 
 import javax.annotation.Nonnull;
 import java.nio.file.Files;
@@ -37,6 +40,23 @@ public class AliasCommand extends AbstractCommandCollection {
         this.addSubCommand(new AliasCreateCommand(hytaleFoundations));
         this.addSubCommand(new AliasDeleteCommand(hytaleFoundations));
         this.addSubCommand(new AliasEditCommand(hytaleFoundations));
+        this.addSubCommand(new AliasCreateGuiCommand(hytaleFoundations));
+    }
+    private static class AliasCreateGuiCommand extends AbstractPlayerCommand {
+        private final HytaleFoundations hytaleFoundations;
+        public AliasCreateGuiCommand(HytaleFoundations hytaleFoundations) {
+            super("gui", "Test any experiment feature. (DEV COMMAND)");
+            this.hytaleFoundations = hytaleFoundations;
+            this.requirePermission(Permissions.ADMIN.getPermission());
+        }
+        @Override
+        protected void execute(@Nonnull CommandContext commandContext, @Nonnull Store<EntityStore> store, @Nonnull Ref<EntityStore> ref, @Nonnull PlayerRef playerRef, @Nonnull World world) {
+            Player player = store.getComponent(ref, Player.getComponentType());
+            CreateAliasPage page = new CreateAliasPage(playerRef);
+            if(player == null) return;
+            player.getPageManager().openCustomPage(ref, store, page);
+
+        }
     }
     private static class AliasReloadCommand extends AbstractPlayerCommand {
         private final HytaleFoundations hytaleFoundations;

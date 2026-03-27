@@ -16,6 +16,8 @@ import com.raeden.hytale.HytaleFoundations;
 import com.raeden.hytale.core.pages.HFMainMenu;
 import com.raeden.hytale.core.permission.Permissions;
 import com.raeden.hytale.core.lang.LangKey;
+import com.raeden.hytale.modules.admin.pages.PlayerReportPage;
+import com.raeden.hytale.modules.utility.pages.ConfigMenuPage;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
@@ -42,6 +44,7 @@ public class CoreCommand extends AbstractCommandCollection {
         this.addSubCommand(new LangCommand(hytaleFoundations));
         this.addSubCommand(new HFHelpCommand(hytaleFoundations));
         this.addSubCommand(new PermissionCommand(hytaleFoundations));
+        this.addSubCommand(new ConfigGuiCommand(hytaleFoundations));
     }
 
     private static class HFHelpCommand extends AbstractPlayerCommand {
@@ -328,6 +331,23 @@ public class CoreCommand extends AbstractCommandCollection {
         @Override
         protected void execute(@Nonnull CommandContext commandContext, @Nonnull Store<EntityStore> store, @Nonnull Ref<EntityStore> ref, @Nonnull PlayerRef playerRef, @Nonnull World world) {
             System.out.println("[TEST-COMMAND] Testing --> Nothing for now!");
+
+        }
+    }
+
+    private static class ConfigGuiCommand extends AbstractPlayerCommand {
+        private final HytaleFoundations hytaleFoundations;
+        public ConfigGuiCommand(HytaleFoundations hytaleFoundations) {
+            super("gui", "Test any experiment feature. (DEV COMMAND)");
+            this.hytaleFoundations = hytaleFoundations;
+            this.requirePermission(Permissions.ADMIN.getPermission());
+        }
+        @Override
+        protected void execute(@Nonnull CommandContext commandContext, @Nonnull Store<EntityStore> store, @Nonnull Ref<EntityStore> ref, @Nonnull PlayerRef playerRef, @Nonnull World world) {
+//            Player player = store.getComponent(ref, Player.getComponentType());
+//            ConfigMenuPage page = new ConfigMenuPage(playerRef);
+//            if(player == null) return;
+//            player.getPageManager().openCustomPage(ref, store, page);
 
         }
     }

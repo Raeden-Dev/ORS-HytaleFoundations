@@ -16,7 +16,7 @@ import javax.annotation.Nonnull;
 public class ReportCommand extends AbstractPlayerCommand {
     private final HytaleFoundations hytaleFoundations;
     public ReportCommand(HytaleFoundations hytaleFoundations) {
-        super("report", "IssueReport a player who broke any server rule.");
+        super("report", "Report a player who broke any server rule.");
         this.hytaleFoundations = hytaleFoundations;
     }
     @Override
