@@ -35,6 +35,7 @@ import com.raeden.hytale.modules.mail.MailManager;
 import com.raeden.hytale.modules.chat.commands.*;
 import com.raeden.hytale.modules.chat.events.PlayerChatListener;
 import com.raeden.hytale.modules.mail.commands.MailCommand;
+import com.raeden.hytale.modules.utility.UtilityManager;
 import com.raeden.hytale.modules.utility.commands.NafsmunCommand;
 import com.raeden.hytale.modules.rank.RankManager;
 import com.raeden.hytale.modules.rank.commands.RankCommand;
@@ -59,6 +60,7 @@ public class HytaleFoundations extends JavaPlugin {
     private PermissionManager permissionManager;
     private CommandAliasManager commandAliasManager;
     private DataGroupManager dataGroupManager;
+    private UtilityManager utilityManager;
 
     private PlayerMovementListener playerMovementListener;
 
@@ -104,6 +106,7 @@ public class HytaleFoundations extends JavaPlugin {
         if(pluginActionManager == null) pluginActionManager = new PluginActionManager(this);
         if(playerDataManager == null) playerDataManager = new PlayerDataManager(this);
         if(commandAliasManager == null) commandAliasManager = new CommandAliasManager(this, this.getCommandRegistry());
+        if(utilityManager == null) utilityManager = new UtilityManager(this);
 
         if(configManager.getDefaultConfig().isToggleAdminModule()) {
             if(adminFunctionsManager == null) adminFunctionsManager = new AdminFunctionsManager(this);
@@ -212,6 +215,7 @@ public class HytaleFoundations extends JavaPlugin {
     public DataGroupManager getDataGroupManager() { return dataGroupManager;}
     public ChatManager getChatManager() {return chatManager;}
     public PluginActionManager getPluginActionManager() {return pluginActionManager;}
+    public UtilityManager getUtilityManager() { return utilityManager;}
     public MailManager getMailManager() {return mailManager;}
     public RankManager getRankManager() {return rankManager;}
     public AdminFunctionsManager getAdminFunctionsManager() { return adminFunctionsManager;}
