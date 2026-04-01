@@ -3,52 +3,51 @@ package com.raeden.hytale.core.player;
 import com.google.gson.annotations.SerializedName;
 
 public class PlayerStats {
-    @SerializedName("FIRST_JOINED")
+    @SerializedName("first_joined")
     private long firstJoined;
-    @SerializedName("LAST_JOINED")
+    @SerializedName("last_joined")
     private long lastJoined;
-    @SerializedName("PLAY_TIME_MILLIS")
+    @SerializedName("play_time_millis")
     private long playTimeMillis;
 
-    // Stats
-    @SerializedName("COLLECT_STATS")
+    @SerializedName("collect_stats")
     private boolean collectStats;
-    @SerializedName("TOTAL_DEATHS")
+    @SerializedName("total_deaths")
     private int totalDeaths;
-    @SerializedName("PLAYER_KILLS")
+    @SerializedName("player_kills")
     private int playerKills;
-    @SerializedName("MOB_KILLS")
+    @SerializedName("mob_kills")
     private int mobKills;
-    @SerializedName("PVE_DAMAGE_TAKEN")
+    @SerializedName("pve_damage_taken")
     private int damageTakenPve;
-    @SerializedName("PVE_DAMAGE_GIVEN")
+    @SerializedName("pve_damage_given")
     private int damageGivenPve;
-    @SerializedName("PVP_DAMAGE_TAKEN")
+    @SerializedName("pvp_damage_taken")
     private int damageTakenPvp;
-    @SerializedName("PVP_DAMAGE_GIVEN")
+    @SerializedName("pvp_damage_given")
     private int damageGivenPvp;
-    @SerializedName("BLOCKS_BROKEN")
+    @SerializedName("blocks_broken")
     private int blocksBroken;
-    @SerializedName("BLOCKS_PLACED")
+    @SerializedName("blocks_placed")
     private int blocksPlaced;
-    @SerializedName("DISTANCE_WALKED")
+    @SerializedName("distance_walked")
     private double distanceWalked;
-    @SerializedName("ITEMS_CRAFTED")
+    @SerializedName("items_crafted")
     private int itemsCrafted;
-    @SerializedName("ITEMS_BROKEN")
+    @SerializedName("items_broken")
     private int itemsBroken;
 
-    // Chat
-
-    @SerializedName("TOTAL_MESSAGES_SENT")
+    @SerializedName("total_messages_sent")
     private long totalMessagesSent;
-    @SerializedName("TOTAL_TIMES_REPORTED_BY_PLAYERS")
+    @SerializedName("total_times_reported_by_players")
     private int totalTimesReportedByPlayers;
 
     public long getFirstJoined() {return firstJoined;}
     public void setFirstJoined(long firstJoined) {this.firstJoined = firstJoined;}
+
     public long getLastJoined() {return lastJoined;}
     public void setLastJoined(long lastJoined) {this.lastJoined = lastJoined;}
+
     public long getPlayTimeMillis() {return playTimeMillis;}
     public void setPlayTimeMillis(long playTimeMillis) {this.playTimeMillis = playTimeMillis;}
 
@@ -70,9 +69,18 @@ public class PlayerStats {
     public int getDamageTakenPve() {return damageTakenPve;}
     public void setDamageTakenPve(int damageTakenPve) {this.damageTakenPve = damageTakenPve;}
     public void addDamageTakenPve(int damageTakenPve) {this.damageTakenPve += damageTakenPve;}
+
     public int getDamageGivenPve() {return damageGivenPve;}
     public void setDamageGivenPve(int damageGivenPve) {this.damageGivenPve = damageGivenPve;}
     public void addDamageGivenPve(int damageGivenPve) {this.damageGivenPve += damageGivenPve;}
+
+    public int getDamageTakenPvp() {return damageTakenPvp;}
+    public void setDamageTakenPvp(int damageTakenPvp) {this.damageTakenPvp = damageTakenPvp;}
+    public void addDamageTakenPvp(int damageTakenPvp) {this.damageTakenPvp += damageTakenPvp;}
+
+    public int getDamageGivenPvp() {return damageGivenPvp;}
+    public void setDamageGivenPvp(int damageGivenPvp) {this.damageGivenPvp = damageGivenPvp;}
+    public void addDamageGivenPvp(int damageGivenPvp) {this.damageGivenPvp += damageGivenPvp;}
 
     public int getBlocksBroken() {return blocksBroken;}
     public void addBlockBreak() {this.blocksBroken++;}
@@ -100,12 +108,4 @@ public class PlayerStats {
 
     public int getTotalTimesReportedByPlayers() {return totalTimesReportedByPlayers;}
     public void setTotalTimesReportedByPlayers(int totalTimesReportedByPlayers) {this.totalTimesReportedByPlayers = totalTimesReportedByPlayers;}
-
-    public int getDamageTakenPvp() {return damageTakenPvp;}
-    public void setDamageTakenPvp(int damageTakenPvp) {this.damageTakenPvp = damageTakenPvp;}
-    public void addDamageTakenPvp(int damageTakenPvp) {this.damageTakenPvp += damageTakenPvp;}
-
-    public int getDamageGivenPvp() {return damageGivenPvp;}
-    public void setDamageGivenPvp(int damageGivenPvp) {this.damageGivenPvp = damageGivenPvp;}
-    public void addDamageGivenPvp(int damageGivenPvp) {this.damageGivenPvp += damageGivenPvp;}
 }

@@ -7,9 +7,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PlayerMailbox {
-    @SerializedName("HAS_UNREAD_MAILS")
+    @SerializedName("has_unread_mails")
     private boolean hasUnreadMail;
-    @SerializedName("MAIL_LIST")
+    @SerializedName("mails")
     private List<MailManager.Mail> mailList = new ArrayList<>();
 
     public List<MailManager.Mail> getMailList() {return mailList;}

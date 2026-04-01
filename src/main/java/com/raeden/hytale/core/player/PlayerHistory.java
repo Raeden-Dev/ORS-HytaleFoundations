@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PlayerHistory {
-    @SerializedName("PLAYER_OFFENCES")
+    @SerializedName("player_offences")
     private List<ReportManager.PlayerOffence> offences = new ArrayList<>();
     public List<ReportManager.PlayerOffence> getOffences() {return offences;}
     public void setOffences(List<ReportManager.PlayerOffence> offences) {this.offences = offences;}

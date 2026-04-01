@@ -18,6 +18,7 @@ import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 import static com.raeden.hytale.HytaleFoundations.*;
+import static com.raeden.hytale.modules.utility.WarmupManager.DEFAULT_WARMUPS;
 import static com.raeden.hytale.utils.FileUtils.*;
 import static com.raeden.hytale.utils.PlayerUtils.*;
 
@@ -321,18 +322,23 @@ public class PlayerDataManager {
         profile.setLanguage("en-us");
         profile.setNickname("");
         profile.setUsernameColorCode("&f");
-        profile.setShowNickname(chatConfig.isShowNickname());
-        profile.setShowPrefix(chatConfig.isShowPrefix());
-        profile.setShowSuffix(chatConfig.isShowSuffix());
-        profile.setMaxSuffix(chatConfig.getMaxSuffix());
-        profile.setMaxPrefix(chatConfig.getMaxPrefix());
+
         profile.setGodModeEnabled(false);
         profile.setVanished(false);
         profile.setFlying(false);
         profile.setAnonymous(false);
+
         profile.setMuted(false);
         profile.setMuteDuration(0);
         profile.setSilenced(false);
+        profile.setShowNickname(chatConfig.isShowNickname());
+        profile.setShowPrefix(chatConfig.isShowPrefix());
+        profile.setShowSuffix(chatConfig.isShowSuffix());
+        profile.setMaxPrefix(chatConfig.getMaxPrefix());
+        profile.setMaxSuffix(chatConfig.getMaxSuffix());
+
+        profile.setWarmupDurations(new ConcurrentHashMap<>(DEFAULT_WARMUPS));
+
         profile.setRankId("");
 
         return profile;
@@ -343,17 +349,21 @@ public class PlayerDataManager {
         stats.setFirstJoined(0);
         stats.setLastJoined(0);
         stats.setPlayTimeMillis(0);
+
         stats.setCollectStats(true);
         stats.setTotalDeaths(0);
         stats.setPlayerKills(0);
         stats.setMobKills(0);
-        stats.setDamageGivenPve(0);
         stats.setDamageTakenPve(0);
+        stats.setDamageGivenPve(0);
+        stats.setDamageTakenPvp(0);
+        stats.setDamageGivenPvp(0);
         stats.setBlocksBroken(0);
         stats.setBlocksPlaced(0);
         stats.setDistanceWalked(0);
         stats.setItemsCrafted(0);
         stats.setItemsBroken(0);
+
         stats.setTotalMessagesSent(0);
         stats.setTotalTimesReportedByPlayers(0);
 
