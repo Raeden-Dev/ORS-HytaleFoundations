@@ -16,7 +16,6 @@ import com.raeden.hytale.HytaleFoundations;
 import com.raeden.hytale.core.alias.CommandAliasManager;
 import com.raeden.hytale.core.lang.LangKey;
 import com.raeden.hytale.core.permission.Permissions;
-import com.raeden.hytale.modules.utility.pages.ConfigMenuPage;
 import com.raeden.hytale.core.alias.CreateAliasPage;
 
 import javax.annotation.Nonnull;
@@ -61,7 +60,7 @@ public class AliasCommand extends AbstractCommandCollection {
     private static class AliasReloadCommand extends AbstractPlayerCommand {
         private final HytaleFoundations hytaleFoundations;
         public AliasReloadCommand(HytaleFoundations hytaleFoundations) {
-            super("reload", "Create a new alias for a existing command.");
+            super("reload", "Reload alias file for Hytale Foundations");
             this.addAliases("rld");
             this.hytaleFoundations = hytaleFoundations;
         }
@@ -82,7 +81,7 @@ public class AliasCommand extends AbstractCommandCollection {
     private static class AliasResetCommand extends AbstractPlayerCommand {
         private final HytaleFoundations hytaleFoundations;
         public AliasResetCommand(HytaleFoundations hytaleFoundations) {
-            super("reset", "Create a new alias for a existing command.", true);
+            super("reset", "Reset all aliases to their default state in Hytale Foundations", true);
             this.hytaleFoundations = hytaleFoundations;
         }
         @Override
@@ -100,7 +99,7 @@ public class AliasCommand extends AbstractCommandCollection {
     private static class AliasListCommand extends AbstractPlayerCommand {
         private final HytaleFoundations hytaleFoundations;
         public AliasListCommand(HytaleFoundations hytaleFoundations) {
-            super("list", "Create a new alias for a existing command.");
+            super("list", "Show list of all available command aliases");
             this.hytaleFoundations = hytaleFoundations;
         }
         @Override

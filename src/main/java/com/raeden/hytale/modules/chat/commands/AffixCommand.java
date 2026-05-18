@@ -15,7 +15,6 @@ import com.raeden.hytale.HytaleFoundations;
 import com.raeden.hytale.core.permission.Permissions;
 import com.raeden.hytale.core.lang.LangKey;
 import com.raeden.hytale.modules.chat.AffixManager;
-import com.raeden.hytale.modules.utility.pages.AffixListPage;
 
 import javax.annotation.Nonnull;
 import java.util.Map;

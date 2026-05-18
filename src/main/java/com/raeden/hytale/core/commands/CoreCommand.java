@@ -16,8 +16,6 @@ import com.raeden.hytale.HytaleFoundations;
 import com.raeden.hytale.core.pages.HFMainMenu;
 import com.raeden.hytale.core.permission.Permissions;
 import com.raeden.hytale.core.lang.LangKey;
-import com.raeden.hytale.modules.admin.pages.PlayerReportPage;
-import com.raeden.hytale.modules.utility.pages.ConfigMenuPage;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
@@ -50,7 +48,7 @@ public class CoreCommand extends AbstractCommandCollection {
     private static class HFHelpCommand extends AbstractPlayerCommand {
         private final HytaleFoundations hytaleFoundations;
         public HFHelpCommand(HytaleFoundations hytaleFoundations) {
-            super("help", "Enquire about how to use Hytale Foundations");
+            super("help", "Get help on how to use Hytale Foundations");
             this.requirePermission(Permissions.ACCESS.getPermission());
             this.hytaleFoundations = hytaleFoundations;
         }

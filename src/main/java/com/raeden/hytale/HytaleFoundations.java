@@ -30,7 +30,6 @@ import com.raeden.hytale.modules.chat.commands.PrefixCommand;
 import com.raeden.hytale.modules.chat.commands.SuffixCommand;
 import com.raeden.hytale.modules.chat.commands.NicknameCommand;
 import com.raeden.hytale.modules.home.commands.HomeCommand;
-import com.raeden.hytale.modules.home.commands.HomesCommand;
 import com.raeden.hytale.modules.mail.MailManager;
 import com.raeden.hytale.modules.chat.commands.*;
 import com.raeden.hytale.modules.chat.events.PlayerChatListener;
@@ -89,7 +88,6 @@ public class HytaleFoundations extends JavaPlugin {
 
     protected void shutdown() {
         myLogger.atInfo().log("Hytale Foundations is shutting down...");
-
         if(schedulerUtils != null) {
             schedulerUtils.shutdown();
         }
@@ -190,7 +188,7 @@ public class HytaleFoundations extends JavaPlugin {
         }
         // Admin UI
         if(configManager.getDefaultConfig().isToggleHomesModule()) {
-            this.getCommandRegistry().registerCommand(new HomesCommand(this));
+            this.getCommandRegistry().registerCommand(new HomeCommand(this));
         }
         if(configManager.getDefaultConfig().isToggleRankModule()) {
             this.getCommandRegistry().registerCommand(new RankCommand(this));
@@ -199,7 +197,6 @@ public class HytaleFoundations extends JavaPlugin {
         this.getCommandRegistry().registerCommand(new PlayerInfoCommand(this));
         this.getCommandRegistry().registerCommand(new PlaytimeCommand(this));
 
-        this.getCommandRegistry().registerCommand(new HomesCommand(this));
         this.getCommandRegistry().registerCommand(new HomeCommand(this));
         this.getCommandRegistry().registerCommand(new ReportCommand(this));
 

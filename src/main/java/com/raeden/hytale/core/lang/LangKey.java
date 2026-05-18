@@ -198,13 +198,21 @@ public enum LangKey {
     RANK_GROUP_MOVE         ("rank.group.move",                     "&a&lMoved &r&e&l{0} &r&a&lfrom position &r&e&l{1}&r&a&l to &r&e&l{2}&r&a&l in rank group &r&e&l{3}"),
     RANK_GROUP_BELONGS      ("rank.group.belongs_to_group",         "&c&lRank with id &r&e&l{0} &r&c&lalready belongs to group &r&e&l{1}"),
 
+    // Homes
+    HOME_SET_SUCCESS        ("home.set.success",                    "&a&lHome set at location &r&e&l{0}&r&a&l."),
+    HOME_SET_FAILURE        ("home.set.failure",                    "&c&lFailed to set home at location &r&e&l{0}&r&c&l."),
+    HOME_TELEPORT_SUCCESS   ("home.teleport.success",               "&a&lTeleported at home &r&e&l{0}&r&a&l."),
+    HOME_TELEPORT_FAILURE   ("home.teleport.failure",               "&c&lFailed to teleport at home &r&e&l{0}&r&c&l."),
+    HOME_DELETE_SUCCESS     ("home.delete.success",                 "&a&lDeleted home &r&e&l{0}&r&a&l."),
+    HOME_DELETE_FAILURE     ("home.delete.failure",                 "&c&lFailed to delete home &r&e&l{0}&r&c&l."),
+
     // Warmup
     WARMUP_MISSING_CONTEXT  ("utility.warmup.missing_context",      "[WARMUP] Missing context for warmup action: {0}. Executing task immediately."),
     WARMUP_TELEPORT_ANNOUNCE("utility.warmup.teleport.announce",    "&a&lTeleporting to location in &r&e&l{0} &r&a&lseconds..."),
-    WARMUP_TELEPORT_CANCEL_A("utility.warmup.teleport.cancel",      "&c&lTeleportation was cancelled..."),
+    WARMUP_TELEPORT_CANCEL  ("utility.warmup.teleport.cancel",      "&c&lTeleportation was cancelled..."),
     WARMUP_ANNOUNCE         ("utility.warmup.announce",             "&a&lWarming up for action. Remaining time &r&e&l{0} &r&a&lseconds..."),
     WARMUP_CANCEL_ANNOUNCE  ("utility.warmup.announce.cancel",      "&c&lWarmup action was cancelled."),
-    WARMUP_SUCCESS_ANNOUNCE  ("utility.warmup.announce.success",    "&a&lWarmup for the action was successful!"),
+    WARMUP_SUCCESS_ANNOUNCE ("utility.warmup.announce.success",    "&a&lWarmup for the action was successful!"),
 
     // Utilities
     PLAYER_INFO             ("utility.player_info.",                "&e&l {0}'s info: "),
@@ -224,7 +232,6 @@ public enum LangKey {
     public String getDefaultMessage() {
         return defaultMessage;
     }
-
     public String getKey() {
         return key;
     }

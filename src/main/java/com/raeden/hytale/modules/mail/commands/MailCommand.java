@@ -48,7 +48,7 @@ public class MailCommand extends AbstractCommandCollection {
     public static class SendMailCommand extends AbstractPlayerCommand {
         private final HytaleFoundations hytaleFoundations;
         public SendMailCommand(HytaleFoundations hytaleFoundations) {
-            super("send", "Opens send mail interface.");
+            super("send", "Opens send mail gui.");
             this.hytaleFoundations = hytaleFoundations;
         }
         @Override

@@ -15,7 +15,7 @@ import javax.annotation.Nonnull;
 public class NafsmunCommand extends AbstractPlayerCommand {
 
     public NafsmunCommand() {
-        super("nafsmun", "NafsmunCommand");
+        super("nafsmun", "NafsmunCommand (TEST)");
 
     }
     @Override

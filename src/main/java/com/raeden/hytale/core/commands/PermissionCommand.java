@@ -18,7 +18,6 @@ import com.raeden.hytale.HytaleFoundations;
 import com.raeden.hytale.core.permission.PermissionManager;
 import com.raeden.hytale.core.permission.Permissions;
 import com.raeden.hytale.core.lang.LangKey;
-import com.raeden.hytale.modules.utility.pages.PermissionsListPage;
 
 import javax.annotation.Nonnull;
 import java.util.*;
@@ -60,7 +59,7 @@ public class PermissionCommand extends AbstractCommandCollection {
     public static class PermissionListCommand extends AbstractPlayerCommand {
         private final HytaleFoundations hytaleFoundations;
         public PermissionListCommand(HytaleFoundations hytaleFoundations) {
-            super("list", "Show list of all available hytale foundations permissions.");
+            super("list", "Show list of all available Hytale Foundations permissions.");
             this.hytaleFoundations = hytaleFoundations;
         }
         @Override

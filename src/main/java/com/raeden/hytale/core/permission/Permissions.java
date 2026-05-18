@@ -10,6 +10,7 @@ public enum Permissions {
     SUFFIX("hytalefoundations.suffix"),
     VANISH("hytalefoundations.admin.vanish"),
     HOME("hytalefoundations.home"),
+    HOME_ADMIN("hytalefoundations.admin.home"),
     RANK("hytalefoundations.rank"),
     RANK_ADMIN("hytalefoundations.admin.rank"),
     MAIL("hytalefoundations.mail"),
