@@ -15,6 +15,7 @@ import com.raeden.hytale.HytaleFoundations;
 import com.raeden.hytale.core.permission.Permissions;
 import com.raeden.hytale.core.lang.LangKey;
 import com.raeden.hytale.modules.chat.AffixManager;
+import com.raeden.hytale.modules.chat.pages.AffixListPage;
 
 import javax.annotation.Nonnull;
 import java.util.Map;
@@ -24,7 +25,7 @@ import static com.raeden.hytale.HytaleFoundations.LM;
 public class AffixCommand extends AbstractCommandCollection {
     public AffixCommand(HytaleFoundations hytaleFoundations) {
         super("affix", "Argument for all affix related command");
-        this.requirePermission(Permissions.AFFIX.getPermission());
+        this.requirePermission(Permissions.ACCESS.getPermission());
         this.addSubCommand(new AffixListCommand(hytaleFoundations));
         this.addSubCommand(new AffixClearCommand(hytaleFoundations));
         this.addSubCommand(new AffixGuiCommand(hytaleFoundations));
@@ -33,6 +34,7 @@ public class AffixCommand extends AbstractCommandCollection {
         private final HytaleFoundations hytaleFoundations;
         public AffixListCommand(HytaleFoundations hytaleFoundations) {
             super("list", "Show list of all available affixes");
+            this.requirePermission(Permissions.AFFIX.getPermission());
             this.hytaleFoundations = hytaleFoundations;
         }
         @Override
@@ -53,16 +55,17 @@ public class AffixCommand extends AbstractCommandCollection {
         private final HytaleFoundations hytaleFoundations;
         public AffixGuiCommand(HytaleFoundations hytaleFoundations) {
             super("gui", "Show list of all available affixes in gui");
+            this.requirePermission(Permissions.ACCESS.getPermission());
             this.hytaleFoundations = hytaleFoundations;
         }
         @Override
         protected void execute(@Nonnull CommandContext commandContext, @Nonnull Store<EntityStore> store, @Nonnull Ref<EntityStore> ref, @Nonnull PlayerRef playerRef, @Nonnull World world) {
             AffixManager affixManager = hytaleFoundations.getChatManager().getAffixManager();
             if(affixManager == null) return;
-//            Player player = store.getComponent(ref, Player.getComponentType());
-//            if(player == null) return;
-//            AffixListPage page = new AffixListPage(playerRef);
-//            player.getPageManager().openCustomPage(ref, store, page);
+            Player player = store.getComponent(ref, Player.getComponentType());
+            if(player == null) return;
+            AffixListPage page = new AffixListPage(hytaleFoundations, playerRef);
+            player.getPageManager().openCustomPage(ref, store, page);
         }
     }
     public static class AffixClearCommand extends AbstractPlayerCommand {

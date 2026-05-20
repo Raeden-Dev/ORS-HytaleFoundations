@@ -1,0 +1,48 @@
+@RowPrimaryButtonStyle = TextButtonStyle(
+  Default: (Background: #3a7bd5, LabelStyle: (FontSize: 12, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
+  Hovered: (Background: #4a8be5, LabelStyle: (FontSize: 12, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
+  Pressed: (Background: #2a6bc5, LabelStyle: (FontSize: 12, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center))
+);
+
+@RowSecondaryButtonStyle = TextButtonStyle(
+  Default: (Background: #2b3542, LabelStyle: (FontSize: 12, TextColor: #b6c9de, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
+  Hovered: (Background: #3b4552, LabelStyle: (FontSize: 12, TextColor: #d6e9fe, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
+  Pressed: (Background: #1b2532, LabelStyle: (FontSize: 12, TextColor: #b6c9de, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center))
+);
+
+Group #AffixRow {
+  Anchor: (Height: 50);
+  Background: #1f2738;
+  Padding: (Left: 12, Right: 12, Top: 6, Bottom: 6);
+  LayoutMode: Left;
+
+  Label #DisplayLabel {
+    Text: "[Affix]";
+    Style: (FontSize: 16, TextColor: #ffffff, RenderBold: true, VerticalAlignment: Center);
+    Anchor: (Width: 260);
+  }
+
+  Group { Anchor: (Width: 10); }
+
+  Label #IdLabel {
+    Text: "";
+    Style: (FontSize: 12, TextColor: #96a9be, RenderBold: false, VerticalAlignment: Center);
+    Anchor: (Width: 140);
+  }
+
+  Group { FlexWeight: 1; }
+
+  TextButton #SetPrefixButton {
+    Text: "SET PREFIX";
+    Anchor: (Width: 110, Height: 32);
+    Style: @RowPrimaryButtonStyle;
+  }
+
+  Group { Anchor: (Width: 8); }
+
+  TextButton #SetSuffixButton {
+    Text: "SET SUFFIX";
+    Anchor: (Width: 110, Height: 32);
+    Style: @RowSecondaryButtonStyle;
+  }
+}

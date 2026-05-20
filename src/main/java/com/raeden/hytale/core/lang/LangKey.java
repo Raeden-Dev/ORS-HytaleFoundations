@@ -206,6 +206,25 @@ public enum LangKey {
     HOME_DELETE_SUCCESS     ("home.delete.success",                 "&a&lDeleted home &r&e&l{0}&r&a&l."),
     HOME_DELETE_FAILURE     ("home.delete.failure",                 "&c&lFailed to delete home &r&e&l{0}&r&c&l."),
 
+    // Teleport
+    TP_SUCCESS              ("teleport.success",                    "&a&lTeleported to &r&e&l{0}&r&a&l."),
+    TP_SUCCESS_COORDS       ("teleport.success.coords",             "&a&lTeleported to &r&e&l{0}, {1}, {2}&r&a&l."),
+    TP_SELF                 ("teleport.error.self",                 "&c&lYou cannot teleport to yourself!"),
+    TP_INVALID_COORDS       ("teleport.error.invalid_coords",       "&c&lInvalid coordinates: &r&e&l{0}&r&c&l."),
+    TPA_REQUEST_SENT        ("teleport.tpa.request.sent",           "&a&lTeleport request sent to &r&e&l{0}&r&a&l. They have &r&e&l{1}s &r&a&lto respond."),
+    TPA_REQUEST_RECEIVED    ("teleport.tpa.request.received",       "&e&l{0} &r&a&lwants to teleport to you. Use &r&e&l/tpaccept &r&a&lor &r&e&l/tpdeny&r&a&l."),
+    TPAHERE_REQUEST_SENT    ("teleport.tpahere.request.sent",       "&a&lSummon request sent to &r&e&l{0}&r&a&l. They have &r&e&l{1}s &r&a&lto respond."),
+    TPAHERE_REQUEST_RECEIVED("teleport.tpahere.request.received",   "&e&l{0} &r&a&lwants to summon you to them. Use &r&e&l/tpaccept &r&a&lor &r&e&l/tpdeny&r&a&l."),
+    TPA_REQUEST_PENDING     ("teleport.tpa.request.pending",        "&c&lYou already have an active request involving &r&e&l{0}&r&c&l."),
+    TPA_ACCEPT              ("teleport.tpa.accept",                 "&a&lAccepted teleport request from &r&e&l{0}&r&a&l."),
+    TPA_ACCEPTED            ("teleport.tpa.accepted",               "&e&l{0} &r&a&lhas accepted your teleport request."),
+    TPA_DENY                ("teleport.tpa.deny",                   "&c&lDenied teleport request from &r&e&l{0}&r&c&l."),
+    TPA_DENIED              ("teleport.tpa.denied",                 "&e&l{0} &r&c&lhas denied your teleport request."),
+    TPA_NO_PENDING          ("teleport.tpa.no_pending",             "&c&lYou have no pending teleport requests."),
+    TPA_EXPIRED             ("teleport.tpa.expired",                "&c&lYour teleport request to &r&e&l{0} &r&c&lhas expired."),
+    RTP_SUCCESS             ("teleport.rtp.success",                "&a&lTeleported to a random location: &r&e&l{0}, {1}, {2}&r&a&l."),
+    RTP_FAILURE             ("teleport.rtp.failure",                "&c&lFailed to find a safe random location. Try again."),
+
     // Warmup
     WARMUP_MISSING_CONTEXT  ("utility.warmup.missing_context",      "[WARMUP] Missing context for warmup action: {0}. Executing task immediately."),
     WARMUP_TELEPORT_ANNOUNCE("utility.warmup.teleport.announce",    "&a&lTeleporting to location in &r&e&l{0} &r&a&lseconds..."),
