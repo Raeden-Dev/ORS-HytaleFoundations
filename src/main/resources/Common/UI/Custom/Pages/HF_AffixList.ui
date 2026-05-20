@@ -1,0 +1,98 @@
+$C = "../Common.ui";
+
+@PrimaryButtonStyle = TextButtonStyle(
+  Default: (Background: #3a7bd5, LabelStyle: (FontSize: 14, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
+  Hovered: (Background: #4a8be5, LabelStyle: (FontSize: 14, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
+  Pressed: (Background: #2a6bc5, LabelStyle: (FontSize: 14, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center))
+);
+
+@SecondaryBtnStyle = TextButtonStyle(
+  Default: (Background: #2b3542, LabelStyle: (FontSize: 14, TextColor: #96a9be, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
+  Hovered: (Background: #3b4552, LabelStyle: (FontSize: 14, TextColor: #b6c9de, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
+  Pressed: (Background: #1b2532, LabelStyle: (FontSize: 14, TextColor: #96a9be, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center))
+);
+
+@DangerButtonStyle = TextButtonStyle(
+  Default: (Background: #c0392b, LabelStyle: (FontSize: 14, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
+  Hovered: (Background: #d04a3b, LabelStyle: (FontSize: 14, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
+  Pressed: (Background: #a0291b, LabelStyle: (FontSize: 14, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center))
+);
+
+@CloseXButtonStyle = TextButtonStyle(
+  Default: (Background: #c0392b, LabelStyle: (FontSize: 16, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
+  Hovered: (Background: #d04a3b, LabelStyle: (FontSize: 16, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
+  Pressed: (Background: #a0291b, LabelStyle: (FontSize: 16, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center))
+);
+
+$C.@PageOverlay {
+  $C.@Container {
+    Anchor: (Width: 760, Height: 660);
+    Padding: (Full: 18);
+
+    LayoutMode: Top;
+
+    Group #Header {
+      LayoutMode: Left;
+      Anchor: (Height: 36);
+
+      Label #TitleLabel {
+        Text: "AVAILABLE AFFIXES (0)";
+        Style: (FontSize: 20, TextColor: #ffffff, RenderBold: true, VerticalAlignment: Center);
+        FlexWeight: 1;
+      }
+
+      TextButton #CloseXButton {
+        Text: "X";
+        Anchor: (Width: 32, Height: 32);
+        Style: @CloseXButtonStyle;
+      }
+    }
+
+    Group { Anchor: (Height: 10); }
+
+    Group #AffixListContainer {
+      FlexWeight: 1;
+      Background: #141a26;
+      Padding: 6;
+      LayoutMode: TopScrolling;
+      ScrollbarStyle: (Spacing: 6, Size: 6);
+
+      Group #AffixItems {
+        LayoutMode: Top;
+      }
+    }
+
+    Group { Anchor: (Height: 10); }
+
+    Label #CurrentAffixLabel {
+      Text: "CURRENTLY APPLIED AFFIX: [None]";
+      Style: (FontSize: 14, TextColor: #ffd27f, RenderBold: true, HorizontalAlignment: Center);
+      Anchor: (Height: 22);
+    }
+
+    Group { Anchor: (Height: 10); }
+
+    Group #BottomButtons {
+      LayoutMode: Left;
+      Anchor: (Height: 42);
+
+      Group { FlexWeight: 1; }
+
+      TextButton #ClearAllButton {
+        Text: "CLEAR ALL AFFIX";
+        Anchor: (Width: 200, Height: 40);
+        Style: @DangerButtonStyle;
+      }
+
+      Group { Anchor: (Width: 12); }
+
+      TextButton #CloseButton {
+        Text: "CLOSE";
+        Anchor: (Width: 160, Height: 40);
+        Style: @SecondaryBtnStyle;
+      }
+
+      Group { FlexWeight: 1; }
+    }
+  }
+}

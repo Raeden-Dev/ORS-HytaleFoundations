@@ -202,6 +202,14 @@ public class HytaleFoundations extends JavaPlugin {
 
         this.getCommandRegistry().registerCommand(new AnvilCommand());
         this.getCommandRegistry().registerCommand(new NafsmunCommand());
+
+        // Teleport commands
+        this.getCommandRegistry().registerCommand(new TpCommand(this));
+        this.getCommandRegistry().registerCommand(new TpaCommand(this));
+        this.getCommandRegistry().registerCommand(new TpahereCommand(this));
+        this.getCommandRegistry().registerCommand(new TpacceptCommand(this));
+        this.getCommandRegistry().registerCommand(new TpdenyCommand(this));
+        this.getCommandRegistry().registerCommand(new RtpCommand(this));
     }
 
     public ConfigManager getConfigManager() {return configManager;}

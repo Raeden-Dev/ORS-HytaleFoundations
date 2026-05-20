@@ -25,7 +25,10 @@ public enum Permissions {
     CHAT_COLORS("hytalefoundations.chat.colors"),
     PLAYTIME("hytalefoundations.utils.playtime"),
     ANNOUNCE("hytalefoundations.utils.announce"),
-    TITLE("hytalefoundations.utils.send.title");
+    TITLE("hytalefoundations.utils.send.title"),
+    TELEPORT("hytalefoundations.admin.teleport"),
+    TPA("hytalefoundations.teleport.request"),
+    RTP("hytalefoundations.teleport.random");
 
     private final String permission;
     Permissions(String permission) {
